@@ -1,0 +1,37 @@
+﻿<Page x:Class="ElectroJournal.Pages.Users"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ElectroJournal.Pages"
+      mc:Ignorable="d"
+      Title="Users" Width="1150" Height="555">
+
+    <Grid>
+        <Rectangle Fill="#99FFFFFF" HorizontalAlignment="Left" Height="555" RadiusY="5.833" RadiusX="5.833" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="1150"/>
+        <Rectangle HorizontalAlignment="Left" Height="100" Margin="24.132,20.133,0,0" RadiusY="58.174" RadiusX="58.174" VerticalAlignment="Top" Width="100">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/ElectroJournal;component/Images/pepe.jpg" Stretch="UniformToFill"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Label Content="Телефон:" HorizontalAlignment="Left" Height="30" Margin="39.132,230,0,0" VerticalAlignment="Top" Width="123" FontSize="16" VerticalContentAlignment="Center" Foreground="Black"/>
+        <TextBox x:Name="TextBoxPhone" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="187,230,0,0" TextWrapping="Wrap" Text="89999999999" VerticalAlignment="Top" Width="185" PreviewTextInput="TextBoxPhone_PreviewTextInput"/>
+        <Label Content="Почта:" HorizontalAlignment="Left" Height="30" Margin="39.132,280,0,0" VerticalAlignment="Top" Width="123" FontSize="16" VerticalContentAlignment="Center" Foreground="Black"/>
+        <TextBox x:Name="TextBoxMail" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="187,280,0,0" TextWrapping="Wrap" Text="pochta@gmail.com" VerticalAlignment="Top" Width="185" PreviewTextInput="TextBoxMail_PreviewTextInput"/>
+        <Label x:Name="LabelChangePhoto" Content="Изменить фото" HorizontalAlignment="Left" Height="26" Margin="24.132,125.133,0,0" VerticalAlignment="Top" Width="100" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="#FF005FB9" MouseLeave="LabelChangePhoto_MouseLeave" MouseMove="LabelChangePhoto_MouseMove" MouseLeftButtonUp="LabelChangePhoto_MouseLeftButtonUp"/>
+        <Label x:Name="LabelIDUser" Content="id: 0" HorizontalAlignment="Left" Height="20" Margin="140,113,0,0" VerticalAlignment="Top" Width="37" FontSize="14" Foreground="#99000000"/>
+        <Label Content="Кабинет:" HorizontalAlignment="Left" Height="30" Margin="450.465,280,0,0" VerticalAlignment="Top" Width="120" FontSize="16" VerticalContentAlignment="Center" Foreground="Black"/>
+        <Label Content="Группа:" HorizontalAlignment="Left" Height="30" Margin="450.465,330,0,0" VerticalAlignment="Top" Width="123" FontSize="16" VerticalContentAlignment="Center" Foreground="Black"/>
+        <TextBox x:Name="TextBoxGroup" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="598.465,330,0,0" TextWrapping="Wrap" Text="ПКС 4" VerticalAlignment="Top" Width="185" IsReadOnly="True"/>
+        <TextBox x:Name="TextBoxCabinet" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="598.465,280,0,0" TextWrapping="Wrap" Text="45" VerticalAlignment="Top" Width="185" IsReadOnly="True"/>
+        <Label Content="Пароль:" HorizontalAlignment="Left" Height="30" Margin="450.465,380,0,0" VerticalAlignment="Top" Width="123" FontSize="16" VerticalContentAlignment="Center" Foreground="Black"/>
+        <PasswordBox x:Name="PasswordBoxPassword" HorizontalAlignment="Left" Height="30" Margin="598.465,380,0,0" VerticalAlignment="Top" Width="185" Password="**************" VerticalContentAlignment="Center" IsEnabled="False"/>
+        <Button x:Name="ButtonResetPassword" Style="{StaticResource ButtonStandard}" Content="Сменить пароль" HorizontalAlignment="Left" Height="24" Margin="598.465,415,0,0" VerticalAlignment="Top" Width="185" Click="ButtonResetPassword_Click"/>
+        <Button x:Name="ButtonSave" Style="{StaticResource ButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="998.667,493.334,0,0" VerticalAlignment="Top" Width="120" FontSize="14" Click="ButtonSave_Click" IsEnabled="False"/>
+        <Label Content="Контактная информация" HorizontalAlignment="Left" Height="38" Margin="24.132,176,0,0" VerticalAlignment="Top" Width="247.368" FontSize="18" FontWeight="Bold" Foreground="Black"/>
+        <Label Content="Основная информация" HorizontalAlignment="Left" Height="38" Margin="426.132,176,0,0" VerticalAlignment="Top" Width="247.368" FontSize="18" FontWeight="Bold" Foreground="Black"/>
+        <Button x:Name="ButtonLogoutUser" Style="{StaticResource ButtonStandard}" Content="Выйти из аккаунта " HorizontalAlignment="Left" Height="30" Margin="998.667,20.133,0,0" VerticalAlignment="Top" Width="132.333" Click="ButtonLogoutUser_Click" x:FieldModifier="public"/>
+        <TextBlock x:Name="TextBlockFIO" HorizontalAlignment="Left" Margin="140,33,0,0" TextWrapping="Wrap" Text="Фамилия И. О." VerticalAlignment="Top" Height="75" Width="270" FontSize="20" Foreground="#CC000000"/>
+
+    </Grid>
+</Page>

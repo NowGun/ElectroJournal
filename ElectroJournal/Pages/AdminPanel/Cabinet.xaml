@@ -1,0 +1,59 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ElectroJournal.Pages.AdminPanel"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" x:Class="ElectroJournal.Pages.AdminPanel.Cabinet"
+      mc:Ignorable="d"
+      Title="Cabinet" Width="1160" Height="555">
+
+    <Grid Width="1160" Height="555">
+        <Rectangle Fill="White" HorizontalAlignment="Left" Height="555" RadiusY="6" RadiusX="6" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="1160"/>
+        <Button x:Name="ButtonCreateCabinet" Style="{StaticResource ButtonAccent}" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="20,470,0,0" VerticalAlignment="Top" Width="220" FontSize="14" Click="ButtonCreateCabinet_Click"/>
+        <Button x:Name="ButtonDeleteCabinet" Style="{StaticResource ResourceKey=ButtonStandard}" Content="Удалить" HorizontalAlignment="Left" Height="30" Margin="20,505,0,0" VerticalAlignment="Top" Width="100" Click="ButtonDeleteCabinet_Click"/>
+        <Button x:Name="ButtonSaveCabinet" Style="{StaticResource ResourceKey=ButtonStandard}" Content="Сохранить" HorizontalAlignment="Left" Height="30" Margin="140,505,0,0" VerticalAlignment="Top" Width="100" Click="ButtonSaveCabinet_Click" RenderTransformOrigin="0.5,0.5"/>
+        <Button x:Name="ButtonCreateHousing" Style="{StaticResource ResourceKey=ButtonAccent}" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="576,464,0,0" VerticalAlignment="Top" Width="232" FontSize="14" Click="ButtonCreateHousing_Click"/>
+        <Button x:Name="ButtonDeleteHousing" Style="{StaticResource ResourceKey=ButtonStandard}" Content="Удалить" HorizontalAlignment="Left" Height="30" Margin="575.5,505,0,0" VerticalAlignment="Top" Width="100" Click="ButtonDeleteHousing_Click"/>
+        <Button x:Name="ButtonSaveHousing" Style="{StaticResource ResourceKey=ButtonStandard}" Content="Сохранить" HorizontalAlignment="Left" Height="30" Margin="708,505,0,0" VerticalAlignment="Top" Width="100" Click="ButtonSaveHousing_Click"/>
+        <TextBox x:Name="TextBoxCabinet" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <Label Content="Кабинет" HorizontalAlignment="Left" Height="30" Margin="260,125,0,0" VerticalAlignment="Top" Width="100" FontSize="14" Foreground="#B2000000" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="TextBoxEntryFloor" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,225,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <Label Content="Этаж" HorizontalAlignment="Left" Height="30" Margin="260,225,0,0" VerticalAlignment="Top" Width="96" FontSize="14" Foreground="#B2000000" VerticalContentAlignment="Center"/>
+        <Label Content="Корпус" HorizontalAlignment="Left" Height="29" Margin="260,276,0,0" VerticalAlignment="Top" Width="100" FontSize="14" Foreground="#B2000000" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="ComboBoxSelectHousing" HorizontalAlignment="Left" Height="30" Margin="360,276,0,0" Width="181" VerticalAlignment="Top"/>
+        <Label Content="Название корпуса" HorizontalAlignment="Left" Height="30" Margin="834,56,0,0" VerticalAlignment="Top" Width="230" FontSize="14" Foreground="#CC000000"/>
+        <TextBox x:Name="TextBoxNameHousing" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="110" Margin="830.5,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" VerticalContentAlignment="Top"/>
+        <Label Content="Адрес" HorizontalAlignment="Left" Height="30" Margin="834,213,0,0" VerticalAlignment="Top" Width="230" FontSize="14" Foreground="#CC000000"/>
+        <TextBox x:Name="TextBoxAddressHousing" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="80" Margin="830.5,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" VerticalContentAlignment="Top"/>
+        <Label Content="Кол-во аудиторий" HorizontalAlignment="Left" Height="30" Margin="830.5,348,0,0" VerticalAlignment="Top" Width="149" FontSize="14" Foreground="#CC000000"/>
+        <TextBox x:Name="TextBoxQuantityHousing" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="1015,348,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="99" VerticalContentAlignment="Top"/>
+        <Label Content="Кабинеты" HorizontalAlignment="Left" Height="30" Margin="45,10,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Padding="5,0" VerticalContentAlignment="Center" Foreground="#E5000000"/>
+        <Image HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="30" Source="/ElectroJournal;component/Images/AdminIcons/Teachers/icons8-дверь-96.png"/>
+        <Label Content="Корпуса" HorizontalAlignment="Left" Height="30" Margin="610.5,10,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Padding="5,0" VerticalContentAlignment="Center" Foreground="#E5000000"/>
+        <Image HorizontalAlignment="Left" Height="30" Margin="575.5,10,0,0" VerticalAlignment="Top" Width="30" Source="/ElectroJournal;component/Images/AdminIcons/Cabinet/icons8-центр-города-96.png"/>
+        <ListBox x:Name="ListBoxCabinet" HorizontalAlignment="Left" Height="337" Margin="20,115,0,0" VerticalAlignment="Top" Width="220" SelectionChanged="ListBoxCabinet_SelectionChanged"/>
+        <ListBox x:Name="ListBoxHousing" HorizontalAlignment="Left" Height="372" Margin="575.5,80,0,0" VerticalAlignment="Top" Width="232.5" SelectionChanged="ListBoxHousing_SelectionChanged"/>
+        <ComboBox x:Name="ComboBoxSelectClassCabinet" HorizontalAlignment="Left" Height="30" Margin="20,80,0,0" VerticalAlignment="Top" Width="220"/>
+
+        <TextBox x:Name="TextBoxMahSearch"
+        Margin="20,45,0,0"
+        mah:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmdWithParameter, Mode=OneWay}"
+        mah:TextBoxHelper.ButtonCommandParameter="{Binding Text, ElementName=test2}"
+        mah:TextBoxHelper.Watermark="Поиск"
+        Style="{DynamicResource MahApps.Styles.TextBox.Search}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" BorderBrush="#FFEDEDED" VerticalContentAlignment="Center" />
+        <TextBox x:Name="TextBoxFeatures" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="70" Margin="360,375,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <Label Content="Особенности &#xD;&#xA;кабинета" HorizontalAlignment="Left" Height="40" Margin="260,375,0,0" VerticalAlignment="Top" Width="100" FontSize="14" Foreground="#B2000000" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="TextBoxName" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <Label Content="Название" HorizontalAlignment="Left" Height="30" Margin="260,175,0,0" VerticalAlignment="Top" Width="96" FontSize="14" Foreground="#B2000000" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="TextBoxNumberSeats" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <Label Content="Кол-во мест" HorizontalAlignment="Left" Height="30" Margin="260,325,0,0" VerticalAlignment="Top" Width="96" FontSize="14" Foreground="#B2000000" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="TextBoxMahSearch_Copy"
+            Margin="580,49,0,0"
+            mah:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmdWithParameter, Mode=OneWay}"
+            mah:TextBoxHelper.ButtonCommandParameter="{Binding Text, ElementName=test2}"
+            mah:TextBoxHelper.Watermark="Поиск"
+            Style="{DynamicResource MahApps.Styles.TextBox.Search}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="228" BorderBrush="#FFEDEDED" VerticalContentAlignment="Center" />
+
+    </Grid>
+</Page>

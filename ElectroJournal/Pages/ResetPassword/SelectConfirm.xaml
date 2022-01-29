@@ -1,0 +1,24 @@
+﻿<Page x:Class="ElectroJournal.Pages.ResetPassword.ConfirmSMS"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ElectroJournal.Pages.ResetPassword"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ConfirmSMS" Width="522" Height="235">
+
+    <Grid>
+        <Rectangle HorizontalAlignment="Left" Height="235" RadiusY="6" RadiusX="6" VerticalAlignment="Top" Width="522"/>
+        <Image HorizontalAlignment="Left" Height="40" Margin="35.667,74.833,0,0" VerticalAlignment="Top" Width="40" Source="/ElectroJournal;component/Images/icons8-рассылка-96.png" RenderTransformOrigin="0.558,0.429"/>
+        <Label Content="Выберите куда отправить код с подтверждением" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="380.333" FontSize="16"/>
+        <Label Content="На почту" HorizontalAlignment="Left" Height="40" Margin="80.667,74.833,0,0" VerticalAlignment="Top" Width="84.667" VerticalContentAlignment="Center"/>
+        <TextBox Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="170.334,81.834,0,0" TextWrapping="Wrap" Text="zhirowdaniil@gmail.com" VerticalAlignment="Top" Width="290"/>
+        <Image HorizontalAlignment="Left" Height="40" Margin="35.667,151.5,0,0" VerticalAlignment="Top" Width="40" Source="/ElectroJournal;component/Images/icons8-смс-96.png" RenderTransformOrigin="0.558,0.429"/>
+        <Label Content="СМС-сообщение на номер" HorizontalAlignment="Left" Height="40" Margin="80.667,151.5,0,0" VerticalAlignment="Top" Width="168.667" VerticalContentAlignment="Center"/>
+        <TextBox Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="254.334,158.501,0,0" TextWrapping="Wrap" Text="89999999999" VerticalAlignment="Top" Width="206"/>
+        <CheckBox Content="" HorizontalAlignment="Left" Height="30" Margin="465.334,81.834,0,0" VerticalAlignment="Top" Width="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <CheckBox Content="" HorizontalAlignment="Left" Height="30" Margin="465.334,158.501,0,0" VerticalAlignment="Top" Width="25" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+    </Grid>
+</Page>

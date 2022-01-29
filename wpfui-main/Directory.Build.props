@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.2.1</Version>
+    <LangVersion>latest</LangVersion>
+    <Authors>lepo.co</Authors>
+    <Company>lepo.co</Company>
+    <Copyright>Copyright (C) 2021-2022 Leszek Pomianowski and WPF UI Contributors</Copyright>
+  </PropertyGroup>
+</Project>

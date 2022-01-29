@@ -1,0 +1,43 @@
+﻿<Page x:Class="ElectroJournal.Pages.AdminPanel.Students"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ElectroJournal.Pages.AdminPanel"
+      mc:Ignorable="d"
+      Title="Students">
+    <Grid>
+        <Rectangle Fill="White" HorizontalAlignment="Stretch" RadiusY="6" RadiusX="6" Stroke="#FFE6E9EB" VerticalAlignment="Stretch" MinWidth="1160"/>
+        <TextBox x:Name="TextBoxStudentsFIO" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="580.551,81.428,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="350"/>
+        <TextBox x:Name="TextBoxStudentsMail" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="580.551,211.428,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="350"/>
+        <Button x:Name="ButtonAdd" Style="{StaticResource ResourceKey=ButtonAccent}" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="140" FontSize="14" Click="ButtonAdd_Click"/>
+        <Button x:Name="ButtonDelete" Style="{StaticResource ResourceKey=ButtonStandard}" Content="Удалить" HorizontalAlignment="Left" Height="30" Margin="170,0,0,10" VerticalAlignment="Bottom" Width="140" FontSize="14" Click="ButtonDelete_Click"/>
+        <Label Content="ФИО*" HorizontalAlignment="Left" Height="30" Margin="405.551,81.428,0,0" VerticalAlignment="Top" Width="170" FontSize="14" Foreground="#CC000000"/>
+        <Label Content="Пример: Иванов Иван Иванович" HorizontalAlignment="Left" Height="30" Margin="580.551,51.428,0,0" VerticalAlignment="Top" Width="300" Foreground="#FF7E7E7E" FontStyle="Italic"/>
+        <Label Content="Телефон" HorizontalAlignment="Left" Height="30" Margin="405.551,146.428,0,0" VerticalAlignment="Top" Width="170" FontSize="14" Foreground="#CC000000"/>
+        <Label Content="Пример: 89990001122" HorizontalAlignment="Left" Height="30" Margin="580.551,116.428,0,0" VerticalAlignment="Top" Width="160" Foreground="#FF7E7E7E" FontStyle="Italic"/>
+        <Label Content="Почта" HorizontalAlignment="Left" Height="30" Margin="405.551,211.428,0,0" VerticalAlignment="Top" Width="170" FontSize="14" Foreground="#CC000000"/>
+        <Label Content="Пример: ivanov@yandex.ru" HorizontalAlignment="Left" Height="30" Margin="580.551,181.428,0,0" VerticalAlignment="Top" Width="300" Foreground="#FF7E7E7E" FontStyle="Italic"/>
+        <Label Content="* - обязательные поля" HorizontalAlignment="Left" Height="30" Margin="379.051,515,0,0" VerticalAlignment="Top" Width="150" Foreground="#FF7E7E7E"/>
+        <ComboBox x:Name="ComboBoxStudentsGroup" HorizontalAlignment="Left" Height="30" Margin="580.551,280.674,0,0" VerticalAlignment="Top" Width="350"/>
+        <Label Content="Закрепленная группа*" HorizontalAlignment="Left" Height="30" Margin="405.551,280.674,0,0" VerticalAlignment="Top" Width="170" FontSize="14" Foreground="#CC000000"/>
+        <Image HorizontalAlignment="Left" Height="25" Margin="379.051,148.928,0,0" VerticalAlignment="Top" Width="25" Source="/ElectroJournal;component/Images/AdminIcons/Teachers/icons8-телефон-96.png"/>
+        <Image HorizontalAlignment="Left" Height="25" Margin="379.051,213.428,0,0" VerticalAlignment="Top" Width="25" Source="/ElectroJournal;component/Images/AdminIcons/Teachers/icons8-эл.-адрес-96.png"/>
+        <Image HorizontalAlignment="Left" Height="25" Margin="380.051,83.928,0,0" VerticalAlignment="Top" Width="25" Source="/ElectroJournal;component/Images/AdminIcons/Teachers/icons8-меню-пользователя,-мужчина-96.png"/>
+        <Image HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="30" Source="/ElectroJournal;component/Images/AdminIcons/Students/icons8-писатель-96.png"/>
+        <Label Content="Студенты" HorizontalAlignment="Left" Height="30" Margin="45,11.321,0,0" VerticalAlignment="Top" Width="170" FontSize="16" VerticalContentAlignment="Center" Padding="5,0" Foreground="#E5000000"/>
+        <Image HorizontalAlignment="Left" Height="25" Margin="380.551,283.012,0,0" VerticalAlignment="Top" Width="25" Source="/ElectroJournal;component/Images/AdminIcons/Teachers/icons8-группы-пользователей-96.png"/>
+        <Button x:Name="ButtonSave" Style="{StaticResource ButtonAccent}" Content="Сохранить" HorizontalAlignment="Right" Height="30" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100" FontSize="14" Click="ButtonSave_Click"/>
+        <ListView x:Name="ListViewStudents" HorizontalAlignment="Left" Height="460" Margin="10,50,0,0" VerticalAlignment="Top" Width="300" Style="{DynamicResource ListViewStyleNew}" SelectionChanged="ListViewStudents_SelectionChanged">
+
+        </ListView>
+        <DatePicker x:Name="DatePickerDateBirthday" HorizontalAlignment="Left" Height="30" Margin="580.551,344,0,0" VerticalAlignment="Top" Width="350" DisplayDate="2022-01-19"/>
+        <Label Content="Дата рождения" HorizontalAlignment="Left" Height="30" Margin="405.551,344,0,0" VerticalAlignment="Top" Width="170" FontSize="14" Foreground="#CC000000"/>
+        <Image HorizontalAlignment="Left" Height="25" Margin="380.551,346.495,0,0" VerticalAlignment="Top" Width="25" Source="/ElectroJournal;component/Images/AdminIcons/Students/icons8-отрывной-календарь-96.png"/>
+        <TextBox x:Name="TextBoxStudentsPhone" MaxLength="12" HorizontalAlignment="Left" Style="{StaticResource ResourceKey=TextBoxStyleNew}" Height="35" Margin="586,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Text="89996061994" UndoLimit="12" PreviewTextInput="TextBoxStudentsPhone_PreviewTextInput"/>
+        <TextBox x:Name="TextBoxStudentsResidence" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="586,395,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="350"/>
+        <Label Content="Место жительства" HorizontalAlignment="Left" Height="30" Margin="410,395,0,0" VerticalAlignment="Top" Width="170" FontSize="14" Foreground="#CC000000"/>
+        <CheckBox x:Name="CheckBoxStudentsDormitory" Content="необходимо ли общежитие" HorizontalAlignment="Left" Margin="406,445,0,0" VerticalAlignment="Top" Width="241"/>
+
+    </Grid>
+</Page>
