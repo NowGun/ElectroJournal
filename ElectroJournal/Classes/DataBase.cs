@@ -32,12 +32,19 @@ namespace ElectroJournal.Classes
 
         public static MySqlConnection GetDBConnection()
         {
+            /*
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
             string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
             string username = xmlDocument.GetElementsByTagName("username")[0].InnerText;
             string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
             string database = xmlDocument.GetElementsByTagName("database")[0].InnerText;
+            */
+
+            string server = Properties.Settings.Default.Server;
+            string username = Properties.Settings.Default.UserName;
+            string password = Properties.Settings.Default.Password;
+            string database = Properties.Settings.Default.DataBase;
             // Connection String.
             String connString = "Server=" + server + ";Database=" + database + ";User Id=" + username + ";password=" + password;
 

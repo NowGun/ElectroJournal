@@ -15,12 +15,9 @@
         <GroupBox Style="{x:Null}" x:Name="GroupBoxRun" Header="Настройки запуска" Margin="30,164,365,277" FontSize="14" Foreground="#FF3E3E3E">
             <Grid Height="92" HorizontalAlignment="Left" Width="745" Margin="10,0,0,0">
                 <Label Content="Автоматически запускать ElectroJournal после включения компьютера" Margin="0,10,196,52" Height="30"/>
-                <ComboBox x:Name="ComboBoxAutoRun" Margin="554,10,10,52" Height="30">
-                    <ComboBoxItem Content="Да"/>
-                    <ComboBoxItem Content="Нет"/>
-                </ComboBox>
                 <Label Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal" Margin="0,52,196,10" Height="30"/>
                 <CheckBox x:Name="CheckBoxCollapseToTray" Content="" Margin="715,52,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30"/>
+                <CheckBox x:Name="CheckBoxAutoRun" Content="" Margin="715,10,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30"/>
             </Grid>
         </GroupBox>
         <GroupBox Style="{x:Null}" x:Name="GroupBoxApp" Header="Настройки приложения" Margin="30,31,365,410" FontSize="14" Foreground="#FF3E3E3E">

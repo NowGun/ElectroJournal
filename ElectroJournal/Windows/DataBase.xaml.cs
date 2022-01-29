@@ -31,10 +31,14 @@ namespace ElectroJournal.Windows
 
         private void LoadData()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
-            string user = xmlDocument.GetElementsByTagName("username")[0].InnerText;
-            string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
+            //string user = xmlDocument.GetElementsByTagName("username")[0].InnerText;
+            //string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
+
+            string server = Properties.Settings.Default.Server;
+            string user = Properties.Settings.Default.UserName;
+            string password = Properties.Settings.Default.Password;
 
             TextBoxServer.Text = server;
             TextBoxUser.Text = user;
@@ -43,17 +47,20 @@ namespace ElectroJournal.Windows
 
         private void SaveData()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
 
-            XmlNode server = xmlDocument.GetElementsByTagName("server")[0];
-            XmlNode user = xmlDocument.GetElementsByTagName("username")[0];
-            XmlNode password = xmlDocument.GetElementsByTagName("password")[0];
+            // XmlNode server = xmlDocument.GetElementsByTagName("server")[0];
+            // XmlNode user = xmlDocument.GetElementsByTagName("username")[0];
+            // XmlNode password = xmlDocument.GetElementsByTagName("password")[0];
 
-            server.InnerText = TextBoxServer.Text;
-            user.InnerText = TextBoxUser.Text;
-            password.InnerText = TextBoxPassword.Text;
 
-            xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+
+            Properties.Settings.Default.Server = TextBoxServer.Text;
+            Properties.Settings.Default.UserName = TextBoxUser.Text;
+            Properties.Settings.Default.Password = TextBoxPassword.Text;
+
+            Properties.Settings.Default.Save();
+            //xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)

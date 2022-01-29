@@ -8,7 +8,7 @@
       Title="Users" Width="1150" Height="555">
 
     <Grid>
-        <Rectangle Fill="#99FFFFFF" HorizontalAlignment="Left" Height="555" RadiusY="5.833" RadiusX="5.833" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="1150"/>
+        <Rectangle HorizontalAlignment="Left" Height="555" RadiusY="5.833" RadiusX="5.833" VerticalAlignment="Top" Width="1150"/>
         <Rectangle HorizontalAlignment="Left" Height="100" Margin="24.132,20.133,0,0" RadiusY="58.174" RadiusX="58.174" VerticalAlignment="Top" Width="100">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="/ElectroJournal;component/Images/pepe.jpg" Stretch="UniformToFill"/>

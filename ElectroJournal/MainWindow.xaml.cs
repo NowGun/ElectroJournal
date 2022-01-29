@@ -42,6 +42,19 @@ namespace ElectroJournal
         {
             InitializeComponent();
             CheckVersionkWindows();
+
+            GridMenu.Visibility = Visibility.Hidden;
+            Frame.Visibility = Visibility.Hidden;
+            //NavViewMenuAdmin.Visibility = Visibility.Hidden;
+            RectangleBackToMenu.Visibility = Visibility.Hidden;
+            RectangleLoadLogin.Visibility = Visibility.Hidden;
+            ThemeCheck();
+            CompletionLogin();
+            Tray();
+            CheckAutoRun();
+
+            //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+            MenuBoard.Visibility = Visibility.Hidden;
         }
 
         DataBase DbUser = new DataBase();
@@ -292,10 +305,15 @@ namespace ElectroJournal
         private void CompletionLogin()
         {
             //xmlDocument.Load("C:/ElectroJournal/Settings.xml");
+            /*
             xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
 
             string username = xmlDocument.GetElementsByTagName("username")[0].InnerText;
             string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
+            */
+
+            string username = Properties.Settings.Default.UserName;
+            string password = Properties.Settings.Default.Password;
 
             //TextBoxLogin.Text = username;
             //TextBoxPassword.Password = password;
@@ -333,14 +351,14 @@ namespace ElectroJournal
             {
 
 
-                
+                /*
                 WPFUI.Controls.MessageBox messageBox2 = new WPFUI.Controls.MessageBox();
                 messageBox2.LeftButtonName = "Да";
                 messageBox2.RightButtonName = "Нет";
                 messageBox2.LeftButtonClick += MessageBox_LeftButtonClick;
                 messageBox2.RightButtonClick += MessageBox_RightButtonClick;
                 messageBox2.Show("Уведомление", "Вы точно хотите выйти из программы ElectroJournal?");
-                
+                */
 
                 /*
                 MessageBoxResult result;
@@ -377,7 +395,8 @@ namespace ElectroJournal
         }
 
         public void Tray()
-        {/*
+        {
+            /*
             System.Windows.Forms.NotifyIcon notifyicon = new System.Windows.Forms.NotifyIcon();
             notifyicon.Text = "ElectroJournal";
             notifyicon.Icon = new System.Drawing.Icon("logo75.ico");
@@ -435,20 +454,24 @@ namespace ElectroJournal
         private bool CheckTray()
         {
             bool a;
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
 
-            a = bool.Parse(collapsetotray);
+            bool tray = Properties.Settings.Default.Tray;
 
-            return a;
+            //a = bool.Parse(collapsetotray);
+
+            return tray;
         }
 
         public void CheckAutoRun()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            string autorun = xmlDocument.GetElementsByTagName("autorun")[0].InnerText;
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //string autorun = xmlDocument.GetElementsByTagName("autorun")[0].InnerText;
 
-            if (autorun == "0")
+            bool autorun = Properties.Settings.Default.AutoRun;
+
+            if (!autorun)
             {
                 SetAutorunValue(true);
             }

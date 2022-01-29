@@ -48,16 +48,21 @@ namespace ElectroJournal.Pages
 
         private void LoadBD()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
+
+            string server = Properties.Settings.Default.Server;
             LabelIpAddress.Content = server;
         }
 
         private void LoadApp()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            string theme = xmlDocument.GetElementsByTagName("Theme")[0].InnerText;
-            string animation = xmlDocument.GetElementsByTagName("animation")[0].InnerText;
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //string theme = xmlDocument.GetElementsByTagName("Theme")[0].InnerText;
+            //string animation = xmlDocument.GetElementsByTagName("animation")[0].InnerText;
+
+            string theme = Properties.Settings.Default.Theme;
+            bool animation = Properties.Settings.Default.Animation;
 
             if (theme == "White")
             {
@@ -65,46 +70,54 @@ namespace ElectroJournal.Pages
             }
             else ComboBoxTheme.SelectedIndex = 1;
 
-            CheckBoxAnim.IsChecked = bool.Parse(animation);
+            CheckBoxAnim.IsChecked = animation;
         }
 
         private void LoadRun()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            string autorun = xmlDocument.GetElementsByTagName("autorun")[0].InnerText;
-            string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //string autorun = xmlDocument.GetElementsByTagName("autorun")[0].InnerText;
+            //string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
+            
+            bool autorun = Properties.Settings.Default.AutoRun;
+            bool tray = Properties.Settings.Default.Tray;
 
-            ComboBoxAutoRun.SelectedIndex = int.Parse(autorun);
-            CheckBoxCollapseToTray.IsChecked = bool.Parse(collapsetotray);
+            CheckBoxAutoRun.IsChecked = autorun;
+            CheckBoxCollapseToTray.IsChecked = tray;
         }
 
         private void SaveApp()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            XmlNode theme = xmlDocument.GetElementsByTagName("Theme")[0];
-            XmlNode animation = xmlDocument.GetElementsByTagName("animation")[0];
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //XmlNode theme = xmlDocument.GetElementsByTagName("Theme")[0];
+            //XmlNode animation = xmlDocument.GetElementsByTagName("animation")[0];
+
 
             if (ComboBoxTheme.SelectedIndex == 0)
             {
-                theme.InnerText = "White";
+                Properties.Settings.Default.Theme = "White";
             }
-            else theme.InnerText = "Black";
+            else Properties.Settings.Default.Theme = "Black";
 
-            animation.InnerText = CheckBoxAnim.IsChecked.ToString();
+            Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? true;
 
-            xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            Properties.Settings.Default.Save();
+            //xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
         }
 
         private void SaveRun()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            XmlNode autorun = xmlDocument.GetElementsByTagName("autorun")[0];
-            XmlNode collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0];
+            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            //XmlNode autorun = xmlDocument.GetElementsByTagName("autorun")[0];
+            //XmlNode collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0];
 
-            autorun.InnerText = ComboBoxAutoRun.SelectedIndex.ToString();
-            collapsetotray.InnerText = CheckBoxCollapseToTray.IsChecked.ToString();
 
-            xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+
+            Properties.Settings.Default.AutoRun = CheckBoxAutoRun.IsChecked ?? false;
+            Properties.Settings.Default.Tray = CheckBoxCollapseToTray.IsChecked ?? false;
+
+            Properties.Settings.Default.Save();
+            //xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
         }
 
         private void ButtonChangeBD_Click(object sender, RoutedEventArgs e)
