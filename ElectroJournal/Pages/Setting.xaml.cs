@@ -42,7 +42,7 @@ namespace ElectroJournal.Pages
             SaveApp();
             SaveRun();
             ((MainWindow)System.Windows.Application.Current.MainWindow).CheckAutoRun();
-
+            ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
             ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
         }
 
@@ -61,14 +61,10 @@ namespace ElectroJournal.Pages
             //string theme = xmlDocument.GetElementsByTagName("Theme")[0].InnerText;
             //string animation = xmlDocument.GetElementsByTagName("animation")[0].InnerText;
 
-            string theme = Properties.Settings.Default.Theme;
+            int theme = Properties.Settings.Default.Theme;
             bool animation = Properties.Settings.Default.Animation;
 
-            if (theme == "White")
-            {
-                ComboBoxTheme.SelectedIndex = 0;
-            }
-            else ComboBoxTheme.SelectedIndex = 1;
+            ComboBoxTheme.SelectedIndex = theme;
 
             CheckBoxAnim.IsChecked = animation;
         }
@@ -92,12 +88,8 @@ namespace ElectroJournal.Pages
             //XmlNode theme = xmlDocument.GetElementsByTagName("Theme")[0];
             //XmlNode animation = xmlDocument.GetElementsByTagName("animation")[0];
 
+            Properties.Settings.Default.Theme = ComboBoxTheme.SelectedIndex;
 
-            if (ComboBoxTheme.SelectedIndex == 0)
-            {
-                Properties.Settings.Default.Theme = "White";
-            }
-            else Properties.Settings.Default.Theme = "Black";
 
             Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? true;
 

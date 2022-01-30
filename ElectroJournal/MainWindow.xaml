@@ -18,7 +18,7 @@
         
         x:Class="ElectroJournal.MainWindow"
         mc:Ignorable="d"
-        Title="ElectroJournal" Height="720" Width="1280" Icon="Images/Logo/logo75.ico" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Style="{DynamicResource UiWindowRounded}" Background="#FFEDF1F4">
+        Title="ElectroJournal" Height="720" Width="1280" Icon="Images/Logo/logo75.ico" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Style="{DynamicResource UiWindowRounded}" Background="#FFEDF1F4" Loaded="Window_Loaded">
     <Window.Resources>
         <Storyboard x:Key="AnimLoadLogin">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="RectangleLoadLogin">
@@ -147,7 +147,7 @@
                         MinimizeToTray="False"                        
                         NotifyIconImage="pack://application:,,,/logo75.ico"
                         NotifyIconTooltip="ElectroJournal"
-                        UseNotifyIcon="True" NotifyIconDoubleClick="TitleBar_NotifyIconDoubleClick">
+                        UseNotifyIcon="True" NotifyIconDoubleClick="TitleBar_NotifyIconDoubleClick" Background="#00000000">
             <wpfui:TitleBar.NotifyIconMenu>
                 <ContextMenu>
                     <MenuItem x:Name="MenuItemOpen" Header="Открыть"
@@ -159,7 +159,7 @@
                 </ContextMenu>
             </wpfui:TitleBar.NotifyIconMenu>
         </wpfui:TitleBar>
-        <Grid x:Name="GridMenu" Height="131" VerticalAlignment="Top" MinWidth="1272" Visibility="Visible" x:FieldModifier="public" Margin="0,48,0,0">
+        <Grid x:Name="GridMenu" Height="52" VerticalAlignment="Top" MinWidth="1272" Visibility="Visible" x:FieldModifier="public" Margin="0,48,0,0">
             <wpfui:Icon x:Name="RectangleBackToMenu" Glyph="ArrowLeft12" HorizontalAlignment="Left" Margin="17,9,0,0" VerticalAlignment="Top" Height="32" Width="28" MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" FontSize="20" HorizontalContentAlignment="Center"/>
             <Menu x:Name="MenuEJ" Margin="52,-49,0,0" Background="{x:Null}" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="{x:Null}">
                 <MenuItem Header="EJ" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,0,6,0" Height="43" FontFamily="Segoe UI Historic" FontSize="14">
@@ -231,7 +231,7 @@
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
         </Grid>
-        <Frame x:Name="Frame" Content="" Margin="0,99,0,0" NavigationUIVisibility="Hidden" RenderTransformOrigin="0.5,0.5" ContentRendered="Frame_ContentRendered" Background="#4CFFFFFF">
+        <Frame x:Name="Frame" Content="" Margin="0,99,0,0" NavigationUIVisibility="Hidden" RenderTransformOrigin="0.5,0.5" ContentRendered="Frame_ContentRendered" Background="#00000000">
             <Frame.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -276,7 +276,7 @@
             <Button x:Name="ButtonOpenNotLogin" Content="NLogin" HorizontalAlignment="Left" Margin="216,46,0,0" VerticalAlignment="Top" Click="ButtonOpenNotLogin_Click" Cursor="Hand" Background="#FFF3F3F3"/>
 
         </Grid>
-        <controls1:NotificationArea x:Name="WindowArea" Position="TopRight" MaxItems="3" Margin="0,99,8,8"/>
+        <controls1:NotificationArea x:Name="WindowArea" Position="TopRight" MaxItems="3" Margin="0,99,8,8" d:IsHidden="True"/>
 
     </Grid>
 </Window>

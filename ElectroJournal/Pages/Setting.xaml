@@ -8,11 +8,10 @@
       Title="Setting" Width="1160" Height="555">
 
     <Grid>
-        <Rectangle Fill="White" HorizontalAlignment="Left" Height="555" RadiusY="6" RadiusX="6" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="1160"/>
         <Button Style="{StaticResource ButtonStandard}" Content="Проверить обновление" HorizontalAlignment="Left" Height="40" Margin="210.5,497.5,0,0" VerticalAlignment="Top" Width="180" FontSize="14"/>
         <Button x:Name="ButtonSave" Style="{StaticResource ButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="984.5,502.5,0,0" VerticalAlignment="Top" Width="145" FontSize="14" Click="ButtonSave_Click"/>
         <Label Content="Версия 0.1 от 11.10.2021" HorizontalAlignment="Left" Height="40" Margin="29.5,497.5,0,0" VerticalAlignment="Top" Width="176" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <GroupBox Style="{x:Null}" x:Name="GroupBoxRun" Header="Настройки запуска" Margin="30,164,365,277" FontSize="14" Foreground="#FF3E3E3E">
+        <GroupBox Style="{x:Null}" x:Name="GroupBoxRun" Header="Настройки запуска" Margin="30,164,365,265" FontSize="14" Foreground="#FF3E3E3E">
             <Grid Height="92" HorizontalAlignment="Left" Width="745" Margin="10,0,0,0">
                 <Label Content="Автоматически запускать ElectroJournal после включения компьютера" Margin="0,10,196,52" Height="30"/>
                 <Label Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal" Margin="0,52,196,10" Height="30"/>
@@ -20,7 +19,7 @@
                 <CheckBox x:Name="CheckBoxAutoRun" Content="" Margin="715,10,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30"/>
             </Grid>
         </GroupBox>
-        <GroupBox Style="{x:Null}" x:Name="GroupBoxApp" Header="Настройки приложения" Margin="30,31,365,410" FontSize="14" Foreground="#FF3E3E3E">
+        <GroupBox Style="{x:Null}" x:Name="GroupBoxApp" Header="Настройки приложения" Margin="30,31,365,396" FontSize="14" Foreground="#FF3E3E3E">
             <Grid Height="92" HorizontalAlignment="Left" Width="745" Margin="10,0,0,0">
                 <Label Content="Выберите тему" Margin="0,10,196,52" Height="30"/>
                 <ComboBox x:Name="ComboBoxTheme" Margin="554,10,10,52" Height="30">

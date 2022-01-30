@@ -223,6 +223,9 @@
     <Page Update="Windows\Calculator.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Windows\ContentDialogExample.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Windows\Messagetray.xaml">
       <SubType>Designer</SubType>
     </Page>

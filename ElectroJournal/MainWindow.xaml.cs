@@ -27,9 +27,11 @@ using System.Xml;
 using System.Drawing;
 using Microsoft.Win32;
 using WPFUI.Controls;
-
 using System.Windows.Interop;
 using ModernWpf;
+using ModernWpf.SampleApp.ControlPages;
+using ModernWpf.Controls;
+using WPFUI.Background;
 
 namespace ElectroJournal
 {
@@ -40,24 +42,24 @@ namespace ElectroJournal
     {
         public MainWindow()
         {
-            InitializeComponent();
             CheckVersionWindows();
-
+            InitializeComponent();
             GridMenu.Visibility = Visibility.Hidden;
             Frame.Visibility = Visibility.Hidden;
-            //NavViewMenuAdmin.Visibility = Visibility.Hidden;
+            NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
-            ThemeCheck();
-            CompletionLogin();
             CheckAutoRun();
+            CompletionLogin();
 
             TitleBar.CloseActionOverride = CloseActionOverride;
             //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-            //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
-        }
 
+
+            
+            ThemeCheck();
+        }
 
         DataBase DbUser = new DataBase();
         DataBaseControls DbControls = new DataBaseControls();
@@ -73,7 +75,7 @@ namespace ElectroJournal
 
         const string name = "ElectroJournal";
 
-        private void CloseActionOverride(TitleBar titleBar, Window window)
+        private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             bool a;
             a = CheckTray();
@@ -94,32 +96,17 @@ namespace ElectroJournal
             else if (!a)
             {
 
+                ContentDialogExample dialog = new ContentDialogExample();
+                var result = await dialog.ShowAsync();
 
-
-                WPFUI.Controls.MessageBox messageBox2 = new WPFUI.Controls.MessageBox();
-                messageBox2.LeftButtonName = "Да";
-                messageBox2.RightButtonName = "Нет";
-                messageBox2.LeftButtonClick += MessageBox_LeftButtonClick;
-                messageBox2.RightButtonClick += MessageBox_RightButtonClick;
-                messageBox2.Show("Уведомление", "Вы точно хотите выйти из программы ElectroJournal?");
-
-
-                /*
-                MessageBoxResult result;
-                result = System.Windows.MessageBox.Show("Вы точно хотите выйти из программы?", "Выход из ElectroJournal", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-
-                if (result == MessageBoxResult.No)
-                {
-                    e.Cancel = true;
-                }
-                else
+                if (result == ContentDialogResult.Primary)
                 {
                     foreach (var process in Process.GetProcessesByName("ElectroJournal"))
                     {
                         process.Kill();
                     }
                 }
-                   */
+                else { }                
             }
         }
 
@@ -131,30 +118,15 @@ namespace ElectroJournal
             }
         }
 
-        private void ImageSupport_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            new Help().ShowDialog();
-        }
-
-        private void ImageInformationProgram_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            new ProgramInformation().ShowDialog();
-        }
-
         private void ImageUpdateProgram_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Process.Start("C:/projects/ElectroJournalNetFramework/UpdateElectroJournal/bin/Debug/UpdateElectroJournal.exe"); //Запуск программы обновления
         }
 
-        private void Rectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.Setting());
-        }
-
         private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Users());
-            
+            NavigationViewItemJournal.IsSelected = false;
         }
 
         private void RectangleUser_MouseMove(object sender, MouseEventArgs e)
@@ -258,7 +230,8 @@ namespace ElectroJournal
                         {
                             TextBlockTeacher.Text = read.GetString(1) + " " + read.GetString(2);
 
-                           
+                            if (read.GetString(4) == "False") NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
+                            else NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
 
                             Properties.Settings.Default.UserID = read.GetInt32(5);
                             Properties.Settings.Default.Login = TextBoxLogin.Text;
@@ -270,11 +243,10 @@ namespace ElectroJournal
                             GridLogin.Visibility = Visibility.Hidden;
                             GridMenu.Visibility = Visibility.Visible;
                             Frame.Visibility = Visibility.Visible;
-                            
+                            NavigationViewItemJournal.IsSelected = true;
                             Frame.Navigate(new Pages.Journal());
 
                             //LoadLessonPeriod();
-
                             Notifications("Оповещение", "Авторизация прошла успешно");
                         }
                         conn.Close();
@@ -313,7 +285,11 @@ namespace ElectroJournal
             var anim = (Storyboard)FindResource("AnimOpenMenu");
             anim.Begin();
 
-          
+            NavViewMenuAdmin.Visibility = Visibility.Hidden;
+            NavViewMenu.Visibility = Visibility.Visible;
+            RectangleBackToMenu.Visibility = Visibility.Hidden;
+
+            NavigationViewItemJournal.IsSelected = true;
             Frame.Navigate(new Pages.Journal());
         }
 
@@ -330,39 +306,43 @@ namespace ElectroJournal
                 areaName: "WindowArea");
         }
 
-        private void ImageOpenCalculator_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private bool _isDarkTheme = false;
+
+        public void ThemeCheck()
         {
-            new Calculator().Show();
+            int theme = Properties.Settings.Default.Theme;
+
+            _isDarkTheme = theme == 1;
+            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+
+            ApplyBackgroundEffect();
+
         }
 
-        private void ThemeCheck()
+        private void ApplyBackgroundEffect()
         {
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //xmlDocument.Load("C:/ElectroJournal/Settings.xml");
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
 
-            string theme = xmlDocument.GetElementsByTagName("Theme")[0].InnerText;
+            WPFUI.Background.Manager.Remove(windowHandle);
 
-            if (theme == "Black")
+            if (_isDarkTheme)
             {
-                var animation = (Storyboard)FindResource("AnimToBlackTheme");
-                animation.Begin();
+                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
             }
-            else if (theme == "White")
+            else
             {
-
+                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             }
+
+            this.Background = System.Windows.Media.Brushes.Transparent;
+            WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+
         }
 
         private void CompletionLogin()
         {
-            //xmlDocument.Load("C:/ElectroJournal/Settings.xml");
-            /*
-            xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-
-            string username = xmlDocument.GetElementsByTagName("username")[0].InnerText;
-            string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
-            */
-
             string username = Properties.Settings.Default.UserName;
             string password = Properties.Settings.Default.Password;
 
@@ -400,7 +380,17 @@ namespace ElectroJournal
             }
             else if (!a)
             {
+                ContentDialogExample dialog = new ContentDialogExample();
+                var result = await dialog.ShowAsync();
 
+                if (result == ContentDialogResult.Primary)
+                {
+                    foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                    {
+                        process.Kill();
+                    }
+                }
+                else e.Cancel = true;
 
                 /*
                 WPFUI.Controls.MessageBox messageBox2 = new WPFUI.Controls.MessageBox();
@@ -445,66 +435,9 @@ namespace ElectroJournal
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
 
-        public void Tray()
-        {
-            /*
-            System.Windows.Forms.NotifyIcon notifyicon = new System.Windows.Forms.NotifyIcon();
-            notifyicon.Text = "ElectroJournal";
-            notifyicon.Icon = new System.Drawing.Icon("logo75.ico");
-            notifyicon.Visible = true;
-            notifyicon.MouseClick += new System.Windows.Forms.MouseEventHandler(Notifyicon_MouseClick);
-
-            System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
-            contextMenu.MenuItems.Add("Открыть", new EventHandler(Open));
-            contextMenu.MenuItems.Add("Закрыть", new EventHandler(Close));
-
-            notifyicon.ContextMenu = contextMenu;*/
-            //this.ResizeMode += new System.Windows.Forms.EventHandler(FormForTray_Resize);
-        }
-
-        private WindowState OldFormState;
-
-        private void Notifyicon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            {
-                if (WindowState == WindowState.Normal || WindowState == WindowState.Maximized)
-                {
-                    OldFormState = WindowState;
-                    WindowState = WindowState.Minimized;
-                }
-                else
-                {
-                    Show();
-                    WindowState = OldFormState;
-                }
-            }
-        }
-
-        private void FormForTray_Resize(object sender, System.Windows.Forms.BindingCompleteEventArgs e)
-        {
-            if (WindowState.Minimized == WindowState)
-            {
-                Hide();
-            }
-        }
-
-        private void Open(object sender, EventArgs e)
-        {
-            Show();
-        }
-
-        private void Close(object sender, EventArgs e)
-        {
-            foreach (var process in Process.GetProcessesByName("ElectroJournal"))
-            {
-                process.Kill();
-            }
-        }
-
         private bool CheckTray()
         {
-            bool a;
+            //bool a;
             //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
             //string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
 
@@ -522,7 +455,7 @@ namespace ElectroJournal
 
             bool autorun = Properties.Settings.Default.AutoRun;
 
-            if (!autorun)
+            if (autorun)
             {
                 SetAutorunValue(true);
             }
@@ -627,18 +560,7 @@ namespace ElectroJournal
             Frame.Visibility = Visibility.Visible;
         }
 
-        private void RadioButtonWord_Checked(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(new Pages.Word());
-        }
-
-        private void RadioButtonOpenShedule_Checked(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
-        }
-
         int aa = 0;
-
 
         private void LoadLessonPeriod(object sender, EventArgs e)
         {
@@ -693,6 +615,9 @@ namespace ElectroJournal
 
         private void NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            NavViewMenu.Visibility = Visibility.Hidden;
+            NavViewMenuAdmin.Visibility = Visibility.Visible;
+            NavigationViewItemTeachers.IsSelected = true;
             RectangleBackToMenu.Visibility = Visibility.Visible;
             Frame.Navigate(new Pages.AdminPanel.Teachers());
         }
@@ -743,6 +668,11 @@ namespace ElectroJournal
         private void TitleBar_NotifyIconDoubleClick(object sender, RoutedEventArgs e)
         {
             Show();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ThemeCheck();
         }
     }
 }

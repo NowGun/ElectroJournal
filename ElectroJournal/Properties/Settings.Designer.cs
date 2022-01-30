@@ -73,10 +73,10 @@ namespace ElectroJournal.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Theme {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Theme {
             get {
-                return ((string)(this["Theme"]));
+                return ((int)(this["Theme"]));
             }
             set {
                 this["Theme"] = value;

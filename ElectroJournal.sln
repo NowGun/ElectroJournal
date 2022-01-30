@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf", "ModernWpf\Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf.Controls", "ModernWpf.Controls\ModernWpf.Controls.csproj", "{B8F87078-6AFE-4776-8ABF-80141A07FF3F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf.SampleApp", "ModernWpf.SampleApp\ModernWpf.SampleApp.csproj", "{8F0D7610-EE70-43CB-B138-B46EC7BFA181}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,16 @@ Global
 		{B8F87078-6AFE-4776-8ABF-80141A07FF3F}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
 		{B8F87078-6AFE-4776-8ABF-80141A07FF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F87078-6AFE-4776-8ABF-80141A07FF3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
