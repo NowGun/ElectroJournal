@@ -42,23 +42,20 @@ namespace ElectroJournal
     {
         public MainWindow()
         {
-            CheckVersionWindows();
+            //CheckVersionWindows();
             InitializeComponent();
             GridMenu.Visibility = Visibility.Hidden;
             Frame.Visibility = Visibility.Hidden;
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
+
             CheckAutoRun();
             CompletionLogin();
 
             TitleBar.CloseActionOverride = CloseActionOverride;
             //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
-
-
-            
-            ThemeCheck();
         }
 
         DataBase DbUser = new DataBase();
@@ -310,13 +307,15 @@ namespace ElectroJournal
 
         public void ThemeCheck()
         {
-            int theme = Properties.Settings.Default.Theme;
+            if (Environment.OSVersion.Version.Major >= 10)
+            {
+                int theme = Properties.Settings.Default.Theme;
 
-            _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+                _isDarkTheme = theme == 1;
+                WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
 
-            ApplyBackgroundEffect();
-
+                ApplyBackgroundEffect();
+            }
         }
 
         private void ApplyBackgroundEffect()

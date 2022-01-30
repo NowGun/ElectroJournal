@@ -160,7 +160,7 @@
             </wpfui:TitleBar.NotifyIconMenu>
         </wpfui:TitleBar>
         <Grid x:Name="GridMenu" Height="52" VerticalAlignment="Top" MinWidth="1272" Visibility="Visible" x:FieldModifier="public" Margin="0,48,0,0">
-            <wpfui:Icon x:Name="RectangleBackToMenu" Glyph="ArrowLeft12" HorizontalAlignment="Left" Margin="17,9,0,0" VerticalAlignment="Top" Height="32" Width="28" MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" FontSize="20" HorizontalContentAlignment="Center"/>
+            <wpfui:Icon x:Name="RectangleBackToMenu" Glyph="ArrowLeft12" HorizontalAlignment="Left" Margin="17,13,0,0" Height="32" Width="28" MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" FontSize="20" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
             <Menu x:Name="MenuEJ" Margin="52,-49,0,0" Background="{x:Null}" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="{x:Null}">
                 <MenuItem Header="EJ" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,0,6,0" Height="43" FontFamily="Segoe UI Historic" FontSize="14">
                     <MenuItem x:Name="MenuItemEJCalculator" Header="Калькулятор" Click="MenuItemEJCalculator_Click"/>
@@ -208,26 +208,26 @@
             <ui:NavigationView x:Name="NavViewMenuAdmin"
                 PaneDisplayMode="Top"
                 IsBackButtonVisible="Collapsed"
-                MinWidth="100" Margin="45,5,510,0" VerticalAlignment="Top" IsSettingsVisible="False" Height="40" d:IsHidden="True">
+                MinWidth="100" Margin="45,9,510,0" VerticalAlignment="Top" IsSettingsVisible="False" Height="40" d:IsHidden="True">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemTeachers" Content="Преподаватели" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemDisciplines" Content="Предметы" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp" />
-                    <ui:NavigationViewItem x:Name="NavigationViewItemStudents" Content="Студенты" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemGroups" Content="Группы" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemCabinets" Content="Кабинеты" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemScheduleAdmin" Content="Расписание" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemTeachers" Content="Преподаватели" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemDisciplines" Content="Предметы" PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp" />
+                    <ui:NavigationViewItem x:Name="NavigationViewItemStudents" Content="Студенты" PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemGroups" Content="Группы" PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemCabinets" Content="Кабинеты" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemScheduleAdmin" Content="Расписание" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"/>
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
             <ui:NavigationView x:Name="NavViewMenu"
                                     PaneDisplayMode="Top"
                                     IsBackButtonVisible="Collapsed"
-                                    MinWidth="100" Margin="45,0,330,0" VerticalAlignment="Top" IsSettingsVisible="False" Height="40">
+                                    MinWidth="100" Margin="45,9,330,0" VerticalAlignment="Top" IsSettingsVisible="False" Height="40">
                 <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemJournal" Content="Журнал" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemSchedule" Content="Расписание" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem x:Name="NavigationViewItemBoard" Content="Доска" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemWord" Content="Текстовый редактор" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp"/>
-                    <ui:NavigationViewItem x:Name="NavigationViewItemAdminPanel" Content="Панель администратора" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemJournal" Content="Журнал" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemSchedule" Content="Расписание" PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                    <ui:NavigationViewItem x:Name="NavigationViewItemBoard" Content="Доска" PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemWord" Content="Текстовый редактор" PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemAdminPanel" Content="Панель администратора" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp"/>
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
         </Grid>

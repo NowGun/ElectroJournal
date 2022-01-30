@@ -12,7 +12,7 @@
     </Page.Resources>
 
     <Grid>
-        <DataGrid x:Name="DataGridJournal" HorizontalAlignment="Left" Margin="10,10,0,10"  MinWidth="815" MinHeight="535" Background="#B3FFFFFF" HorizontalGridLinesBrush="#FF585858" VerticalGridLinesBrush="#FF505050"/>
+        <DataGrid x:Name="DataGridJournal" HorizontalAlignment="Left" Margin="10,10,0,10"  MinWidth="815" MinHeight="535" HorizontalGridLinesBrush="#FF585858" VerticalGridLinesBrush="#FF505050"/>
         <DataGrid HorizontalAlignment="Right" Margin="0,10,10,10" MinWidth="297" MinHeight="535"/>
 
     </Grid>

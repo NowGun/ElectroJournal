@@ -57,10 +57,10 @@ namespace ElectroJournal.Pages
 
         private void LoadApp()
         {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //string theme = xmlDocument.GetElementsByTagName("Theme")[0].InnerText;
-            //string animation = xmlDocument.GetElementsByTagName("animation")[0].InnerText;
-
+            if (Environment.OSVersion.Version.Build < 22000)
+            {
+                ComboBoxTheme.Visibility = Visibility.Hidden;
+            }
             int theme = Properties.Settings.Default.Theme;
             bool animation = Properties.Settings.Default.Animation;
 
