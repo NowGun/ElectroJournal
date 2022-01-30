@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
+    <ApplicationIcon>logo75.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -76,6 +77,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="logo75.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dragablz" Version="0.0.3.223" />
     <PackageReference Include="MaterialDesignColors" Version="2.0.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
@@ -95,6 +100,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.Windows.SDK.NET">
+      <HintPath>dll\Microsoft.Windows.SDK.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernWpf">
+      <HintPath>dll\ModernWpf.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernWpf.Controls">
+      <HintPath>dll\ModernWpf.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\..\ElectroJournalNetFramework\ElectroJournal\dll\MySql.Data.dll</HintPath>
     </Reference>
@@ -103,6 +117,9 @@
     </Reference>
     <Reference Include="SmsRu">
       <HintPath>..\..\ElectroJournalNetFramework\ElectroJournal\dll\SmsRu.dll</HintPath>
+    </Reference>
+    <Reference Include="WinRT.Runtime">
+      <HintPath>dll\WinRT.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 

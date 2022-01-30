@@ -143,7 +143,22 @@
 
     <Grid x:Name="GridDefault" x:FieldModifier="public">
 
-        <wpfui:TitleBar Grid.Row="0" ApplicationNavigation="True"  Height="48" Icon="C:\projects\ElectroJournal\ElectroJournal\logo75.ico" />
+        <wpfui:TitleBar x:Name="TitleBar" Grid.Row="0" ApplicationNavigation="True"  Height="48" Icon="C:\projects\ElectroJournal\ElectroJournal\logo75.ico"
+                        MinimizeToTray="False"                        
+                        NotifyIconImage="pack://application:,,,/logo75.ico"
+                        NotifyIconTooltip="ElectroJournal"
+                        UseNotifyIcon="True" NotifyIconDoubleClick="TitleBar_NotifyIconDoubleClick">
+            <wpfui:TitleBar.NotifyIconMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="MenuItemOpen" Header="Открыть"
+                              Icon="{x:Static wpfuiCommon:Icon.Library28}"
+                              Tag="open" Click="MenuItemOpen_Click"/>
+                    <MenuItem x:Name="MenuItemExit" Header="Выйти"
+                              Icon="{x:Static wpfuiCommon:Icon.Library28}"
+                              Tag="exit" Click="MenuItemExit_Click"/>
+                </ContextMenu>
+            </wpfui:TitleBar.NotifyIconMenu>
+        </wpfui:TitleBar>
         <Grid x:Name="GridMenu" Height="131" VerticalAlignment="Top" MinWidth="1272" Visibility="Visible" x:FieldModifier="public" Margin="0,48,0,0">
             <wpfui:Icon x:Name="RectangleBackToMenu" Glyph="ArrowLeft12" HorizontalAlignment="Left" Margin="17,9,0,0" VerticalAlignment="Top" Height="32" Width="28" MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" FontSize="20" HorizontalContentAlignment="Center"/>
             <Menu x:Name="MenuEJ" Margin="52,-49,0,0" Background="{x:Null}" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="{x:Null}">
@@ -190,7 +205,31 @@
                 </Path.Effect>
             </Path>
             <Label x:Name="asdasd" Content="Label" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="54" Margin="176,-36,0,0" Foreground="Black"/>
-
+            <ui:NavigationView x:Name="NavViewMenuAdmin"
+                PaneDisplayMode="Top"
+                IsBackButtonVisible="Collapsed"
+                MinWidth="100" Margin="45,5,510,0" VerticalAlignment="Top" IsSettingsVisible="False" Height="40" d:IsHidden="True">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemTeachers" Content="Преподаватели" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemDisciplines" Content="Предметы" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp" />
+                    <ui:NavigationViewItem x:Name="NavigationViewItemStudents" Content="Студенты" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemGroups" Content="Группы" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemCabinets" Content="Кабинеты" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemScheduleAdmin" Content="Расписание" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"/>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+            <ui:NavigationView x:Name="NavViewMenu"
+                                    PaneDisplayMode="Top"
+                                    IsBackButtonVisible="Collapsed"
+                                    MinWidth="100" Margin="45,0,330,0" VerticalAlignment="Top" IsSettingsVisible="False" Height="40">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemJournal" Content="Журнал" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemSchedule" Content="Расписание" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                    <ui:NavigationViewItem x:Name="NavigationViewItemBoard" Content="Доска" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemWord" Content="Текстовый редактор" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp"/>
+                    <ui:NavigationViewItem x:Name="NavigationViewItemAdminPanel" Content="Панель администратора" Foreground="Black" PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp"/>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
         </Grid>
         <Frame x:Name="Frame" Content="" Margin="0,99,0,0" NavigationUIVisibility="Hidden" RenderTransformOrigin="0.5,0.5" ContentRendered="Frame_ContentRendered" Background="#4CFFFFFF">
             <Frame.RenderTransform>
@@ -237,7 +276,7 @@
             <Button x:Name="ButtonOpenNotLogin" Content="NLogin" HorizontalAlignment="Left" Margin="216,46,0,0" VerticalAlignment="Top" Click="ButtonOpenNotLogin_Click" Cursor="Hand" Background="#FFF3F3F3"/>
 
         </Grid>
-        <controls1:NotificationArea x:Name="WindowArea" Position="TopRight" MaxItems="3" Margin="0,48,8,8" d:IsHidden="True"/>
+        <controls1:NotificationArea x:Name="WindowArea" Position="TopRight" MaxItems="3" Margin="0,99,8,8"/>
 
     </Grid>
 </Window>

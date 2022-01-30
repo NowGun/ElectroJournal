@@ -29,7 +29,7 @@ using Microsoft.Win32;
 using WPFUI.Controls;
 
 using System.Windows.Interop;
-
+using ModernWpf;
 
 namespace ElectroJournal
 {
@@ -41,7 +41,7 @@ namespace ElectroJournal
         public MainWindow()
         {
             InitializeComponent();
-            CheckVersionkWindows();
+            CheckVersionWindows();
 
             GridMenu.Visibility = Visibility.Hidden;
             Frame.Visibility = Visibility.Hidden;
@@ -50,12 +50,14 @@ namespace ElectroJournal
             RectangleLoadLogin.Visibility = Visibility.Hidden;
             ThemeCheck();
             CompletionLogin();
-            Tray();
             CheckAutoRun();
 
+            TitleBar.CloseActionOverride = CloseActionOverride;
+            //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
         }
+
 
         DataBase DbUser = new DataBase();
         DataBaseControls DbControls = new DataBaseControls();
@@ -71,8 +73,57 @@ namespace ElectroJournal
 
         const string name = "ElectroJournal";
 
+        private void CloseActionOverride(TitleBar titleBar, Window window)
+        {
+            bool a;
+            a = CheckTray();
 
-        private void CheckVersionkWindows()
+            if (a)
+            {
+                var content = new NotificationContent
+                {
+                    Title = "Программа была свернута",
+                    Message = "Программа продолжит своё выполнение в фоне.",
+                    Type = NotificationType.Information
+
+                };
+                _notificationManager.Show(content);
+                
+                this.Hide();
+            }
+            else if (!a)
+            {
+
+
+
+                WPFUI.Controls.MessageBox messageBox2 = new WPFUI.Controls.MessageBox();
+                messageBox2.LeftButtonName = "Да";
+                messageBox2.RightButtonName = "Нет";
+                messageBox2.LeftButtonClick += MessageBox_LeftButtonClick;
+                messageBox2.RightButtonClick += MessageBox_RightButtonClick;
+                messageBox2.Show("Уведомление", "Вы точно хотите выйти из программы ElectroJournal?");
+
+
+                /*
+                MessageBoxResult result;
+                result = System.Windows.MessageBox.Show("Вы точно хотите выйти из программы?", "Выход из ElectroJournal", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+
+                if (result == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                    {
+                        process.Kill();
+                    }
+                }
+                   */
+            }
+        }
+
+        private void CheckVersionWindows()
         {
             if (Environment.OSVersion.Version.Major >= 10)
             {
@@ -128,9 +179,9 @@ namespace ElectroJournal
             label_time_time.Interval = new TimeSpan(0, 0, 1);
             label_time_time.Start();
 
-            timer2.Tick += new EventHandler(LoadLessonPeriod);
-            timer2.Interval = new TimeSpan(0, 0, 1);
-            timer2.Start();
+            //timer2.Tick += new EventHandler(LoadLessonPeriod);
+           //timer2.Interval = new TimeSpan(0, 0, 1);
+            //timer2.Start();
 
 
             Login();
@@ -674,6 +725,24 @@ namespace ElectroJournal
         private void NavigationViewItemScheduleAdmin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
+        }
+
+        private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
+        {
+            Show();
+        }
+
+        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+            {
+                process.Kill();
+            }
+        }
+
+        private void TitleBar_NotifyIconDoubleClick(object sender, RoutedEventArgs e)
+        {
+            Show();
         }
     }
 }

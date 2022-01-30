@@ -10,8 +10,6 @@
       Title="Board" Foreground="Black">
 
     <Grid>
-
-        <Rectangle RadiusY="6" RadiusX="6" Fill="White" Stroke="#FFE6E9EB" MinWidth="1160" MinHeight="555"/>
         <Grid x:FieldModifier="public" x:Name="GridInkCanvas" Margin="10,106,10,10">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="0" Color="#FFEAEAEA"/>
@@ -19,7 +17,7 @@
             <InkCanvas x:FieldModifier="public" x:Name="InkCanvas" Background="#FFF8F8F8" MouseEnter="InkCanvas_MouseEnter" StylusMove="InkCanvas_StylusMove" VerticalAlignment="Stretch" MinHeight="450"/>
         </Grid>
         <Grid x:Name="GridMenuBoard" HorizontalAlignment="Stretch" Height="84" VerticalAlignment="Top">
-            <Rectangle Height="84" Stroke="#FFEBEBEB" VerticalAlignment="Center" Fill="#FFF9F9F9" StrokeThickness="0.5" RadiusX="6.375" RadiusY="6.375"/>
+            <Rectangle Height="84" Stroke="#00EBEBEB" VerticalAlignment="Center" Fill="#00F9F9F9" StrokeThickness="0.5" RadiusX="6.375" RadiusY="6.375"/>
             <mah:ColorPicker x:Name="ColorPicker" SelectedColor="Black" 
                  mah:TextBoxHelper.UseFloatingWatermark="True"
                  mah:TextBoxHelper.Watermark="Цвет пера"
