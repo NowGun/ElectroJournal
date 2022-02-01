@@ -43,6 +43,7 @@ namespace ElectroJournal.Pages
             SaveRun();
             ((MainWindow)System.Windows.Application.Current.MainWindow).CheckAutoRun();
             ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).SetAutorunValue(Properties.Settings.Default.AutoRun);
             ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
         }
 
@@ -57,10 +58,6 @@ namespace ElectroJournal.Pages
 
         private void LoadApp()
         {
-            if (Environment.OSVersion.Version.Build < 22000)
-            {
-                ComboBoxTheme.Visibility = Visibility.Hidden;
-            }
             int theme = Properties.Settings.Default.Theme;
             bool animation = Properties.Settings.Default.Animation;
 

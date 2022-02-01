@@ -8,8 +8,5 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Groups" Width="1160" Height="555">
 
-    <Grid>
-        <Rectangle Fill="White" HorizontalAlignment="Left" Height="555" RadiusY="6" RadiusX="6" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="1160"/>
-
-    </Grid>
+    <Grid/>
 </Page>

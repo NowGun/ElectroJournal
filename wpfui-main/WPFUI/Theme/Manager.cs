@@ -21,8 +21,6 @@ namespace WPFUI.Theme
 
         private const string LibraryThemeDictionariesUri = "pack://application:,,,/WPFUI;component/Styles/Theme/";
 
-        public static Style CurrentTheme { get; internal set; }
-
         /// <summary>
         /// Determines whether the system is currently set to hight contrast mode.
         /// </summary>
@@ -132,7 +130,7 @@ namespace WPFUI.Theme
         /// </summary>
         /// <returns><see langword="true"/> if the system theme is similar to the app's theme.</returns>
         public static bool IsSystemThemeCompatible()
-       {
+        {
             var staticStyle = GetCurrentTheme();
             var variedStyle = SystemTheme.GetTheme();
 

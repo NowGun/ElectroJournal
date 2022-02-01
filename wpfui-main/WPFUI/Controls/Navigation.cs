@@ -20,7 +20,7 @@ namespace WPFUI.Controls
     /// <summary>
     /// Base class for creating new navigation controls.
     /// </summary>
-    public abstract class Navigation : Control
+    public abstract class Navigation : Control, INavigation
     {
         #region Dependencies
 
@@ -368,7 +368,17 @@ namespace WPFUI.Controls
 
         private static void ItemStyle_OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            
+            if (d is not INavigation navigation) return;
+
+            if (navigation.ItemStyle == null) return;
+
+            if (navigation.Items != null)
+                foreach (var navigationItem in navigation.Items)
+                    navigationItem.Style = navigation.ItemStyle;
+
+            if (navigation.Footer != null)
+                foreach (var navigationItem in navigation.Footer)
+                    navigationItem.Style = navigation.ItemStyle;
         }
 
         private void Item_OnClicked(object sender, RoutedEventArgs e)

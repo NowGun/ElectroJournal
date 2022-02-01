@@ -20,9 +20,29 @@
 
     <Color x:Key="TextFillColorPrimary">#E4000000</Color>
     <Color x:Key="TextFillColorSecondary">#9E000000</Color>
-    <Color x:Key="TextFillColorTertiary">#72000000</Color>
+    <Color x:Key="TextFillColorTertiary">#646464</Color>
     <Color x:Key="TextFillColorDisabled">#5C000000</Color>
     <Color x:Key="TextFillColorInverse">#FFFFFF</Color>
+
+
+    <Color x:Key="ButtonAccentBackground">#005FB8</Color>
+    <Color x:Key="ButtonAccentBackgroundHover">#196EBF</Color>
+    <Color x:Key="ButtonAccentBackgroundDisabled">#C4C4C4</Color>
+    <Color x:Key="ButtonAccentBackgroundPressed">#327EC5</Color>
+    <Color x:Key="ButtonAccentBackgroundMouseOver">#196EBF</Color>
+    <Color x:Key="ButtonTextAccentDisabled">#FFFFFF</Color>
+    <Color x:Key="ButtonTextAccentPressed">#C1D8ED</Color>
+    <Color x:Key="ButtonTextRestAccent">#FFFFFF</Color>
+
+    <Color x:Key="ButtonStandardBackground">#FDFDFD</Color>
+    <Color x:Key="ButtonStandardBackgroundHover">#F9F9F9</Color>
+    <Color x:Key="ButtonStandardBackgroundDisabled">#FAFAFA</Color>
+    <Color x:Key="ButtonStandardBackgroundPressed">#FAFAFA</Color>
+    <Color x:Key="ButtonStandardBackgroundMouseOver">F9F9F9</Color>
+    <Color x:Key="ButtonStandardBorderBrush">#ECECEC</Color>
+    <Color x:Key="ButtonTextStandardDisabled">#A0A0A0</Color>
+    <Color x:Key="ButtonTextStandardPressed">#626262</Color>
+    <Color x:Key="ButtonTextRestStandard">#1A1A1A</Color>
 
     <Color x:Key="AccentTextFillColorDisabled">#5C000000</Color>
 

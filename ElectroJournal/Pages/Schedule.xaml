@@ -7,40 +7,9 @@
        x:Class="ElectroJournal.Pages.Schedule"  
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Schedule" Width="Auto" Height="Auto" MinWidth="1160" MinHeight="555">
+      Title="Schedule" Width="1280" Height="605" MinWidth="1160" MinHeight="555">
 
     <Grid>
-        <Rectangle Fill="White" RadiusY="6" RadiusX="6" Stroke="#FFE6E9EB"/>
-        <TabControl HorizontalAlignment="Left" Margin="10,10,0,158" d:IsHidden="True">
-            <TabItem Header="TabItem">
-                <Grid>
-                    <DataGrid x:Name="DataGridShedule" AllowDrop="True" AutoGenerateColumns="True" HorizontalAlignment="Left" Height="339.04" Margin="10,10,0,0" VerticalAlignment="Top" Width="751"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-        </TabControl>
-        <ListView HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" MinWidth="777" MinHeight="143" Width="777">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Группа" Width="150"/>
-                    <GridViewColumn Header="Предмет" Width="150"/>
-                    <GridViewColumn Header="Кол-во часов" Width="150"/>
-                    <GridViewColumn Header="Преподаватель" Width="150"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <ComboBox x:Name="ComboBoxCabinet" HorizontalAlignment="Left" Height="30" Margin="802,11,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="ComboBoxCabinet_SelectionChanged"/>
-        <TextBox x:Name="TextBoxInformationCabinet" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="70" Margin="985,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Top"/>
-        <TextBox x:Name="TextBoxNumberPlaces" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="1085,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65"/>
-        <TextBox x:Name="TextBoxNameCabinet" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="986,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="164"/>
-        <Label Content="Особенности кабинета" HorizontalAlignment="Left" Height="30" Margin="986,111,0,0" VerticalAlignment="Top" Width="164"/>
-        <Label Content="Кол-во мест" HorizontalAlignment="Left" Height="30" Margin="986,76,0,0" VerticalAlignment="Top" Width="94"/>
-        <Label Content="Название кабинета" HorizontalAlignment="Left" Height="30" Margin="985,11,0,0" VerticalAlignment="Top" Width="165"/>
-        <ComboBox x:Name="ComboBoxDiscipline" HorizontalAlignment="Left" Height="30" Margin="802,216,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="ComboBoxDiscipline_SelectionChanged"/>
-        <ListBox x:Name="ListBoxDiscipline" HorizontalAlignment="Left" Margin="802,251,0,0" VerticalAlignment="Top" MinWidth="170" MinHeight="146" AllowDrop="True"/>
-        <ListBox x:Name="ListBoxCabinet" HorizontalAlignment="Left" Height="165" Margin="802,46,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="ListBoxCabinet_SelectionChanged" AllowDrop="True"/>
-        <ListBox x:Name="ListBoxTeachers" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" MinWidth="348" MinHeight="141" AllowDrop="True"/>
+        <DataGrid x:Name="DataGridSchedule" Margin="10,10,10,10" d:ItemsSource="{d:SampleData ItemCount=5}"/>
     </Grid>
 </Page>

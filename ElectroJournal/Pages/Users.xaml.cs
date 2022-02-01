@@ -96,7 +96,7 @@ namespace ElectroJournal.Pages
             
             if (read.Read())
             {
-                TextBlockFIO.Text = read.GetString(1) + " " + read.GetString(2) + " " + read.GetString(3);
+                TextBlockFIO.Content = read.GetString(1) + " " + read.GetString(2) + " " + read.GetString(3);
                 PasswordBoxPassword.Password = read.GetString(0);
                 LabelIDUser.Content = "Id: " + read.GetString(4);
                 TextBoxPhone.Text = read.GetString(5);

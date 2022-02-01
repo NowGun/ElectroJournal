@@ -146,11 +146,7 @@ namespace ElectroJournal
             label_time_time = new DispatcherTimer();
             label_time_time.Tick += (o, t) => { LabelTime.Content = "Время: " + DateTime.Now.ToLongTimeString(); };
             label_time_time.Interval = new TimeSpan(0, 0, 1);
-            label_time_time.Start();
-
-            //timer2.Tick += new EventHandler(LoadLessonPeriod);
-           //timer2.Interval = new TimeSpan(0, 0, 1);
-            //timer2.Start();
+            label_time_time.Start();            
 
 
             Login();
@@ -164,7 +160,9 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimShowLoading");
             anim2.Begin();
 
-
+           // timer2.Tick += new EventHandler(LoadLessonPeriod);
+           // timer2.Interval = new TimeSpan(0, 0, 1);
+            //timer2.Start();
         }
 
         async void Login()
@@ -293,6 +291,8 @@ namespace ElectroJournal
         private void Frame_ContentRendered(object sender, EventArgs e)
         {
             var anim = (Storyboard)FindResource("AnimOpenFrame");
+            var anim2 = (Storyboard)FindResource("AnimCloseFrame");
+            //anim2.Begin();
             anim.Begin();
         }
 
@@ -307,21 +307,18 @@ namespace ElectroJournal
 
         public void ThemeCheck()
         {
-            if (Environment.OSVersion.Version.Major >= 10)
-            {
-                int theme = Properties.Settings.Default.Theme;
+            int theme = Properties.Settings.Default.Theme;
 
-                _isDarkTheme = theme == 1;
-                WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+            _isDarkTheme = theme == 1;
+            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
 
-                ApplyBackgroundEffect();
-            }
+            ApplyBackgroundEffect();
         }
 
         private void ApplyBackgroundEffect()
         {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
+            
             WPFUI.Background.Manager.Remove(windowHandle);
 
             if (_isDarkTheme)
@@ -334,9 +331,11 @@ namespace ElectroJournal
                 WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             }
-
-            this.Background = System.Windows.Media.Brushes.Transparent;
-            WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                this.Background = System.Windows.Media.Brushes.Transparent;
+                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            }
 
         }
 

@@ -246,4 +246,145 @@
         </Style.Triggers>
     </Style>
 
+
+    <LinearGradientBrush x:Key="Button.Static.BorderAccent" StartPoint="1,1" EndPoint="1,0">
+        <GradientStop Offset="0.008" Color="#FF013870" />
+        <GradientStop Offset="0.042" Color="#FF136CBE" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Button.MouseOver.BorderAccent" StartPoint="1,1" EndPoint="1,0">
+        <GradientStop Offset="0.008" Color="#FF013870" />
+        <GradientStop Offset="0.042" Color="#FF136CBE" />
+    </LinearGradientBrush>
+
+    <Style x:Key="WPFUIButtonAccent" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource ButtonAccentBackgroundBrushes}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonAccentBackgroundBrushes}" />
+        <Setter Property="Foreground" Value="{DynamicResource ButtonAccentTextRest}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4"
+                        SnapsToDevicePixels="true">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonAccentHover}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Button.MouseOver.BorderAccent}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonPressedAccent}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource ButtonPressedAccent}" />
+                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextAccentPressedSolid}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonIsEnabledAccent}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ButtonAccentTextDis}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="FocusVisualStandard">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle
+                        Margin="2"
+                        SnapsToDevicePixels="true"
+                        Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                        StrokeDashArray="1 2"
+                        StrokeThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <LinearGradientBrush x:Key="Button.Static.BorderStandard" StartPoint="1,1" EndPoint="1,0">
+        <GradientStop Offset="0.008" Color="#d2d2d2" />
+        <GradientStop Offset="0.042" Color="#ececec" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Button.MouseOver.BorderStandard" StartPoint="1,1" EndPoint="1,0">
+        <GradientStop Offset="0.008" Color="#d2d2d2" />
+        <GradientStop Offset="0.042" Color="#ececec" />
+    </LinearGradientBrush>
+
+    <Style x:Key="WPFUIButtonStandard" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualStandard}" />
+        <Setter Property="Background" Value="{DynamicResource ButtonStandardBackgroundBrushes}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonStandardBorder}" />
+        <Setter Property="Foreground" Value="{DynamicResource ButtonStandardTextRest}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4"
+                        SnapsToDevicePixels="true">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonStandardHover}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonPressedStandard}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource ButtonPressedStandard}" />
+                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextStandardPressedSolid}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonIsEnabledStandard}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ButtonStandardTextDis}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
 </ResourceDictionary>

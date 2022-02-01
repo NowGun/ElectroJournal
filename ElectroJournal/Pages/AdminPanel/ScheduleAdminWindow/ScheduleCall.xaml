@@ -31,7 +31,7 @@
         Is24Hours="True"
         Margin="360,64,87,0" VerticalAlignment="Top" Height="40" />
         <Label Content="Конец урока" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="142" Margin="360,44,0,0" VerticalContentAlignment="Top" Background="Transparent" Foreground="#CC000000" FontSize="14" Padding="0,0,0,0"/>
-        <Button x:Name="ButtonSave" Style="{StaticResource ButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="375,129,0,0" VerticalAlignment="Top" Width="110" Cursor="Hand" IsDefault="True" Click="ButtonSave_Click"/>
+        <Button x:Name="ButtonSave" Style="{StaticResource WPFUIButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="375,129,0,0" VerticalAlignment="Top" Width="110" Cursor="Hand" IsDefault="True" Click="ButtonSave_Click"/>
 
     </Grid>
 </Window>

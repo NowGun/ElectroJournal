@@ -11,14 +11,13 @@
       Title="Word" Height="530" Width="1165">
 
     <Grid>
-        <Rectangle Fill="White" HorizontalAlignment="Stretch" RadiusY="6" RadiusX="6" VerticalAlignment="Stretch" Stroke="#FFE6E9EB" RenderTransformOrigin="0.636,0.287"/>
         <ToolBarTray Margin="0,0,0,415" VerticalAlignment="Top">
             <ToolBar>
                 <Button Content="Открыть"/>
                 <Button Content="Сохранить"/>
             </ToolBar>
         </ToolBarTray>
-        <RichTextBox Margin="40,40,40,10">
+        <RichTextBox Margin="40,40,40,10" Background="#CCFFFFFF">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>

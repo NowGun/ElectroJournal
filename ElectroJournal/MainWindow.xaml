@@ -18,7 +18,7 @@
         
         x:Class="ElectroJournal.MainWindow"
         mc:Ignorable="d"
-        Title="ElectroJournal" Height="720" Width="1280" Icon="Images/Logo/logo75.ico" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Style="{DynamicResource UiWindowRounded}" Background="#FFEDF1F4" Loaded="Window_Loaded">
+        Title="ElectroJournal" Height="720" Width="1280" Icon="Images/Logo/logo75.ico" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Style="{DynamicResource UiWindowRounded}" Loaded="Window_Loaded">
     <Window.Resources>
         <Storyboard x:Key="AnimLoadLogin">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="RectangleLoadLogin">
@@ -41,15 +41,11 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimOpenFrame">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="Frame">
-                <EasingDoubleKeyFrame KeyTime="0" Value="159">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <QuinticEase EasingMode="EaseOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-3">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuinticEase EasingMode="EaseOut"/>
+                        <QuarticEase EasingMode="EaseIn"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -67,35 +63,11 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimToBlackTheme">
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="LabelLesson" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="LabelTime" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="LabelPeriodLesson" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="LabelEndLesson" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="TextBlockTeacher" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
-            </ColorAnimationUsingKeyFrames>
             <ColorAnimationUsingKeyFrames Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
                 <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FF181818"/>
             </ColorAnimationUsingKeyFrames>
             <ColorAnimationUsingKeyFrames Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)">
                 <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FF181818"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle1" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FF444546"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="LabelPasswordGridLogin" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="LabelLoginGridLogin" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FFE0E2E5"/>
             </ColorAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimLogoutUser">
@@ -121,11 +93,11 @@
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Hidden}"/>
             </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Visibility)">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GridLogin2" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Hidden}"/>
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin2" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1">
@@ -133,6 +105,12 @@
                         <SineEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimCloseFrame">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
@@ -182,11 +160,11 @@
                 </MenuItem>
             </Menu>
             <Grid x:Name="GridInformation" Height="35" Margin="0,-41,117,0" VerticalAlignment="Top" HorizontalAlignment="Right" >
-                <Label x:Name="LabelLesson"  Content="Урок: 4" Height="30" Margin="146,2.5,724,2.5" VerticalAlignment="Center" Foreground="#FF3E3E3E" VerticalContentAlignment="Center"/>
-                <Label x:Name="LabelGroup" Content="Группа:" Height="30" Margin="604,2.5,261,2.5" VerticalAlignment="Center" Foreground="#FF3E3E3E" VerticalContentAlignment="Center"/>
-                <Label x:Name="LabelTime" Content="Время:  18:50:55" Height="30" Margin="26,2.5,800,2.5" VerticalAlignment="Center" Foreground="#FF3E3E3E" VerticalContentAlignment="Center"/>
-                <Label x:Name="LabelPeriodLesson" Content="Период занятий: 8:30 - 9:10" Height="30" Margin="208,0,537,0" VerticalAlignment="Center" Foreground="#FF3E3E3E" VerticalContentAlignment="Center"/>
-                <Label x:Name="LabelEndLesson" Content="Конец занятия через: 5 минут" Height="30" Margin="409,2.5,347,2.5" VerticalAlignment="Center" Foreground="#FF3E3E3E" VerticalContentAlignment="Center"/>
+                <Label x:Name="LabelLesson"  Content="Урок: 4" Height="30" Margin="146,2.5,724,2.5" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label x:Name="LabelGroup" Content="Группа:" Height="30" Margin="604,2.5,261,2.5" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label x:Name="LabelTime" Content="Время:  18:50:55" Height="30" Margin="26,2.5,800,2.5" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label x:Name="LabelPeriodLesson" Content="Период занятий: 8:30 - 9:10" Height="30" Margin="208,0,537,0" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label x:Name="LabelEndLesson" Content="Конец занятия через: 5 минут" Height="30" Margin="409,2.5,347,2.5" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
                 <ComboBox x:Name="ComboBoxGroup" Margin="656,0,43,0" RenderTransformOrigin="0.5,0.5" Grid.IsSharedSizeScope="True">
                     <ComboBoxItem Content="ПКС 4"/>
                 </ComboBox>
@@ -197,14 +175,14 @@
                         <ImageBrush ImageSource="Images/icons8-male-user-48.png" Stretch="UniformToFill"/>
                     </Rectangle.Fill>
                 </Rectangle>
-                <TextBlock x:FieldModifier="public" x:Name="TextBlockTeacher" HorizontalAlignment="Left" Height="20" Margin="50,0,0,0" TextWrapping="Wrap" Text="Фамилия И. О." VerticalAlignment="Center" Width="192" MaxWidth="179.5" FontSize="14" Foreground="#FF3E3E3E"/>
+                <TextBlock x:FieldModifier="public" x:Name="TextBlockTeacher" HorizontalAlignment="Left" Height="20" Margin="50,0,0,0" TextWrapping="Wrap" Text="Фамилия И. О." VerticalAlignment="Center" Width="192" MaxWidth="179.5" FontSize="14"/>
             </Grid>
             <Path x:Name="path" Data="M42.5,48 L1220.0239,48" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="#FFE0E0E0" VerticalAlignment="Top" Visibility="Visible" Margin="0,49,0,0">
                 <Path.Effect>
                     <DropShadowEffect Color="#7F3A3A3A" BlurRadius="5" ShadowDepth="1" Opacity="0.1"/>
                 </Path.Effect>
             </Path>
-            <Label x:Name="asdasd" Content="Label" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="54" Margin="176,-36,0,0" Foreground="Black"/>
+            <Label x:Name="asdasd" Content="Label" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="54" Margin="176,-36,0,0"/>
             <ui:NavigationView x:Name="NavViewMenuAdmin"
                 PaneDisplayMode="Top"
                 IsBackButtonVisible="Collapsed"
@@ -231,7 +209,7 @@
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
         </Grid>
-        <Frame x:Name="Frame" Content="" Margin="0,99,0,0" NavigationUIVisibility="Hidden" RenderTransformOrigin="0.5,0.5" ContentRendered="Frame_ContentRendered" Background="#00000000">
+        <Frame x:Name="Frame" Content="" Margin="0,99,0,0" NavigationUIVisibility="Hidden" RenderTransformOrigin="0.5,0.5" Background="Transparent" ContentRendered="Frame_ContentRendered">
             <Frame.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -241,41 +219,43 @@
                 </TransformGroup>
             </Frame.RenderTransform>
         </Frame>
-        <Grid x:Name="GridLogin" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Height="284">
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Grid.RenderTransform>
-            <Rectangle x:Name="rectangle1" Fill="#99FFFFFF" HorizontalAlignment="Left" Height="254" Margin="18.666,17.333,0,0" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="327" RadiusY="8" RadiusX="8"/>
-
-
-            <Label x:Name="LabelPasswordGridLogin" Foreground="#FF3E3E3E" Content="Пароль" HorizontalAlignment="Left" Margin="72.666,132.332,0,0" VerticalAlignment="Top" Height="30" Width="116" FontSize="14" Padding="0,5,5,5"/>
-            <Label x:Name="LabelLoginGridLogin" Foreground="#FF3E3E3E" Content="Введите логин" HorizontalAlignment="Left" Margin="72.666,53.332,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.517,0.558" Height="30" Width="176" FontSize="14" Padding="0,5,5,5"/>
-            <Button x:Name="ButtonLogin" Style="{StaticResource ButtonAccent}" Content="Войти" HorizontalAlignment="Left" Margin="189.666,211.665,0,0" VerticalAlignment="Top" Width="102" Click="ButtonLogin_Click" Height="25" IsDefault="True"/>
-            <PasswordBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Margin="71.666,162.332,0,0" VerticalAlignment="Top" Height="36" Width="220" BorderBrush="#FFECECEC" Background="#FFFEFEFE" Foreground="#FF3E3E3E" Password="admin" VerticalContentAlignment="Center" FontSize="16"/>
-            <TextBox x:Name="TextBoxLogin" MaxLength="20" HorizontalAlignment="Left" Height="36" Margin="71.666,83.332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Text="admin" Style="{DynamicResource TextBoxStyleNew}" Padding="6,0" HorizontalScrollBarVisibility="Auto" FontSize="16" VerticalContentAlignment="Center"/>
-            <Rectangle x:Name="RectangleLoadLogin" HorizontalAlignment="Left" Height="25" Margin="296.666,211.665,0,0" VerticalAlignment="Top" Width="25" RenderTransformOrigin="0.5,0.5">
-                <Rectangle.RenderTransform>
+        <wpfui:Card x:Name="GridLogin" Margin="480,225,480,225" Height="254">
+            <Grid x:Name="GridLogin2" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" HorizontalAlignment="Left" Height="254" Margin="-12,0,0,0" Width="322">
+                <Grid.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
                         <SkewTransform/>
                         <RotateTransform/>
                         <TranslateTransform/>
                     </TransformGroup>
-                </Rectangle.RenderTransform>
-                <Rectangle.Fill>
-                    <ImageBrush ImageSource="Images/34px-Vector_Loading.svg.png"/>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Image x:Name="ImageForgotPassword" ToolTip="Сменить пароль" HorizontalAlignment="Left" Height="25" Margin="72,212,0,0" VerticalAlignment="Top" Width="27" Source="/Images/icons8-password-reset-48.png" MouseLeave="ImageForgotPassword_MouseLeave" MouseLeftButtonUp="ImageForgotPassword_MouseLeftButtonUp" MouseMove="ImageForgotPassword_MouseMove"/>
-            <Image x:Name="ImageChangeDB" ToolTip="Сменить соединение базы данных" HorizontalAlignment="Left" Height="25" Margin="106,212,0,0" VerticalAlignment="Top" Width="27" Source="/Images/icons8-database-administrator-48.png" MouseLeave="ImageForgotPassword_MouseLeave" MouseLeftButtonUp="ImageChangeDB_MouseLeftButtonUp" MouseMove="ImageForgotPassword_MouseMove"/>
-            <Button x:Name="ButtonOpenNotLogin" Content="NLogin" HorizontalAlignment="Left" Margin="216,46,0,0" VerticalAlignment="Top" Click="ButtonOpenNotLogin_Click" Cursor="Hand" Background="#FFF3F3F3"/>
+                </Grid.RenderTransform>
 
-        </Grid>
+
+                <Label x:Name="LabelPasswordGridLogin" Content="Пароль" HorizontalAlignment="Left" Margin="51,118,0,0" VerticalAlignment="Top" Height="30" Width="116" FontSize="14" Padding="0,5,5,5"/>
+                <Label x:Name="LabelLoginGridLogin" Content="Введите логин" HorizontalAlignment="Left" Margin="51,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.517,0.558" Height="30" Width="176" FontSize="14" Padding="0,5,5,5"/>
+                <Button x:Name="ButtonLogin" Style="{DynamicResource WPFUIButtonAccent}" Content="Войти" HorizontalAlignment="Left" Margin="167,198,0,0" VerticalAlignment="Top" Width="102" Click="ButtonLogin_Click" Height="25" IsDefault="True" Cursor="Hand"/>
+                <PasswordBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Margin="49,148,0,0" VerticalAlignment="Top" Height="36" Width="220" Password="admin" VerticalContentAlignment="Center" FontSize="16"/>
+                <TextBox x:Name="TextBoxLogin" MaxLength="20" HorizontalAlignment="Left" Height="36" Margin="49,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Text="admin" Padding="6,0" HorizontalScrollBarVisibility="Auto" FontSize="16" VerticalContentAlignment="Center"/>
+                <Rectangle x:Name="RectangleLoadLogin" HorizontalAlignment="Left" Height="25" Margin="274,198,0,0" VerticalAlignment="Top" Width="25" RenderTransformOrigin="0.5,0.5">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Images/34px-Vector_Loading.svg.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Image x:Name="ImageForgotPassword" ToolTip="Сменить пароль" HorizontalAlignment="Left" Height="25" Margin="49,198,0,0" VerticalAlignment="Top" Width="27" Source="/Images/icons8-password-reset-48.png" MouseLeave="ImageForgotPassword_MouseLeave" MouseLeftButtonUp="ImageForgotPassword_MouseLeftButtonUp" MouseMove="ImageForgotPassword_MouseMove"/>
+                <Image x:Name="ImageChangeDB" ToolTip="Сменить соединение базы данных" HorizontalAlignment="Left" Height="25" Margin="83,198,0,0" VerticalAlignment="Top" Width="27" Source="/Images/icons8-database-administrator-48.png" MouseLeave="ImageForgotPassword_MouseLeave" MouseLeftButtonUp="ImageChangeDB_MouseLeftButtonUp" MouseMove="ImageForgotPassword_MouseMove"/>
+                <Button x:Name="ButtonOpenNotLogin" Content="NLogin" HorizontalAlignment="Left" Margin="164,32,0,0" VerticalAlignment="Top" Click="ButtonOpenNotLogin_Click" Cursor="Hand" Background="#FFF3F3F3" Visibility="Hidden"/>
+
+            </Grid>
+
+        </wpfui:Card>
         <controls1:NotificationArea x:Name="WindowArea" Position="TopRight" MaxItems="3" Margin="0,99,8,8" d:IsHidden="True"/>
 
     </Grid>

@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 using ElectroJournal.Classes;
+using System.Data;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -29,6 +30,7 @@ namespace ElectroJournal.Pages.AdminPanel
             InitializeComponent();
 
             ListBoxScheduleRerfresh();
+            LoadDataGridJournal();
         }
 
         DataBase DbUser = new DataBase();
@@ -60,6 +62,20 @@ namespace ElectroJournal.Pages.AdminPanel
             }
             conn.Close(); //Закрываем соединение
                           //ButtonSaveTeacher.IsEnabled = false;
+        }
+
+        private async void LoadDataGridJournal()
+        {
+            MySqlCommand command = new MySqlCommand("SELECT * FROM schedule", conn);
+
+            DataTable dt = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter(command);
+            await Task.Run(() =>
+            {
+                da.Fill(dt);
+
+            });
+            DataGridShedule.ItemsSource = dt.AsDataView();
         }
     }
 }

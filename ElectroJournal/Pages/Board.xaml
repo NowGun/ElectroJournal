@@ -22,7 +22,7 @@
                  mah:TextBoxHelper.UseFloatingWatermark="True"
                  mah:TextBoxHelper.Watermark="Цвет пера"
                  AddToRecentColorsTrigger="SelectedColorChanged" Margin="455,10,455,34" Height="40" Width="250" BorderBrush="#A0EAEAEA" Background="#FFFEFEFE" Foreground="#FF626262" VerticalAlignment="Top" HorizontalAlignment="Left" />
-            <Button x:Name="ButtonClear" Content="Очистить" Style="{StaticResource ResourceKey=ButtonStandard}" HorizontalAlignment="Left" Margin="710,10,0,0" VerticalAlignment="Top" Height="30" Width="100" Click="ButtonClear_Click"/>
+            <Button x:Name="ButtonClear" Content="Очистить" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" HorizontalAlignment="Left" Margin="710,10,0,0" VerticalAlignment="Top" Height="30" Width="100" Click="ButtonClear_Click"/>
             <Image x:Name="ImagePencil" HorizontalAlignment="Left" Height="20" Margin="105,7,0,0" VerticalAlignment="Top" Width="20" Source="/Images/board/icons8-pencil2-96.png" PreviewMouseLeftButtonUp="ImagePencil_PreviewMouseLeftButtonUp"/>
             <Image x:Name="ImageEraser" HorizontalAlignment="Left" Height="20" Margin="135,7,0,0" VerticalAlignment="Top" Width="20" Source="/Images/board/icons8-eraser-96.png" PreviewMouseLeftButtonUp="ImageEraser_PreviewMouseLeftButtonUp"/>
             <Path x:Name="path" Data="M42.5,48 L1220.0239,48" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="#FFEAEAEA" VerticalAlignment="Top" Visibility="Visible" Margin="65,43,1025,0" RenderTransformOrigin="0.5,0.5" Width="70" HorizontalAlignment="Left">

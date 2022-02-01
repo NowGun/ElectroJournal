@@ -26,6 +26,7 @@ namespace ElectroJournal.Pages
         public Journal()
         {
             InitializeComponent();
+            
 
             LoadDataGridJournal();
         }
@@ -34,13 +35,16 @@ namespace ElectroJournal.Pages
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBase.GetDBConnection();
 
-        private void LoadDataGridJournal()
+        private async void LoadDataGridJournal()
         {
-            MySqlCommand command = new MySqlCommand("SELECT * FROM zhirov.dates WHERE year = 2022;", conn);
+            MySqlCommand command = new MySqlCommand("SELECT * FROM zhirov.dates WHERE year = 2022", conn);
 
             DataTable dt = new DataTable();
             MySqlDataAdapter da = new MySqlDataAdapter(command);
-            da.Fill(dt);
+            
+                da.Fill(dt);
+
+            
             DataGridJournal.ItemsSource = dt.AsDataView();
         }
     }

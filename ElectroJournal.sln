@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroJournal", "ElectroJournal\ElectroJournal.csproj", "{05394797-E416-4A84-9EF2-F381A9423CA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFUI", "wpfui-main\WPFUI\WPFUI.csproj", "{1ADC87D1-8963-4100-845A-18477824718E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NickBuhro.Translit", "Translit-master\NickBuhro.Translit\NickBuhro.Translit.csproj", "{7E1B1096-6DEC-473D-BDC7-AA23FC446EE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MahApps.Metro", "MahApps.Metro-2.4.9\src\MahApps.Metro\MahApps.Metro.csproj", "{75C81E92-2E18-415C-BDF9-0BCFB765F988}"
@@ -20,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf.Controls", "ModernWpf.Controls\ModernWpf.Controls.csproj", "{B8F87078-6AFE-4776-8ABF-80141A07FF3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf.SampleApp", "ModernWpf.SampleApp\ModernWpf.SampleApp.csproj", "{8F0D7610-EE70-43CB-B138-B46EC7BFA181}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFUI", "wpfui-main\WPFUI\WPFUI.csproj", "{1ADC87D1-8963-4100-845A-18477824718E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,16 +40,6 @@ Global
 		{05394797-E416-4A84-9EF2-F381A9423CA4}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
 		{05394797-E416-4A84-9EF2-F381A9423CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05394797-E416-4A84-9EF2-F381A9423CA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADC87D1-8963-4100-845A-18477824718E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E1B1096-6DEC-473D-BDC7-AA23FC446EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E1B1096-6DEC-473D-BDC7-AA23FC446EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E1B1096-6DEC-473D-BDC7-AA23FC446EE8}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
@@ -120,6 +110,16 @@ Global
 		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
 		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F0D7610-EE70-43CB-B138-B46EC7BFA181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADC87D1-8963-4100-845A-18477824718E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
