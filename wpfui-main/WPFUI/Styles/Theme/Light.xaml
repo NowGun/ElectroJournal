@@ -38,7 +38,7 @@
     <Color x:Key="ButtonStandardBackgroundHover">#F9F9F9</Color>
     <Color x:Key="ButtonStandardBackgroundDisabled">#FAFAFA</Color>
     <Color x:Key="ButtonStandardBackgroundPressed">#FAFAFA</Color>
-    <Color x:Key="ButtonStandardBackgroundMouseOver">F9F9F9</Color>
+    <Color x:Key="ButtonStandardBackgroundMouseOver">#F9F9F9</Color>
     <Color x:Key="ButtonStandardBorderBrush">#ECECEC</Color>
     <Color x:Key="ButtonTextStandardDisabled">#A0A0A0</Color>
     <Color x:Key="ButtonTextStandardPressed">#626262</Color>

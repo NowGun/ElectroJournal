@@ -18,7 +18,7 @@
         
         x:Class="ElectroJournal.MainWindow"
         mc:Ignorable="d"
-        Title="ElectroJournal" Height="720" Width="1280" Icon="Images/Logo/logo75.ico" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Style="{DynamicResource UiWindowRounded}" Loaded="Window_Loaded">
+        Title="ElectroJournal" Height="720" Width="1280"  WindowStartupLocation="CenterScreen" Closing="Window_Closing" Style="{DynamicResource UiWindowRounded}" Loaded="Window_Loaded" Icon="/Images/Logo/logo75.png">
     <Window.Resources>
         <Storyboard x:Key="AnimLoadLogin">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="RectangleLoadLogin">
@@ -121,9 +121,9 @@
 
     <Grid x:Name="GridDefault" x:FieldModifier="public">
 
-        <wpfui:TitleBar x:Name="TitleBar" Grid.Row="0" ApplicationNavigation="True"  Height="48" Icon="C:\projects\ElectroJournal\ElectroJournal\logo75.ico"
+        <wpfui:TitleBar x:Name="TitleBar" Grid.Row="0" ApplicationNavigation="True"  Height="48" Icon="/Images/Logo/logo75.png"
                         MinimizeToTray="False"                        
-                        NotifyIconImage="pack://application:,,,/logo75.ico"
+                        NotifyIconImage="/Images/Logo/logo75.png"
                         NotifyIconTooltip="ElectroJournal"
                         UseNotifyIcon="True" NotifyIconDoubleClick="TitleBar_NotifyIconDoubleClick" Background="#00000000">
             <wpfui:TitleBar.NotifyIconMenu>

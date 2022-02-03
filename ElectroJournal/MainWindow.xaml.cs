@@ -533,7 +533,7 @@ namespace ElectroJournal
 
         private void MenuItemEJUpdate_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("C:/projects/ElectroJournalNetFramework/UpdateElectroJournal/bin/Debug/UpdateElectroJournal.exe"); //Запуск программы обновления
+            Process.Start("UpdateElectroJournal.exe"); //Запуск программы обновления
         }
 
         private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e)

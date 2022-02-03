@@ -18,19 +18,19 @@
 
 
 
-    <SolidColorBrush x:Key="ButtonIsEnabledAccent" Color="{DynamicResource ButtonAccentBackgroundDisabled}"/>
-    <SolidColorBrush x:Key="ButtonTextIsEnabledDis" Color="{DynamicResource ButtonTextAccentDisabled}"/>
-    <SolidColorBrush x:Key="ButtonPressedAccent" Color="{DynamicResource ButtonAccentBackgroundPressed}"/>
-    <SolidColorBrush x:Key="ButtonTextAccentPressedSolid" Color="{DynamicResource ButtonTextAccentPressed}"/>
+    <SolidColorBrush x:Key="ButtonIsEnabledAccent" Color="{DynamicResource ButtonAccentBackgroundDisabled}" />
+    <SolidColorBrush x:Key="ButtonTextIsEnabledDis" Color="{DynamicResource ButtonTextAccentDisabled}" />
+    <SolidColorBrush x:Key="ButtonPressedAccent" Color="{DynamicResource ButtonAccentBackgroundPressed}" />
+    <SolidColorBrush x:Key="ButtonTextAccentPressedSolid" Color="{DynamicResource ButtonTextAccentPressed}" />
     <SolidColorBrush x:Key="ButtonAccentBackgroundBrushes" Color="{DynamicResource ButtonAccentBackground}" />
     <SolidColorBrush x:Key="ButtonAccentTextRest" Color="{DynamicResource ButtonTextRestAccent}" />
     <SolidColorBrush x:Key="ButtonAccentTextDis" Color="{DynamicResource ButtonTextAccentDisabled}" />
     <SolidColorBrush x:Key="ButtonAccentHover" Color="{DynamicResource ButtonAccentBackgroundMouseOver}" />
 
-    <SolidColorBrush x:Key="ButtonIsEnabledStandard" Color="{DynamicResource ButtonStandardBackgroundDisabled}"/>
-    <SolidColorBrush x:Key="ButtonTextIsEnabledDisStandard" Color="{DynamicResource ButtonTextStandardDisabled}"/>
-    <SolidColorBrush x:Key="ButtonPressedStandard" Color="{DynamicResource ButtonStandardBackgroundPressed}"/>
-    <SolidColorBrush x:Key="ButtonTextStandardPressedSolid" Color="{DynamicResource ButtonTextStandardPressed}"/>
+    <SolidColorBrush x:Key="ButtonIsEnabledStandard" Color="{DynamicResource ButtonStandardBackgroundDisabled}" />
+    <SolidColorBrush x:Key="ButtonTextIsEnabledDisStandard" Color="{DynamicResource ButtonTextStandardDisabled}" />
+    <SolidColorBrush x:Key="ButtonPressedStandard" Color="{DynamicResource ButtonStandardBackgroundPressed}" />
+    <SolidColorBrush x:Key="ButtonTextStandardPressedSolid" Color="{DynamicResource ButtonTextStandardPressed}" />
     <SolidColorBrush x:Key="ButtonStandardBackgroundBrushes" Color="{DynamicResource ButtonStandardBackground}" />
     <SolidColorBrush x:Key="ButtonStandardTextRest" Color="{DynamicResource ButtonTextRestStandard}" />
     <SolidColorBrush x:Key="ButtonStandardTextDis" Color="{DynamicResource ButtonTextStandardDisabled}" />

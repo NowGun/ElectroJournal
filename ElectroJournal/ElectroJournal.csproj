@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
-    <ApplicationIcon>logo75.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Logo\logo75.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -64,7 +64,6 @@
     <None Remove="Images\information.png" />
     <None Remove="Images\loading.png" />
     <None Remove="Images\Logo\logo300.png" />
-    <None Remove="Images\Logo\logo75.ico" />
     <None Remove="Images\Logo\logo75.png" />
     <None Remove="Images\Logo\logo80.png" />
     <None Remove="Images\pepe.jpg" />
@@ -73,11 +72,12 @@
     <None Remove="Images\Startup\startUP3.png" />
     <None Remove="Images\Startup\startupImage 2.png" />
     <None Remove="Images\Startup\startupImage.png" />
+    <None Remove="logo75.ico" />
     <None Remove="Settings\Settings.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="logo75.ico" />
+    <Content Include="Images\Logo\logo75.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -88,6 +88,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="bin\Debug\net5.0-windows\" />
     <Folder Include="Language\en-us\" />
     <Folder Include="Language\ru-ru\" />
     <Folder Include="UserControl\" />
@@ -178,7 +179,6 @@
     <Resource Include="Images\information.png" />
     <Resource Include="Images\loading.png" />
     <Resource Include="Images\Logo\logo300.png" />
-    <Resource Include="Images\Logo\logo75.ico" />
     <Resource Include="Images\Logo\logo75.png" />
     <Resource Include="Images\Logo\logo80.png" />
     <Resource Include="Images\pepe.jpg" />
