@@ -10,7 +10,7 @@
     <Grid>
         <Button Style="{StaticResource WPFUIButtonStandard}" Content="Проверить обновление" HorizontalAlignment="Left" Height="40" Margin="210.5,497.5,0,0" VerticalAlignment="Top" Width="180" FontSize="14"/>
         <Button x:Name="ButtonSave" Style="{StaticResource WPFUIButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="984.5,502.5,0,0" VerticalAlignment="Top" Width="145" FontSize="14" Click="ButtonSave_Click"/>
-        <Label Content="Версия 0.1 от 11.10.2021" HorizontalAlignment="Left" Height="40" Margin="29.5,497.5,0,0" VerticalAlignment="Top" Width="176" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label Content="Версия 0.2 от 04.02.2022" HorizontalAlignment="Left" Height="40" Margin="29.5,497.5,0,0" VerticalAlignment="Top" Width="176" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <GroupBox Style="{x:Null}" x:Name="GroupBoxRun" Header="Настройки запуска" Margin="30,164,365,265" FontSize="14">
             <Grid Height="92" HorizontalAlignment="Left" Width="745" Margin="10,0,0,0">
                 <Label Content="Автоматически запускать ElectroJournal после включения компьютера" Margin="0,10,196,52" Height="30"/>

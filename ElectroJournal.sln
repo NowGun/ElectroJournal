@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio Version 17
+# Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroJournal", "ElectroJournal\ElectroJournal.csproj", "{05394797-E416-4A84-9EF2-F381A9423CA4}"
@@ -22,6 +22,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFUI", "wpfui-main\WPFUI\WPFUI.csproj", "{1ADC87D1-8963-4100-845A-18477824718E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateElectroJournal", "UpdateElectroJournal\UpdateElectroJournal.csproj", "{3EA5B281-854D-41D3-AF07-31F65F57E3DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Updater", "Updater\Updater.csproj", "{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdaterUnZip", "UpdaterUnZip\UpdaterUnZip.csproj", "{D59498EF-8E18-4611-9C5E-6E22BF7701C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +136,26 @@ Global
 		{3EA5B281-854D-41D3-AF07-31F65F57E3DB}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
 		{3EA5B281-854D-41D3-AF07-31F65F57E3DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EA5B281-854D-41D3-AF07-31F65F57E3DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
