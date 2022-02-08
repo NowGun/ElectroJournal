@@ -20,6 +20,7 @@ using ElectroJournal.Classes;
 using System.Windows.Forms;
 using SmsRu;
 using System.Drawing;
+using System.Threading;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -41,55 +42,123 @@ namespace ElectroJournal.Pages.AdminPanel
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBase.GetDBConnection();
 
+        List<int> idTeachers = new List<int>();
 
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            ProgressBarTeachers.Visibility = Visibility.Visible;
-
-            MySqlCommand command = new MySqlCommand("INSERT INTO teachers (`teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`," +
-                " `teachers_acces_admin_panel`, `teachers_phone`, `teachers_mail`) VALUES (@login, @password, @name, @surname, @patronymic, @admin, @phone, @mail)", conn);
-
-            //MySqlCommand command = new MySqlCommand("CREATE USER @login @`%` IDENTIFIED BY @pass", conn);
-
-            command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
-            //command.Parameters.Add("@password", MySqlDbType.VarChar).Value = PBKDF2HashHelper.CreatePasswordHash(PasswordBoxTeachers.Password);
-            command.Parameters.Add("@password", MySqlDbType.VarChar).Value = DbControls.Hash(PasswordBoxTeachers.Password);
-            command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
-            command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
-            command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
-            //command.Parameters.Add("@image", MySqlDbType.VarChar).Value = words[2];
-            command.Parameters.Add("@admin", MySqlDbType.VarChar).Value = CheckBoxAdminAccess.IsChecked.ToString();
-            command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxTeachersPhone1.Text;
-            command.Parameters.Add("@mail", MySqlDbType.VarChar).Value = TextBoxTeachersMail1.Text;
-
-
-            conn.Open();
-
-            if (command.ExecuteNonQuery() == 1)
+            if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail1.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
             {
-                conn.Close();
-                //SendPasswordToUser();
-                //SendSMSToUser();
-                ListViewTeachersRefresh();
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
-                ProgressBarTeachers.Visibility = Visibility.Hidden;
+                if (TextBoxTeachersFIO.Text.Split(new String[] {" "}, StringSplitOptions.RemoveEmptyEntries).Length == 3)
+                {
+                    ProgressBarTeachers.Visibility = Visibility.Visible;
+                    string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (ListViewTeachers.SelectedItem != null)
+                    {
+                        MySqlCommand command = new MySqlCommand("UPDATE `teachers` SET `teachers_name` = @name, `teachers_surname` = @surname, `teachers_patronymic` = @patronymic, " +
+                            "`teachers_acces_admin_panel` = @admin, `teachers_phone` = @phone, `teachers_mail` = @mail WHERE `idteachers` = @id", conn);
+
+
+                        command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
+                        command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
+                        command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
+                        command.Parameters.Add("@admin", MySqlDbType.VarChar).Value = CheckBoxAdminAccess.IsChecked.ToString();
+                        command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxTeachersPhone1.Text;
+                        command.Parameters.Add("@mail", MySqlDbType.VarChar).Value = TextBoxTeachersMail1.Text;
+                        command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idTeachers[ListViewTeachers.SelectedIndex];
+
+                        await conn.OpenAsync();
+
+                        if (command.ExecuteNonQuery() == 1)
+                        {
+                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                        }
+                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Произошла ошибка");
+
+                        conn.Close();
+                        ListViewTeachersRefresh();
+                    }
+                    else
+                    {
+
+                        ProgressBarTeachers.Visibility = Visibility.Visible;
+
+                        MySqlCommand command = new MySqlCommand("INSERT INTO teachers (`teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`," +
+                            " `teachers_acces_admin_panel`, `teachers_phone`, `teachers_mail`) VALUES (@login, @password, @name, @surname, @patronymic, @admin, @phone, @mail)", conn);
+
+                        //MySqlCommand command = new MySqlCommand("CREATE USER @login @`%` IDENTIFIED BY @pass", conn);
+
+                        command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
+                        //command.Parameters.Add("@password", MySqlDbType.VarChar).Value = PBKDF2HashHelper.CreatePasswordHash(PasswordBoxTeachers.Password);
+                        command.Parameters.Add("@password", MySqlDbType.VarChar).Value = DbControls.Hash(PasswordBoxTeachers.Password);
+                        command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
+                        command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
+                        command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
+                        //command.Parameters.Add("@image", MySqlDbType.VarChar).Value = words[2];
+                        command.Parameters.Add("@admin", MySqlDbType.VarChar).Value = CheckBoxAdminAccess.IsChecked.ToString();
+                        command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxTeachersPhone1.Text;
+                        command.Parameters.Add("@mail", MySqlDbType.VarChar).Value = TextBoxTeachersMail1.Text;
+
+
+
+                        if (!DbControls.IsTeachersLoginExists(TextBoxTeachersLogin.Text))
+                        {
+                            await conn.OpenAsync();
+
+                            if (command.ExecuteNonQuery() == 1)
+                            {
+                                SendPasswordToUser();
+                                //SendSMSToUser();
+                                
+
+                                TextBoxTeachersFIO.Clear();
+                                TextBoxTeachersPhone1.Clear();
+                                TextBoxTeachersMail1.Clear();
+                                TextBoxTeachersLogin.Clear();
+                                PasswordBoxTeachers.Clear();
+                                CheckBoxAdminAccess.IsChecked = false;
+
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
+                                ProgressBarTeachers.Visibility = Visibility.Hidden;
+                            }
+
+                            conn.Close();
+                            ListViewTeachersRefresh();
+                        }
+                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данный логин уже занят");
+                    }
+                    ProgressBarTeachers.Visibility=Visibility.Hidden;
+                }
+                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");               
             }
+            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+
+            
+
+
         }
 
         private async void ListViewTeachersRefresh()
         {
             ListViewTeachers.Items.Clear();
+            idTeachers.Clear();
 
+            MySqlCommand command = new MySqlCommand("", conn); //Команда выбора данных
+            command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`";
 
-            MySqlCommand command = new MySqlCommand("SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`", conn); //Команда выбора данных
+            if (ComboBoxSortingTeacher.SelectedIndex == 0) command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers` ORDER BY `teachers_surname`";
+            else command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers` ORDER BY `teachers_surname` DESC";
+
             await conn.OpenAsync(); //Открываем соединение
-            MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-            while (await read.ReadAsync()) //Читаем пока есть данные
+            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+            for  (int i = 0; await read.ReadAsync(); i++)
             {
-                if (read.GetValue(1).ToString() != "" && read.GetValue(2).ToString() != "" && read.GetValue(3).ToString() != "")
-                    ListViewTeachers.Items.Add(read.GetValue(0).ToString() + " | " + read.GetValue(2).ToString() + " " + read.GetValue(1).ToString() + " " + read.GetValue(3).ToString()); //Добавляем данные в лист итем
+                if (read.GetValue(1).ToString() != "" && read.GetValue(2).ToString() != "" && read.GetValue(3).ToString() != "")                
+                    ListViewTeachers.Items.Add(read.GetValue(2).ToString() + " " + read.GetValue(1).ToString() + " " + read.GetValue(3).ToString()); //Добавляем данные в лист итем
+
+                idTeachers.Add(read.GetInt32(0));
             }
             conn.Close(); //Закрываем соединение
                           //ButtonSaveTeacher.IsEnabled = false;
@@ -113,20 +182,23 @@ namespace ElectroJournal.Pages.AdminPanel
 
         private void TextBoxTeachersFIO_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            PasswordBoxTeachers.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(16);
+            PasswordBoxTeachers.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(8);
 
             TextBoxTeachersLogin.Text = Transliteration.CyrillicToLatin(TextBoxTeachersFIO.Text.Split().First(), NickBuhro.Translit.Language.Russian);
         }
 
         private async void SendPasswordToUser()
         {
-            MainWindow mainWindow = new MainWindow();
-            string user = mainWindow.TextBlockTeacher.Text;
+            try
+            {
+            string user = ((MainWindow)System.Windows.Application.Current.MainWindow).TextBlockTeacher.Text;
             bool a = true;
             // отправитель - устанавливаем адрес и отображаемое в письме имя
             MailAddress from = new MailAddress("zhirowdaniil@gmail.com", user);
             // кому отправляем
-            MailAddress to = new MailAddress(TextBoxTeachersMail1.Text);
+
+                MailAddress to = new MailAddress(TextBoxTeachersMail1.Text);
+
             // создаем объект сообщения
             MailMessage m = new MailMessage(from, to);
             // тема письма
@@ -152,19 +224,24 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             });
 
-            if (!a)
+            if (a)
             {
-                mainWindow.Notifications("Сообщение", "письмо отправлено");
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "письмо отправлено");
                 //ButtonSend.IsEnabled = true;
                 //anim.Begin();
                 //RectangleLoad.Visibility = Visibility.Hidden;
             }
-            else if (a)
+            else if (!a)
             {
-                mainWindow.Notifications("Сообщение", "письмо не отправилось");
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "письмо не отправилось");
                 //ButtonSend.IsEnabled = true;
                 //anim.Begin();
                 //RectangleLoad.Visibility = Visibility.Hidden;
+            }
+            }
+            catch (System.FormatException)
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Введен некорректный Email");
             }
         }
 
@@ -178,51 +255,112 @@ namespace ElectroJournal.Pages.AdminPanel
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            ListViewTeachers.SelectedItem = null;
+            TextBoxTeachersFIO.Clear();
+            TextBoxTeachersPhone1.Clear();
+            TextBoxTeachersMail1.Clear();
+            TextBoxTeachersLogin.Clear();
+            PasswordBoxTeachers.Clear();
+            CheckBoxAdminAccess.IsChecked = false;
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainwindow = new MainWindow();
-            if (ListViewTeachers.Items.Count == 0)
+            DeleteTeachers();
+        }
+
+        private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ButtonDelete.IsEnabled = true;
+
+            if (ListViewTeachers.SelectedItem != null) //если строка выделена выполняется условие
             {
-                mainwindow.Notifications("Сообщение", "Произошла ошибка");
-            }
-            else if (ListViewTeachers.SelectedItem != null)
+                MySqlCommand command = new MySqlCommand("SELECT `idteachers`, `teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`, " +
+                            "`teachers_image`, `teachers_acces_admin_panel`, `teachers_mail`, `teachers_phone` FROM `teachers` WHERE idteachers = @id", conn); //Команда выбора данных
+
+                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idTeachers[ListViewTeachers.SelectedIndex];
+
+                conn.Open(); //Открываем соединение
+                MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+                if (await read.ReadAsync()) //Читаем пока есть данные
+                {
+                    string FIO = read.GetString(4) + " " + read.GetString(3) + " " + read.GetString(5);
+
+                    TextBoxTeachersFIO.Text = FIO;
+                    TextBoxTeachersLogin.Text = read.GetString(1);
+                    PasswordBoxTeachers.Password = read.GetString(2);
+                    CheckBoxAdminAccess.IsChecked = bool.Parse(read.GetString(7));
+                    TextBoxTeachersMail1.Text = read.GetString(8);
+                    TextBoxTeachersPhone1.Text = read.GetString(9);
+
+                }
+                conn.Close(); //Закрываем соединение
+            }           
+        }
+
+        private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListViewTeachersRefresh();
+        }
+
+
+        private void ListViewTeachers_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
             {
-                string name_test = ListViewTeachers.SelectedItem.ToString().Split().First();
-                DbControls.DeleteTeachers(name_test);
-                ListViewTeachers.Items.Clear();
-                ListViewTeachersRefresh();
+                DeleteTeachers();
             }
         }
 
-        private void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DeleteTeachers() 
         {
-
-            //ButtonSaveTeacher.IsEnabled = true;
-            if (ListViewTeachers.SelectedItem != null) //если строка выделена выполняется условие
+            if (ListViewTeachers.Items.Count == 0)
             {
-                MySqlCommand command = new MySqlCommand("SELECT `idteachers`, `teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`, `teachers_image`, `teachers_acces_admin_panel` FROM `teachers` WHERE idteachers = @id", conn); //Команда выбора данных
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+            }
+            else if (ListViewTeachers.SelectedItem != null)
+            {
+                DbControls.DeleteTeachers(idTeachers[ListViewTeachers.SelectedIndex]);
+                ListViewTeachers.Items.Clear();
+                ListViewTeachersRefresh();
 
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Int32.Parse(ListViewTeachers.SelectedItem.ToString().Split().First());
+                TextBoxTeachersFIO.Clear();
+                TextBoxTeachersPhone1.Clear();
+                TextBoxTeachersMail1.Clear();
+                TextBoxTeachersLogin.Clear();
+                PasswordBoxTeachers.Clear();
+                CheckBoxAdminAccess.IsChecked = false;
 
-                conn.Open(); //Открываем соединение
-                MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-
-                while (read.Read()) //Читаем пока есть данные
+                ButtonDelete.IsEnabled = false;
+            }
+        }
+        private int lastFoundIndex = -1;
+        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            int i;
+            for (i = lastFoundIndex + 1; i < ListViewTeachers.Items.Count; i++)
+            {
+                var currVal = ListViewTeachers.Items[i].ToString();
+                if (currVal.ToLower().Contains(SearchBox.Text.ToLower()))
                 {
-                    
-                    string FIO = read.GetString(4) + " " + read.GetString(3) + " " + read.GetString(5);
-                    
-                        TextBoxTeachersFIO.Text = FIO;
-                        TextBoxTeachersLogin.Text = read.GetString(1);
-                        PasswordBoxTeachers.Password = read.GetString(2);
-                        CheckBoxAdminAccess.IsChecked = bool.Parse(read.GetString(7));
-                        break;
-                    
+                    ListViewTeachers.SelectedIndex = i;
+                    lastFoundIndex = i;
+                    break;//прерываем цикл
                 }
-                conn.Close(); //Закрываем соединение
+            }
+            if (lastFoundIndex > -1 && i == ListViewTeachers.Items.Count)
+            {
+                for (int s = 0; s <= lastFoundIndex; s++)
+                {
+                    var currVal = ListViewTeachers.Items[s].ToString();
+                    if (currVal.ToLower().Contains(SearchBox.Text.ToLower()))
+                    {
+                        ListViewTeachers.SelectedIndex = s;
+                        lastFoundIndex = s;
+                        break;//прерываем цикл
+                    }
+                }
             }
         }
     }

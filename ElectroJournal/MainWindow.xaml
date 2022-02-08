@@ -139,14 +139,13 @@
         </wpfui:TitleBar>
         <Grid x:Name="GridMenu" Height="52" VerticalAlignment="Top" MinWidth="1272" Visibility="Visible" x:FieldModifier="public" Margin="0,48,0,0">
             <wpfui:Icon x:Name="RectangleBackToMenu" Glyph="ArrowLeft12" HorizontalAlignment="Left" Margin="17,13,0,0" Height="32" Width="28" MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" FontSize="20" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
-            <Menu x:Name="MenuEJ" Margin="52,-49,0,0" Background="{x:Null}" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="{x:Null}">
-                <MenuItem Header="EJ" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,0,6,0" Height="43" FontFamily="Segoe UI Historic" FontSize="14">
+            <Menu x:Name="MenuEJ" Margin="45,-48,0,0" Background="{x:Null}" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="{x:Null}">
+                <MenuItem Header="ElectroJournal" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="6,0,6,0" Height="43" FontFamily="Segoe UI Historic" FontSize="14">
                     <MenuItem x:Name="MenuItemEJCalculator" Header="Калькулятор" Click="MenuItemEJCalculator_Click"/>
-                    <MenuItem x:Name="MenuItemEJSettings" Header="Настройки" Click="MenuItemEJSettings_Click"/>
-                    <MenuItem x:Name="MenuItemEJUpdate" Header="Проверить наличие обновлений" Click="MenuItemEJUpdate_Click"/>
                     <MenuItem x:Name="MenuItemEJHelp" Header="Справка" Click="MenuItemEJHelp_Click"/>
                     <MenuItem x:Name="MenuItemEJProgInfo" Header="О программе" Click="MenuItemEJProgInfo_Click"/>
                     <MenuItem x:Name="MenuItemEJBug" Header="Баг-репортер" Click="MenuItemEJBug_Click"/>
+                    <MenuItem x:Name="MenuItemEJSettings" Header="Настройки" Click="MenuItemEJSettings_Click"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuBoard" Header="Доска" Height="42">
                     <MenuItem Header="Открыть"/>
@@ -169,13 +168,14 @@
                     <ComboBoxItem Content="ПКС 4"/>
                 </ComboBox>
             </Grid>
-            <Grid x:Name="GridUser" HorizontalAlignment="Right" Height="50" Margin="0,0,10,0" VerticalAlignment="Top" Width="242">
-                <Rectangle x:Name="RectangleUser" Height="45" VerticalAlignment="Center" Width="45" RadiusY="22" RadiusX="22" MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp" MouseMove="RectangleUser_MouseMove" MouseLeave="RectangleUser_MouseLeave" HorizontalAlignment="Left">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="Images/icons8-male-user-48.png" Stretch="UniformToFill"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-                <TextBlock x:FieldModifier="public" x:Name="TextBlockTeacher" HorizontalAlignment="Left" Height="20" Margin="50,0,0,0" TextWrapping="Wrap" Text="Фамилия И. О." VerticalAlignment="Center" Width="192" MaxWidth="179.5" FontSize="14"/>
+            <Grid x:Name="GridUser" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Top">
+                <ui:PersonPicture
+                        x:Name="PersonPicture"
+                    MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp" MouseMove="RectangleUser_MouseMove" MouseLeave="RectangleUser_MouseLeave"
+                        Height="40"
+                        VerticalAlignment="Center"
+                        Margin="270,0,0,0" Width="40" />
+                <TextBlock x:FieldModifier="public" x:Name="TextBlockTeacher" HorizontalAlignment="Left" Margin="152,0,0,0" TextWrapping="Wrap" Text="Фамилия И. О." VerticalAlignment="Center" MaxWidth="179.5" FontSize="14"/>
             </Grid>
             <Path x:Name="path" Data="M42.5,48 L1220.0239,48" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="#FFE0E0E0" VerticalAlignment="Top" Visibility="Visible" Margin="0,49,0,0">
                 <Path.Effect>

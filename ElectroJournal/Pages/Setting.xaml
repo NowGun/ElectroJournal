@@ -4,39 +4,35 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ElectroJournal.Pages"
+      xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"  
       mc:Ignorable="d"
-      Title="Setting" Width="1160" Height="555">
+      Title="Setting" Width="1280" Height="605">
 
     <Grid>
-        <Button Style="{StaticResource WPFUIButtonStandard}" Content="Проверить обновление" HorizontalAlignment="Left" Height="40" Margin="210.5,497.5,0,0" VerticalAlignment="Top" Width="180" FontSize="14"/>
-        <Button x:Name="ButtonSave" Style="{StaticResource WPFUIButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="984.5,502.5,0,0" VerticalAlignment="Top" Width="145" FontSize="14" Click="ButtonSave_Click"/>
-        <Label Content="Версия 0.2 от 04.02.2022" HorizontalAlignment="Left" Height="40" Margin="29.5,497.5,0,0" VerticalAlignment="Top" Width="176" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <GroupBox Style="{x:Null}" x:Name="GroupBoxRun" Header="Настройки запуска" Margin="30,164,365,265" FontSize="14">
-            <Grid Height="92" HorizontalAlignment="Left" Width="745" Margin="10,0,0,0">
-                <Label Content="Автоматически запускать ElectroJournal после включения компьютера" Margin="0,10,196,52" Height="30"/>
-                <Label Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal" Margin="0,52,196,10" Height="30"/>
-                <CheckBox x:Name="CheckBoxCollapseToTray" Content="" Margin="715,52,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30"/>
-                <CheckBox x:Name="CheckBoxAutoRun" Content="" Margin="715,10,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30"/>
-            </Grid>
-        </GroupBox>
-        <GroupBox Style="{x:Null}" x:Name="GroupBoxApp" Header="Настройки приложения" Margin="30,31,365,396" FontSize="14" Foreground="#FF3E3E3E">
-            <Grid Height="92" HorizontalAlignment="Left" Width="745" Margin="10,0,0,0">
-                <Label Content="Выберите тему" Margin="0,10,196,52" Height="30"/>
-                <ComboBox x:Name="ComboBoxTheme" Margin="554,10,10,52" Height="30">
+
+        <wpfui:Card Margin="20,20,20,15">
+            <Grid>
+                <Button x:Name="ButtonOpenUpdater" Style="{StaticResource WPFUIButtonStandard}" Content="Проверить обновление" HorizontalAlignment="Left" Height="35" Margin="187,497,0,0" VerticalAlignment="Top" Width="200" FontSize="14" Click="ButtonOpenUpdater_Click"/>
+                <Button x:Name="ButtonSave" Style="{StaticResource WPFUIButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="1057,497,0,0" VerticalAlignment="Top" Width="150" FontSize="14" Click="ButtonSave_Click"/>
+                <Label Content="Версия 0.22 от 08.02.2022" HorizontalAlignment="Left" Height="35" Margin="7,497,0,0" VerticalAlignment="Top" Width="180" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,0,0,4"/>
+                <Label Content="Автоматически запускать ElectroJournal после включения компьютера" Margin="27,112,667,397" Height="35" FontSize="14" VerticalContentAlignment="Center" Padding="10,0,0,4"/>
+                <Label Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal" Margin="27,233,667,276" Height="35" FontSize="14" Padding="10,0,0,4" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="CheckBoxCollapseToTray" Content="" Margin="547,240,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="20" Width="20"/>
+                <CheckBox x:Name="CheckBoxAutoRun" Content="" Margin="547,119,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="20" Width="20"/>
+                <Label Content="Выберите тему" Margin="27,57,674,452" Height="35" VerticalContentAlignment="Center" FontSize="14" Padding="10,0,0,4"/>
+                <ComboBox x:Name="ComboBoxTheme" Margin="547,57,432,0" Height="35" VerticalAlignment="Top" FontSize="14">
                     <ComboBoxItem Content="Светлая"/>
                     <ComboBoxItem Content="Темная"/>
                 </ComboBox>
-                <Label Content="Включить анимацию" Margin="0,52,196,10" Height="30"/>
-                <CheckBox x:Name="CheckBoxAnim" Content="" Margin="715,52,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30"/>
-            </Grid>
-        </GroupBox>
-        <GroupBox Style="{x:Null}" x:Name="GroupBoxBD" Header="Настройки базы данных" Margin="31,295,480,185" FontSize="14" Foreground="#FF3E3E3E">
-            <Grid Height="92" HorizontalAlignment="Left" Width="629" Margin="10,0,0,0">
-                <Label x:Name="LabelIpAddress" Content="" Margin="167,10,291,52" Height="30"/>
-                <Button x:Name="ButtonChangeBD" Content="Изменить соединение с базой" Style="{StaticResource WPFUIButtonStandard}" Margin="372,10,10,52" Height="30" Click="ButtonChangeBD_Click"/>
-                <Label Content="Ip-адрес базы данных: " Margin="0,10,467,52" Height="30"/>
-            </Grid>
-        </GroupBox>
+                <Label Content="Включить анимацию" Margin="27,290,667,224" Height="30" VerticalContentAlignment="Center" Padding="10,0,0,4" FontSize="14"/>
+                <CheckBox x:Name="CheckBoxAnim" Content="" Margin="547,295,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="20" Width="20"/>
+                <Label x:Name="LabelIpAddress" Content="" Margin="187,432,907,77" Height="35" FontSize="14" VerticalContentAlignment="Center"/>
+                <Button x:Name="ButtonChangeBD" Content="Изменить" Style="{StaticResource WPFUIButtonStandard}" Height="35" Click="ButtonChangeBD_Click" VerticalContentAlignment="Center" Margin="307,430,757,79" FontSize="14" Width="150"/>
+                <Label Content="Ip-адрес базы данных: " Margin="7,432,1027,77" Height="35" FontSize="14" VerticalContentAlignment="Center" Padding="10,0,0,4"/>
+                <Label Content="Настройки приложения" HorizontalAlignment="Left" Height="40" Margin="7,12,0,0" VerticalAlignment="Top" Width="260" FontSize="18" FontFamily="Segoe UI" FontWeight="Bold" VerticalContentAlignment="Center"/>
+                <Label Content="Настройки запуска" HorizontalAlignment="Left" Height="40" Margin="7,187,0,0" VerticalAlignment="Top" Width="260" FontSize="18" FontFamily="Segoe UI" FontWeight="Bold" VerticalContentAlignment="Center"/>
 
+            </Grid>
+        </wpfui:Card>
     </Grid>
 </Page>

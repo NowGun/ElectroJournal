@@ -104,7 +104,7 @@ namespace ElectroJournal.Pages.AdminPanel
             else if (ListViewStudents.SelectedItem != null)
             {
                 string name_test = ListViewStudents.SelectedItem.ToString().Split().First();
-                DbControls.DeleteTeachers(name_test);
+                //DbControls.DeleteTeachers(name_test);
                 ListViewStudents.Items.Clear();
                 ListViewStudentsRefresh();
             }

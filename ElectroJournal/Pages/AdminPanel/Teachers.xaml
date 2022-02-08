@@ -8,7 +8,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI" xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
     Title="Teachers"
     Width="1280"
     Height="605.04"
@@ -16,65 +16,28 @@
     <Page.Resources />
 
     <Grid>
-        <wpfui:Card Margin="358,40,24,55" />
-        <TextBox
-            x:Name="TextBoxMahSearch"
-            Width="300"
-            Margin="20,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            mah:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmdWithParameter, Mode=OneWay}"
-            mah:TextBoxHelper.ButtonCommandParameter="{Binding Text, ElementName=test2}"
-            mah:TextBoxHelper.Watermark="Поиск"
-            BorderBrush="#FFEDEDED"
-            Style="{DynamicResource MahApps.Styles.TextBox.Search}" />
-        <Button
-            x:Name="ButtonAdd"
-            Width="140"
-            Height="30"
-            Margin="20,0,0,20"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Click="ButtonAdd_Click"
-            Content="Добавить"
-            FontSize="14"
-            Style="{StaticResource ResourceKey=WPFUIButtonAccent}" />
-        <Button
-            x:Name="ButtonDelete"
-            Width="140"
-            Height="30"
-            Margin="180,0,0,20"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Click="ButtonDelete_Click"
-            Content="Удалить"
-            FontSize="14"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
-        <Label
-            Width="170"
-            Height="25"
-            Margin="50,10,0,0"
-            Padding="5,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Background="{x:Null}"
-            Content="Преподаватели"
-            FontSize="16" FontWeight="Bold"/>
+        <wpfui:Card Margin="362,60,20,60">
+            <Grid>
 
-        <ProgressBar
+                <ui:PersonPicture
+                        x:Name="PersonPicture"
+                    
+                        Height="150"
+                        VerticalAlignment="Top"
+                        Margin="10,12,712,0" Width="150" />
+
+                <ProgressBar
             x:Name="ProgressBarTeachers"
-            Margin="993,495,135,15"
+            Margin="717,424,135,15"
             Foreground="#FF3567BC"
             IsIndeterminate="True"
             Style="{StaticResource MaterialDesignCircularProgressBar}"
             Visibility="Hidden" />
-        <Button
+                <Button
             x:Name="ButtonSave"
             Width="120"
             Height="30"
-            Margin="0,0,42,78"
+            Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Click="ButtonSave_Click"
@@ -82,147 +45,151 @@
             FontSize="14"
             IsDefault="True"
             Style="{StaticResource WPFUIButtonAccent}" />
-        <Grid
-            Width="764"
-            Height="131"
-            Margin="358,326,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <Label
+                <Label
                 Height="35"
-                Margin="10,10,684,86"
+                Margin="25,237,777,187"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
-                Content="Логин"
+                Content="Логин*"
                 FontSize="16"/>
-            <TextBox
+                <TextBox
                 x:Name="TextBoxTeachersLogin"
                 Width="231"
                 Height="35"
-                Margin="85,10,0,0"
+                Margin="100,237,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="14"
                 MaxLength="20"
-                Style="{StaticResource ResourceKey=TextBoxStyleNew}"
                 Text="admin"
                 TextWrapping="Wrap" />
-            <Label
+                <Label
                 Height="35"
-                Margin="10,51,684,45"
+                Margin="25,287,777,137"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 Content="Пароль"
                 FontSize="16"/>
-            <PasswordBox
+                <PasswordBox
                 x:Name="PasswordBoxTeachers"
                 Width="231"
                 Height="35"
-                Margin="85,51,0,0"
+                Margin="100,287,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center" />
-            <CheckBox
+                <CheckBox
                 x:Name="CheckBoxAdminAccess"
                 Width="245"
                 Height="30"
-                Margin="10,96,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
+                Margin="25,337,602,92"
                 Content="Доступ к панели администратора"
                 Cursor="Hand" />
-        </Grid>
-        <Grid
-            x:Name="GridPersonalinformation"
-            Width="912"
-            Height="312"
-            Margin="358,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <Label
+                <Label
                 Height="35"
-                Margin="286,26,573,251"
+                Margin="185,47,635,377"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
-                Content="ФИО"
+                Content="ФИО*"
                 FontSize="16"/>
-            <TextBox
-                x:Name="TextBoxTeachersFIO"
+                <TextBox
+                x:Name="TextBoxTeachersFIO"                
                 Width="576"
                 Height="35"
-                Margin="286,61,0,0"
+                Margin="242,47,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="14"
                 PreviewKeyUp="TextBoxTeachersFIO_PreviewKeyUp"
-                Style="{StaticResource ResourceKey=TextBoxStyleNew}"
                 TextWrapping="Wrap" />
-            <Label
-                Width="60"
-                Height="30"
-                Margin="84,102,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Content="Фото"
-                FlowDirection="LeftToRight"
-                FontSize="18"/>
-            <Rectangle
-                x:Name="RectangleTeachersPhoto"
-                Width="207"
-                Margin="10,14,0,91"
-                HorizontalAlignment="Left"
-                Fill="#01FFFFFF"
-                PreviewMouseLeftButtonUp="RectangleTeachersPhoto_PreviewMouseLeftButtonUp"
-                RadiusX="103.5"
-                RadiusY="103.5"
-                Stroke="#FFCCCCCC"
-                StrokeThickness="2.2" />
-            <TextBox
+                <TextBox
                 x:Name="TextBoxTeachersPhone1"
-                Width="155"
+                Width="153"
                 Height="35"
-                Margin="301,179,0,0"
+                Margin="665,107,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 MaxLength="12"
-                Style="{StaticResource ResourceKey=TextBoxStyleNew}"
                 Text="89996061994"
                 TextWrapping="Wrap"
                 UndoLimit="12" />
-            <TextBox
+                <TextBox
                 x:Name="TextBoxTeachersMail1"
-                Width="394"
-                Height="34"
-                Margin="486,197,0,0"
+                Width="263"
+                Height="35"
+                Margin="242,107,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Style="{StaticResource ResourceKey=TextBoxStyleNew}"
                 Text="zhirowdaniil@gmail.com"
                 TextWrapping="Wrap" />
-            <Label
+                <Label
                 Height="35"
-                Margin="339,27,278,250"
+                Margin="242,12,336,412"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 Content="Например: Иванов Иван Иванович"
                 FontSize="14"
                 FontStyle="Italic"/>
-        </Grid>
-        <wpfui:Icon
-            Width="25"
-            Height="25"
-            Margin="20,10,0,0"
+                <Label
+                    Height="35"
+                    Margin="185,107,632,317"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Почта*"
+                    FontSize="16"/>
+                <Label
+                    Height="35"
+                    Margin="521,107,207,317"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Номер телефона"
+                    FontSize="16"/>
+                <Label
+                    Margin="25,419,442,10"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="* - обязательные для заполнения поля"
+                    FontSize="16"/>
+
+            </Grid>
+        </wpfui:Card>
+        <Button
+            x:Name="ButtonAdd"
+            Width="140"
+            Height="35"
+            Margin="20,0,0,20"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="24"
-            Glyph="PeopleEdit20" />
+            VerticalAlignment="Bottom"
+            Click="ButtonAdd_Click"
+            Content="Добавить"
+            FontSize="14"
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
+        <Button
+            x:Name="ButtonDelete"
+            Width="140"
+            Height="35"
+            Margin="180,0,0,20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Click="ButtonDelete_Click"
+            Content="Удалить"
+            FontSize="14"
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" IsEnabled="False" />
         <ListBox
             x:Name="ListViewTeachers"
-            Margin="20,71,960,55"
+            Margin="20,97,960,60"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            SelectionChanged="ListViewTeachers_SelectionChanged" />
+            SelectionChanged="ListViewTeachers_SelectionChanged" PreviewKeyUp="ListViewTeachers_PreviewKeyUp" />
+        <ui:AutoSuggestBox
+                        x:Name="SearchBox"
+                        PlaceholderText="Поиск"                        
+                        QueryIcon="Find"
+                        Width="300"
+                        HorizontalAlignment="Left" Margin="20,60,0,0" PreviewKeyUp="SearchBox_PreviewKeyUp" />
+        <ComboBox x:Name="ComboBoxSortingTeacher" HorizontalAlignment="Left" Height="35" Margin="20,20,0,0" VerticalAlignment="Top" Width="300" SelectedIndex="0" SelectionChanged="ComboBoxSortingTeacher_SelectionChanged">
+            <ComboBoxItem Content="А-Я"/>
+            <ComboBoxItem Content="Я-А"/>
+        </ComboBox>
 
     </Grid>
 </Page>

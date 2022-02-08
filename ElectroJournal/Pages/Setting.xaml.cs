@@ -1,6 +1,7 @@
 ﻿using ElectroJournal.Windows;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,6 +116,18 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
             new DBUser().ShowDialog();
+        }
+
+        private void ButtonOpenUpdater_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("Updater.exe");
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
+            }
         }
     }
 }

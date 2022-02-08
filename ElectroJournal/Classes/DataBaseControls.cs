@@ -84,10 +84,10 @@ namespace ElectroJournal.Classes
             else return false;
         }
 
-        public void DeleteTeachers(string name)
+        public void DeleteTeachers(int id)
         {
-            MySqlCommand command = new MySqlCommand("DELETE FROM `teachers` WHERE `idteachers` = @name", conn);
-            command.Parameters.Add("@name", MySqlDbType.VarChar).Value = name;
+            MySqlCommand command = new MySqlCommand("DELETE FROM `teachers` WHERE `idteachers` = @id", conn);
+            command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
 
             conn.Open();
 
@@ -95,6 +95,24 @@ namespace ElectroJournal.Classes
             {
                 conn.Close();
             }
+        }
+
+        public bool IsTeachersLoginExists(string login)
+        {
+            DataTable table = new DataTable();
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+            MySqlCommand command = new MySqlCommand("SELECT count(`teachers_login`) FROM `teachers` WHERE `teachers_login` = @login", conn);
+
+            command.Parameters.Add("@login", MySqlDbType.VarChar).Value = login;
+
+            conn.Open();
+            int a = command.ExecuteNonQuery();
+            conn.Close();
+            if (a == 1)
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
