@@ -155,8 +155,8 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimShowLoading");
             anim2.Begin();
 
-           // timer2.Tick += new EventHandler(LoadLessonPeriod);
-           // timer2.Interval = new TimeSpan(0, 0, 1);
+            timer2.Tick += new EventHandler(LoadLessonPeriod);
+            timer2.Interval = new TimeSpan(0, 0, 1);
             //timer2.Start();
         }
 
@@ -558,7 +558,8 @@ namespace ElectroJournal
         private void LoadLessonPeriod(object sender, EventArgs e)
         {
             MySqlCommand command = new MySqlCommand("SELECT date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), " +
-                "periodclasses_number, date_format(SUBTIME(periodclasses_end, CURRENT_TIME()), '%i:%s') FROM periodclasses WHERE CURRENT_TIME() between periodclasses_start AND periodclasses_end", conn); //Команда выбора данных
+                "periodclasses_number, date_format(SUBTIME(periodclasses_end, CURRENT_TIME()), '%i:%s') FROM periodclasses WHERE CURRENT_TIME() between " +
+                "periodclasses_start AND periodclasses_end ORDER BY periodclasses_number", conn); //Команда выбора данных
 
             conn.Open(); //Открываем соединение
 

@@ -24,7 +24,7 @@
                     
                         Height="150"
                         VerticalAlignment="Top"
-                        Margin="10,12,712,0" Width="150" />
+                        Margin="10,12,712,0" Width="150" MouseLeftButtonUp="PersonPicture_MouseLeftButtonUp" />
 
                 <ProgressBar
             x:Name="ProgressBarTeachers"
@@ -36,7 +36,7 @@
                 <Button
             x:Name="ButtonSave"
             Width="120"
-            Height="30"
+            Height="35"
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
@@ -149,6 +149,13 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="* - обязательные для заполнения поля"
+                    FontSize="16"/>
+                <Label x:Name="LabelGroup"
+                    Height="35"
+                    Margin="10,167,542,257"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Группа: отсутствует"
                     FontSize="16"/>
 
             </Grid>

@@ -145,7 +145,7 @@ namespace ElectroJournal.Pages.AdminPanel
             idTeachers.Clear();
 
             MySqlCommand command = new MySqlCommand("", conn); //Команда выбора данных
-            command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`";
+            //command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`";
 
             if (ComboBoxSortingTeacher.SelectedIndex == 0) command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers` ORDER BY `teachers_surname`";
             else command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers` ORDER BY `teachers_surname` DESC";
@@ -166,25 +166,19 @@ namespace ElectroJournal.Pages.AdminPanel
         }
 
 
-
         private void TextBoxTeachersPhone2_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
         }
 
-        private void RectangleTeachersPhoto_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-        }
-
-
-
         private void TextBoxTeachersFIO_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            PasswordBoxTeachers.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(8);
+            if (ListViewTeachers.SelectedItem == null)
+            {
+                PasswordBoxTeachers.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(8);
 
-            TextBoxTeachersLogin.Text = Transliteration.CyrillicToLatin(TextBoxTeachersFIO.Text.Split().First(), NickBuhro.Translit.Language.Russian);
+                TextBoxTeachersLogin.Text = Transliteration.CyrillicToLatin(TextBoxTeachersFIO.Text.Split().First(), NickBuhro.Translit.Language.Russian);
+            }
         }
 
         private async void SendPasswordToUser()
@@ -323,8 +317,8 @@ namespace ElectroJournal.Pages.AdminPanel
             {
                 DbControls.DeleteTeachers(idTeachers[ListViewTeachers.SelectedIndex]);
                 ListViewTeachers.Items.Clear();
-                ListViewTeachersRefresh();
 
+                ListViewTeachersRefresh();
                 TextBoxTeachersFIO.Clear();
                 TextBoxTeachersPhone1.Clear();
                 TextBoxTeachersMail1.Clear();
@@ -362,6 +356,12 @@ namespace ElectroJournal.Pages.AdminPanel
                     }
                 }
             }
+        }
+
+        private void PersonPicture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
         }
     }
 }

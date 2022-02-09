@@ -15,18 +15,18 @@
         <Button x:Name="ButtonCreateHousing" Style="{StaticResource ResourceKey=WPFUIButtonAccent}" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="576,464,0,0" VerticalAlignment="Top" Width="232" FontSize="14" Click="ButtonCreateHousing_Click"/>
         <Button x:Name="ButtonDeleteHousing" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Content="Удалить" HorizontalAlignment="Left" Height="30" Margin="575.5,505,0,0" VerticalAlignment="Top" Width="100" Click="ButtonDeleteHousing_Click"/>
         <Button x:Name="ButtonSaveHousing" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Content="Сохранить" HorizontalAlignment="Left" Height="30" Margin="708,505,0,0" VerticalAlignment="Top" Width="100" Click="ButtonSaveHousing_Click"/>
-        <TextBox x:Name="TextBoxCabinet" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <TextBox x:Name="TextBoxCabinet" HorizontalAlignment="Left" Height="30" Margin="360,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
         <Label Content="Кабинет" HorizontalAlignment="Left" Height="30" Margin="260,125,0,0" VerticalAlignment="Top" Width="100" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxEntryFloor" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,225,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <TextBox x:Name="TextBoxEntryFloor" HorizontalAlignment="Left" Height="30" Margin="360,225,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
         <Label Content="Этаж" HorizontalAlignment="Left" Height="30" Margin="260,225,0,0" VerticalAlignment="Top" Width="96" FontSize="14" VerticalContentAlignment="Center"/>
         <Label Content="Корпус" HorizontalAlignment="Left" Height="29" Margin="260,276,0,0" VerticalAlignment="Top" Width="100" FontSize="14" VerticalContentAlignment="Center"/>
         <ComboBox x:Name="ComboBoxSelectHousing" HorizontalAlignment="Left" Height="30" Margin="360,276,0,0" Width="181" VerticalAlignment="Top"/>
         <Label Content="Название корпуса" HorizontalAlignment="Left" Height="30" Margin="834,56,0,0" VerticalAlignment="Top" Width="230" FontSize="14"/>
-        <TextBox x:Name="TextBoxNameHousing" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="110" Margin="830.5,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" VerticalContentAlignment="Top"/>
+        <TextBox x:Name="TextBoxNameHousing" HorizontalAlignment="Left" Height="110" Margin="830.5,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" VerticalContentAlignment="Top"/>
         <Label Content="Адрес" HorizontalAlignment="Left" Height="30" Margin="834,213,0,0" VerticalAlignment="Top" Width="230" FontSize="14"/>
-        <TextBox x:Name="TextBoxAddressHousing" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="80" Margin="830.5,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" VerticalContentAlignment="Top"/>
+        <TextBox x:Name="TextBoxAddressHousing" HorizontalAlignment="Left" Height="80" Margin="830.5,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315" VerticalContentAlignment="Top"/>
         <Label Content="Кол-во аудиторий" HorizontalAlignment="Left" Height="30" Margin="830.5,348,0,0" VerticalAlignment="Top" Width="149" FontSize="14"/>
-        <TextBox x:Name="TextBoxQuantityHousing" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="1015,348,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="99" VerticalContentAlignment="Top"/>
+        <TextBox x:Name="TextBoxQuantityHousing" HorizontalAlignment="Left" Height="30" Margin="1015,348,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="99" VerticalContentAlignment="Top"/>
         <Label Content="Кабинеты" HorizontalAlignment="Left" Height="30" Margin="45,10,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Padding="5,0" VerticalContentAlignment="Center" FontWeight="Bold"/>
         <Image HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="30" Source="/ElectroJournal;component/Images/AdminIcons/Teachers/icons8-дверь-96.png"/>
         <Label Content="Корпуса" HorizontalAlignment="Left" Height="30" Margin="610.5,10,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Padding="5,0" VerticalContentAlignment="Center" FontWeight="Bold"/>
@@ -41,11 +41,11 @@
         mah:TextBoxHelper.ButtonCommandParameter="{Binding Text, ElementName=test2}"
         mah:TextBoxHelper.Watermark="Поиск"
         Style="{DynamicResource MahApps.Styles.TextBox.Search}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" BorderBrush="#FFEDEDED" VerticalContentAlignment="Center" />
-        <TextBox x:Name="TextBoxFeatures" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="70" Margin="360,375,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <TextBox x:Name="TextBoxFeatures" HorizontalAlignment="Left" Height="70" Margin="360,375,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
         <Label Content="Особенности &#xD;&#xA;кабинета" HorizontalAlignment="Left" Height="40" Margin="260,375,0,0" VerticalAlignment="Top" Width="100" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxName" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <TextBox x:Name="TextBoxName" HorizontalAlignment="Left" Height="30" Margin="360,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
         <Label Content="Название" HorizontalAlignment="Left" Height="30" Margin="260,175,0,0" VerticalAlignment="Top" Width="96" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxNumberSeats" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="360,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
+        <TextBox x:Name="TextBoxNumberSeats" HorizontalAlignment="Left" Height="30" Margin="360,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
         <Label Content="Кол-во мест" HorizontalAlignment="Left" Height="30" Margin="260,325,0,0" VerticalAlignment="Top" Width="96" FontSize="14" VerticalContentAlignment="Center"/>
         <TextBox x:Name="TextBoxMahSearch_Copy"
             Margin="580,49,0,0"

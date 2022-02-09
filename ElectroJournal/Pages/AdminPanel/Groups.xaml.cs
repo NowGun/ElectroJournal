@@ -41,86 +41,121 @@ namespace ElectroJournal.Pages.AdminPanel
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBase.GetDBConnection();
 
-        int idTeachers = 0;
-        int idTypeLearning = 0;
-        int idGroups = 0;
+        List<int> idGroups = new List<int>();
+        List<int> idTeachers = new List<int>();
+        List<int> idTypeLearning = new List<int>();
 
         private void ButtonGroupSave_Click(object sender, RoutedEventArgs e)
         {
-            if (TextBoxGroupsName.Text == string.Empty)
+            if (!string.IsNullOrWhiteSpace(TextBoxGroupsName.Text) && ComboBoxClassTeacher.SelectedItem != null)
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Напишите название");
-            }
-            else if (ListBoxGroups.SelectedItem != null)
-            {
-                MySqlCommand command = new MySqlCommand("UPDATE `groups` SET `groups_name` = @name, `groups_name_abbreviated` = @nameabb, `groups_prefix` = @prefix, `groups_course` = @course," +
-                    "`typelearning_idtypelearning` = (SELECT `idtypelearning` FROM `typelearning` WHERE `idtypelearning` = @typelearning), `teachers_idteachers` = (SELECT `idteachers` FROM `teachers` WHERE `idteachers` = @teachers)  WHERE `idgroups` = @id", conn);
-
-                command.Parameters.Add("@name", MySqlDbType.VarChar).Value = TextBoxGroupsName.Text;
-                command.Parameters.Add("@nameabb", MySqlDbType.VarChar).Value = TextBoxGroupsNameAbbreviated.Text;
-                command.Parameters.Add("@prefix", MySqlDbType.VarChar).Value = TextBoxGroupsPrefix.Text;
-                command.Parameters.Add("@course", MySqlDbType.VarChar).Value = NumberBoxCourse.Text;
-                command.Parameters.Add("@typelearning", MySqlDbType.VarChar).Value = idTypeLearning;
-                command.Parameters.Add("@teachers", MySqlDbType.VarChar).Value = idTeachers;
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idGroups;
-
-                conn.Open();
-
-                if (command.ExecuteNonQuery() == 1)
+                if (ListBoxGroups.SelectedItem != null)
                 {
-                    conn.Close();
-                    FillListBoxGroups();
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
-                }
-                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Произошла ошибка");
-            }
-            else
-            {
-                MySqlCommand command = new MySqlCommand("INSERT INTO `groups` (groups_name, groups_name_abbreviated, groups_prefix, typelearning_idtypelearning, teachers_idteachers, groups_course) VALUES " +
-                    "(@name, @nameabb, @prefix, (SELECT idtypelearning FROM typelearning WHERE idtypelearning = @typelearning), (SELECT idteachers FROM teachers WHERE idteachers = @teachers), @course)", conn);
+                    MySqlCommand command = new MySqlCommand("UPDATE `groups` SET `groups_name` = @name, `groups_name_abbreviated` = @nameabb, `groups_prefix` = @prefix, `groups_course` = @course," +
+                        "`typelearning_idtypelearning` = (SELECT `idtypelearning` FROM `typelearning` WHERE `idtypelearning` = @typelearning), `teachers_idteachers` = (SELECT `idteachers` FROM `teachers` WHERE `idteachers` = @teachers)  WHERE `idgroups` = @id", conn);
 
-                command.Parameters.Add("@name", MySqlDbType.VarChar).Value = TextBoxGroupsName.Text;
-                command.Parameters.Add("@nameabb", MySqlDbType.VarChar).Value = TextBoxGroupsNameAbbreviated.Text;
-                command.Parameters.Add("@prefix", MySqlDbType.VarChar).Value = TextBoxGroupsPrefix.Text;
-                command.Parameters.Add("@course", MySqlDbType.VarChar).Value = NumberBoxCourse.Text;
-                command.Parameters.Add("@typelearning", MySqlDbType.VarChar).Value = idTypeLearning;
-                command.Parameters.Add("@teachers", MySqlDbType.VarChar).Value = idTeachers;
+                    command.Parameters.Add("@name", MySqlDbType.VarChar).Value = TextBoxGroupsName.Text;
+                    command.Parameters.Add("@nameabb", MySqlDbType.VarChar).Value = TextBoxGroupsNameAbbreviated.Text;
+                    command.Parameters.Add("@prefix", MySqlDbType.VarChar).Value = TextBoxGroupsPrefix.Text;
+                    command.Parameters.Add("@course", MySqlDbType.VarChar).Value = NumberBoxCourse.Text;
+                    command.Parameters.Add("@typelearning", MySqlDbType.VarChar).Value = idTypeLearning[ComboBoxTypeLearning.SelectedIndex];
+                    command.Parameters.Add("@teachers", MySqlDbType.VarChar).Value = idTeachers[ComboBoxClassTeacher.SelectedIndex];
+                    command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idGroups[ListBoxGroups.SelectedIndex];
 
                     conn.Open();
 
                     if (command.ExecuteNonQuery() == 1)
                     {
                         conn.Close();
-                    FillListBoxGroups();
+                        FillListBoxGroups();
+
+                        TextBoxGroupsName.Clear();
+                        TextBoxGroupsNameAbbreviated.Clear();
+                        TextBoxGroupsPrefix.Clear();
+                        ComboBoxTypeLearning.SelectedIndex = 0;
+                        ComboBoxClassTeacher.SelectedItem = null;
+                        NumberBoxCourse.Text = "1";
+
                         ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                     }
                     else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Произошла ошибка");
+                }
+                else
+                {
+                    MySqlCommand command = new MySqlCommand("INSERT INTO `groups` (groups_name, groups_name_abbreviated, groups_prefix, typelearning_idtypelearning, teachers_idteachers, groups_course) VALUES " +
+                        "(@name, @nameabb, @prefix, (SELECT idtypelearning FROM typelearning WHERE idtypelearning = @typelearning), (SELECT idteachers FROM teachers WHERE idteachers = @teachers), @course)", conn);
+
+                    command.Parameters.Add("@name", MySqlDbType.VarChar).Value = TextBoxGroupsName.Text;
+                    command.Parameters.Add("@nameabb", MySqlDbType.VarChar).Value = TextBoxGroupsNameAbbreviated.Text;
+                    command.Parameters.Add("@prefix", MySqlDbType.VarChar).Value = TextBoxGroupsPrefix.Text;
+                    command.Parameters.Add("@course", MySqlDbType.VarChar).Value = NumberBoxCourse.Text;
+                    command.Parameters.Add("@typelearning", MySqlDbType.VarChar).Value = idTypeLearning[ComboBoxTypeLearning.SelectedIndex];
+                    command.Parameters.Add("@teachers", MySqlDbType.VarChar).Value = idTeachers[ComboBoxClassTeacher.SelectedIndex];
+
+                    conn.Open();
+
+                    if (command.ExecuteNonQuery() == 1)
+                    {
+                        conn.Close();
+                        FillListBoxGroups();
+
+                        TextBoxGroupsName.Clear();
+                        TextBoxGroupsNameAbbreviated.Clear();
+                        TextBoxGroupsPrefix.Clear();
+                        ComboBoxTypeLearning.SelectedIndex = 0;
+                        ComboBoxClassTeacher.SelectedItem = null;
+                        NumberBoxCourse.Text = "1";
+
+                        ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                    }
+                    else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Произошла ошибка");
+                }
             }
+            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Заполните помеченные поля");            
         }
 
         private void ButtonGroupDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            DeleteGroup();
         }
 
         private void ButonGroupAdd_Click(object sender, RoutedEventArgs e)
         {
+            ListBoxGroups.SelectedItem = null;
 
+            FillComboBoxClassTeacher();
+            FillComboBoxTypeLearning();
+
+            TextBoxGroupsName.Clear();
+            TextBoxGroupsNameAbbreviated.Clear();
+            TextBoxGroupsPrefix.Clear();
+            ComboBoxTypeLearning.SelectedIndex = 0;
+            ComboBoxClassTeacher.SelectedItem = null;
+            NumberBoxCourse.Text = "1";
         }
 
         private async void FillListBoxGroups()
         {
             ListBoxGroups.Items.Clear();
+            idGroups.Clear();
 
-            MySqlCommand command = new MySqlCommand("SELECT `idgroups`, `groups_name` FROM `groups`", conn); //Команда выбора данных
+            MySqlCommand command = new MySqlCommand("", conn); //Команда выбора данных
+
+            if (ComboBoxGroupsSorting.SelectedIndex == 0) command.CommandText = ("SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` ORDER BY `groups_name`");
+            else if (ComboBoxGroupsSorting.SelectedIndex == 1) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 1 ORDER BY `groups_name`";
+            else if (ComboBoxGroupsSorting.SelectedIndex == 2) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 2 ORDER BY `groups_name`";
+            else if (ComboBoxGroupsSorting.SelectedIndex == 3) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 3 ORDER BY `groups_name`";
+            else if (ComboBoxGroupsSorting.SelectedIndex == 4) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 4 ORDER BY `groups_name`";
+
             await conn.OpenAsync(); //Открываем соединение
-            MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-            while (await read.ReadAsync()) //Читаем пока есть данные
+            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+            for (int i = 0; await read.ReadAsync(); i++)
             {
                 ListBoxGroups.Items.Add(read.GetValue(1));
-                idGroups = read.GetInt32(0);
+                idGroups.Add(read.GetInt32(0));
             }
-            conn.Close();
+            conn.Close(); //Закрываем соединение
         }
 
         private async void FillComboBoxClassTeacher()
@@ -131,11 +166,13 @@ namespace ElectroJournal.Pages.AdminPanel
             conn.Open(); //Открываем соединение
 
             MySqlDataReader read = (MySqlDataReader) await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
-            while (await read.ReadAsync()) //Читаем пока есть данные
+
+            for (int i = 0; await read.ReadAsync(); i++)
             {
                 ComboBoxClassTeacher.Items.Add(read.GetValue(2).ToString() + " " + read.GetValue(1).ToString() + " " + read.GetValue(3).ToString());
-                idTeachers = read.GetInt32(0);
+                idTeachers.Add(read.GetInt32(0));
             }
+            
             conn.Close(); //Закрываем соединение
         }
 
@@ -146,19 +183,80 @@ namespace ElectroJournal.Pages.AdminPanel
             MySqlCommand command = new MySqlCommand("SELECT `idtypelearning`, `typelearning_name` FROM `typelearning`", conn); //Команда выбора данных
             await conn.OpenAsync(); //Открываем соединение
             MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-            while (await read.ReadAsync()) //Читаем пока есть данные
+
+            for (int i = 0; await read.ReadAsync(); i++)
             {
                 ComboBoxTypeLearning.Items.Add(read.GetValue(1));
-                idTypeLearning = read.GetInt32(0);
-            }
+                idTypeLearning.Add(read.GetInt32(0));
+            }           
             conn.Close();
+
+            ComboBoxTypeLearning.SelectedIndex = 0;
         }
 
-        private void ListBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ListBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            ButtonGroupDelete.IsEnabled = true;
+
+            if (ListBoxGroups.SelectedItem != null) //если строка выделена выполняется условие
+            {
+                MySqlCommand command = new MySqlCommand("SELECT * FROM showgroups WHERE `idgroups` = @id", conn); //Команда выбора данных
+
+                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idGroups[ListBoxGroups.SelectedIndex];
+
+                conn.Open(); //Открываем соединение
+                MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+                if (await read.ReadAsync()) //Читаем пока есть данные
+                {
+                    string FIO = read.GetString(6) + " " + read.GetString(5) + " " + read.GetString(7);
+
+                    TextBoxGroupsName.Text = read.GetString(1);
+                    TextBoxGroupsNameAbbreviated.Text = read.GetString(2);
+                    TextBoxGroupsPrefix.Text = read.GetString(3);
+                    ComboBoxTypeLearning.SelectedItem = read.GetString(4);
+                    ComboBoxClassTeacher.SelectedItem = FIO;
+                    NumberBoxCourse.Text = read.GetString(8);
+
+
+                }
+                conn.Close(); //Закрываем соединение
+            }
         }
 
+        private void ListBoxGroups_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                DeleteGroup();
+            }
+        }
 
+        private void DeleteGroup()
+        {
+            if (ListBoxGroups.Items.Count == 0)
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+            }
+            else if (ListBoxGroups.SelectedItem != null)
+            {
+                DbControls.DeleteGroup(idGroups[ListBoxGroups.SelectedIndex]);
+                ListBoxGroups.Items.Clear();
+
+                TextBoxGroupsName.Clear();
+                TextBoxGroupsNameAbbreviated.Clear();
+                TextBoxGroupsPrefix.Clear();
+                ComboBoxTypeLearning.SelectedIndex = 0;
+                ComboBoxClassTeacher.SelectedItem = null;
+                NumberBoxCourse.Text = "1";
+
+                FillListBoxGroups();
+            }
+        }
+
+        private void ComboBoxGroupsSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillListBoxGroups();
+        }
     }
 }

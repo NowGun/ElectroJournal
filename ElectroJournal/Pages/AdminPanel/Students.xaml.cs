@@ -32,20 +32,24 @@ namespace ElectroJournal.Pages.AdminPanel
         public Students()
         {
             InitializeComponent();
+
+            ListBoxStudentsRefresh();
         }
 
         DataBase DbUser = new DataBase();
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBase.GetDBConnection();
 
+        List<int> idStudents = new List<int>();
+
         private void ListViewStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //ButtonSaveTeacher.IsEnabled = true;
-            if (ListViewStudents.SelectedItem != null) //если строка выделена выполняется условие
+            if (ListBoxStudents.SelectedItem != null) //если строка выделена выполняется условие
             {
                 MySqlCommand command = new MySqlCommand("SELECT `idstudents`, `students_name`, `students_surname`, `students_patronymic`, `students_birthday`, `students_residence`, `students_dormitory` FROM `students` WHERE idstudents = @id ", conn); //Команда выбора данных
 
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Int32.Parse(ListViewStudents.SelectedItem.ToString().Split().First());
+                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Int32.Parse(ListBoxStudents.SelectedItem.ToString().Split().First());
 
                 conn.Open(); //Открываем соединение
                 MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
@@ -60,68 +64,141 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
                 conn.Close(); //Закрываем соединение
             }
+
+
+
+           
         }
 
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow MainWindow = new MainWindow();
             string[] FIO = TextBoxStudentsFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-
-            MySqlCommand command = new MySqlCommand("INSERT INTO students (`students_name`, `students_surname`, `students_patronymic`, `students_birthday`, `students_residence`," +
-                " `students_dormitory`) VALUES (@name, @surname, @patronymic, @birthday, @residence, @dormitory)", conn);
-
-            command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
-            command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
-            command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
-            command.Parameters.Add("@birthday", MySqlDbType.VarChar).Value = DatePickerDateBirthday.SelectedDate.Value.ToString("yyyy/MM/dd");
-            command.Parameters.Add("@residence", MySqlDbType.VarChar).Value = TextBoxStudentsResidence.Text;
-            command.Parameters.Add("@dormitory", MySqlDbType.VarChar).Value = CheckBoxStudentsDormitory.IsChecked.ToString();
-
-
-            conn.Open();
-
-            if (command.ExecuteNonQuery() == 1)
+            if (!string.IsNullOrWhiteSpace(TextBoxStudentsFIO.Text))
             {
-                conn.Close();
-                MainWindow.Notifications("Сообщение", "Данные сохранены");
+                if (TextBoxStudentsFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
+                {
+                    ProgressBar.Visibility = Visibility.Visible;
+
+                    if (ListBoxStudents.SelectedItem != null)
+                    {
+                        MySqlCommand command = new MySqlCommand("UPDATE `students` SET `students_name` = @name, `students_surname` = @surname, `students_patronymic` = @patronymic, " +
+                            "`students_birthday` = @birthday, `students_residence` = @residence, `students_dormitory` = @dormitory, `students_parent` = @parent, " +
+                            "`students_phone` = @phone, `students_parent_phone` = @parentphone, `groups_idgroups` = @groups  WHERE `idstudents` = @id", conn);
+
+
+                        command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
+                        command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
+                        command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
+                        command.Parameters.Add("@birthday", MySqlDbType.VarChar).Value = DatePickerDateBirthday.SelectedDate.Value.ToString("yyyy/MM/dd");
+                        command.Parameters.Add("@residence", MySqlDbType.VarChar).Value = TextBoxStudentsResidence.Text;
+                        command.Parameters.Add("@dormitory", MySqlDbType.VarChar).Value = CheckBoxStudentsDormitory.IsChecked.ToString();
+                        command.Parameters.Add("@parent", MySqlDbType.VarChar).Value = TextBoxParentFIO.Text;
+                        command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxStudentsPhone.Text;
+                        command.Parameters.Add("@parentphone", MySqlDbType.VarChar).Value = TextBoxParentPhone.Text;
+                        command.Parameters.Add("@group", MySqlDbType.VarChar).Value = 1;
+                        command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idStudents[ListBoxStudents.SelectedIndex];
+
+                        await conn.OpenAsync();
+
+                        if (command.ExecuteNonQuery() == 1)
+                        {
+                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                        }
+                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Произошла ошибка");
+
+                        conn.Close();
+                        ListBoxStudentsRefresh();
+                    }
+                    else
+                    {
+
+                        ProgressBar.Visibility = Visibility.Visible;
+                        
+                        MySqlCommand command = new MySqlCommand("INSERT INTO `students` (`students_name`, `students_surname`, `students_patronymic`, `students_birthday`, `students_residence`," +
+                " `students_dormitory`, `students_parent`, `students_phone`, `students_parent_phone`, `groups_idgroups`) " +
+                "VALUES (@name, @surname, @patronymic, @birthday, @residence, @dormitory, @parent, @phone, @parentphone, @group)", conn);
+
+
+
+
+                        command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
+                        command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
+                        command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
+                        command.Parameters.Add("@birthday", MySqlDbType.VarChar).Value = DatePickerDateBirthday.SelectedDate.Value.ToString("yyyy/MM/dd");
+                        command.Parameters.Add("@residence", MySqlDbType.VarChar).Value = TextBoxStudentsResidence.Text;
+                        command.Parameters.Add("@dormitory", MySqlDbType.VarChar).Value = CheckBoxStudentsDormitory.IsChecked.ToString();
+                        command.Parameters.Add("@parent", MySqlDbType.VarChar).Value = TextBoxParentFIO.Text;
+                        command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxStudentsPhone.Text;
+                        command.Parameters.Add("@parentphone", MySqlDbType.VarChar).Value = TextBoxParentPhone.Text;
+                        command.Parameters.Add("@group", MySqlDbType.Int32).Value = 12;
+
+
+                        await conn.OpenAsync();
+
+                        if (command.ExecuteNonQuery() == 1)
+                        {
+                            TextBoxParentFIO.Clear();
+                            TextBoxParentPhone.Clear();
+                            TextBoxStudentsFIO.Clear();
+                            TextBoxStudentsPhone.Clear();
+                            TextBoxStudentsResidence.Clear();
+                            DatePickerDateBirthday.Text = null;
+                            CheckBoxStudentsDormitory.IsChecked = false;
+
+                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
+                            ProgressBar.Visibility = Visibility.Hidden;
+                        }
+
+                        conn.Close();
+                        ListBoxStudentsRefresh();
+
+
+                    }
+                    ProgressBar.Visibility = Visibility.Hidden;
+                }
+                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
             }
+            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Notifications("", DatePickerDateBirthday.SelectedDate.Value.ToString("yyyy/MM/dd"));
+        { 
+            ListBoxStudents.SelectedItem = null;
+            TextBoxParentFIO.Clear();
+            TextBoxParentPhone.Clear();
+            TextBoxStudentsFIO.Clear();
+            TextBoxStudentsPhone.Clear();
+            TextBoxStudentsResidence.Clear();
+            DatePickerDateBirthday.Text = null;
+            CheckBoxStudentsDormitory.IsChecked = false;
+            
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainwindow = new MainWindow();
-            if (ListViewStudents.Items.Count == 0)
-            {
-                mainwindow.Notifications("Сообщение", "Произошла ошибка");
-            }
-            else if (ListViewStudents.SelectedItem != null)
-            {
-                string name_test = ListViewStudents.SelectedItem.ToString().Split().First();
-                //DbControls.DeleteTeachers(name_test);
-                ListViewStudents.Items.Clear();
-                ListViewStudentsRefresh();
-            }
+            DeleteStudent();
         }
 
-        private async void ListViewStudentsRefresh()
+        private async void ListBoxStudentsRefresh()
         {
-            ListViewStudents.Items.Clear();
+            ListBoxStudents.Items.Clear();
+            idStudents.Clear();
 
+            MySqlCommand command = new MySqlCommand("", conn); //Команда выбора данных
 
-            MySqlCommand command = new MySqlCommand("SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`", conn); //Команда выбора данных
+            if (ComboBoxSorting.SelectedIndex == 0) command.CommandText = "SELECT `idstudents`, `students_name`, `students_surname`, `students_patronymic` FROM `students` ORDER BY `students_surname`";
+            else command.CommandText = "SELECT `idstudents`, `students_name`, `students_surname`, `students_patronymic` FROM `students` ORDER BY `students_surname` DESC";
+
             await conn.OpenAsync(); //Открываем соединение
-            MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-            while (await read.ReadAsync()) //Читаем пока есть данные
+            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+            for (int i = 0; await read.ReadAsync(); i++)
             {
                 if (read.GetValue(1).ToString() != "" && read.GetValue(2).ToString() != "" && read.GetValue(3).ToString() != "")
-                    ListViewStudents.Items.Add(read.GetValue(0).ToString() + " | " + read.GetValue(2).ToString() + " " + read.GetValue(1).ToString() + " " + read.GetValue(3).ToString()); //Добавляем данные в лист итем
+                    ListBoxStudents.Items.Add(read.GetValue(2).ToString() + " " + read.GetValue(1).ToString() + " " + read.GetValue(3).ToString()); //Добавляем данные в лист итем
+
+                idStudents.Add(read.GetInt32(0));
             }
             conn.Close(); //Закрываем соединение
                           //ButtonSaveTeacher.IsEnabled = false;
@@ -131,6 +208,71 @@ namespace ElectroJournal.Pages.AdminPanel
         private void TextBoxStudentsPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
+        }
+
+        private void ListBoxStudents_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                DeleteStudent();
+            }
+        }
+
+        private async void ListBoxStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ButtonDelete.IsEnabled = true;
+
+            if (ListBoxStudents.SelectedItem != null) //если строка выделена выполняется условие
+            {
+                MySqlCommand command = new MySqlCommand("SELECT `idstudents`, `students_name`, `students_surname`, `students_patronymic`, `students_birthday`, `students_residence`, " +
+                            "`students_dormitory`, `students_parent`, `students_phone`, `students_parent_phone`, `groups_idgroups` FROM `students` WHERE idstudents = @id", conn); //Команда выбора данных
+
+                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idStudents[ListBoxStudents.SelectedIndex];
+
+                conn.Open(); //Открываем соединение
+                MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+                if (await read.ReadAsync()) //Читаем пока есть данные
+                {
+                    string FIO = read.GetString(2) + " " + read.GetString(1) + " " + read.GetString(3);
+
+                    TextBoxStudentsFIO.Text = FIO;
+                    DatePickerDateBirthday.SelectedDate = read.GetDateTime(4);
+                    TextBoxStudentsResidence.Text = read.GetString(5);
+                    CheckBoxStudentsDormitory.IsChecked = bool.Parse(read.GetString(6));
+                    TextBoxParentFIO.Text = read.GetString(7);
+                    TextBoxStudentsPhone.Text = read.GetString(8);
+                    TextBoxParentPhone.Text = read.GetString(9);
+                }
+                conn.Close(); //Закрываем соединение
+            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        }
+
+        private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBoxStudentsRefresh();
+        }
+
+        private void DeleteStudent()
+        {
+            if (ListBoxStudents.Items.Count == 0)
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+            }
+            else if (ListBoxStudents.SelectedItem != null)
+            {
+                DbControls.DeleteStudent(idStudents[ListBoxStudents.SelectedIndex]);
+                ListBoxStudents.Items.Clear();
+
+                ListBoxStudentsRefresh();
+                TextBoxParentFIO.Clear();
+                TextBoxParentPhone.Clear();
+                TextBoxStudentsFIO.Clear();
+                TextBoxStudentsPhone.Clear();
+                TextBoxStudentsResidence.Clear();
+                DatePickerDateBirthday.Text = null;
+                CheckBoxStudentsDormitory.IsChecked = false;
+            }
         }
     }
 }

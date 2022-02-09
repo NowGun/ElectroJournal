@@ -97,6 +97,32 @@ namespace ElectroJournal.Classes
             }
         }
 
+        public void DeleteStudent(int id)
+        {
+            MySqlCommand command = new MySqlCommand("DELETE FROM `students` WHERE `idstudents` = @id", conn);
+            command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
+
+            conn.Open();
+
+            if (command.ExecuteNonQuery() == 1)
+            {
+                conn.Close();
+            }
+        }
+
+        public void DeleteGroup(int id)
+        {
+            MySqlCommand command = new MySqlCommand("DELETE FROM `groups` WHERE `idgroups` = @id", conn);
+            command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
+
+            conn.Open();
+
+            if (command.ExecuteNonQuery() == 1)
+            {
+                conn.Close();
+            }
+        }
+
         public bool IsTeachersLoginExists(string login)
         {
             DataTable table = new DataTable();
