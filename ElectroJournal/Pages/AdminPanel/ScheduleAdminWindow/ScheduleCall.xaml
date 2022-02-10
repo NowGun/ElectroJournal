@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="ScheduleCall" Height="230" Width="587" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFEDF1F4" Margin="0,0,0,-6">
-        <Rectangle HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="515" Fill="White" Stroke="#FFE6E9EB" RadiusX="6" RadiusY="6" Margin="25,13,0,0"/>
+        <Rectangle HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="515" Stroke="#FFE6E9EB" RadiusX="6" RadiusY="6" Margin="25,13,0,0"/>
 
         <wpfui:NumberBox x:Name="NumberBoxNumber"
             Margin="66,64,0,0"

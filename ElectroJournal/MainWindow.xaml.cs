@@ -50,12 +50,17 @@ namespace ElectroJournal
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
 
+            GridNLogin.Visibility = Visibility.Visible;
+
             CheckAutoRun();
             CompletionLogin();
 
             TitleBar.CloseActionOverride = CloseActionOverride;
             //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
+
+            
+
         }
 
         DataBase DbUser = new DataBase();
@@ -65,7 +70,6 @@ namespace ElectroJournal
         MySqlConnection conn = DataBase.GetDBConnection();
         DataTable table = new DataTable();
         MySqlDataAdapter adapter = new MySqlDataAdapter();
-        DispatcherTimer label_time_time;
 
         System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
 
@@ -138,11 +142,9 @@ namespace ElectroJournal
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            label_time_time = new DispatcherTimer();
-            label_time_time.Tick += (o, t) => { LabelTime.Content = "Время: " + DateTime.Now.ToLongTimeString(); };
-            label_time_time.Interval = new TimeSpan(0, 0, 1);
-            label_time_time.Start();            
-
+            timer2.Tick += new EventHandler(SheduleCall);
+            timer2.Interval = new TimeSpan(0, 0, 1);
+            timer2.Start();
 
             Login();
 
@@ -155,9 +157,62 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimShowLoading");
             anim2.Begin();
 
-            timer2.Tick += new EventHandler(LoadLessonPeriod);
-            timer2.Interval = new TimeSpan(0, 0, 1);
-            //timer2.Start();
+            
+            
+        }
+
+        bool checkFiilScheduleDB = true;
+        
+        List<string> ScheduleStart = new List<string>();
+        List<string> ScheduleEnd = new List<string>();
+        List<int> ScheduleNumber = new List<int>();
+
+        private void SheduleCall(object sender, EventArgs e)
+        {
+            if (checkFiilScheduleDB)
+            {
+                MySqlCommand command = new MySqlCommand("SELECT date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), " +
+               "periodclasses_number FROM periodclasses ORDER BY periodclasses_number", conn); //Команда выбора данных
+
+                conn.Open(); //Открываем соединение
+
+                MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
+
+                for (int i = 0; read.Read(); i++)
+                {
+                    ScheduleStart.Add(read.GetString(0));
+                    ScheduleEnd.Add(read.GetString(1));
+                    ScheduleNumber.Add(read.GetInt32(2));
+                }
+
+                conn.Close();
+
+                checkFiilScheduleDB = false;
+            }
+
+            for (int i = 0; i <= ScheduleStart.Count; i++)
+            {
+                if (i != ScheduleStart.Count)
+                {
+                    if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
+                    {
+                        TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
+                        LabelScheduleCall.Content = "Урок: " + ScheduleNumber[i] + "    Период занятий: " + ScheduleStart[i] + " - " + ScheduleEnd[i] +
+                            "    До конца занятий: " + (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
+                        break;
+                    }
+                    else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
+                    {
+                        LabelScheduleCall.Content = "До конца перемены: " + (DateTime.Parse(ScheduleStart[i]) - DateTime.Now).ToString("mm':'ss");
+                        break;
+                    }
+                }
+                else if (i == ScheduleEnd.Count)
+                {
+                    LabelScheduleCall.Content = "";
+                    //break;
+                }
+            }
         }
 
         async void Login()
@@ -230,6 +285,8 @@ namespace ElectroJournal
 
                             conn.Close();
 
+                            
+                            GridNLogin.Visibility = Visibility.Hidden;
                             GridLogin.Visibility = Visibility.Hidden;
                             GridMenu.Visibility = Visibility.Visible;
                             Frame.Visibility = Visibility.Visible;
@@ -283,8 +340,18 @@ namespace ElectroJournal
             Frame.Navigate(new Pages.Journal());
         }
 
+        bool loginbool = true;
+
         private void Frame_ContentRendered(object sender, EventArgs e)
         {
+            if (!loginbool)
+            {
+                GridLogin.Visibility = Visibility.Hidden;
+                ButtonShowLogin.IsEnabled = true;
+            }
+            loginbool = false;
+            Frame.Visibility = Visibility.Visible;
+
             var anim = (Storyboard)FindResource("AnimOpenFrame");
             var anim2 = (Storyboard)FindResource("AnimCloseFrame");
             //anim2.Begin();
@@ -553,40 +620,6 @@ namespace ElectroJournal
             Frame.Visibility = Visibility.Visible;
         }
 
-        int aa = 0;
-
-        private void LoadLessonPeriod(object sender, EventArgs e)
-        {
-            MySqlCommand command = new MySqlCommand("SELECT date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), " +
-                "periodclasses_number, date_format(SUBTIME(periodclasses_end, CURRENT_TIME()), '%i:%s') FROM periodclasses WHERE CURRENT_TIME() between " +
-                "periodclasses_start AND periodclasses_end ORDER BY periodclasses_number", conn); //Команда выбора данных
-
-            conn.Open(); //Открываем соединение
-
-            MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-
-            if (read.Read())
-            {
-                LabelTime.Visibility = Visibility.Visible;
-                LabelLesson.Visibility = Visibility.Visible;
-                LabelPeriodLesson.Visibility = Visibility.Visible;
-                LabelEndLesson.Visibility = Visibility.Visible;
-
-                LabelPeriodLesson.Content = "Период занятий: " + read.GetValue(0).ToString() + " - " + read.GetValue(1).ToString();
-                LabelLesson.Content = "Урок: " + read.GetValue(2).ToString();
-                LabelEndLesson.Content = "Конец занятия через: " + read.GetValue(3).ToString();
-            }
-            else
-            {
-                LabelTime.Visibility = Visibility.Hidden;
-                LabelLesson.Visibility = Visibility.Hidden;
-                LabelPeriodLesson.Visibility = Visibility.Hidden;
-                LabelEndLesson.Visibility = Visibility.Hidden;
-            }
-            conn.Close(); //Закрываем соединение
-            asdasd.Content = aa++;
-        }
-
         private void NavigationViewItemBoard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Board());
@@ -667,6 +700,13 @@ namespace ElectroJournal
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ThemeCheck();
+        }
+
+        private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonShowLogin.IsEnabled = false;
+            Frame.Visibility = Visibility.Hidden;
+            GridLogin.Visibility = Visibility.Visible;
         }
     }
 }

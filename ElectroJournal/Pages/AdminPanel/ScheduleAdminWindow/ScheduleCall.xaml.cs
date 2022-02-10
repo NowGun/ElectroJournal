@@ -35,8 +35,6 @@ namespace ElectroJournal.Pages.AdminPanel.Schedule
             MySqlCommand command = new MySqlCommand("INSERT INTO periodclasses (`periodclasses_start`, `periodclasses_end`, `periodclasses_number`) " +
                 "VALUES (@start, @end, @number)", conn);
 
-            //MySqlCommand command = new MySqlCommand("CREATE USER @login @`%` IDENTIFIED BY @pass", conn);
-
             command.Parameters.Add("@start", MySqlDbType.VarChar).Value = TimePickerStart.Text;
             command.Parameters.Add("@end", MySqlDbType.VarChar).Value = TimePickerEnd.Text;
             command.Parameters.Add("@number", MySqlDbType.VarChar).Value = NumberBoxNumber.Text;
