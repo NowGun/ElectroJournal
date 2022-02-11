@@ -145,7 +145,7 @@ namespace ElectroJournal
             timer2.Tick += new EventHandler(SheduleCall);
             timer2.Interval = new TimeSpan(0, 0, 1);
             timer2.Start();
-
+            
             Login();
 
             RectangleLoadLogin.Visibility = Visibility.Visible;
@@ -158,7 +158,7 @@ namespace ElectroJournal
             anim2.Begin();
 
             
-            
+
         }
 
         bool checkFiilScheduleDB = true;
@@ -169,50 +169,53 @@ namespace ElectroJournal
 
         private void SheduleCall(object sender, EventArgs e)
         {
-            if (checkFiilScheduleDB)
+            if (DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
             {
-                MySqlCommand command = new MySqlCommand("SELECT date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), " +
-               "periodclasses_number FROM periodclasses ORDER BY periodclasses_number", conn); //Команда выбора данных
-
-                conn.Open(); //Открываем соединение
-
-                MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-
-                for (int i = 0; read.Read(); i++)
+                if (checkFiilScheduleDB)
                 {
-                    ScheduleStart.Add(read.GetString(0));
-                    ScheduleEnd.Add(read.GetString(1));
-                    ScheduleNumber.Add(read.GetInt32(2));
-                }
+                    MySqlCommand command = new MySqlCommand("SELECT date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), " +
+                   "periodclasses_number FROM periodclasses ORDER BY periodclasses_number", conn); //Команда выбора данных
 
-                conn.Close();
+                    conn.Open(); //Открываем соединение
 
-                checkFiilScheduleDB = false;
-            }
+                    MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
 
-            for (int i = 0; i <= ScheduleStart.Count; i++)
-            {
-                if (i != ScheduleStart.Count)
-                {
-                    if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
+                    for (int i = 0; read.Read(); i++)
                     {
-                        TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
-                        LabelScheduleCall.Content = "Урок: " + ScheduleNumber[i] + "    Период занятий: " + ScheduleStart[i] + " - " + ScheduleEnd[i] +
-                            "    До конца занятий: " + (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
-                        break;
+                        ScheduleStart.Add(read.GetString(0));
+                        ScheduleEnd.Add(read.GetString(1));
+                        ScheduleNumber.Add(read.GetInt32(2));
                     }
-                    else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
-                    {
-                        LabelScheduleCall.Content = "До конца перемены: " + (DateTime.Parse(ScheduleStart[i]) - DateTime.Now).ToString("mm':'ss");
-                        break;
-                    }
+
+                    conn.Close();
+
+                    checkFiilScheduleDB = false;
                 }
-                else if (i == ScheduleEnd.Count)
+
+                for (int i = 0; i <= ScheduleStart.Count; i++)
                 {
-                    LabelScheduleCall.Content = "";
-                    //break;
+                    if (i != ScheduleStart.Count)
+                    {
+                        if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
+                        {
+                            TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
+                            LabelScheduleCall.Content = "Урок: " + ScheduleNumber[i] + "    Период занятий: " + ScheduleStart[i] + " - " + ScheduleEnd[i] +
+                                "    До конца занятий: " + (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
+                            break;
+                        }
+                        else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
+                        {
+                            LabelScheduleCall.Content = "До конца перемены: " + (DateTime.Parse(ScheduleStart[i]) - DateTime.Now).ToString("mm':'ss");
+                            break;
+                        }
+                    }
+                    else if (i == ScheduleEnd.Count)
+                    {
+                        LabelScheduleCall.Content = "";
+                        //break;
+                    }
                 }
-            }
+            }            
         }
 
         async void Login()
@@ -285,16 +288,17 @@ namespace ElectroJournal
 
                             conn.Close();
 
-                            
+                            FillComboBoxGroups();
+                            Frame.Navigate(new Pages.Journal());
+                            Notifications("Оповещение", "Авторизация прошла успешно");
+
                             GridNLogin.Visibility = Visibility.Hidden;
                             GridLogin.Visibility = Visibility.Hidden;
                             GridMenu.Visibility = Visibility.Visible;
                             Frame.Visibility = Visibility.Visible;
                             NavigationViewItemJournal.IsSelected = true;
-                            Frame.Navigate(new Pages.Journal());
 
                             //LoadLessonPeriod();
-                            Notifications("Оповещение", "Авторизация прошла успешно");
                         }
                         conn.Close();
                         table.Clear();
@@ -707,6 +711,22 @@ namespace ElectroJournal
             ButtonShowLogin.IsEnabled = false;
             Frame.Visibility = Visibility.Hidden;
             GridLogin.Visibility = Visibility.Visible;
+        }
+
+        private async void FillComboBoxGroups()
+        {
+            ComboBoxGroup.Items.Clear();
+
+            MySqlCommand command = new MySqlCommand("SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` ORDER BY `groups_name`", conn); //Команда выбора данных
+
+            await conn.OpenAsync(); //Открываем соединение
+            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+            for (int i = 0; await read.ReadAsync(); i++)
+            {
+                ComboBoxGroup.Items.Add(read.GetValue(1));
+            }
+            conn.Close(); //Закрываем соединение
         }
     }
 }

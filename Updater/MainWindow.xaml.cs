@@ -77,9 +77,12 @@ namespace Updater
             {
                 process.Kill();
             }
-
+            ButtonDownloadUpdate.IsEnabled = false;
+            LabelInformation.Visibility = Visibility.Visible;
             DownloadFiles();
         }
+
+        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
         private void DownloadFiles()
         {
@@ -92,19 +95,36 @@ namespace Updater
 
             wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
             wc.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            stopwatch.Start();
             wc.DownloadFileAsync(new Uri(url), name);
+
+            
         }
 
         void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             //ЗАПУСК КОНСОЛЬНОГО ПРИЛОЖЕНИЯ ДЛЯ РАСПАКОВКИ
-            Process.Start("UpdaterUnZip.exe");
-            this.Close();
+            ButtonDownloadUpdate.IsEnabled = true;
+            LabelInformation.Visibility= Visibility.Hidden;
+            ProgressBarLoad.Value = 0;
+            try
+            {
+                Process.Start("UpdaterUnZip.exe");
+                this.Close();
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                MessageBox.Show("Программа для распаковки не найдена, переустановите приложение.", "Ошибка");                
+            }
+            
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            string downloadedMBs = Math.Round(e.BytesReceived / 1024.0 / 1024.0) + " MB";
+            string totalMBs = Math.Round(e.TotalBytesToReceive / 1024.0 / 1024.0) + " MB";
 
+            LabelInformation.Content ="Загружено: " + downloadedMBs + "/" + totalMBs + "\tСкорость: " + string.Format("{0} MB/s", (e.BytesReceived / 1024.0 / 1024.0 / stopwatch.Elapsed.TotalSeconds).ToString("0.00"));
             ProgressBarLoad.Maximum = (int)e.TotalBytesToReceive / 100;
             ProgressBarLoad.Value = (int)e.BytesReceived / 100;
         }

@@ -278,7 +278,7 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Content="Урок: 4" Height="35" />
+                    Content="" Height="35" />
             <Grid
                 x:Name="GridUser"
                 Margin="0,0,20,0"

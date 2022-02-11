@@ -11,14 +11,14 @@ namespace UpdaterUnZip
         static void Main(string[] args)
         {
 
-            CreateDir();
             Console.WriteLine("Создание временной директории");
-            UnPackNewVersion();
+            CreateDir();
             Console.WriteLine("Распаковка обновления");
-            MoveFiles();
+            UnPackNewVersion();
             Console.WriteLine("Перемещения файлов из временной папки");
-            DeleteDir();
+            MoveFiles();
             Console.WriteLine("Удаление временной директории");
+            DeleteDir();
             Process.Start("ElectroJournal.exe");
             Environment.Exit(0);
         }
@@ -31,6 +31,10 @@ namespace UpdaterUnZip
             {
                 directory.Create();
             }
+            else if (directory.Exists)
+            {
+                directory.Delete(true);
+            }
             
         }
 
@@ -42,27 +46,32 @@ namespace UpdaterUnZip
             const string directoryPath = @"newVersion";
 
             // вызов метода для извлечения файлов из архива
-            ZipFile.ExtractToDirectory(archivePath, directoryPath);
-            MoveFiles();
+            try
+            {
+                ZipFile.ExtractToDirectory(archivePath, directoryPath);
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                Console.WriteLine("Файла для распаковки нету, попробуйте обновить приложение заново");
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
+            
         }
 
         static void MoveFiles()
         {
-            FileSystem.CopyDirectory(@"newVersion", Directory.GetCurrentDirectory(), true);
-            
+            FileSystem.MoveDirectory(@"newVersion", Directory.GetCurrentDirectory(), true);
         }
 
         static void DeleteDir()
         {
             string root = @"newVersion";
-            try
-            {
-                DirectoryInfo directory = new DirectoryInfo(root);
-                directory.Delete(true);
-            }
-            catch (Exception ex)
-            {
+            DirectoryInfo directory = new DirectoryInfo(root);
 
+            if (directory.Exists)
+            {
+                directory.Delete(true);
             }
             System.IO.File.Delete(@"ElectroJournal.zip");            
         }
