@@ -7,7 +7,7 @@
        x:Class="ElectroJournal.Pages.Schedule"  
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Schedule" Width="1280" Height="605" MinWidth="1160" MinHeight="555">
+      Title="Schedule" MinWidth="1160" MinHeight="555">
 
     <Grid>
         <DataGrid x:Name="DataGridSchedule" Margin="10,10,10,10" d:ItemsSource="{d:SampleData ItemCount=5}"/>

@@ -8,21 +8,101 @@
       xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Word" Height="530" Width="1165">
+      Style="{StaticResource UiPage}"
+      Title="Word">
+      
 
     <Grid>
-        <ToolBarTray Margin="0,0,0,415" VerticalAlignment="Top">
-            <ToolBar>
-                <Button Content="Открыть"/>
-                <Button Content="Сохранить"/>
-            </ToolBar>
-        </ToolBarTray>
-        <RichTextBox Margin="40,40,40,10" Background="#CCFFFFFF">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=""/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+
+        <Menu VerticalAlignment="Top" Height="45">
+            <MenuItem Header="Файл" Icon="{x:Static wpfuiCommon:Icon.DocumentSplitHint20}">
+                <MenuItem
+                        Header="Новый"
+                        Tag="new_file" />                
+                <MenuItem
+                        Header="Открыть"
+                        Tag="open" />
+                <MenuItem
+                        Header="Сохранить"
+                        Tag="save" />
+                <MenuItem
+                        Header="Сохранить как"
+                        Tag="save_as" />
+                <Separator />
+            </MenuItem>
+            <MenuItem Header="Редактирование" Icon="{x:Static wpfuiCommon:Icon.DocumentEdit20}">
+                <MenuItem
+                        Header="Отменить"
+                        Tag="undo" />
+                <Separator />
+                <MenuItem
+                        Header="Копировать"
+                        Tag="copy" />
+                <MenuItem
+                        Header="Вставить"
+                        Tag="paste" />
+                <MenuItem
+                        Header="Удалить"
+                        IsEnabled="False"
+                        Tag="delete" />
+                <Separator />
+                <MenuItem
+                        Header="Найти"
+                        Tag="find" />
+                <Separator />
+            </MenuItem>
+            <Separator />
+            <MenuItem
+                    Icon="{x:Static wpfuiCommon:Icon.TextBold20}"
+                    Tag="text_bold" />
+            <MenuItem
+                    Icon="{x:Static wpfuiCommon:Icon.TextItalic20}"
+                    Tag="text_italic" />
+            <MenuItem
+                    Icon="{x:Static wpfuiCommon:Icon.TextUnderline20}"
+                    Tag="text_underline" />
+            <Separator />
+            <MenuItem
+                    Icon="{x:Static wpfuiCommon:Icon.TextFont20}"
+                    Tag="text_font" />
+        </Menu>
+
+        <RichTextBox
+                x:Name="RootTextBox"
+                Padding="0,6"
+                Background="Transparent"
+                BorderThickness="0"
+                Margin="0,45,0,50" GotFocus="RootTextBox_GotFocus" PreviewKeyUp="RootTextBox_PreviewKeyUp" PreviewKeyDown="RootTextBox_PreviewKeyDown"/>
+
+        <StatusBar x:Name="RootStatusBar" VerticalAlignment="Bottom" Height="50" Margin="0,400,0,0">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding Mode="OneWay" StringFormat="{}Строка: {0}, Символы: {1}">
+                            <Binding Path="Line" />
+                            <Binding Path="Character" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock Text="{Binding File, Mode=OneWay}" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="4"/>
+        </StatusBar>
     </Grid>
 </Page>

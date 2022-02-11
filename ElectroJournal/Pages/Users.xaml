@@ -7,18 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Users"
-    Width="1280"
-    Height="605"
     mc:Ignorable="d">
 
     <Grid>
-        <wpfui:Card Margin="40,20,40,385">
+        <wpfui:Card Margin="40,20,40,385" VerticalAlignment="Top">
             <Grid
-                Width="1202"
-                Height="200"
                 Margin="-11,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
                 <Rectangle
                     Width="120"
                     Height="120"
@@ -69,10 +65,10 @@
                     Visibility="Hidden" />
                 <Button
                     x:Name="ButtonLogoutUser"
-                    Width="132.333"
+                    Width="132"
                     Height="30"
-                    Margin="1045,24,0,0"
-                    HorizontalAlignment="Left"
+                    Margin="0,24,24,0"
+                    HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     x:FieldModifier="public"
                     Click="ButtonLogoutUser_Click"
@@ -91,17 +87,15 @@
 
         </wpfui:Card>
 
-        <wpfui:Card Margin="40,260,40,45">
+        <wpfui:Card Margin="40,260,40,45" VerticalAlignment="Stretch">
             <Grid
-                Width="1200"
-                Height="298"
                 Margin="-10,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
                 <Label
                     Width="100"
-                    Height="30"
-                    Margin="57,69,0,0"
+                    Height="35"
+                    Margin="57,66,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -110,8 +104,8 @@
                 <TextBox
                     x:Name="TextBoxPhone"
                     Width="185"
-                    Height="30"
-                    Margin="157,69,0,0"
+                    Height="36"
+                    Margin="157,66,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     PreviewTextInput="TextBoxPhone_PreviewTextInput"
@@ -119,8 +113,8 @@
                     TextWrapping="Wrap" />
                 <Label
                     Width="100"
-                    Height="30"
-                    Margin="57,109,0,0"
+                    Height="35"
+                    Margin="57,127,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -129,8 +123,8 @@
                 <TextBox
                     x:Name="TextBoxMail"
                     Width="185"
-                    Height="30"
-                    Margin="157,109,0,0"
+                    Height="35"
+                    Margin="157,127,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     PreviewTextInput="TextBoxMail_PreviewTextInput"
@@ -138,8 +132,8 @@
                     TextWrapping="Wrap" />
                 <Label
                     Width="100"
-                    Height="30"
-                    Margin="457,69,0,0"
+                    Height="35"
+                    Margin="457,66,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -147,8 +141,8 @@
                     FontSize="16" />
                 <Label
                     Width="100"
-                    Height="30"
-                    Margin="457,109,0,0"
+                    Height="35"
+                    Margin="457,127,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -157,8 +151,8 @@
                 <TextBox
                     x:Name="TextBoxGroup"
                     Width="185"
-                    Height="30"
-                    Margin="557,109,0,0"
+                    Height="35"
+                    Margin="557,127,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     IsReadOnly="True"
@@ -167,8 +161,8 @@
                 <TextBox
                     x:Name="TextBoxCabinet"
                     Width="185"
-                    Height="30"
-                    Margin="557,69,0,0"
+                    Height="35"
+                    Margin="557,66,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     IsReadOnly="True"
@@ -176,8 +170,8 @@
                     TextWrapping="Wrap" />
                 <Label
                     Width="100"
-                    Height="30"
-                    Margin="457,149,0,0"
+                    Height="35"
+                    Margin="457,187,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -186,8 +180,8 @@
                 <PasswordBox
                     x:Name="PasswordBoxPassword"
                     Width="185"
-                    Height="30"
-                    Margin="557,149,0,0"
+                    Height="35"
+                    Margin="557,187,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -196,8 +190,8 @@
                 <Button
                     x:Name="ButtonResetPassword"
                     Width="185"
-                    Height="24"
-                    Margin="557,184,0,0"
+                    Height="25"
+                    Margin="557,227,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Click="ButtonResetPassword_Click"
@@ -207,9 +201,9 @@
                     x:Name="ButtonSave"
                     Width="120"
                     Height="35"
-                    Margin="1057,244,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Margin="0,240,23,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     Click="ButtonSave_Click"
                     Content="Сохранить"
                     FontSize="14"

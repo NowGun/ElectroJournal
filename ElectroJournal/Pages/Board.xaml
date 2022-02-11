@@ -5,26 +5,26 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
     x:Class="ElectroJournal.Pages.Board"
       mc:Ignorable="d"
       Title="Board" Foreground="Black">
 
     <Grid>
         <Grid x:FieldModifier="public" x:Name="GridInkCanvas" Margin="10,106,10,10">
-            <Grid.Effect>
-                <DropShadowEffect ShadowDepth="0" Color="#FFEAEAEA"/>
-            </Grid.Effect>
-            <InkCanvas x:FieldModifier="public" x:Name="InkCanvas" Background="#FFF8F8F8" MouseEnter="InkCanvas_MouseEnter" StylusMove="InkCanvas_StylusMove" VerticalAlignment="Stretch" MinHeight="450"/>
+            <InkCanvas x:FieldModifier="public" x:Name="InkCanvas" MouseEnter="InkCanvas_MouseEnter" StylusMove="InkCanvas_StylusMove" VerticalAlignment="Stretch" MinHeight="450"/>
         </Grid>
         <Grid x:Name="GridMenuBoard" HorizontalAlignment="Stretch" Height="84" VerticalAlignment="Top">
             <Rectangle Height="84" Stroke="#00EBEBEB" VerticalAlignment="Center" Fill="#00F9F9F9" StrokeThickness="0.5" RadiusX="6.375" RadiusY="6.375"/>
             <mah:ColorPicker x:Name="ColorPicker" SelectedColor="Black" 
+                             Background="#33F9F9F9"
                  mah:TextBoxHelper.UseFloatingWatermark="True"
                  mah:TextBoxHelper.Watermark="Цвет пера"
-                 AddToRecentColorsTrigger="SelectedColorChanged" Margin="455,10,455,34" Height="40" Width="250" BorderBrush="#A0EAEAEA" Background="#FFFEFEFE" Foreground="#FF626262" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                 AddToRecentColorsTrigger="SelectedColorChanged" Margin="455,10,455,34" Height="40" Width="250" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="#00CCCCCC" />
             <Button x:Name="ButtonClear" Content="Очистить" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" HorizontalAlignment="Left" Margin="710,10,0,0" VerticalAlignment="Top" Height="30" Width="100" Click="ButtonClear_Click"/>
-            <Image x:Name="ImagePencil" HorizontalAlignment="Left" Height="20" Margin="105,7,0,0" VerticalAlignment="Top" Width="20" Source="/Images/board/icons8-pencil2-96.png" PreviewMouseLeftButtonUp="ImagePencil_PreviewMouseLeftButtonUp"/>
-            <Image x:Name="ImageEraser" HorizontalAlignment="Left" Height="20" Margin="135,7,0,0" VerticalAlignment="Top" Width="20" Source="/Images/board/icons8-eraser-96.png" PreviewMouseLeftButtonUp="ImageEraser_PreviewMouseLeftButtonUp"/>
+            <wpfui:Icon x:Name="ImagePencil" Glyph="Edit20" HorizontalAlignment="Left" Margin="108,11,0,0" FontSize="22" PreviewMouseLeftButtonUp="ImagePencil_PreviewMouseLeftButtonUp" VerticalAlignment="Top"/>
+            <wpfui:Icon x:Name="ImageEraser" Glyph="Eraser20" PreviewMouseLeftButtonUp="ImageEraser_PreviewMouseLeftButtonUp" FontSize="22" HorizontalAlignment="Left" Margin="135,11,0,0" VerticalAlignment="Top"/>
             <Path x:Name="path" Data="M42.5,48 L1220.0239,48" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="#FFEAEAEA" VerticalAlignment="Top" Visibility="Visible" Margin="65,43,1025,0" RenderTransformOrigin="0.5,0.5" Width="70" HorizontalAlignment="Left">
                 <Path.RenderTransform>
                     <TransformGroup>
@@ -35,25 +35,17 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-            <Label Content="Инструменты" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="65" Margin="108,65,0,0" Padding="0,0,0,0" FontFamily="Segoe UI Light" FontSize="11" Foreground="#FF5F5F5F"/>
-            <Path x:Name="path_Copy" Data="M42.5,48 L1220.0239,48" Fill="#FFF4F4F5" Height="1" Stretch="Fill" Stroke="#FFEAEAEA" VerticalAlignment="Top" Visibility="Visible" Margin="146,43,944,0" RenderTransformOrigin="0.5,0.5" Width="70" HorizontalAlignment="Left">
-                <Path.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-90"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Path.RenderTransform>
-            </Path>
-            <Slider x:Name="SliderBoardThikness"
-                Value="2"
+
+
+            <StackPanel Orientation="Horizontal" Margin="189,14,786,48">
+                <Slider x:Name="SliderBoardThikness"
+                Value="1"
                 Minimum="1"
-                Maximum="50"
-                Style="{StaticResource MaterialDesignDiscreteSlider}"
-                TickFrequency="{Binding DiscreteHorizontal.TickFrequency}"
-                TickPlacement="BottomRight" Margin="188,16,722,38" Foreground="#FF005FB9" Height="30" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <Image x:Name="ImagePrint" HorizontalAlignment="Left" Height="49" Margin="24,16,0,0" VerticalAlignment="Top" Width="50" Source="/Images/board/icons8-print-100.png" PreviewMouseLeftButtonUp="ImagePrint_PreviewMouseLeftButtonUp"/>
+                Maximum="50"               
+                Height="22" Width="196" />
+            </StackPanel>
+
+            <wpfui:Icon x:Name="ImagePrint" Glyph="Print20" FontSize="24" PreviewMouseLeftButtonUp="ImagePrint_PreviewMouseLeftButtonUp" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Page>

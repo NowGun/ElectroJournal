@@ -66,14 +66,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimToBlackTheme">
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FF181818" />
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)">
-                <EasingColorKeyFrame KeyTime="00:00:00.4000000" Value="#FF181818" />
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
+        <Storyboard x:Key="AnimToBlackTheme"/>
         <Storyboard x:Key="AnimLogoutUser">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
@@ -126,13 +119,12 @@
     <Grid x:Name="GridDefault" x:FieldModifier="public">
         <Grid
             x:Name="GridNLogin"
-            Margin="0,48,0,604"
-            d:IsHidden="True">
+            Margin="0,48,0,604">
             <ui:NavigationView
                 x:Name="NavViewMenuNLogin"
                 Height="40"
                 MinWidth="100"
-                Margin="10,10,365,0"
+                Margin="10,0,365,0"
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
@@ -154,16 +146,15 @@
             </ui:NavigationView>
             <Button
                 x:Name="ButtonShowLogin"
-                Width="120"
+                Width="140"
                 Height="30"
-                Margin="1150,15,0,0"
-                HorizontalAlignment="Left"
+                Margin="0,5,20,0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Click="ButtonShowLogin_Click"
                 Content="Войти"
                 FontSize="14"
-                IsEnabled="False"
-                Style="{DynamicResource WPFUIButtonAccent}" />
+                Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
 
         </Grid>
         <wpfui:TitleBar
@@ -259,12 +250,12 @@
             Margin="0,48,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
-            Visibility="Visible">
+            Visibility="Visible" d:IsHidden="True">
             <wpfui:Icon
                 x:Name="RectangleBackToMenu"
                 Width="28"
                 Height="32"
-                Margin="17,13,0,0"
+                Margin="17,5,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
@@ -283,8 +274,7 @@
                 x:Name="GridUser"
                 Margin="0,0,20,0"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                d:IsHidden="True">
+                VerticalAlignment="Top">
                 <ui:PersonPicture
                     x:Name="PersonPicture"
                     Width="40"
@@ -306,14 +296,13 @@
                     TextWrapping="Wrap" />
             </Grid>
             <Path
-                x:Name="path"
+                x:Name="PathMenu"
                 Height="1"
                 Margin="0,49,0,0"
                 VerticalAlignment="Top"
                 Data="M42.5,48 L1220.0239,48"
-                Fill="#FFF4F4F5"
                 Stretch="Fill"
-                Stroke="#FFE0E0E0"
+                Stroke="#FFEDEDED"
                 Visibility="Visible">
                 <Path.Effect>
                     <DropShadowEffect
@@ -327,11 +316,11 @@
                 x:Name="NavViewMenuAdmin"
                 Height="40"
                 MinWidth="100"
-                Margin="45,9,510,0"
+                Margin="45,0,510,0"
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
-                PaneDisplayMode="Top">
+                PaneDisplayMode="Top" d:IsHidden="True">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
                         x:Name="NavigationViewItemTeachers"
@@ -369,9 +358,8 @@
                 x:Name="NavViewMenu"
                 Height="40"
                 MinWidth="100"
-                Margin="45,9,330,0"
+                Margin="45,0,330,0"
                 VerticalAlignment="Top"
-                d:IsHidden="True"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
                 PaneDisplayMode="Top">
@@ -446,13 +434,13 @@
         <wpfui:Card
             x:Name="GridLogin"
             Height="254"
-            Margin="480,225,480,225">
+            Margin="480,225,480,225" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid
                 x:Name="GridLogin2"
                 Width="322"
                 Height="254"
                 Margin="-12,0,0,0"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 RenderTransformOrigin="0.5,0.5">
                 <Grid.RenderTransform>
@@ -469,17 +457,17 @@
                     x:Name="LabelPasswordGridLogin"
                     Width="116"
                     Height="30"
-                    Margin="51,118,0,0"
+                    Margin="60,0,0,0"
                     Padding="0,5,5,5"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    VerticalAlignment="Center"
                     Content="Пароль"
                     FontSize="14" />
                 <Label
                     x:Name="LabelLoginGridLogin"
                     Width="176"
                     Height="30"
-                    Margin="51,38,0,0"
+                    Margin="60,32,0,0"
                     Padding="0,5,5,5"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -490,7 +478,7 @@
                     x:Name="ButtonLogin"
                     Width="102"
                     Height="25"
-                    Margin="167,198,0,0"
+                    Margin="176,192,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Click="ButtonLogin_Click"
@@ -502,7 +490,7 @@
                     x:Name="TextBoxPassword"
                     Width="220"
                     Height="36"
-                    Margin="49,148,0,0"
+                    Margin="58,142,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -512,7 +500,7 @@
                     x:Name="TextBoxLogin"
                     Width="220"
                     Height="36"
-                    Margin="49,68,0,0"
+                    Margin="58,62,0,0"
                     Padding="6,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -526,7 +514,7 @@
                     x:Name="RectangleLoadLogin"
                     Width="25"
                     Height="25"
-                    Margin="274,198,0,0"
+                    Margin="283,192,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     RenderTransformOrigin="0.5,0.5">
@@ -546,7 +534,7 @@
                     x:Name="ImageForgotPassword"
                     Width="27"
                     Height="25"
-                    Margin="49,198,0,0"
+                    Margin="58,192,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     MouseLeave="ImageForgotPassword_MouseLeave"
@@ -558,7 +546,7 @@
                     x:Name="ImageChangeDB"
                     Width="27"
                     Height="25"
-                    Margin="83,198,0,0"
+                    Margin="92,192,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     MouseLeave="ImageForgotPassword_MouseLeave"
@@ -568,7 +556,7 @@
                     ToolTip="Сменить соединение базы данных" />
                 <Button
                     x:Name="ButtonOpenNotLogin"
-                    Margin="164,32,0,0"
+                    Margin="173,26,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="#FFF3F3F3"

@@ -142,11 +142,8 @@ namespace ElectroJournal
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            timer2.Tick += new EventHandler(SheduleCall);
-            timer2.Interval = new TimeSpan(0, 0, 1);
-            timer2.Start();
             
-            Login();
+            
 
             RectangleLoadLogin.Visibility = Visibility.Visible;
             (Resources["AnimLoadLogin"] as Storyboard).Completed += new EventHandler(MainWindow_Completed);
@@ -157,6 +154,7 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimShowLoading");
             anim2.Begin();
 
+            Login();
             
 
         }
@@ -167,7 +165,7 @@ namespace ElectroJournal
         List<string> ScheduleEnd = new List<string>();
         List<int> ScheduleNumber = new List<int>();
 
-        private void SheduleCall(object sender, EventArgs e)
+        private async void SheduleCall(object sender, EventArgs e)
         {
             if (DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
             {
@@ -178,9 +176,9 @@ namespace ElectroJournal
 
                     conn.Open(); //Открываем соединение
 
-                    MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
+                    MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
 
-                    for (int i = 0; read.Read(); i++)
+                    for (int i = 0; await read.ReadAsync(); i++)
                     {
                         ScheduleStart.Add(read.GetString(0));
                         ScheduleEnd.Add(read.GetString(1));
@@ -199,8 +197,8 @@ namespace ElectroJournal
                         if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
                         {
                             TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
-                            LabelScheduleCall.Content = "Урок: " + ScheduleNumber[i] + "    Период занятий: " + ScheduleStart[i] + " - " + ScheduleEnd[i] +
-                                "    До конца занятий: " + (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
+                            LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " + 
+                                (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
                             break;
                         }
                         else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
@@ -291,6 +289,10 @@ namespace ElectroJournal
                             FillComboBoxGroups();
                             Frame.Navigate(new Pages.Journal());
                             Notifications("Оповещение", "Авторизация прошла успешно");
+
+                            timer2.Tick += new EventHandler(SheduleCall);
+                            timer2.Interval = new TimeSpan(0, 0, 1);
+                            timer2.Start();
 
                             GridNLogin.Visibility = Visibility.Hidden;
                             GridLogin.Visibility = Visibility.Hidden;
@@ -391,17 +393,22 @@ namespace ElectroJournal
             {
                 WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                PathMenu.Stroke = (SolidColorBrush)new BrushConverter().ConvertFromString("#222222");
             }
             else
             {
                 WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                PathMenu.Stroke = (SolidColorBrush)new BrushConverter().ConvertFromString("#EDEDED");
             }
+
             if (Environment.OSVersion.Version.Build >= 22000)
             {
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
+
+            
 
         }
 

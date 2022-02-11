@@ -8,13 +8,11 @@
     xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Students"
-    Width="1280"
-    Height="605"
     mc:Ignorable="d">
     <Grid>
         <wpfui:Card Margin="365,20,20,60">
             <Grid>
-                <StackPanel Margin="602,52,27,52">
+                <StackPanel Margin="602,52,27,52" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <TreeView x:Name="TreeViewGroups">
                         <TreeViewItem Header="Языки программирования">
                             <TreeViewItem Header="C-языки">
@@ -74,18 +72,18 @@
                     FontSize="14" />
                 <Label
                     Width="160"
-                    Height="35"
-                    Margin="507,454,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Height="36"
+                    Margin="0,0,195,9"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     VerticalContentAlignment="Center"
                     Content="* - обязательные поля"
                     FontSize="14" />
                 <Label
                     Width="170"
                     Height="30"
-                    Margin="600,22,0,0"
-                    HorizontalAlignment="Left"
+                    Margin="0,22,97,0"
+                    HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
                     Content="Группа*"
@@ -209,17 +207,17 @@
                     Foreground="#FF3567BC"
                     IsIndeterminate="True"
                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                    Visibility="Visible" />
+                    Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
 
             </Grid>
         </wpfui:Card>
 
         <ListBox
             x:Name="ListBoxStudents"
-            Margin="20,97,960,60"
+            Margin="20,97,0,60"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             PreviewKeyUp="ListBoxStudents_PreviewKeyUp"
-            SelectionChanged="ListBoxStudents_SelectionChanged" />
+            SelectionChanged="ListBoxStudents_SelectionChanged" HorizontalAlignment="Left" Width="300" />
         <ui:AutoSuggestBox
             x:Name="SearchBox"
             Width="300"
