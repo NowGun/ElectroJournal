@@ -129,5 +129,11 @@ namespace ElectroJournal.Pages
                 ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
             }
         }
+
+        private void ComboBoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SaveApp();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+        }
     }
 }

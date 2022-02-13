@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MahApps.Metro", "MahApps.Me
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.Wpf", "Notifications.Wpf\Notifications.Wpf.csproj", "{5C9A4F46-263D-4C23-B361-F09E14BB109E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "startupEJ", "startupEJ\startupEJ.csproj", "{3EB77EA6-730A-4841-8030-7BB001020927}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf", "ModernWpf\ModernWpf.csproj", "{A8DA700C-BB56-4086-9632-767A86D59B89}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernWpf.Controls", "ModernWpf.Controls\ModernWpf.Controls.csproj", "{B8F87078-6AFE-4776-8ABF-80141A07FF3F}"
@@ -25,7 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateElectroJournal", "Upd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Updater", "Updater\Updater.csproj", "{C8596C79-A949-4BF7-BDE1-D28A81CDED4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdaterUnZip", "UpdaterUnZip\UpdaterUnZip.csproj", "{D59498EF-8E18-4611-9C5E-6E22BF7701C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdaterUnZip", "UpdaterUnZip\UpdaterUnZip.csproj", "{D59498EF-8E18-4611-9C5E-6E22BF7701C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartEJ", "StartEJ\StartEJ.csproj", "{7DD58687-3269-437F-BF35-356A1DBE4D47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,16 +76,6 @@ Global
 		{5C9A4F46-263D-4C23-B361-F09E14BB109E}.Release 4.6.1|Any CPU.Build.0 = Release 4.6.1|Any CPU
 		{5C9A4F46-263D-4C23-B361-F09E14BB109E}.Release|Any CPU.ActiveCfg = Release 4.0|Any CPU
 		{5C9A4F46-263D-4C23-B361-F09E14BB109E}.Release|Any CPU.Build.0 = Release 4.0|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB77EA6-730A-4841-8030-7BB001020927}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A8DA700C-BB56-4086-9632-767A86D59B89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8DA700C-BB56-4086-9632-767A86D59B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8DA700C-BB56-4086-9632-767A86D59B89}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,6 +146,16 @@ Global
 		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
 		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D59498EF-8E18-4611-9C5E-6E22BF7701C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD58687-3269-437F-BF35-356A1DBE4D47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

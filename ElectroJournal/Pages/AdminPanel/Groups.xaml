@@ -24,7 +24,7 @@
                 <wpfui:NumberBox
                     x:Name="NumberBoxCourse"
                     Height="35"
-                    Margin="316,223,403,228"
+                    Margin="316,223,0,0"
                     DecimalPlaces="4"
                     Max="10"
                     Min="1"

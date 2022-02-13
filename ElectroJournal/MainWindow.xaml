@@ -22,7 +22,7 @@
     Loaded="Window_Loaded"
     Style="{DynamicResource UiWindowRounded}"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
+    mc:Ignorable="d" WindowState="Normal">
     <Window.Resources>
         <Storyboard x:Key="AnimLoadLogin">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
@@ -119,7 +119,7 @@
     <Grid x:Name="GridDefault" x:FieldModifier="public">
         <Grid
             x:Name="GridNLogin"
-            Margin="0,48,0,604">
+            Margin="0,48,0,604" d:IsHidden="True">
             <ui:NavigationView
                 x:Name="NavViewMenuNLogin"
                 Height="40"
@@ -250,7 +250,7 @@
             Margin="0,48,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
-            Visibility="Visible" d:IsHidden="True">
+            Visibility="Visible">
             <wpfui:Icon
                 x:Name="RectangleBackToMenu"
                 Width="28"
@@ -275,6 +275,7 @@
                 Margin="0,0,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top">
+                <Label x:Name="TextBlockTeacher" Content="Фамиля И.О." FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0" VerticalContentAlignment="Center"/>
                 <ui:PersonPicture
                     x:Name="PersonPicture"
                     Width="40"
@@ -284,16 +285,6 @@
                     MouseLeave="RectangleUser_MouseLeave"
                     MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
                     MouseMove="RectangleUser_MouseMove" />
-                <TextBlock
-                    x:Name="TextBlockTeacher"
-                    MaxWidth="179.5"
-                    Margin="152,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    x:FieldModifier="public"
-                    FontSize="14"
-                    Text="Фамилия И. О."
-                    TextWrapping="Wrap" />
             </Grid>
             <Path
                 x:Name="PathMenu"

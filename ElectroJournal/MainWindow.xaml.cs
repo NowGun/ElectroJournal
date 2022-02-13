@@ -44,6 +44,8 @@ namespace ElectroJournal
         {
             //CheckVersionWindows();
             InitializeComponent();
+            
+            
             GridMenu.Visibility = Visibility.Hidden;
             Frame.Visibility = Visibility.Hidden;
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
@@ -53,8 +55,6 @@ namespace ElectroJournal
             GridNLogin.Visibility = Visibility.Visible;
 
             CheckAutoRun();
-            CompletionLogin();
-
             TitleBar.CloseActionOverride = CloseActionOverride;
             //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
@@ -64,6 +64,7 @@ namespace ElectroJournal
         }
 
         DataBase DbUser = new DataBase();
+        SettingMigration SettingMig = new SettingMigration();
         DataBaseControls DbControls = new DataBaseControls();
         private readonly NotificationManager _notificationManager = new NotificationManager();
         XmlDocument xmlDocument = new XmlDocument();
@@ -167,7 +168,11 @@ namespace ElectroJournal
 
         private async void SheduleCall(object sender, EventArgs e)
         {
-            if (DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+            {
+                LabelScheduleCall.Visibility = Visibility.Hidden;
+            }
+            else
             {
                 if (checkFiilScheduleDB)
                 {
@@ -197,7 +202,7 @@ namespace ElectroJournal
                         if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
                         {
                             TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
-                            LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " + 
+                            LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " +
                                 (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
                             break;
                         }
@@ -213,11 +218,12 @@ namespace ElectroJournal
                         //break;
                     }
                 }
-            }            
+            }
         }
 
         async void Login()
         {
+            MySqlConnection conn = DataBase.GetDBConnection();
             bool a = false;
             var anim = (Storyboard)FindResource("AnimLoadLogin");
             var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
@@ -274,7 +280,7 @@ namespace ElectroJournal
 
                         if (read.Read())
                         {
-                            TextBlockTeacher.Text = read.GetString(1) + " " + read.GetString(2);
+                            TextBlockTeacher.Content = read.GetString(1) + " " + read.GetString(2);
 
                             if (read.GetString(4) == "False") NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
                             else NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
@@ -417,8 +423,8 @@ namespace ElectroJournal
             string username = Properties.Settings.Default.UserName;
             string password = Properties.Settings.Default.Password;
 
-            //TextBoxLogin.Text = username;
-            //TextBoxPassword.Password = password;
+            TextBoxLogin.Text = username;
+            TextBoxPassword.Password = password;
         }
 
         public void AnimLog(bool a)
@@ -710,6 +716,8 @@ namespace ElectroJournal
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SettingMig.CheckStart();
+            CompletionLogin();
             ThemeCheck();
         }
 

@@ -125,20 +125,46 @@ namespace ElectroJournal.Classes
 
         public bool IsTeachersLoginExists(string login)
         {
-            DataTable table = new DataTable();
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
             MySqlCommand command = new MySqlCommand("SELECT count(`teachers_login`) FROM `teachers` WHERE `teachers_login` = @login", conn);
 
             command.Parameters.Add("@login", MySqlDbType.VarChar).Value = login;
 
             conn.Open();
-            int a = command.ExecuteNonQuery();
-            conn.Close();
-            if (a == 1)
+            MySqlDataReader read = command.ExecuteReader();
+
+            if (read.Read())
             {
-                return true;
+                int a = read.GetInt32(0);
+                conn.Close();
+                if (a >= 1)
+                {
+                    return true;
+                }
+                else return false;
             }
-            else return false;
+            else return true;
+        }
+
+        public bool IsUserExists(string login)
+        {
+            MySqlCommand command = new MySqlCommand("SELECT count(User) FROM mysql.user where User = @login", conn);
+
+            command.Parameters.Add("@login", MySqlDbType.VarChar).Value = login;
+
+            conn.Open();
+            MySqlDataReader read = command.ExecuteReader();
+
+            if (read.Read())
+            {
+                int a = read.GetInt32(0);
+                conn.Close();
+                if (a >= 1)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else return true;
         }
     }
 }

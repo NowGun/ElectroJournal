@@ -1,0 +1,96 @@
+﻿<Page
+    x:Class="StartEJ.Pages.License"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:StartEJ.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="License"
+    Width="674"
+    Height="474"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Label
+            VerticalContentAlignment="Center"
+            Content="Лицензионное соглашение"
+            FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="41" Margin="20,0,0,0" />
+        <Label
+            Margin="20,46,0,0"
+            VerticalAlignment="Top"
+            Content="Пожалуйста, ознакомьтесь с условиями лицензии перед настройкой приложения"
+            FontSize="14" HorizontalAlignment="Left" />
+        <RichTextBox Margin="20,74,20,45">
+            <FlowDocument AllowDrop="True" Language="ru-ru" PagePadding="20,0" OverridesDefaultStyle="True">
+                <Paragraph>
+                    <Run/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ ОБ ИСПОЛЬЗОВАНИИ "/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text=" ПРИЛОЖЕНИЯ «Электронный журнал»"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="(редакция No 2)"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Общество с ограниченной ответственностью «Хендэ Мотор СНГ», ОГРН 1077746154067,"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="ИНН 7703623202, зарегистрированное по адресу: 123112, г. Москва, ул. Тестовская, д. 10,"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="ММДЦ Москва-Сити, Бизнес центр «Северная башня», 17 этаж (далее – Компания), в"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="лице   Генерального   директора   Хван   Ки   Йон,   действующего   на   основании   Устава,"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="предлагает   любому   дееспособному   физическому   лицу,   отвечающему   определенным"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="требованиям, и намеревающемуся использовать Мобильное приложение «Mobility» (далее"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="–   Пользователь),   заключить   настоящее   соглашение   об   использовании   Мобильного"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="приложения «Mobility» (далее, «Соглашение») посредством совершения Пользователем"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="акцепта настоящей публичной оферты."/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Соглашение   об   использовании   Мобильного   приложения   «Mobility»   является"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="заключенным между Компанией и Пользователем с момента установки Пользователем"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Мобильного приложения «Mobility» на свое Устройство и осуществления Пользователем"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Регистрации в Мобильном приложении «Mobility» в порядке, определенном настоящим"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button x:Name="ButtonAccept"
+            Width="135"
+            Height="35"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="Соглашаюсь"
+            FontSize="14"
+            Style="{DynamicResource WPFUIButtonAccent}" Margin="0,0,20,0" Click="ButtonAccept_Click" />
+        <Button x:Name="ButtonNAccept"
+            Width="135"
+            Height="35"
+            Margin="0,0,173,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="Отказываюсь"
+            FontSize="14"
+            Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonNAccept_Click" />
+    </Grid>
+</Page>

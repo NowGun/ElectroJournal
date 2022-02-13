@@ -87,7 +87,13 @@ namespace ElectroJournal.Pages.AdminPanel
                         MySqlCommand command = new MySqlCommand("INSERT INTO teachers (`teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`," +
                             " `teachers_acces_admin_panel`, `teachers_phone`, `teachers_mail`) VALUES (@login, @password, @name, @surname, @patronymic, @admin, @phone, @mail)", conn);
 
-                        //MySqlCommand command = new MySqlCommand("CREATE USER @login @`%` IDENTIFIED BY @pass", conn);
+                        MySqlCommand command2 = new MySqlCommand("CREATE USER @login @`%` IDENTIFIED BY @password", conn);
+                        MySqlCommand command3 = new MySqlCommand("GRANT ALL PRIVILEGES ON zhirov. * TO @login @'%';", conn);
+
+                        command2.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
+                        command2.Parameters.Add("@password", MySqlDbType.VarChar).Value = PasswordBoxTeachers.Password;
+
+                        command3.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
 
                         command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
                         //command.Parameters.Add("@password", MySqlDbType.VarChar).Value = PBKDF2HashHelper.CreatePasswordHash(PasswordBoxTeachers.Password);
@@ -102,14 +108,14 @@ namespace ElectroJournal.Pages.AdminPanel
 
 
 
-                        if (!DbControls.IsTeachersLoginExists(TextBoxTeachersLogin.Text))
+                        if (!DbControls.IsTeachersLoginExists(TextBoxTeachersLogin.Text) && !DbControls.IsUserExists(TextBoxTeachersLogin.Text))
                         {
                             await conn.OpenAsync();
 
-                            if (command.ExecuteNonQuery() == 1)
+                            if (command.ExecuteNonQuery() == 1 && command2.ExecuteNonQuery() == 0 && command3.ExecuteNonQuery() == 0)
                             {
                                 SendPasswordToUser();
-                                //SendSMSToUser();
+                                SendSMSToUser();
                                 
 
                                 TextBoxTeachersFIO.Clear();
@@ -139,6 +145,7 @@ namespace ElectroJournal.Pages.AdminPanel
 
         }
 
+
         private async void ListViewTeachersRefresh()
         {
             ListViewTeachers.Items.Clear();
@@ -152,7 +159,7 @@ namespace ElectroJournal.Pages.AdminPanel
 
             await conn.OpenAsync(); //Открываем соединение
             MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
-
+           
             for  (int i = 0; await read.ReadAsync(); i++)
             {
                 if (read.GetValue(1).ToString() != "" && read.GetValue(2).ToString() != "" && read.GetValue(3).ToString() != "")                
@@ -185,7 +192,7 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             try
             {
-            string user = ((MainWindow)System.Windows.Application.Current.MainWindow).TextBlockTeacher.Text;
+            string user = (string)((MainWindow)System.Windows.Application.Current.MainWindow).TextBlockTeacher.Content;
             bool a = true;
             // отправитель - устанавливаем адрес и отображаемое в письме имя
             MailAddress from = new MailAddress("zhirowdaniil@gmail.com", user);
@@ -198,7 +205,7 @@ namespace ElectroJournal.Pages.AdminPanel
             // тема письма
             m.Subject = Title;
             // текст письма
-            m.Body = "Добро пожаловать в систему Электронный журнал\n\nАдминистратор зарегистрироал Вас в системе электронного журнала, ниже написаны данные для входа в вашу учетную запись.\nМы рекомендуем при первой возможности поменять пароль на более удобный Вам, так как нынешний пароль является временным." +
+            m.Body = "Добро пожаловать в систему Электронный журнал\n\nАдминистратор зарегистрировал Вас в системе электронного журнала, ниже написаны данные для входа в вашу учетную запись.\nМы рекомендуем при первой возможности поменять пароль на более удобный Вам, так как нынешний пароль является временным." +
                 "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password + "\n\n\n\n";
             // адрес smtp-сервера и порт, с которого будем отправлять письмо
             SmtpClient smtp = new SmtpClient("smtp.elasticemail.com", 2525);
@@ -243,8 +250,7 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             string myApiKey = "B0361252-C8BA-5438-E643-4651FCC4E55B"; //Ваш API ключ
             SmsRu.SmsRu sms = new SmsRu.SmsRu(myApiKey);
-            var response = sms.Send(TextBoxTeachersPhone1.Text, "Добро пожаловать в систему Электронный журнал\n\nАдминистратор зарегистрироал Вас в системе электронного журнала, ниже написаны данные для входа в вашу учетную запись.\nМы рекомендуем при первой возможности поменять пароль на более удобный Вам, так как нынешний пароль является временным." +
-                "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password);
+            var response = sms.Send(TextBoxTeachersPhone1.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password);
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
