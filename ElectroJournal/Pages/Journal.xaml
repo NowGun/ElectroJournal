@@ -4,16 +4,21 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ElectroJournal.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Journal" Width="Auto" Height="Auto" MinWidth="1160" MinHeight="555">
-    <Page.Resources>
-
-    </Page.Resources>
+      xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
+      mc:Ignorable="d"
+      Title="Journal" Margin="20,20,20,20">
 
     <Grid>
-        <DataGrid x:Name="DataGridJournal" HorizontalAlignment="Left" Margin="10,10,0,10"  MinWidth="815" MinHeight="535" HorizontalGridLinesBrush="#FF585858" VerticalGridLinesBrush="#FF505050"/>
-        <DataGrid HorizontalAlignment="Right" Margin="0,10,10,10" MinWidth="297" MinHeight="535"/>
-
+        <rg:ReoGridControl x:Name="ReoGrid" Margin="10,70,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        </rg:ReoGridControl>
+        <Label Content="Дисциплина" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,6,0,0"/>
+        <ComboBox HorizontalAlignment="Left" Height="35" Margin="100,0,0,0" VerticalAlignment="Top" Width="200"/>
+        <Label Content="Месяц" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="385,6,0,0"/>
+        <ComboBox HorizontalAlignment="Left" Height="35" Margin="475,0,0,0" VerticalAlignment="Top" Width="200"/>
+        <Label Content="Год" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="685,6,0,0"/>
+        <ComboBox HorizontalAlignment="Left" Height="35" Margin="725,0,0,0" VerticalAlignment="Top" Width="200"/>
+        <Button x:Name="ButtonExcel" Content="Сохранить на раб. стол" HorizontalAlignment="Left" Height="35" Margin="940,0,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click"/>
     </Grid>
+
+
 </Page>

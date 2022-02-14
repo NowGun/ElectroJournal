@@ -85,6 +85,7 @@
     <PackageReference Include="MaterialDesignColors" Version="2.0.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
     <PackageReference Include="System.Management" Version="6.0.0" />
+    <PackageReference Include="unvell.ReoGridWPF.dll" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -157,6 +157,14 @@
                 Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
 
         </Grid>
+        <Label
+                    x:Name="LabelScheduleCall"
+                    Margin="225,6,434,0"
+                    Padding="0,0,10,4"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="" Height="36" />
         <wpfui:TitleBar
             x:Name="TitleBar"
             Grid.Row="0"
@@ -262,14 +270,6 @@
                 FontSize="20"
                 Glyph="ArrowLeft12"
                 MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" />
-            <Label
-                    x:Name="LabelScheduleCall"
-                    Margin="225,-41,434,0"
-                    Padding="0,0,10,4"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Content="" Height="35" />
             <Grid
                 x:Name="GridUser"
                 Margin="0,0,20,0"

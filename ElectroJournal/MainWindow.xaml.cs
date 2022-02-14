@@ -423,8 +423,8 @@ namespace ElectroJournal
             string username = Properties.Settings.Default.UserName;
             string password = Properties.Settings.Default.Password;
 
-            TextBoxLogin.Text = username;
-            TextBoxPassword.Password = password;
+            //TextBoxLogin.Text = username;
+           // TextBoxPassword.Password = password;
         }
 
         public void AnimLog(bool a)

@@ -115,7 +115,7 @@ namespace ElectroJournal.Pages.AdminPanel
                             if (command.ExecuteNonQuery() == 1 && command2.ExecuteNonQuery() == 0 && command3.ExecuteNonQuery() == 0)
                             {
                                 SendPasswordToUser();
-                                SendSMSToUser();
+                                //SendSMSToUser();
                                 
 
                                 TextBoxTeachersFIO.Clear();

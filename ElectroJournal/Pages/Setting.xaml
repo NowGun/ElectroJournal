@@ -12,9 +12,9 @@
 
         <wpfui:Card Margin="20,20,20,15">
             <Grid>
-                <Button x:Name="ButtonOpenUpdater" Style="{StaticResource WPFUIButtonStandard}" Content="Проверить обновление" HorizontalAlignment="Left" Height="35" Margin="187,0,0,12" VerticalAlignment="Bottom" Width="200" FontSize="14" Click="ButtonOpenUpdater_Click"/>
+                <Button x:Name="ButtonOpenUpdater" Style="{StaticResource WPFUIButtonStandard}" Content="Проверить обновление" HorizontalAlignment="Left" Height="35" Margin="202,0,0,12" VerticalAlignment="Bottom" Width="200" FontSize="14" Click="ButtonOpenUpdater_Click"/>
                 <Button x:Name="ButtonSave" Style="{StaticResource WPFUIButtonAccent}" Content="Сохранить" HorizontalAlignment="Right" Height="35" Margin="0,0,7,12" VerticalAlignment="Bottom" Width="150" FontSize="14" Click="ButtonSave_Click"/>
-                <Label Content="Версия 0.27 от 13.02.2022" HorizontalAlignment="Left" Height="35" Margin="7,0,0,12" VerticalAlignment="Bottom" Width="180" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,0,0,4"/>
+                <Label Content="Версия 0.28.1 от 14.02.2022" HorizontalAlignment="Left" Height="35" Margin="7,0,0,12" VerticalAlignment="Bottom" Width="195" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,0,0,4"/>
                 <Label Content="Автоматически запускать ElectroJournal после включения компьютера" Margin="27,112,667,397" Height="35" FontSize="14" VerticalContentAlignment="Center" Padding="10,0,0,4" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal" Margin="27,233,667,276" Height="35" FontSize="14" Padding="10,0,0,4" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <CheckBox x:Name="CheckBoxCollapseToTray" Content="" Margin="547,240,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Height="20" Width="20"/>

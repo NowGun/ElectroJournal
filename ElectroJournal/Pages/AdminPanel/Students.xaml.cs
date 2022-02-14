@@ -131,7 +131,7 @@ namespace ElectroJournal.Pages.AdminPanel
                         command.Parameters.Add("@parent", MySqlDbType.VarChar).Value = TextBoxParentFIO.Text;
                         command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxStudentsPhone.Text;
                         command.Parameters.Add("@parentphone", MySqlDbType.VarChar).Value = TextBoxParentPhone.Text;
-                        command.Parameters.Add("@group", MySqlDbType.Int32).Value = 12;
+                        command.Parameters.Add("@group", MySqlDbType.Int32).Value = 21;
 
 
                         await conn.OpenAsync();
@@ -172,7 +172,9 @@ namespace ElectroJournal.Pages.AdminPanel
             TextBoxStudentsResidence.Clear();
             DatePickerDateBirthday.Text = null;
             CheckBoxStudentsDormitory.IsChecked = false;
-            
+
+
+
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
@@ -273,6 +275,33 @@ namespace ElectroJournal.Pages.AdminPanel
                 DatePickerDateBirthday.Text = null;
                 CheckBoxStudentsDormitory.IsChecked = false;
             }
+        }
+
+        private void FillTreeView()
+        {
+            using (MySqlCommand command = new MySqlCommand("select idgroups, groups_name_abbreviated, groups_course from zhirov.groups", conn))
+            {
+                conn.Open();
+
+                using (var dr = command.ExecuteReader())
+                {
+                    var nodes = new Dictionary<int, TreeNode>();
+                    while (dr.Read())
+                    {
+                        string course = dr.GetString(2);
+                        string name = dr.GetString(1);
+                        int id = dr.GetInt32(0);
+
+                        var Node = new TreeNode(course);
+                        TreeNode parent;
+                        if (course == null)
+                        {
+                            //parent.Nodes.Add(Node);
+                        }
+                        nodes.Add(id, Node);
+                    }
+                };
+            };
         }
     }
 }

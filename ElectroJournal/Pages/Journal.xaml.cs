@@ -15,6 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using unvell.ReoGrid;
+using unvell.ReoGrid.Actions;
+using unvell.ReoGrid.Graphics;
 
 namespace ElectroJournal.Pages
 {
@@ -26,26 +29,109 @@ namespace ElectroJournal.Pages
         public Journal()
         {
             InitializeComponent();
-            
 
-            LoadDataGridJournal();
+
+            FillTable();
         }
 
         DataBase DbUser = new DataBase();
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBase.GetDBConnection();
 
-        private async void LoadDataGridJournal()
+        private void FillTable()
         {
-            MySqlCommand command = new MySqlCommand("SELECT * FROM zhirov.dates WHERE year = 2022", conn);
-
-            DataTable dt = new DataTable();
-            MySqlDataAdapter da = new MySqlDataAdapter(command);
-            
-                da.Fill(dt);
-
-            
-            DataGridJournal.ItemsSource = dt.AsDataView();
+            FillText();
+            FillStudents();
+            FillDates();
+           
         }
+
+        private void FillStudents()
+        {
+            var worksheet = ReoGrid.CurrentWorksheet;
+
+            //
+
+            MySqlCommand command = new MySqlCommand("SELECT `students_name`, `students_surname` FROM `students` where groups_idgroups = 21", conn);
+
+            conn.Open();
+
+            MySqlDataReader reader = command.ExecuteReader();
+
+
+
+            for (int i = 2; reader.Read(); i++)
+            {
+                worksheet.SetRows(i);
+                worksheet["A" + i] = reader.GetString(1) + " " + reader.GetString(0);
+                worksheet.AutoFitColumnWidth(0, false);
+
+                unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
+                cell.IsReadOnly = true;
+
+                worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                {
+                    Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                    FontName = "Segoe UI",
+                    FontSize = 14,
+                });
+            }
+
+            conn.Close();
+        }
+
+        private void FillDates()
+        {
+            var worksheet = ReoGrid.CurrentWorksheet;
+
+
+            MySqlCommand command = new MySqlCommand("SELECT `day` FROM `dates` where  `month` = 2 and `year` = 2022", conn);
+
+            conn.Open();
+
+            MySqlDataReader reader = command.ExecuteReader();
+
+
+
+            for (int i = 1; reader.Read(); i++)
+            {
+                worksheet.SetCols(i+1);
+                worksheet[0, i] = reader.GetString(0);
+                ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+
+                unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
+                cell.IsReadOnly = true;
+
+                worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+                {
+                    Flag = PlainStyleFlag.HorizontalAlign,
+                    HAlign = ReoGridHorAlign.Center,
+                });
+
+                worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+                {
+                    Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                    FontName = "Segoe UI",
+                    FontSize = 14,
+                });
+            }
+
+            conn.Close();
+        }
+
+        private void FillText()
+        {
+            var worksheet = ReoGrid.CurrentWorksheet;
+
+            worksheet["A1"] = "ФИО\\День месяца";
+        }
+
+        private void ButtonExcel_Click(object sender, RoutedEventArgs e)
+        {
+            var workbook = ReoGrid;
+            workbook.Save(@"C:\Users\nowgu\Desktop\table.xls", unvell.ReoGrid.IO.FileFormat.Excel2007);
+        }
+
+        
     }
 }
