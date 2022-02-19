@@ -33,6 +33,7 @@
         <Setter Property="TextElement.FontWeight" Value="Regular" />
         <Setter Property="WindowStyle" Value="SingleBorderWindow" />
         <!--<Setter Property="AllowsTransparency" Value="False" />-->
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />
         <Setter Property="ResizeMode" Value="CanResize" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -102,18 +103,18 @@
                                             <controls:Button
                                                 Grid.Column="0"
                                                 Margin="0,0,4,0"
-                                                Appearance="Primary"
+                                                Appearance="{TemplateBinding ButtonLeftAppearance}"
                                                 Command="{Binding Path=TemplateButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                                 CommandParameter="left"
-                                                Content="{TemplateBinding LeftButtonName}" />
+                                                Content="{TemplateBinding ButtonLeftName}" />
 
                                             <controls:Button
                                                 Grid.Column="1"
                                                 Margin="4,0,0,0"
-                                                Appearance="Secondary"
+                                                Appearance="{TemplateBinding ButtonRightAppearance}"
                                                 Command="{Binding Path=TemplateButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                                 CommandParameter="right"
-                                                Content="{TemplateBinding RightButtonName}" />
+                                                Content="{TemplateBinding ButtonRightName}" />
                                         </Grid>
                                     </Border>
                                 </Grid>

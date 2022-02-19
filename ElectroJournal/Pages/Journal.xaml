@@ -9,15 +9,12 @@
       Title="Journal" Margin="20,20,20,20">
 
     <Grid>
-        <rg:ReoGridControl x:Name="ReoGrid" Margin="10,70,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-        </rg:ReoGridControl>
+        <rg:ReoGridControl x:Name="ReoGrid" Margin="10,70,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" />
         <Label Content="Дисциплина" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,6,0,0"/>
         <ComboBox HorizontalAlignment="Left" Height="35" Margin="100,0,0,0" VerticalAlignment="Top" Width="200"/>
         <Label Content="Месяц" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="385,6,0,0"/>
-        <ComboBox HorizontalAlignment="Left" Height="35" Margin="475,0,0,0" VerticalAlignment="Top" Width="200"/>
-        <Label Content="Год" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="685,6,0,0"/>
-        <ComboBox HorizontalAlignment="Left" Height="35" Margin="725,0,0,0" VerticalAlignment="Top" Width="200"/>
-        <Button x:Name="ButtonExcel" Content="Сохранить на раб. стол" HorizontalAlignment="Left" Height="35" Margin="940,0,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click"/>
+        <ComboBox x:Name="ComboBoxMonth" HorizontalAlignment="Left" Height="35" Margin="475,0,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="ComboBoxMonth_SelectionChanged"/>
+        <Button x:Name="ButtonExcel" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="940,0,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click"/>
     </Grid>
 
 

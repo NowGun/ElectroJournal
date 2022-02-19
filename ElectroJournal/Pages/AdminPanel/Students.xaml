@@ -13,20 +13,8 @@
         <wpfui:Card Margin="365,20,20,60">
             <Grid>
                 <StackPanel Margin="602,52,27,52" VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <TreeView x:Name="TreeViewGroups">
-                        <TreeViewItem Header="Языки программирования">
-                            <TreeViewItem Header="C-языки">
-                                <TreeViewItem Header="C#" />
-                                <TreeViewItem Header="C/C++" />
-                                <TreeViewItem Header="Java" />
-                            </TreeViewItem>
-                            <TreeViewItem Header="Basic">
-                                <TreeViewItem Header="Visual Basic" />
-                                <TreeViewItem Header="VB.Net" />
-                                <TreeViewItem Header="PureBasic" />
-                            </TreeViewItem>
-                        </TreeViewItem>
-                    </TreeView>
+                    <ComboBox x:Name="ComboBoxGroups" Margin="0,0,0,10" SelectionChanged="ComboBoxGroups_SelectionChanged"/>
+                    <ListBox x:Name="ListBoxGroups"/>
                     <CheckBox
                         x:Name="CheckBoxStudentsDormitory"
                         Width="241"
@@ -218,13 +206,9 @@
             d:ItemsSource="{d:SampleData ItemCount=5}"
             PreviewKeyUp="ListBoxStudents_PreviewKeyUp"
             SelectionChanged="ListBoxStudents_SelectionChanged" HorizontalAlignment="Left" Width="300" />
-        <ui:AutoSuggestBox
-            x:Name="SearchBox"
-            Width="300"
-            Margin="20,60,0,0"
-            HorizontalAlignment="Left"
-            PlaceholderText="Поиск"
-            QueryIcon="Find" />
+
+        <wpfui:SearchBox Placeholder="Поиск" Margin="20,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300" />
+
         <ComboBox
             x:Name="ComboBoxSorting"
             Width="300"

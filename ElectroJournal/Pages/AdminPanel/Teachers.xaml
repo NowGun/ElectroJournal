@@ -85,16 +85,17 @@
                 Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Left" />
                 <Label
                 Height="35"
-                Margin="185,47,635,377"
+                Margin="185,37,0,0"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 Content="ФИО*"
                 FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <TextBox
+                <wpfui:TextBox
+                Placeholder="Иванов Иван Иванович"
                 x:Name="TextBoxTeachersFIO"                
                 Width="576"
                 Height="35"
-                Margin="242,47,0,0"
+                Margin="242,37,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="14"
@@ -104,7 +105,7 @@
                 x:Name="TextBoxTeachersPhone1"
                 Width="153"
                 Height="35"
-                Margin="665,107,0,0"
+                Margin="665,97,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 MaxLength="12"
@@ -115,29 +116,21 @@
                 x:Name="TextBoxTeachersMail1"
                 Width="263"
                 Height="35"
-                Margin="242,107,0,0"
+                Margin="242,97,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Text="zhirowdaniil@gmail.com"
                 TextWrapping="Wrap" />
                 <Label
-                Height="35"
-                Margin="242,12,336,412"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Content="Например: Иванов Иван Иванович"
-                FontSize="14"
-                FontStyle="Italic" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <Label
                     Height="35"
-                    Margin="185,107,632,317"
+                    Margin="185,97,0,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="Почта*"
                     FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 <Label
                     Height="35"
-                    Margin="521,107,207,317"
+                    Margin="521,97,0,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="Номер телефона"
@@ -185,12 +178,7 @@
             Margin="20,97,0,60"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             SelectionChanged="ListViewTeachers_SelectionChanged" PreviewKeyUp="ListViewTeachers_PreviewKeyUp" HorizontalAlignment="Left" Width="300" />
-        <ui:AutoSuggestBox
-                        x:Name="SearchBox"
-                        PlaceholderText="Поиск"                        
-                        QueryIcon="Find"
-                        Width="300"
-                        HorizontalAlignment="Left" Margin="20,60,0,0" PreviewKeyUp="SearchBox_PreviewKeyUp" />
+        <wpfui:SearchBox x:Name="SearchBox" Placeholder="Поиск" Margin="20,60,0,0"  PreviewKeyUp="SearchBox_PreviewKeyUp" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300"/>
         <ComboBox x:Name="ComboBoxSortingTeacher" HorizontalAlignment="Left" Height="35" Margin="20,20,0,0" VerticalAlignment="Top" Width="300" SelectedIndex="0" SelectionChanged="ComboBoxSortingTeacher_SelectionChanged">
             <ComboBoxItem Content="А-Я"/>
             <ComboBoxItem Content="Я-А"/>

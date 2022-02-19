@@ -38,6 +38,12 @@
         <!--  The Display option casues a large aliasing effect  -->
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+        <!--  I don't know if this is always the case, but ClearType blurs the fonts a bit for me  -->
+        <!--<Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />-->
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Linear" />
+        <!--  Aliased breaks rounded control elements such as buttons  -->
+        <Setter Property="RenderOptions.EdgeMode" Value="Unspecified" />
+        <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="WindowChrome.WindowChrome">
@@ -51,7 +57,7 @@
                     CornerRadius="0"
                     GlassFrameThickness="-1"
                     NonClientFrameEdges="None"
-                    ResizeBorderThickness="8"
+                    ResizeBorderThickness="4"
                     UseAeroCaptionButtons="False" />
             </Setter.Value>
         </Setter>

@@ -203,7 +203,7 @@ namespace ElectroJournal
                         {
                             TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
                             LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " +
-                                (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
+                               (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
                             break;
                         }
                         else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
@@ -293,6 +293,7 @@ namespace ElectroJournal
                             conn.Close();
 
                             FillComboBoxGroups();
+                            //ComboBoxGroup.SelectedIndex = 0;
                             Frame.Navigate(new Pages.Journal());
                             Notifications("Оповещение", "Авторизация прошла успешно");
 
@@ -728,6 +729,7 @@ namespace ElectroJournal
             GridLogin.Visibility = Visibility.Visible;
         }
 
+
         private async void FillComboBoxGroups()
         {
             ComboBoxGroup.Items.Clear();
@@ -742,6 +744,11 @@ namespace ElectroJournal
                 ComboBoxGroup.Items.Add(read.GetValue(1));
             }
             conn.Close(); //Закрываем соединение
+        }
+
+        private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Frame.Navigate(new Pages.Journal());
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,8 @@ namespace ElectroJournal.Pages
             InitializeComponent();
 
 
+            FillComoBoxMonth();
+            ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
             FillTable();
         }
 
@@ -38,46 +41,50 @@ namespace ElectroJournal.Pages
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBase.GetDBConnection();
 
+        string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames;
+
         private void FillTable()
         {
             FillText();
             FillStudents();
             FillDates();
-           
+
         }
 
         private void FillStudents()
         {
-            var worksheet = ReoGrid.CurrentWorksheet;
-
-            //
-
-            MySqlCommand command = new MySqlCommand("SELECT `students_name`, `students_surname` FROM `students` where groups_idgroups = 21", conn);
-
-            conn.Open();
-
-            MySqlDataReader reader = command.ExecuteReader();
-
-
-
-            for (int i = 2; reader.Read(); i++)
+            if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
             {
-                worksheet.SetRows(i);
-                worksheet["A" + i] = reader.GetString(1) + " " + reader.GetString(0);
-                worksheet.AutoFitColumnWidth(0, false);
+                var worksheet = ReoGrid.CurrentWorksheet;
 
-                unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
-                cell.IsReadOnly = true;
+                MySqlCommand command = new MySqlCommand("Select students_name, students_surname, groups_name_abbreviated from students join `groups` on `groups`.idgroups = groups_idgroups where groups_name_abbreviated = @group ", conn);
 
-                worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                command.Parameters.Add("@group", MySqlDbType.VarChar).Value = ((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString();
+
+                conn.Open();
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+                for (int i = 2; reader.Read(); i++)
                 {
-                    Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
-                    FontName = "Segoe UI",
-                    FontSize = 14,
-                });
+                    worksheet.SetRows(i);
+                    worksheet["A" + i] = reader.GetString(1) + " " + reader.GetString(0);
+                    worksheet.AutoFitColumnWidth(0, false);
+
+                    unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
+                    cell.IsReadOnly = true;
+
+                    worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                    {
+                        Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                        FontName = "Segoe UI",
+                        FontSize = 14,
+                    });
+                }
+                conn.Close();
             }
 
-            conn.Close();
+
         }
 
         private void FillDates()
@@ -85,17 +92,16 @@ namespace ElectroJournal.Pages
             var worksheet = ReoGrid.CurrentWorksheet;
 
 
-            MySqlCommand command = new MySqlCommand("SELECT `day` FROM `dates` where  `month` = 2 and `year` = 2022", conn);
+            MySqlCommand command = new MySqlCommand("SELECT `day` FROM `dates` where  `month` = @month and `year` = 2022", conn);
 
+            command.Parameters.Add("@month", MySqlDbType.VarChar).Value = ComboBoxMonth.SelectedIndex + 1;
             conn.Open();
 
             MySqlDataReader reader = command.ExecuteReader();
 
-
-
             for (int i = 1; reader.Read(); i++)
             {
-                worksheet.SetCols(i+1);
+                worksheet.SetCols(i + 1);
                 worksheet[0, i] = reader.GetString(0);
                 ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
@@ -128,10 +134,42 @@ namespace ElectroJournal.Pages
 
         private void ButtonExcel_Click(object sender, RoutedEventArgs e)
         {
-            var workbook = ReoGrid;
-            workbook.Save(@"C:\Users\nowgu\Desktop\table.xls", unvell.ReoGrid.IO.FileFormat.Excel2007);
+            //   var workbook = ReoGrid;
+            //  workbook.Save(@"table.xls", unvell.ReoGrid.IO.FileFormat.Excel2007);
+
+            SaveJournal();
         }
 
-        
+        private void ReoGrid_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!((e.Text == "н") || (e.Text == "Н") || (e.Text == "а") || (e.Text == "2") || (e.Text == "3") || (e.Text == "4") || (e.Text == "5") || (e.Text == "/") || (e.Text == "А")))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void FillComoBoxMonth()
+        {
+            for (int i = 0; i < monthNames.Length; i++)
+            {
+                ComboBoxMonth.Items.Add(monthNames[i]);
+            }
+        }
+
+        private void ComboBoxMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillTable();
+        }
+
+        private void SaveJournal()
+        {
+            MySqlCommand command = new MySqlCommand("insert into journal (students_idstudents, disciplines_iddisciplines, teachers_idteachers, journal_date, journal_score) " +
+                "value (@students, @disciplines, @teachers, @date, @score)", conn);
+
+            command.Parameters.Add("@students", MySqlDbType.VarChar).Value = 1;
+            command.Parameters.Add("@disciplines", MySqlDbType.VarChar).Value = 1;
+            command.Parameters.Add("@teachers", MySqlDbType.VarChar).Value = 1;
+
+        }
     }
 }

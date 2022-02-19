@@ -33,7 +33,9 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             InitializeComponent();
 
-            ListBoxStudentsRefresh();
+            FillComboBoxStudents();
+
+            ListBoxGroups.Visibility = Visibility.Hidden;
         }
 
         DataBase DbUser = new DataBase();
@@ -67,7 +69,7 @@ namespace ElectroJournal.Pages.AdminPanel
 
 
 
-           
+
         }
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
@@ -114,10 +116,10 @@ namespace ElectroJournal.Pages.AdminPanel
                     {
 
                         ProgressBar.Visibility = Visibility.Visible;
-                        
+
                         MySqlCommand command = new MySqlCommand("INSERT INTO `students` (`students_name`, `students_surname`, `students_patronymic`, `students_birthday`, `students_residence`," +
                 " `students_dormitory`, `students_parent`, `students_phone`, `students_parent_phone`, `groups_idgroups`) " +
-                "VALUES (@name, @surname, @patronymic, @birthday, @residence, @dormitory, @parent, @phone, @parentphone, @group)", conn);
+                "VALUES (@name, @surname, @patronymic, @birthday, @residence, @dormitory, @parent, @phone, @parentphone, (SELECT idgroups FROM `groups` WHERE groups_name_abbreviated = @group))", conn);
 
 
 
@@ -131,7 +133,7 @@ namespace ElectroJournal.Pages.AdminPanel
                         command.Parameters.Add("@parent", MySqlDbType.VarChar).Value = TextBoxParentFIO.Text;
                         command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxStudentsPhone.Text;
                         command.Parameters.Add("@parentphone", MySqlDbType.VarChar).Value = TextBoxParentPhone.Text;
-                        command.Parameters.Add("@group", MySqlDbType.Int32).Value = 21;
+                        command.Parameters.Add("@group", MySqlDbType.VarChar).Value = ListBoxGroups.SelectedItem.ToString();
 
 
                         await conn.OpenAsync();
@@ -149,6 +151,7 @@ namespace ElectroJournal.Pages.AdminPanel
                             ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
                             ProgressBar.Visibility = Visibility.Hidden;
                         }
+                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "НЕ РАБОТАЕТ");
 
                         conn.Close();
                         ListBoxStudentsRefresh();
@@ -163,7 +166,7 @@ namespace ElectroJournal.Pages.AdminPanel
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             ListBoxStudents.SelectedItem = null;
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
@@ -172,7 +175,6 @@ namespace ElectroJournal.Pages.AdminPanel
             TextBoxStudentsResidence.Clear();
             DatePickerDateBirthday.Text = null;
             CheckBoxStudentsDormitory.IsChecked = false;
-
 
 
         }
@@ -247,7 +249,7 @@ namespace ElectroJournal.Pages.AdminPanel
                     TextBoxParentPhone.Text = read.GetString(9);
                 }
                 conn.Close(); //Закрываем соединение
-            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            }
         }
 
         private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -277,31 +279,49 @@ namespace ElectroJournal.Pages.AdminPanel
             }
         }
 
-        private void FillTreeView()
+        private async void FillComboBoxStudents()
         {
-            using (MySqlCommand command = new MySqlCommand("select idgroups, groups_name_abbreviated, groups_course from zhirov.groups", conn))
+            ComboBoxGroups.Items.Clear();
+            MySqlCommand command = new MySqlCommand("SELECT idcourse, course_name from course", conn); //Команда выбора данных
+            conn.Open(); //Открываем соединение
+
+            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+            while (await read.ReadAsync()) //Читаем пока есть данные
             {
-                conn.Open();
+                ComboBoxGroups.Items.Add(read.GetValue(1).ToString());
+            }
+            conn.Close(); //Закрываем соединение
+        }
 
-                using (var dr = command.ExecuteReader())
-                {
-                    var nodes = new Dictionary<int, TreeNode>();
-                    while (dr.Read())
-                    {
-                        string course = dr.GetString(2);
-                        string name = dr.GetString(1);
-                        int id = dr.GetInt32(0);
+        List<int> idGroups = new List<int>();
 
-                        var Node = new TreeNode(course);
-                        TreeNode parent;
-                        if (course == null)
-                        {
-                            //parent.Nodes.Add(Node);
-                        }
-                        nodes.Add(id, Node);
-                    }
-                };
-            };
+        private async void FillListBox()
+        {
+            ListBoxGroups.Items.Clear();
+            idGroups.Clear();
+
+            MySqlCommand command = new MySqlCommand("select idgroups, groups_name_abbreviated from `groups` join course on course.idcourse = course_idcourse where course_name = @course", conn); //Команда выбора данных
+            //command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`";
+
+            command.Parameters.Add("@course", MySqlDbType.VarChar).Value = ComboBoxGroups.SelectedItem.ToString();
+
+            await conn.OpenAsync(); //Открываем соединение
+            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
+
+            for (int i = 0; await read.ReadAsync(); i++)
+            {
+                ListBoxGroups.Items.Add(read.GetString(1));
+                idGroups.Add(read.GetInt32(0));
+            }
+            conn.Close(); //Закрываем соединение
+                          //ButtonSaveTeacher.IsEnabled = false;
+
+        }
+
+        private void ComboBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillListBox();
+            ListBoxGroups.Visibility = Visibility.Visible;
         }
     }
 }

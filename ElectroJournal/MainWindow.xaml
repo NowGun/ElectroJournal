@@ -117,6 +117,7 @@
 
 
     <Grid x:Name="GridDefault" x:FieldModifier="public">
+
         <Grid
             x:Name="GridNLogin"
             Margin="0,48,0,604" d:IsHidden="True">
@@ -251,9 +252,33 @@
                     Header="Во весь экран" />
             </MenuItem>
         </Menu>
+        <Frame
+            x:Name="Frame"
+            Margin="0,99,0,0"
+            d:IsHidden="True"
+            Background="Transparent"
+            Content=""
+            ContentRendered="Frame_ContentRendered"
+            NavigationUIVisibility="Hidden"
+            RenderTransformOrigin="0.5,0.5">
+            <Frame.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Frame.RenderTransform>
+        </Frame>
+        <controls1:NotificationArea
+            x:Name="WindowArea"
+            Margin="0,99,8,8"
+            d:IsHidden="True"
+            MaxItems="3"
+            Position="TopRight" />
         <Grid
             x:Name="GridMenu"
-            Height="52"
+            Height="551"
             MinWidth="1272"
             Margin="0,48,0,0"
             VerticalAlignment="Top"
@@ -379,49 +404,29 @@
             </ui:NavigationView>
             <Grid
                 x:Name="GridComboGroups"
-                Height="35"
-                Margin="792,-41,165,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top">
+                Height="35" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Margin="0,-40,155,0"
+                >
                 <ComboBox
                     x:Name="ComboBoxGroup"
                     Width="200"
-                    Height="36"
+                    Height="35"
                     Margin="80,0,0,0"
                     HorizontalAlignment="Right"
                     Grid.IsSharedSizeScope="True"
-                    RenderTransformOrigin="0.5,0.5">
+                    RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" SelectionChanged="ComboBoxGroup_SelectionChanged">
                     <ComboBoxItem Content="ПКС 4" />
                 </ComboBox>
                 <Label
                     x:Name="LabelGroup"
                     Width="60"
                     Height="35"
-                    Margin="5,0,200,0"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Content="Группа:" />
+                    Content="Группа:" Margin="20,0,0,0" />
             </Grid>
         </Grid>
-        <Frame
-            x:Name="Frame"
-            Margin="0,99,0,0"
-            d:IsHidden="True"
-            Background="Transparent"
-            Content=""
-            ContentRendered="Frame_ContentRendered"
-            NavigationUIVisibility="Hidden"
-            RenderTransformOrigin="0.5,0.5">
-            <Frame.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Frame.RenderTransform>
-        </Frame>
         <wpfui:Card
             x:Name="GridLogin"
             Height="254"
@@ -559,12 +564,6 @@
             </Grid>
 
         </wpfui:Card>
-        <controls1:NotificationArea
-            x:Name="WindowArea"
-            Margin="0,99,8,8"
-            d:IsHidden="True"
-            MaxItems="3"
-            Position="TopRight" />
 
     </Grid>
 </Window>

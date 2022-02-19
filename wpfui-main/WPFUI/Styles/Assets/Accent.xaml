@@ -7,5 +7,4 @@
     <Color x:Key="SystemAccentColorLight1">#559ce4</Color>
     <Color x:Key="SystemAccentColorLight2">#80b9ee</Color>
     <Color x:Key="SystemAccentColorLight3">#add8ff</Color>
-
 </ResourceDictionary>

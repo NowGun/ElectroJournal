@@ -15,9 +15,6 @@
     <SolidColorBrush x:Key="ApplicationBackgroundBrush" Color="{DynamicResource ApplicationBackgroundColor}" />
 
     <!--  Brushes depending on system colors  -->
-
-
-
     <SolidColorBrush x:Key="ButtonIsEnabledAccent" Color="{DynamicResource ButtonAccentBackgroundDisabled}" />
     <SolidColorBrush x:Key="ButtonTextIsEnabledDis" Color="{DynamicResource ButtonTextAccentDisabled}" />
     <SolidColorBrush x:Key="ButtonPressedAccent" Color="{DynamicResource ButtonAccentBackgroundPressed}" />
@@ -37,7 +34,7 @@
     <SolidColorBrush x:Key="ButtonStandardHover" Color="{DynamicResource ButtonStandardBackgroundMouseOver}" />
     <SolidColorBrush x:Key="ButtonStandardBorder" Color="{DynamicResource ButtonStandardBorderBrush}" />
 
-
+    <SolidColorBrush x:Key="SystemAccentBrushListBox" Color="{DynamicResource SystemAccentColorListBox}" />
     <SolidColorBrush x:Key="SystemAccentBrush" Color="{DynamicResource SystemAccentColorLight2}" />
     <SolidColorBrush x:Key="SystemFillColorAttentionBrush" Color="{DynamicResource SystemAccentColorLight2}" />
     <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="{DynamicResource SystemAccentColorLight3}" />

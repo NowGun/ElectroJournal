@@ -18,8 +18,8 @@
                 <SolidColorBrush Color="{DynamicResource TextFillColorPrimary}" />
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="{DynamicResource SystemAccentBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentBrush}" />
+        <Setter Property="Background" Value="{DynamicResource SystemAccentBrushListBox}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentBrushListBox}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
@@ -125,7 +125,7 @@
                             Focusable="False"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                             VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <StackPanel Margin="2" IsItemsHost="True" />
+                            <VirtualizingStackPanel Margin="2" IsItemsHost="True" />
                         </ScrollViewer>
                     </Border>
                     <ControlTemplate.Triggers>
