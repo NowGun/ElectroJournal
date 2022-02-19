@@ -12,8 +12,8 @@ namespace ElectroJournal.Classes
 {
     class DataBaseControls
     {
-        Classes.DataBase DbUser = new Classes.DataBase();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         public string Hash(string password)
         {

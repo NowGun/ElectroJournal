@@ -27,7 +27,7 @@ using System.Xml;
 
 namespace ElectroJournal.Classes
 {
-    class DataBase
+    class DataBaseConn
     {
 
         public static MySqlConnection GetDBConnection()

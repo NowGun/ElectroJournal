@@ -24,6 +24,7 @@
     <PackageTags>wpf ui wpfui fluent design winui windows controls custom metro modern xaml toolkit color dark theme lepo net6 net5 net</PackageTags>
     <PackageId>WPF-UI</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Fonts\FiraCode-Regular.ttf" />

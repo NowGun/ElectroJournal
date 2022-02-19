@@ -48,9 +48,9 @@ namespace ElectroJournal.Pages
             FillDataGridStroke();
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
 
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
 
         private void FillDataGridStroke()

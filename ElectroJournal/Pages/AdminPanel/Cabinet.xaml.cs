@@ -40,10 +40,10 @@ namespace ElectroJournal.Pages.AdminPanel
             ListBoxHousingRefresh();
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
         MainWindow Not = new MainWindow();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         private void ButtonSaveCabinet_Click(object sender, RoutedEventArgs e)
         {

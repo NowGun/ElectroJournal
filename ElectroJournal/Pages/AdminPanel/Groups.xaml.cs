@@ -37,9 +37,9 @@ namespace ElectroJournal.Pages.AdminPanel
             FillComboBoxTypeLearning();
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         List<int> idGroups = new List<int>();
         List<int> idTeachers = new List<int>();

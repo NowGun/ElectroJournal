@@ -63,12 +63,12 @@ namespace ElectroJournal
 
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         SettingMigration SettingMig = new SettingMigration();
         DataBaseControls DbControls = new DataBaseControls();
         private readonly NotificationManager _notificationManager = new NotificationManager();
         XmlDocument xmlDocument = new XmlDocument();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
         DataTable table = new DataTable();
         MySqlDataAdapter adapter = new MySqlDataAdapter();
 
@@ -223,7 +223,7 @@ namespace ElectroJournal
 
         async void Login()
         {
-            MySqlConnection conn = DataBase.GetDBConnection();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             bool a = false;
             var anim = (Storyboard)FindResource("AnimLoadLogin");
             var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");

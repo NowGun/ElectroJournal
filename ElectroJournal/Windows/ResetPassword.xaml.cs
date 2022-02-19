@@ -31,9 +31,9 @@ namespace ElectroJournal.Windows
             GridNewPassword.Visibility = Visibility.Hidden;
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         bool a = true;
         int secretCode = 0;

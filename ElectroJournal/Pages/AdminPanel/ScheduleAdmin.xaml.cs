@@ -33,9 +33,9 @@ namespace ElectroJournal.Pages.AdminPanel
             LoadDataGridJournal();
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         int idSchedule = 0;
 

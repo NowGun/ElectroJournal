@@ -32,9 +32,9 @@ namespace ElectroJournal.Pages
             LoadData();
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {

@@ -20,6 +20,7 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

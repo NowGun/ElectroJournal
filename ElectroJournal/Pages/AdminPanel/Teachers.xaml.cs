@@ -21,6 +21,8 @@ using System.Windows.Forms;
 using SmsRu;
 using System.Drawing;
 using System.Threading;
+using ElectroJournal.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -38,9 +40,9 @@ namespace ElectroJournal.Pages.AdminPanel
 
         }
 
-        DataBase DbUser = new DataBase();
+        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBase.GetDBConnection();
+        MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         List<int> idTeachers = new List<int>();
 
@@ -82,7 +84,9 @@ namespace ElectroJournal.Pages.AdminPanel
                     else
                     {
 
-                        ProgressBarTeachers.Visibility = Visibility.Visible;
+                        
+
+                            ProgressBarTeachers.Visibility = Visibility.Visible;
 
                         MySqlCommand command = new MySqlCommand("INSERT INTO teachers (`teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`," +
                             " `teachers_acces_admin_panel`, `teachers_phone`, `teachers_mail`) VALUES (@login, @password, @name, @surname, @patronymic, @admin, @phone, @mail)", conn);
@@ -114,7 +118,7 @@ namespace ElectroJournal.Pages.AdminPanel
 
                             if (command.ExecuteNonQuery() == 1 && command2.ExecuteNonQuery() == 0 && command3.ExecuteNonQuery() == 0)
                             {
-                                SendPasswordToUser();
+                                //SendPasswordToUser();
                                 //SendSMSToUser();
                                 
 
@@ -145,10 +149,26 @@ namespace ElectroJournal.Pages.AdminPanel
 
         }
 
-
         private async void ListViewTeachersRefresh()
         {
             ListViewTeachers.Items.Clear();
+
+            using (zhirovContext db = new zhirovContext())
+            {
+               //вот  var teachers = db.Teachers.OrderByDescending(p => p.TeachersSurname).ToListAsync();
+
+                
+                
+                
+                await db.Teachers.ForEachAsync(t => 
+                {
+                    ListViewTeachers.Items.Add($"{t.TeachersSurname}");
+                });
+                
+            }
+
+
+            /*
             idTeachers.Clear();
 
             MySqlCommand command = new MySqlCommand("", conn); //Команда выбора данных
@@ -169,7 +189,7 @@ namespace ElectroJournal.Pages.AdminPanel
             }
             conn.Close(); //Закрываем соединение
                           //ButtonSaveTeacher.IsEnabled = false;
-
+            */
         }
 
 
