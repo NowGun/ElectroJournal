@@ -140,6 +140,7 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             ListBoxStudents.Items.Clear();
             idStudents.Clear();
+            ProgressBarListBox.Visibility = Visibility.Visible;
 
             using (zhirovContext db = new zhirovContext())
             {
@@ -161,6 +162,7 @@ namespace ElectroJournal.Pages.AdminPanel
                         break;
                 }
             }
+            ProgressBarListBox.Visibility = Visibility.Hidden;
         }
 
         private void TextBoxStudentsPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -184,12 +186,13 @@ namespace ElectroJournal.Pages.AdminPanel
             {
                 using (zhirovContext db = new zhirovContext())
                 {
-                    var students = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).ToListAsync();
-                    
+                    var students = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).ToListAsync();                    
+
                     foreach (var t in students)
                     {
                         string FIO = t.StudentsSurname + " " + t.StudentsName + " " + t.StudentsPatronymic;
                         int indexGroup = idGroups.IndexOf((int)t.GroupsIdgroups);
+
 
                         TextBoxStudentsFIO.Text = FIO;
                         DatePickerDateBirthday.SelectedDate = t.StudentsBirthday;

@@ -724,5 +724,10 @@ namespace ElectroJournal
         {
             Frame.Navigate(new Pages.Journal());
         }
+
+        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Frame.Navigate(new Pages.Setting());
+        }
     }
 }

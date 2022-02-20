@@ -258,10 +258,8 @@
                 Height="43"
                 Padding="6,0,6,0"
                 HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                FontFamily="Segoe UI Historic"
-                FontSize="14"
-                Header="ElectroJournal">
+                VerticalContentAlignment="Center"                
+                FontSize="14" Header="ElectroJournal">
                 <MenuItem
                     x:Name="MenuItemEJCalculator"
                     Click="MenuItemEJCalculator_Click"
@@ -349,16 +347,19 @@
                 Margin="0,0,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top">
-                <Label x:Name="TextBlockTeacher" Content="Фамиля И.О." FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0" VerticalContentAlignment="Center"/>
-                <ui:PersonPicture
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="TextBlockTeacher" Content="Фамиля И.О." FontSize="14" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <ui:PersonPicture
                     x:Name="PersonPicture"
                     Width="40"
                     Height="40"
-                    Margin="270,0,0,0"
+                    Margin="0,0,10,0"
                     VerticalAlignment="Center"
                     MouseLeave="RectangleUser_MouseLeave"
                     MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
                     MouseMove="RectangleUser_MouseMove" />
+                    <wpfui:Icon x:Name="IconSetting" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp"/>
+                </StackPanel>                
             </Grid>
             <Path
                 x:Name="PathMenu"

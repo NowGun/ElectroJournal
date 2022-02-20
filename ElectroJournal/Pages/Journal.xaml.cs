@@ -33,62 +33,49 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
 
-
-            //FillComoBoxMonth();
-            //ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
-            //FillTable();
+            FillComoBoxMonth();
+            ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
+            FillTable();
         }
-
-        
 
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames;
 
         private void FillTable()
         {
-            //FillText();
-            //FillStudents();
-            //FillDates();
-
+            FillText();
+            FillStudents();
+            FillDates();
         }
 
-        private void FillStudents()
+        private async void FillStudents()
         {
-            DataBaseConn DbUser = new DataBaseConn();
-            DataBaseControls DbControls = new DataBaseControls();
-            MySqlConnection conn = DataBaseConn.GetDBConnection();
-
             if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
             {
                 var worksheet = ReoGrid.CurrentWorksheet;
-
-                MySqlCommand command = new MySqlCommand("Select students_name, students_surname, groups_name_abbreviated from students join `groups` on `groups`.idgroups = groups_idgroups where groups_name_abbreviated = @group ", conn);
-
-                command.Parameters.Add("@group", MySqlDbType.VarChar).Value = ((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString();
-
-                conn.Open();
-
-                MySqlDataReader reader = command.ExecuteReader();
-
-                for (int i = 2; reader.Read(); i++)
+                using (zhirovContext db = new zhirovContext())
                 {
-                    worksheet.SetRows(i);
-                    worksheet["A" + i] = reader.GetString(1) + " " + reader.GetString(0);
-                    worksheet.AutoFitColumnWidth(0, false);
+                    var days = await db.Groups.Where(p => p.GroupsNameAbbreviated == ((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()).Select(p => p.Idgroups).ToListAsync();                    
+                    var students = await db.Students.Where(p => p.GroupsIdgroups == days[0]).ToListAsync();
 
-                    unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
-                    cell.IsReadOnly = true;
-
-                    worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                    for (int i = 2; i < students.Count; i++)
                     {
-                        Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
-                        FontName = "Segoe UI",
-                        FontSize = 14,
-                    });
+                        worksheet.SetRows(i);
+                        worksheet["A" + i] = students[i].StudentsSurname + " " + students[i].StudentsName;
+                        worksheet.AutoFitColumnWidth(0, false);
+
+                        unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
+                        cell.IsReadOnly = true;
+
+                        worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                        {
+                            Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                            FontName = "Segoe UI",
+                            FontSize = 14,
+                        });
+                    }
+
                 }
-                conn.Close();
             }
-
-
         }
 
         private async void FillDates()
@@ -97,68 +84,31 @@ namespace ElectroJournal.Pages
 
             using (zhirovContext db = new zhirovContext())
             {
-                var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).ToListAsync();
+                var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
 
-                foreach (var d in days)
+                for (int i = 1; i < days.Count+1; i++)
                 {
-                    for (int i = 1; i < 32; i++)
+                    worksheet.SetCols(i + 1);
+                    worksheet[0, i] = days[i - 1];
+                    ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+
+                    unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
+                    cell.IsReadOnly = true;
+
+                    worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
                     {
-                        worksheet.SetCols(i + 1);
-                        worksheet[0, i] = d.Day;
-                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+                        Flag = PlainStyleFlag.HorizontalAlign,
+                        HAlign = ReoGridHorAlign.Center,
+                    });
 
-                        unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
-                        cell.IsReadOnly = true;
-
-                        
-                    }
+                    worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+                    {
+                        Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                        FontName = "Segoe UI",
+                        FontSize = 14,
+                    });
                 }
             }
-
-            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-            {
-                Flag = PlainStyleFlag.HorizontalAlign,
-                HAlign = ReoGridHorAlign.Center,
-            });
-
-            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-            {
-                Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
-                FontName = "Segoe UI",
-                FontSize = 14,
-            });
-            /*
-            MySqlCommand command = new MySqlCommand("SELECT `day` FROM `dates` where  `month` = @month and `year` = 2022", conn);
-
-            command.Parameters.Add("@month", MySqlDbType.VarChar).Value = ComboBoxMonth.SelectedIndex + 1;
-            conn.Open();
-
-            MySqlDataReader reader = command.ExecuteReader();
-
-            for (int i = 1; reader.Read(); i++)
-            {
-                worksheet.SetCols(i + 1);
-                worksheet[0, i] = reader.GetString(0);
-                ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
-
-                unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
-                cell.IsReadOnly = true;
-
-                worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-                {
-                    Flag = PlainStyleFlag.HorizontalAlign,
-                    HAlign = ReoGridHorAlign.Center,
-                });
-
-                worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-                {
-                    Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
-                    FontName = "Segoe UI",
-                    FontSize = 14,
-                });
-            }
-
-            conn.Close();*/
         }
 
         private void FillText()

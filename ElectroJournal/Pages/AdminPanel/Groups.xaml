@@ -18,19 +18,12 @@
 
     <Grid>
         <wpfui:Card Margin="345,60,20,65">
-            <Grid
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <wpfui:NumberBox
-                    x:Name="NumberBoxCourse"
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ComboBox x:Name="ComboBoxCourse"
                     Height="35"
                     Margin="316,223,0,0"
-                    DecimalPlaces="4"
-                    Max="10"
-                    Min="1"
-                    Step="1"
-                    Text="1"
-                    Value="1" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top" Width="200" />
                 <TextBox
                     x:Name="TextBoxGroupsName"
                     Width="520"
@@ -132,7 +125,7 @@
                     Click="ButtonGroupSave_Click"
                     Content="Сохранить"
                     FontSize="14"
-                    Style="{DynamicResource WPFUIButtonAccent}" />
+                    Style="{DynamicResource WPFUIButtonAccent}" IsEnabled="False" />
                 <Label
                     Width="160"
                     Height="35"
@@ -142,14 +135,25 @@
                     VerticalContentAlignment="Center"
                     Content="* - обязательные поля"
                     FontSize="14" />
+                <ProgressBar
+                    x:Name="ProgressBar"
+                    Margin="0,0,158,17"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Foreground="#FF3567BC"
+                    IsIndeterminate="True"
+                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                    Visibility="Hidden" />
             </Grid>
         </wpfui:Card>
         <ListBox
             x:Name="ListBoxGroups"
+            Width="280"
             Margin="20,95,0,65"
+            HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             PreviewKeyUp="ListBoxGroups_PreviewKeyUp"
-            SelectionChanged="ListBoxGroups_SelectionChanged" HorizontalAlignment="Left" Width="280" />
+            SelectionChanged="ListBoxGroups_SelectionChanged" />
         <Button
             x:Name="ButonGroupAdd"
             Width="130"
@@ -160,7 +164,7 @@
             Click="ButonGroupAdd_Click"
             Content="Добавить"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" />
+            Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
         <Button
             x:Name="ButtonGroupDelete"
             Width="130"
@@ -171,7 +175,7 @@
             Click="ButtonGroupDelete_Click"
             Content="Удалить"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" />
+            Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
         <ui:AutoSuggestBox
             x:Name="SearchBox"
             Width="280"
