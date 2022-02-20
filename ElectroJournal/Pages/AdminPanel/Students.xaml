@@ -12,9 +12,15 @@
     <Grid>
         <wpfui:Card Margin="365,20,20,60">
             <Grid>
-                <StackPanel Margin="602,52,27,52" VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <ComboBox x:Name="ComboBoxGroups" Margin="0,0,0,10" SelectionChanged="ComboBoxGroups_SelectionChanged"/>
-                    <ListBox x:Name="ListBoxGroups"/>
+                <StackPanel
+                    Margin="602,52,27,52"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+                    <ComboBox
+                        x:Name="ComboBoxGroups"
+                        Margin="0,0,0,10"
+                        SelectionChanged="ComboBoxGroups_SelectionChanged" />
+                    <ListBox x:Name="ListBoxGroups" />
                     <CheckBox
                         x:Name="CheckBoxStudentsDormitory"
                         Width="241"
@@ -191,23 +197,32 @@
                     UndoLimit="12" />
                 <ProgressBar
                     x:Name="ProgressBar"
-                    Margin="679,462,170,17"
+                    Margin="0,0,165,17"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     Foreground="#FF3567BC"
                     IsIndeterminate="True"
                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                    Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    Visibility="Hidden" />
 
             </Grid>
         </wpfui:Card>
 
         <ListBox
             x:Name="ListBoxStudents"
+            Width="300"
             Margin="20,97,0,60"
+            HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             PreviewKeyUp="ListBoxStudents_PreviewKeyUp"
-            SelectionChanged="ListBoxStudents_SelectionChanged" HorizontalAlignment="Left" Width="300" />
+            SelectionChanged="ListBoxStudents_SelectionChanged" />
 
-        <wpfui:SearchBox Placeholder="Поиск" Margin="20,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300" />
+        <wpfui:SearchBox
+            Width="300"
+            Margin="20,60,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Placeholder="Поиск" />
 
         <ComboBox
             x:Name="ComboBoxSorting"

@@ -8,7 +8,8 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI" xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
+    xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Teachers"
     mc:Ignorable="d">
     <Page.Resources />
@@ -18,136 +19,156 @@
             <Grid>
 
                 <ui:PersonPicture
-                        x:Name="PersonPicture"
-                    
-                        Height="150"
-                        VerticalAlignment="Top"
-                        Margin="10,12,712,0" Width="150" MouseLeftButtonUp="PersonPicture_MouseLeftButtonUp" HorizontalAlignment="Left" />
+                    x:Name="PersonPicture"
+                    Width="150"
+                    Height="150"
+                    Margin="10,12,712,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    MouseLeftButtonUp="PersonPicture_MouseLeftButtonUp" />
 
                 <ProgressBar
-            x:Name="ProgressBarTeachers"
-            Margin="717,424,135,15"
-            Foreground="#FF3567BC"
-            IsIndeterminate="True"
-            Style="{StaticResource MaterialDesignCircularProgressBar}"
-            Visibility="Hidden" />
+                    x:Name="ProgressBarTeachers"
+                    Margin="717,422,135,17"
+                    Foreground="#FF3567BC"
+                    IsIndeterminate="True"
+                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                    Visibility="Hidden" />
                 <Button
-            x:Name="ButtonSave"
-            Width="120"
-            Height="35"
-            Margin="0,0,10,10"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Click="ButtonSave_Click"
-            Content="Сохранить"
-            FontSize="14"
-            IsDefault="True"
-            Style="{StaticResource WPFUIButtonAccent}" />
+                    x:Name="ButtonSave"
+                    Width="120"
+                    Height="35"
+                    Margin="0,0,10,10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Click="ButtonSave_Click"
+                    Content="Сохранить"
+                    FontSize="14"
+                    IsDefault="True"
+                    Style="{StaticResource WPFUIButtonAccent}" />
                 <Label
-                Height="35"
-                Margin="25,237,777,187"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Content="Логин*"
-                FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    Height="35"
+                    Margin="25,237,777,187"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Логин*"
+                    FontSize="16" />
                 <TextBox
-                x:Name="TextBoxTeachersLogin"
-                Width="231"
-                Height="35"
-                Margin="100,237,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="14"
-                MaxLength="20"
-                Text="admin"
-                TextWrapping="Wrap" />
+                    x:Name="TextBoxTeachersLogin"
+                    Width="231"
+                    Height="35"
+                    Margin="100,237,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontSize="14"
+                    MaxLength="20"
+                    Text="admin"
+                    TextWrapping="Wrap" />
                 <Label
-                Height="35"
-                Margin="25,287,777,137"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Content="Пароль"
-                FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    Height="35"
+                    Margin="25,287,777,137"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Пароль"
+                    FontSize="16" />
                 <PasswordBox
-                x:Name="PasswordBoxTeachers"
-                Width="231"
-                Height="35"
-                Margin="100,287,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                VerticalContentAlignment="Center" />
+                    x:Name="PasswordBoxTeachers"
+                    Width="231"
+                    Height="35"
+                    Margin="100,287,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center" />
                 <CheckBox
-                x:Name="CheckBoxAdminAccess"
-                Width="245"
-                Height="30"
-                Margin="25,337,602,92"
-                Content="Доступ к панели администратора"
-                Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    x:Name="CheckBoxAdminAccess"
+                    Width="245"
+                    Height="30"
+                    Margin="25,337,602,92"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Доступ к панели администратора"
+                    Cursor="Hand" />
                 <Label
-                Height="35"
-                Margin="185,37,0,0"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Content="ФИО*"
-                FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    Height="35"
+                    Margin="185,37,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="ФИО*"
+                    FontSize="16" />
                 <wpfui:TextBox
-                Placeholder="Иванов Иван Иванович"
-                x:Name="TextBoxTeachersFIO"                
-                Width="576"
-                Height="35"
-                Margin="242,37,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="14"
-                PreviewKeyUp="TextBoxTeachersFIO_PreviewKeyUp"
-                TextWrapping="Wrap" />
+                    x:Name="TextBoxTeachersFIO"
+                    Width="576"
+                    Height="35"
+                    Margin="242,37,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontSize="14"
+                    Placeholder="Иванов Иван Иванович"
+                    PreviewKeyUp="TextBoxTeachersFIO_PreviewKeyUp"
+                    TextWrapping="Wrap" />
                 <TextBox
-                x:Name="TextBoxTeachersPhone1"
-                Width="153"
-                Height="35"
-                Margin="665,97,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                MaxLength="12"
-                Text="89996061994"
-                TextWrapping="Wrap"
-                UndoLimit="12" />
+                    x:Name="TextBoxTeachersPhone1"
+                    Width="153"
+                    Height="35"
+                    Margin="665,97,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    MaxLength="12"
+                    Text="89996061994"
+                    TextWrapping="Wrap"
+                    UndoLimit="12" />
                 <TextBox
-                x:Name="TextBoxTeachersMail1"
-                Width="263"
-                Height="35"
-                Margin="242,97,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Text="zhirowdaniil@gmail.com"
-                TextWrapping="Wrap" />
+                    x:Name="TextBoxTeachersMail1"
+                    Width="263"
+                    Height="35"
+                    Margin="242,97,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="zhirowdaniil@gmail.com"
+                    TextWrapping="Wrap" />
                 <Label
                     Height="35"
                     Margin="185,97,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="Почта*"
-                    FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    FontSize="16" />
                 <Label
                     Height="35"
                     Margin="521,97,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="Номер телефона"
-                    FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    FontSize="16" />
                 <Label
+                    Width="349"
                     Margin="25,0,0,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="* - обязательные для заполнения поля"
-                    FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="349"/>
-                <Label x:Name="LabelGroup"
+                    FontSize="16" />
+                <Label
+                    x:Name="LabelGroup"
                     Height="35"
                     Margin="14,167,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Content="Группа: отсутствует"
-                    FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    FontSize="16" />
 
             </Grid>
         </wpfui:Card>
@@ -172,16 +193,35 @@
             Click="ButtonDelete_Click"
             Content="Удалить"
             FontSize="14"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" IsEnabled="False" />
+            IsEnabled="False"
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
         <ListBox
             x:Name="ListViewTeachers"
+            Width="300"
             Margin="20,97,0,60"
+            HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            SelectionChanged="ListViewTeachers_SelectionChanged" PreviewKeyUp="ListViewTeachers_PreviewKeyUp" HorizontalAlignment="Left" Width="300" />
-        <wpfui:SearchBox x:Name="SearchBox" Placeholder="Поиск" Margin="20,60,0,0"  PreviewKeyUp="SearchBox_PreviewKeyUp" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300"/>
-        <ComboBox x:Name="ComboBoxSortingTeacher" HorizontalAlignment="Left" Height="35" Margin="20,20,0,0" VerticalAlignment="Top" Width="300" SelectedIndex="0" SelectionChanged="ComboBoxSortingTeacher_SelectionChanged">
-            <ComboBoxItem Content="А-Я"/>
-            <ComboBoxItem Content="Я-А"/>
+            PreviewKeyUp="ListViewTeachers_PreviewKeyUp"
+            SelectionChanged="ListViewTeachers_SelectionChanged" />
+        <wpfui:SearchBox
+            x:Name="SearchBox"
+            Width="300"
+            Margin="20,60,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Placeholder="Поиск"
+            PreviewKeyUp="SearchBox_PreviewKeyUp" />
+        <ComboBox
+            x:Name="ComboBoxSortingTeacher"
+            Width="300"
+            Height="35"
+            Margin="20,20,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            SelectedIndex="0"
+            SelectionChanged="ComboBoxSortingTeacher_SelectionChanged">
+            <ComboBoxItem Content="А-Я" />
+            <ComboBoxItem Content="Я-А" />
         </ComboBox>
 
     </Grid>

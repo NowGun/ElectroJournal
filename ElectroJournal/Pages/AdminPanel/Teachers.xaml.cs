@@ -47,81 +47,53 @@ namespace ElectroJournal.Pages.AdminPanel
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            DataBaseConn DbUser = new DataBaseConn();
             DataBaseControls DbControls = new DataBaseControls();
-            MySqlConnection conn = DataBaseConn.GetDBConnection();
+            ProgressBarTeachers.Visibility = Visibility.Visible;
+
             if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail1.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
             {
                 if (TextBoxTeachersFIO.Text.Split(new String[] {" "}, StringSplitOptions.RemoveEmptyEntries).Length == 3)
                 {
-                    ProgressBarTeachers.Visibility = Visibility.Visible;
                     string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (ListViewTeachers.SelectedItem != null)
                     {
-                        MySqlCommand command = new MySqlCommand("UPDATE `teachers` SET `teachers_name` = @name, `teachers_surname` = @surname, `teachers_patronymic` = @patronymic, " +
-                            "`teachers_acces_admin_panel` = @admin, `teachers_phone` = @phone, `teachers_mail` = @mail WHERE `idteachers` = @id", conn);
-
-
-                        command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
-                        command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
-                        command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
-                        command.Parameters.Add("@admin", MySqlDbType.VarChar).Value = CheckBoxAdminAccess.IsChecked.ToString();
-                        command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxTeachersPhone1.Text;
-                        command.Parameters.Add("@mail", MySqlDbType.VarChar).Value = TextBoxTeachersMail1.Text;
-                        command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idTeachers[ListViewTeachers.SelectedIndex];
-
-                        await conn.OpenAsync();
-
-                        if (command.ExecuteNonQuery() == 1)
+                        using (zhirovContext db = new zhirovContext())
                         {
-                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
-                        }
-                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Ошибка", "Произошла ошибка");
+                            Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
 
-                        conn.Close();
-                        ListViewTeachersRefresh();
+                            if (teacher != null)
+                            {
+                                teacher.TeachersName = FIO[1];
+                                teacher.TeachersSurname = FIO[0];
+                                teacher.TeachersPatronymic = FIO[2];
+                                teacher.TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString();
+                                teacher.TeachersPhone = TextBoxTeachersPhone1.Text;
+                                teacher.TeachersMail = TextBoxTeachersMail1.Text;
+
+                                await db.SaveChangesAsync();
+
+                                ListViewTeachersRefresh();
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                            }
+                        }                        
                     }
                     else
                     {
-
-                        
-
-                            ProgressBarTeachers.Visibility = Visibility.Visible;
-
-                        MySqlCommand command = new MySqlCommand("INSERT INTO teachers (`teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`," +
-                            " `teachers_acces_admin_panel`, `teachers_phone`, `teachers_mail`) VALUES (@login, @password, @name, @surname, @patronymic, @admin, @phone, @mail)", conn);
-
-                        MySqlCommand command2 = new MySqlCommand("CREATE USER @login @`%` IDENTIFIED BY @password", conn);
-                        MySqlCommand command3 = new MySqlCommand("GRANT ALL PRIVILEGES ON zhirov. * TO @login @'%';", conn);
-
-                        command2.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
-                        command2.Parameters.Add("@password", MySqlDbType.VarChar).Value = PasswordBoxTeachers.Password;
-
-                        command3.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
-
-                        command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxTeachersLogin.Text;
-                        //command.Parameters.Add("@password", MySqlDbType.VarChar).Value = PBKDF2HashHelper.CreatePasswordHash(PasswordBoxTeachers.Password);
-                        command.Parameters.Add("@password", MySqlDbType.VarChar).Value = DbControls.Hash(PasswordBoxTeachers.Password);
-                        command.Parameters.Add("@name", MySqlDbType.VarChar).Value = FIO[1];
-                        command.Parameters.Add("@surname", MySqlDbType.VarChar).Value = FIO[0];
-                        command.Parameters.Add("@patronymic", MySqlDbType.VarChar).Value = FIO[2];
-                        //command.Parameters.Add("@image", MySqlDbType.VarChar).Value = words[2];
-                        command.Parameters.Add("@admin", MySqlDbType.VarChar).Value = CheckBoxAdminAccess.IsChecked.ToString();
-                        command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxTeachersPhone1.Text;
-                        command.Parameters.Add("@mail", MySqlDbType.VarChar).Value = TextBoxTeachersMail1.Text;
-
-
-
-                        if (!DbControls.IsTeachersLoginExists(TextBoxTeachersLogin.Text) && !DbControls.IsUserExists(TextBoxTeachersLogin.Text))
+                        using (zhirovContext db = new zhirovContext())
                         {
-                            await conn.OpenAsync();
+                            var teac = await db.Teachers.Where(p => p.TeachersLogin == TextBoxTeachersLogin.Text).ToListAsync();
 
-                            if (command.ExecuteNonQuery() == 1 && command2.ExecuteNonQuery() == 0 && command3.ExecuteNonQuery() == 0)
+                            Teacher teacher = new Teacher { TeachersName = FIO[1], TeachersSurname = FIO[0], TeachersPatronymic = FIO[2], TeachersLogin = TextBoxTeachersLogin.Text,
+                            TeachersPassword = DbControls.Hash(PasswordBoxTeachers.Password), TeachersMail = TextBoxTeachersMail1.Text, TeachersPhone = TextBoxTeachersPhone1.Text, TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString() };
+
+                            if (teac.Count == 0)
                             {
-                                //SendPasswordToUser();
+                                await db.Teachers.AddAsync(teacher);
+                                await db.SaveChangesAsync();
+
+                                SendPasswordToUser();
                                 //SendSMSToUser();
-                                
 
                                 TextBoxTeachersFIO.Clear();
                                 TextBoxTeachersPhone1.Clear();
@@ -129,25 +101,18 @@ namespace ElectroJournal.Pages.AdminPanel
                                 TextBoxTeachersLogin.Clear();
                                 PasswordBoxTeachers.Clear();
                                 CheckBoxAdminAccess.IsChecked = false;
-
+                                ListViewTeachersRefresh();
                                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
-                                ProgressBarTeachers.Visibility = Visibility.Hidden;
                             }
-
-                            conn.Close();
-                            ListViewTeachersRefresh();
+                            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данный логин уже занят");
                         }
-                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данный логин уже занят");
                     }
-                    ProgressBarTeachers.Visibility=Visibility.Hidden;
                 }
                 else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");               
             }
             else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
 
-            
-
-
+            ProgressBarTeachers.Visibility = Visibility.Hidden;
         }
 
         private async void ListViewTeachersRefresh()
@@ -175,30 +140,6 @@ namespace ElectroJournal.Pages.AdminPanel
                         break;
                 }
             }
-
-
-            /*
-            idTeachers.Clear();
-
-            MySqlCommand command = new MySqlCommand("", conn); //Команда выбора данных
-            //command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers`";
-
-            if (ComboBoxSortingTeacher.SelectedIndex == 0) command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers` ORDER BY `teachers_surname`";
-            else command.CommandText = "SELECT `idteachers`, `teachers_name`, `teachers_surname`, `teachers_patronymic` FROM `teachers` ORDER BY `teachers_surname` DESC";
-
-            await conn.OpenAsync(); //Открываем соединение
-            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
-           
-            for  (int i = 0; await read.ReadAsync(); i++)
-            {
-                if (read.GetValue(1).ToString() != "" && read.GetValue(2).ToString() != "" && read.GetValue(3).ToString() != "")                
-                    ListViewTeachers.Items.Add(read.GetValue(2).ToString() + " " + read.GetValue(1).ToString() + " " + read.GetValue(3).ToString()); //Добавляем данные в лист итем
-
-                idTeachers.Add(read.GetInt32(0));
-            }
-            conn.Close(); //Закрываем соединение
-                          //ButtonSaveTeacher.IsEnabled = false;
-            */
         }
 
 
@@ -302,7 +243,7 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             ButtonDelete.IsEnabled = true;
 
-            if (ListViewTeachers != null)
+            if (ListViewTeachers.SelectedItem != null)
             {
                 using (zhirovContext db = new zhirovContext())
                 {
@@ -337,32 +278,39 @@ namespace ElectroJournal.Pages.AdminPanel
             }
         }
 
-        private void DeleteTeachers() 
+        private async void DeleteTeachers() 
         {
-            DataBaseConn DbUser = new DataBaseConn();
-            DataBaseControls DbControls = new DataBaseControls();
-            MySqlConnection conn = DataBaseConn.GetDBConnection();
             if (ListViewTeachers.Items.Count == 0)
             {
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
             }
             else if (ListViewTeachers.SelectedItem != null)
             {
-                DbControls.DeleteTeachers(idTeachers[ListViewTeachers.SelectedIndex]);
-                ListViewTeachers.Items.Clear();
+                using (zhirovContext db = new zhirovContext())
+                {
+                    Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
 
-                ListViewTeachersRefresh();
-                TextBoxTeachersFIO.Clear();
-                TextBoxTeachersPhone1.Clear();
-                TextBoxTeachersMail1.Clear();
-                TextBoxTeachersLogin.Clear();
-                PasswordBoxTeachers.Clear();
-                CheckBoxAdminAccess.IsChecked = false;
+                    if (teacher != null)
+                    {
+                        db.Teachers.Remove(teacher);
+                        await db.SaveChangesAsync();
 
-                ButtonDelete.IsEnabled = false;
+                        ListViewTeachers.Items.Clear();
+                        ListViewTeachersRefresh();
+                        TextBoxTeachersFIO.Clear();
+                        TextBoxTeachersPhone1.Clear();
+                        TextBoxTeachersMail1.Clear();
+                        TextBoxTeachersLogin.Clear();
+                        PasswordBoxTeachers.Clear();
+                        CheckBoxAdminAccess.IsChecked = false;
+                        ButtonDelete.IsEnabled = false;
+                    }
+                }
             }
         }
+
         private int lastFoundIndex = -1;
+
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             int i;

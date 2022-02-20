@@ -44,7 +44,7 @@ namespace ElectroJournal.Pages
                 {
                     teacher.TeachersPhone = TextBoxPhone.Text;
                     teacher.TeachersMail = TextBoxMail.Text;
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
 
                     ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
                 }

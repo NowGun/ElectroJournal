@@ -718,21 +718,6 @@ namespace ElectroJournal
                     ComboBoxGroup.Items.Add(t.GroupsNameAbbreviated);
                 });
             }
-
-            /*
-            ComboBoxGroup.Items.Clear();
-
-            MySqlCommand command = new MySqlCommand("SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` ORDER BY `groups_name`", conn); //Команда выбора данных
-
-            await conn.OpenAsync(); //Открываем соединение
-            MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
-
-            for (int i = 0; await read.ReadAsync(); i++)
-            {
-                ComboBoxGroup.Items.Add(read.GetValue(1));
-            }
-            conn.Close(); //Закрываем соединение
-            */
         }
 
         private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
