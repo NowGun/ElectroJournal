@@ -12,9 +12,6 @@ namespace ElectroJournal.Classes
 {
     class DataBaseControls
     {
-        Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
-
         public string Hash(string password)
         {
             MD5 md5hasher = MD5.Create();
@@ -26,6 +23,8 @@ namespace ElectroJournal.Classes
 
         public void DeleteHousing(string name)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("DELETE FROM `housing` WHERE `housing_name` = @name", conn);
             command.Parameters.Add("@name", MySqlDbType.VarChar).Value = name;
 
@@ -39,6 +38,8 @@ namespace ElectroJournal.Classes
 
         public void DeleteCabinet(string name)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("DELETE FROM `cabinet` WHERE `cabinet_number` = @name", conn);
             command.Parameters.Add("@name", MySqlDbType.VarChar).Value = name;
 
@@ -52,6 +53,8 @@ namespace ElectroJournal.Classes
 
         public bool IsHousingExists(string name)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             DataTable table = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             MySqlCommand command = new MySqlCommand("SELECT `housing_name` FROM `housing` WHERE `housing_name` = @name", conn);
@@ -69,6 +72,8 @@ namespace ElectroJournal.Classes
 
         public bool IsCabinetExists(string cabinet)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             DataTable table = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             MySqlCommand command = new MySqlCommand("SELECT * FROM `cabinet` WHERE `cabinet_number` = @NumberCabinet", conn);
@@ -86,6 +91,8 @@ namespace ElectroJournal.Classes
 
         public void DeleteTeachers(int id)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("DELETE FROM `teachers` WHERE `idteachers` = @id", conn);
             command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
 
@@ -99,6 +106,8 @@ namespace ElectroJournal.Classes
 
         public void DeleteStudent(int id)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("DELETE FROM `students` WHERE `idstudents` = @id", conn);
             command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
 
@@ -112,6 +121,8 @@ namespace ElectroJournal.Classes
 
         public void DeleteGroup(int id)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("DELETE FROM `groups` WHERE `idgroups` = @id", conn);
             command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
 
@@ -125,6 +136,8 @@ namespace ElectroJournal.Classes
 
         public bool IsTeachersLoginExists(string login)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("SELECT count(`teachers_login`) FROM `teachers` WHERE `teachers_login` = @login", conn);
 
             command.Parameters.Add("@login", MySqlDbType.VarChar).Value = login;
@@ -147,6 +160,8 @@ namespace ElectroJournal.Classes
 
         public bool IsUserExists(string login)
         {
+            Classes.DataBaseConn DbUser = new Classes.DataBaseConn();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             MySqlCommand command = new MySqlCommand("SELECT count(User) FROM mysql.user where User = @login", conn);
 
             command.Parameters.Add("@login", MySqlDbType.VarChar).Value = login;

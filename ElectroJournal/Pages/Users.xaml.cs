@@ -18,6 +18,8 @@ using MySql.Data.MySqlClient;
 using System.Windows.Media.Animation;
 using Microsoft.Win32;
 using ElectroJournal.Classes;
+using ElectroJournal.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectroJournal.Pages
 {
@@ -32,25 +34,21 @@ namespace ElectroJournal.Pages
             LoadData();
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
-        DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
-
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            MySqlCommand command = new MySqlCommand("UPDATE `teachers` SET `teachers_phone` = @phone, `teachers_mail` = @mail WHERE `idteachers` = @id", conn);
-
-            command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Properties.Settings.Default.UserID.ToString();
-            command.Parameters.Add("@phone", MySqlDbType.VarChar).Value = TextBoxPhone.Text;
-            command.Parameters.Add("@mail", MySqlDbType.VarChar).Value = TextBoxMail.Text;
-            
-            conn.Open();
-
-            if (command.ExecuteNonQuery() == 1)
+            using (zhirovContext db = new zhirovContext())
             {
-                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
+                Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                if (teacher != null)
+                {
+                    teacher.TeachersPhone = TextBoxPhone.Text;
+                    teacher.TeachersMail = TextBoxMail.Text;
+                    db.SaveChanges();
+
+                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
+                }
             }
-            conn.Close();
         }
 
         private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
@@ -87,25 +85,25 @@ namespace ElectroJournal.Pages
             //((MainWindow)Application.Current.MainWindow).AnimLog(true);
         }
 
-        private void LoadData()
+        private async void LoadData()
         {
-            MySqlCommand command = new MySqlCommand("SELECT `teachers_password`, `teachers_surname`, `teachers_name`, `teachers_patronymic`, `idteachers`, `teachers_phone`, `teachers_mail` FROM `teachers` WHERE `idteachers` = @id", conn); //Команда выбора данных
-
-            command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Properties.Settings.Default.UserID;
-            conn.Open(); //Открываем соединение
-            MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-            
-            if (read.Read())
+            using (zhirovContext db = new zhirovContext())
             {
-                TextBlockFIO.Content = read.GetString(1) + " " + read.GetString(2) + " " + read.GetString(3);
-                PasswordBoxPassword.Password = read.GetString(0);
-                LabelIDUser.Content = "Id: " + read.GetString(4);
-                TextBoxPhone.Text = read.GetString(5);
-                TextBoxMail.Text = read.GetString(6);
+                var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).ToListAsync();
 
-                ButtonSave.IsEnabled = false;
+                foreach (var t in teachers)
+                {
+                    string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
+
+                    TextBlockFIO.Content = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
+                    PasswordBoxPassword.Password = t.TeachersPassword;
+                    LabelIDUser.Content = "Id: " + t.Idteachers;
+                    TextBoxPhone.Text = t.TeachersPhone;
+                    TextBoxMail.Text = t.TeachersMail;
+
+                    ButtonSave.IsEnabled = false;
+                }
             }
-            conn.Close(); //Закрываем соединение
         }
 
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)

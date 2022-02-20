@@ -1,4 +1,6 @@
 ﻿using ElectroJournal.Classes;
+using ElectroJournal.DataBase;
+using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -32,27 +34,29 @@ namespace ElectroJournal.Pages
             InitializeComponent();
 
 
-            FillComoBoxMonth();
-            ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
-            FillTable();
+            //FillComoBoxMonth();
+            //ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
+            //FillTable();
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
-        DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
+        
 
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames;
 
         private void FillTable()
         {
-            FillText();
-            FillStudents();
-            FillDates();
+            //FillText();
+            //FillStudents();
+            //FillDates();
 
         }
 
         private void FillStudents()
         {
+            DataBaseConn DbUser = new DataBaseConn();
+            DataBaseControls DbControls = new DataBaseControls();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
+
             if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
             {
                 var worksheet = ReoGrid.CurrentWorksheet;
@@ -87,11 +91,43 @@ namespace ElectroJournal.Pages
 
         }
 
-        private void FillDates()
+        private async void FillDates()
         {
             var worksheet = ReoGrid.CurrentWorksheet;
 
+            using (zhirovContext db = new zhirovContext())
+            {
+                var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).ToListAsync();
 
+                foreach (var d in days)
+                {
+                    for (int i = 1; i < 32; i++)
+                    {
+                        worksheet.SetCols(i + 1);
+                        worksheet[0, i] = d.Day;
+                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+
+                        unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
+                        cell.IsReadOnly = true;
+
+                        
+                    }
+                }
+            }
+
+            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+            {
+                Flag = PlainStyleFlag.HorizontalAlign,
+                HAlign = ReoGridHorAlign.Center,
+            });
+
+            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+            {
+                Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                FontName = "Segoe UI",
+                FontSize = 14,
+            });
+            /*
             MySqlCommand command = new MySqlCommand("SELECT `day` FROM `dates` where  `month` = @month and `year` = 2022", conn);
 
             command.Parameters.Add("@month", MySqlDbType.VarChar).Value = ComboBoxMonth.SelectedIndex + 1;
@@ -122,7 +158,7 @@ namespace ElectroJournal.Pages
                 });
             }
 
-            conn.Close();
+            conn.Close();*/
         }
 
         private void FillText()
@@ -163,6 +199,10 @@ namespace ElectroJournal.Pages
 
         private void SaveJournal()
         {
+            DataBaseConn DbUser = new DataBaseConn();
+            DataBaseControls DbControls = new DataBaseControls();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
+
             MySqlCommand command = new MySqlCommand("insert into journal (students_idstudents, disciplines_iddisciplines, teachers_idteachers, journal_date, journal_score) " +
                 "value (@students, @disciplines, @teachers, @date, @score)", conn);
 

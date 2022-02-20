@@ -44,7 +44,6 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             using (zhirovContext db = new zhirovContext())
             {
-                var discipline = db.Disciplines.ToList();
                 await db.Disciplines.ForEachAsync(p => 
                 {
                     ListBoxDisciplines.Items.Add(p.DisciplinesNameAbbreviated);

@@ -40,15 +40,16 @@ namespace ElectroJournal.Pages.AdminPanel
 
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
-        DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
+        
 
         List<int> idTeachers = new List<int>();
 
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            DataBaseConn DbUser = new DataBaseConn();
+            DataBaseControls DbControls = new DataBaseControls();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail1.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
             {
                 if (TextBoxTeachersFIO.Text.Split(new String[] {" "}, StringSplitOptions.RemoveEmptyEntries).Length == 3)
@@ -152,19 +153,27 @@ namespace ElectroJournal.Pages.AdminPanel
         private async void ListViewTeachersRefresh()
         {
             ListViewTeachers.Items.Clear();
+            idTeachers.Clear();
 
             using (zhirovContext db = new zhirovContext())
             {
-               //вот  var teachers = db.Teachers.OrderByDescending(p => p.TeachersSurname).ToListAsync();
-
-                
-                
-                
-                await db.Teachers.ForEachAsync(t => 
+                switch (ComboBoxSortingTeacher.SelectedIndex)
                 {
-                    ListViewTeachers.Items.Add($"{t.TeachersSurname}");
-                });
-                
+                    case 0:
+                        await db.Teachers.OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
+                        {
+                            ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                            idTeachers.Add((int)t.Idteachers);
+                        });
+                        break;
+                    case 1:
+                        await db.Teachers.OrderByDescending(t => t.TeachersSurname).ForEachAsync(t =>
+                        {
+                            ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                            idTeachers.Add((int)t.Idteachers);
+                        });
+                        break;
+                }
             }
 
 
@@ -293,30 +302,25 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             ButtonDelete.IsEnabled = true;
 
-            if (ListViewTeachers.SelectedItem != null) //если строка выделена выполняется условие
+            if (ListViewTeachers != null)
             {
-                MySqlCommand command = new MySqlCommand("SELECT `idteachers`, `teachers_login`, `teachers_password`, `teachers_name`, `teachers_surname`, `teachers_patronymic`, " +
-                            "`teachers_image`, `teachers_acces_admin_panel`, `teachers_mail`, `teachers_phone` FROM `teachers` WHERE idteachers = @id", conn); //Команда выбора данных
-
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = idTeachers[ListViewTeachers.SelectedIndex];
-
-                conn.Open(); //Открываем соединение
-                MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
-
-                if (await read.ReadAsync()) //Читаем пока есть данные
+                using (zhirovContext db = new zhirovContext())
                 {
-                    string FIO = read.GetString(4) + " " + read.GetString(3) + " " + read.GetString(5);
+                    var teachers = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]).ToListAsync();
 
-                    TextBoxTeachersFIO.Text = FIO;
-                    TextBoxTeachersLogin.Text = read.GetString(1);
-                    PasswordBoxTeachers.Password = read.GetString(2);
-                    CheckBoxAdminAccess.IsChecked = bool.Parse(read.GetString(7));
-                    TextBoxTeachersMail1.Text = read.GetString(8);
-                    TextBoxTeachersPhone1.Text = read.GetString(9);
+                    foreach (var t in teachers)
+                    {
+                        string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
 
+                        TextBoxTeachersFIO.Text = FIO;
+                        TextBoxTeachersLogin.Text = t.TeachersLogin;
+                        PasswordBoxTeachers.Password = t.TeachersPassword;
+                        CheckBoxAdminAccess.IsChecked = bool.Parse(t.TeachersAccesAdminPanel);
+                        TextBoxTeachersMail1.Text = t.TeachersMail;
+                        TextBoxTeachersPhone1.Text = t.TeachersPhone;
+                    }
                 }
-                conn.Close(); //Закрываем соединение
-            }           
+            }
         }
 
         private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -335,6 +339,9 @@ namespace ElectroJournal.Pages.AdminPanel
 
         private void DeleteTeachers() 
         {
+            DataBaseConn DbUser = new DataBaseConn();
+            DataBaseControls DbControls = new DataBaseControls();
+            MySqlConnection conn = DataBaseConn.GetDBConnection();
             if (ListViewTeachers.Items.Count == 0)
             {
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");

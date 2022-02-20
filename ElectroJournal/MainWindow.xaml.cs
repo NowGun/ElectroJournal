@@ -32,6 +32,8 @@ using ModernWpf;
 using ModernWpf.SampleApp.ControlPages;
 using ModernWpf.Controls;
 using WPFUI.Background;
+using ElectroJournal.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectroJournal
 {
@@ -63,17 +65,11 @@ namespace ElectroJournal
 
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
+        
         SettingMigration SettingMig = new SettingMigration();
-        DataBaseControls DbControls = new DataBaseControls();
+        
         private readonly NotificationManager _notificationManager = new NotificationManager();
-        XmlDocument xmlDocument = new XmlDocument();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
-        DataTable table = new DataTable();
-        MySqlDataAdapter adapter = new MySqlDataAdapter();
-
         System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
-
 
         const string name = "ElectroJournal";
 
@@ -143,9 +139,6 @@ namespace ElectroJournal
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            
-            
-
             RectangleLoadLogin.Visibility = Visibility.Visible;
             (Resources["AnimLoadLogin"] as Storyboard).Completed += new EventHandler(MainWindow_Completed);
 
@@ -155,13 +148,12 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimShowLoading");
             anim2.Begin();
 
-            Login();
-            
-
+            Login();           
         }
 
         bool checkFiilScheduleDB = true;
-        
+        bool animLabel = true;
+
         List<string> ScheduleStart = new List<string>();
         List<string> ScheduleEnd = new List<string>();
         List<int> ScheduleNumber = new List<int>();
@@ -176,24 +168,21 @@ namespace ElectroJournal
             {
                 if (checkFiilScheduleDB)
                 {
-                    MySqlCommand command = new MySqlCommand("SELECT date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), " +
-                   "periodclasses_number FROM periodclasses ORDER BY periodclasses_number", conn); //Команда выбора данных
-
-                    conn.Open(); //Открываем соединение
-
-                    MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
-
-                    for (int i = 0; await read.ReadAsync(); i++)
+                    using (zhirovContext db = new zhirovContext())
                     {
-                        ScheduleStart.Add(read.GetString(0));
-                        ScheduleEnd.Add(read.GetString(1));
-                        ScheduleNumber.Add(read.GetInt32(2));
-                    }
+                        var time = await db.Periodclasses.ToListAsync();
 
-                    conn.Close();
-
-                    checkFiilScheduleDB = false;
+                        foreach (var t in time)
+                        {
+                            ScheduleStart.Add(t.PeriodclassesStart.ToString("hh':'mm"));
+                            ScheduleEnd.Add(t.PeriodclassesEnd.ToString("hh':'mm"));
+                            ScheduleNumber.Add(t.PeriodclassesNumber);
+                            checkFiilScheduleDB = false;
+                        }
+                    }                    
                 }
+
+                var anim = (Storyboard)FindResource("AnimLabelScheduleCall");
 
                 for (int i = 0; i <= ScheduleStart.Count; i++)
                 {
@@ -201,13 +190,18 @@ namespace ElectroJournal
                     {
                         if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
                         {
-                            TimeSpan endLesson = DateTime.Parse(ScheduleEnd[i]) - DateTime.Now;
+                            if (animLabel) anim.Begin();
+                            animLabel = false;
+                                                        
                             LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " +
                                (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
                             break;
                         }
                         else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
                         {
+                            if (animLabel == false) anim.Begin();
+                            animLabel = true;
+
                             LabelScheduleCall.Content = "До конца перемены: " + (DateTime.Parse(ScheduleStart[i]) - DateTime.Now).ToString("mm':'ss");
                             break;
                         }
@@ -221,105 +215,84 @@ namespace ElectroJournal
             }
         }
 
-        async void Login()
+        private async void Login()
         {
-            MySqlConnection conn = DataBaseConn.GetDBConnection();
-            bool a = false;
-            var anim = (Storyboard)FindResource("AnimLoadLogin");
-            var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `teachers` WHERE `teachers_login` = @log AND `teachers_password` = @pass", conn);
-            //MySqlCommand command = new MySqlCommand("SELECT SHA(authentication_string) from mysql.user WHERE user = @log", conn);
-
-            command.Parameters.Add("@log", MySqlDbType.VarChar).Value = TextBoxLogin.Text;
-            command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = DbControls.Hash(TextBoxPassword.Password);
-            //command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = PBKDF2HashHelper.VerifyPassword(TextBoxPassword.Password, (string)command.ExecuteScalar());
-
             ButtonLogin.IsEnabled = false;
             TextBoxLogin.IsEnabled = false;
             TextBoxPassword.IsEnabled = false;
+            DataBaseControls DbControls = new DataBaseControls();
+            string pass = DbControls.Hash(TextBoxPassword.Password);
 
-            adapter.SelectCommand = command;
+            var anim = (Storyboard)FindResource("AnimLoadLogin");
+            var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
 
-            await Task.Run(() =>
+
+            using (zhirovContext db = new zhirovContext())
             {
-                try
+                bool isAvalaible = await db.Database.CanConnectAsync();
+                if (isAvalaible)
                 {
-                    adapter.Fill(table);
-                }
-                catch (MySqlException)
-                {
-                    Notifications("Ошибка", "База данных недоступна");
-
-                    a = true;
-                }
-            });
-
-            if (a)
-            {
-                anim.Stop();
-                RectangleLoadLogin.Visibility = Visibility.Hidden;
-                TextBoxLogin.IsEnabled = true;
-                TextBoxPassword.IsEnabled = true;
-                ButtonLogin.IsEnabled = true;
-                return;
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
-                {
-                    if (table.Rows.Count > 0)
+                    if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
                     {
-                        MySqlCommand command2 = new MySqlCommand("SELECT `teachers_login`, `teachers_surname`, `teachers_name`, `teachers_patronymic`, `teachers_acces_admin_panel`, `idteachers` FROM `teachers` WHERE `teachers_login` = @login", conn); //Команда выбора данных
+                        var login = await db.Teachers.Where(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == pass).ToListAsync();
 
-                        command2.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxLogin.Text;
-
-                        conn.Open();
-
-                        MySqlDataReader read = command2.ExecuteReader(); //Считываем и извлекаем данные
-
-                        if (read.Read())
+                        if (login.Count != 0)
                         {
-                            TextBlockTeacher.Content = read.GetString(1) + " " + read.GetString(2);
+                            foreach (var l in login)
+                            {
+                                TextBlockTeacher.Content = l.TeachersSurname + " " + l.TeachersName;
 
-                            if (read.GetString(4) == "False") NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
-                            else NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
+                                switch (l.TeachersAccesAdminPanel)
+                                {
+                                    case "True":
+                                        NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
+                                        break;
 
-                            Properties.Settings.Default.UserID = read.GetInt32(5);
-                            Properties.Settings.Default.Login = TextBoxLogin.Text;
+                                    case "False":
+                                        NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
+                                        break;
+                                }
 
-                            Properties.Settings.Default.Save();
+                                Properties.Settings.Default.UserID = (int)l.Idteachers;
+                                Properties.Settings.Default.Login = TextBoxLogin.Text;
 
-                            conn.Close();
+                                Properties.Settings.Default.Save();
 
-                            FillComboBoxGroups();
-                            //ComboBoxGroup.SelectedIndex = 0;
-                            Frame.Navigate(new Pages.Journal());
-                            Notifications("Оповещение", "Авторизация прошла успешно");
+                                FillComboBoxGroups();
+                                //ComboBoxGroup.SelectedIndex = 0;
+                                Frame.Navigate(new Pages.Journal());
+                                Notifications("Оповещение", "Авторизация прошла успешно");
 
-                            timer2.Tick += new EventHandler(SheduleCall);
-                            timer2.Interval = new TimeSpan(0, 0, 1);
-                            timer2.Start();
+                                timer2.Tick += new EventHandler(SheduleCall);
+                                timer2.Interval = new TimeSpan(0, 0, 1);
+                                timer2.Start();
 
-                            GridNLogin.Visibility = Visibility.Hidden;
-                            GridLogin.Visibility = Visibility.Hidden;
-                            GridMenu.Visibility = Visibility.Visible;
-                            Frame.Visibility = Visibility.Visible;
-                            NavigationViewItemJournal.IsSelected = true;
+                                GridNLogin.Visibility = Visibility.Hidden;
+                                GridLogin.Visibility = Visibility.Hidden;
+                                GridMenu.Visibility = Visibility.Visible;
+                                Frame.Visibility = Visibility.Visible;
+                                NavigationViewItemJournal.IsSelected = true;
 
-                            //LoadLessonPeriod();
+                                anim.Stop();
+                                RectangleLoadLogin.Visibility = Visibility.Hidden;
+                                TextBoxLogin.IsEnabled = true;
+                                TextBoxPassword.IsEnabled = true;
+                                ButtonLogin.IsEnabled = true;
+                            }
                         }
-                        conn.Close();
-                        table.Clear();
-                        anim.Stop();
-                        RectangleLoadLogin.Visibility = Visibility.Hidden;
-                        TextBoxLogin.IsEnabled = true;
-                        TextBoxPassword.IsEnabled = true;
-                        ButtonLogin.IsEnabled = true;
+                        else
+                        {
+                            Notifications("Ошибка", "Логин или пароль введен неверно");
+                            anim.Stop();
+                            RectangleLoadLogin.Visibility = Visibility.Hidden;
+                            TextBoxLogin.IsEnabled = true;
+                            TextBoxPassword.IsEnabled = true;
+                            ButtonLogin.IsEnabled = true;
+                        }                        
                     }
                     else
                     {
-                        Notifications("Ошибка", "Логин или пароль введен неверно");
+                        Notifications("Ошибка", "Заполните поле");
                         anim.Stop();
                         RectangleLoadLogin.Visibility = Visibility.Hidden;
                         TextBoxLogin.IsEnabled = true;
@@ -329,14 +302,18 @@ namespace ElectroJournal
                 }
                 else
                 {
-                    Notifications("Ошибка", "Заполните поле");
                     anim.Stop();
                     RectangleLoadLogin.Visibility = Visibility.Hidden;
                     TextBoxLogin.IsEnabled = true;
                     TextBoxPassword.IsEnabled = true;
                     ButtonLogin.IsEnabled = true;
+                    Notifications("Ошибка", "База данных недоступна");
                 }
             }
+
+            //command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = PBKDF2HashHelper.VerifyPassword(TextBoxPassword.Password, (string)command.ExecuteScalar());
+                       
+            
         }
 
 
@@ -734,6 +711,17 @@ namespace ElectroJournal
         {
             ComboBoxGroup.Items.Clear();
 
+            using (zhirovContext db = new zhirovContext())
+            {
+                await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).ForEachAsync(t =>
+                {
+                    ComboBoxGroup.Items.Add(t.GroupsNameAbbreviated);
+                });
+            }
+
+            /*
+            ComboBoxGroup.Items.Clear();
+
             MySqlCommand command = new MySqlCommand("SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` ORDER BY `groups_name`", conn); //Команда выбора данных
 
             await conn.OpenAsync(); //Открываем соединение
@@ -744,6 +732,7 @@ namespace ElectroJournal
                 ComboBoxGroup.Items.Add(read.GetValue(1));
             }
             conn.Close(); //Закрываем соединение
+            */
         }
 
         private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
