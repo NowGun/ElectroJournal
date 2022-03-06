@@ -30,11 +30,13 @@ namespace Updater
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ThemeCheck();
+            //WebBrowserUpdate.Refresh();
         }
 
         private bool _isDarkTheme = false;

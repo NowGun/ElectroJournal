@@ -45,6 +45,7 @@ namespace ElectroJournal.Pages
             FillText();
             FillStudents();
             FillDates();
+            SettingSheet();
         }
 
         private async void FillStudents()
@@ -68,9 +69,10 @@ namespace ElectroJournal.Pages
 
                         worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
                         {
-                            Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
+                            Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor | PlainStyleFlag.LineColor,
                             FontName = "Segoe UI",
-                            FontSize = 14,
+                            FontSize = 13,
+                            TextColor = Colors.Black                     
                         });
                     }
 
@@ -81,34 +83,31 @@ namespace ElectroJournal.Pages
         private async void FillDates()
         {
             var worksheet = ReoGrid.CurrentWorksheet;
-
+            
             using (zhirovContext db = new zhirovContext())
             {
+                
                 var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
 
                 for (int i = 1; i < days.Count+1; i++)
                 {
-                    worksheet.SetCols(i + 1);
+                    worksheet.SetCols(days.Count+1);
                     worksheet[0, i] = days[i - 1];
                     ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
                     unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
                     cell.IsReadOnly = true;
 
-                    worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-                    {
-                        Flag = PlainStyleFlag.HorizontalAlign,
-                        HAlign = ReoGridHorAlign.Center,
-                    });
-
-                    worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-                    {
-                        Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName,
-                        FontName = "Segoe UI",
-                        FontSize = 14,
-                    });
                 }
             }
+            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+            {
+                Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
+                HAlign = ReoGridHorAlign.Center,
+                FontName = "Segoe UI",
+                FontSize = 13,
+                TextColor = Colors.Black
+            });
         }
 
         private void FillText()
@@ -116,6 +115,24 @@ namespace ElectroJournal.Pages
             var worksheet = ReoGrid.CurrentWorksheet;
 
             worksheet["A1"] = "ФИО\\День месяца";
+            worksheet.SetRangeStyles("A1:A1", new WorksheetRangeStyle
+            {
+                Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
+                HAlign = ReoGridHorAlign.Center,
+                FontName = "Segoe UI",
+                FontSize = 13,
+                TextColor = Colors.Black
+            });
+        }
+
+        private void SettingSheet()
+        {
+            var worksheet = ReoGrid.Worksheets[0];
+            ReoGrid.SetSettings(WorkbookSettings.View_ShowSheetTabControl, false);
+            worksheet.SetSettings(WorksheetSettings.View_ShowHeaders, false);
+            if (Properties.Settings.Default.Theme == 1) ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
+            else ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
+
         }
 
         private void ButtonExcel_Click(object sender, RoutedEventArgs e)

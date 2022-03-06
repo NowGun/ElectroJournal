@@ -9,7 +9,7 @@
       Title="Journal" Margin="20,20,20,20">
 
     <Grid>
-        <rg:ReoGridControl x:Name="ReoGrid" Margin="10,70,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" />
+        <rg:ReoGridControl x:Name="ReoGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" Margin="10,70,10,10" />
         <Label Content="Дисциплина" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,6,0,0"/>
         <ComboBox HorizontalAlignment="Left" Height="35" Margin="100,0,0,0" VerticalAlignment="Top" Width="200"/>
         <Label Content="Месяц" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="385,6,0,0"/>

@@ -18,9 +18,9 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <wpfui:Button Style="{DynamicResource WPFUIButtonAccent}" Content="Скачать" Name="ButtonDownloadUpdate" Margin="560,379,40,20" Height="35" Width="200" Click="ButtonDownloadUpdate_Click" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        <wpfui:Button Style="{DynamicResource WPFUIButtonStandard}" Content="Проверить обновления" Name="ButtonSearchUpdate" Margin="340,379,260,20" Height="35" Width="200" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Hidden"/>
-        <WebBrowser Margin="40,48,40,82" Source="http://techno-review.ru/pages/ChangeLog.html"/>
+        <Button Style="{DynamicResource WPFUIButtonAccent}" Content="Скачать" Name="ButtonDownloadUpdate" Margin="560,379,40,20" Height="35" Width="200" Click="ButtonDownloadUpdate_Click" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Button Style="{DynamicResource WPFUIButtonStandard}" Content="Проверить обновления" Name="ButtonSearchUpdate" Margin="340,379,260,20" Height="35" Width="200" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Hidden"/>
+        <WebBrowser x:Name="WebBrowserUpdate" Margin="40,48,40,82" Source="http://techno-review.ru/pages/ChangeLog.html"/>
         <Label x:Name="LabelInformation" Content="Скорость загрузки: " HorizontalAlignment="Left" Height="35" Margin="40,0,0,20" VerticalAlignment="Bottom" Width="285" FontSize="12" VerticalContentAlignment="Center" Padding="10,0,0,4" Visibility="Hidden"/>
     </Grid>
 </Window>
