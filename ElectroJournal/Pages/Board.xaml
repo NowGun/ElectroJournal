@@ -13,7 +13,7 @@
 
     <Grid>
         <Grid x:FieldModifier="public" x:Name="GridInkCanvas" Margin="10,106,10,10">
-            <InkCanvas x:FieldModifier="public" x:Name="InkCanvas" MouseEnter="InkCanvas_MouseEnter" StylusMove="InkCanvas_StylusMove" VerticalAlignment="Stretch" MinHeight="450"/>
+            <InkCanvas x:FieldModifier="public" x:Name="InkCanvas" MouseEnter="InkCanvas_MouseEnter" StylusMove="InkCanvas_StylusMove" VerticalAlignment="Stretch" MinHeight="450" Background="#FF1F1E1E"/>
         </Grid>
         <Grid x:Name="GridMenuBoard" HorizontalAlignment="Stretch" Height="84" VerticalAlignment="Top">
             <Rectangle Height="84" Stroke="#00EBEBEB" VerticalAlignment="Center" Fill="#00F9F9F9" StrokeThickness="0.5" RadiusX="6.375" RadiusY="6.375"/>

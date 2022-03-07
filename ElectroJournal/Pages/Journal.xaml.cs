@@ -20,7 +20,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Actions;
+using unvell.ReoGrid.Events;
 using unvell.ReoGrid.Graphics;
+using System.Text.RegularExpressions;
 
 namespace ElectroJournal.Pages
 {
@@ -35,9 +37,13 @@ namespace ElectroJournal.Pages
 
             FillComoBoxMonth();
             ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
-            FillTable();
+            //FillTable();
+
+            var ws = ReoGrid.Worksheets[0];
+            ws.CellDataChanged += rgrid_AfterCellEdit;
         }
 
+        
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthGenitiveNames;
 
         private void FillTable()
@@ -85,8 +91,7 @@ namespace ElectroJournal.Pages
             var worksheet = ReoGrid.CurrentWorksheet;
             
             using (zhirovContext db = new zhirovContext())
-            {
-                
+            {                
                 var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
 
                 for (int i = 1; i < days.Count+1; i++)
@@ -149,7 +154,11 @@ namespace ElectroJournal.Pages
             {
                 e.Handled = true;
             }
+
+            
         }
+
+        
 
         private void FillComoBoxMonth()
         {
@@ -177,6 +186,28 @@ namespace ElectroJournal.Pages
             command.Parameters.Add("@disciplines", MySqlDbType.VarChar).Value = 1;
             command.Parameters.Add("@teachers", MySqlDbType.VarChar).Value = 1;
 
+        }
+
+        private void ReoGrid_WorkbookLoaded(object sender, EventArgs e)
+        {
+            FillTable();
+        }
+
+        void rgrid_AfterCellEdit(object sender, CellEventArgs e)
+        {
+
+            string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
+            string poz2 = poz[0];
+
+            char poz3 = poz2[1];
+
+            string poz4 = poz2.Last().ToString();
+
+            int poz5 = int.Parse(Regex.Match(poz2, @"\d+").Value);
+
+            string poz6 = Regex.Replace(poz2, @"[^A-Z]+", string.Empty);
+
+            LabelTest.Content = $"оценка {ReoGrid.CurrentWorksheet.Cells[poz2].DisplayText} фио {ReoGrid.CurrentWorksheet.Cells[poz5-1, 0].DisplayText} дата {ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText} позиция {poz2}";
         }
     }
 }

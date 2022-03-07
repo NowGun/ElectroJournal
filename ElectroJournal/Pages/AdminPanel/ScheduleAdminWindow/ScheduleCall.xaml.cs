@@ -44,8 +44,6 @@ namespace ElectroJournal.Pages.AdminPanel.Schedule
             if (command.ExecuteNonQuery() == 1)
             {
                 conn.Close();
-                //SendPasswordToUser();
-                //SendSMSToUser();
                 //MainWindow.Notifications("Сообщение", "Данные сохранены");
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,6 +98,7 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             DataContext = DataStack;
+            FillComboBoxFonts();
         }
 
         private EditorDataStack DataStack = new();
@@ -127,6 +129,18 @@ namespace ElectroJournal.Pages
         private void RootTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             UpdateLine();
+        }
+
+        private void FillComboBoxFonts()
+        {
+            ComboBoxFont.Items.Clear();
+            foreach (System.Windows.Media.FontFamily fontFamily in Fonts.SystemFontFamilies)
+            {
+                // FontFamily.Source contains the font family name.
+                ComboBoxFont.Items.Add(fontFamily.Source);
+            }
+
+            ComboBoxFont.SelectedIndex = 0;
         }
     }
 }
