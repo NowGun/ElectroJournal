@@ -9,6 +9,7 @@
     <ApplicationIcon>Images\Logo\logo75.ico</ApplicationIcon>
     <PlatformTarget>x86</PlatformTarget>
     <Platforms>AnyCPU;x86;x64</Platforms>
+    <AssemblyVersion></AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

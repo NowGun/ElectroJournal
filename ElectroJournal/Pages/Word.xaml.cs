@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ElectroJournal.Pages
 {
@@ -98,7 +100,7 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             DataContext = DataStack;
-            FillComboBoxFonts();
+            //FillComboBoxFonts();
         }
 
         private EditorDataStack DataStack = new();
@@ -121,14 +123,16 @@ namespace ElectroJournal.Pages
             DataStack.Character = Math.Max(p.GetOffsetToPosition(caretPosition) - 1, 0);
         }
 
-        private void RootTextBox_PreviewKeyUp(object sender, KeyEventArgs e)
+        private void RootTextBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             UpdateLine();
+            
         }
 
-        private void RootTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void RootTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             UpdateLine();
+            
         }
 
         private void FillComboBoxFonts()
@@ -141,6 +145,41 @@ namespace ElectroJournal.Pages
             }
 
             ComboBoxFont.SelectedIndex = 0;
+        }
+
+        private void MenuItemBold_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ToggleButtonTextAlignCenter_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ComboBoxFont_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void ComboBoxFont_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            string fontName = (string)ComboBoxFont.SelectedItem;
+            if (fontName != null)
+            {
+                RootTextBox.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
+                RootTextBox.Focus();
+            }
+        }
+
+        private void ComboBoxSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void RootTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            
         }
     }
 }
