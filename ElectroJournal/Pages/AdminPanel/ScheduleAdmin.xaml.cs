@@ -2,7 +2,9 @@
 using ElectroJournal.Pages.AdminPanel.Schedule;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,9 +16,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MySql.Data.MySqlClient;
-using ElectroJournal.Classes;
-using System.Data;
+using unvell.ReoGrid;
+using unvell.ReoGrid.Actions;
+using unvell.ReoGrid.Events;
+using unvell.ReoGrid.Graphics;
+using System.Text.RegularExpressions;
+using unvell.ReoGrid.CellTypes;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -28,14 +33,17 @@ namespace ElectroJournal.Pages.AdminPanel
         public ScheduleAdmin()
         {
             InitializeComponent();
-
-            ListBoxScheduleRerfresh();
-            LoadDataGridJournal();
+            SettingSheet();
+            //ListBoxScheduleRerfresh();
+            //LoadDataGridJournal();
+            FillDates();
+            var ws = ReoGridSchedule.Worksheets[0];
+            ws.CellDataChanged += rgrid_AfterCellEdit;
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
-        DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
+       // DataBaseConn DbUser = new DataBaseConn();
+        //DataBaseControls DbControls = new DataBaseControls();
+        //MySqlConnection conn = DataBaseConn.GetDBConnection();
 
         int idSchedule = 0;
 
@@ -48,7 +56,7 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             new ScheduleCall().ShowDialog();
         }
-
+        /*
         private void ListBoxScheduleRerfresh()
         {
             ListBoxSchedule.Items.Clear();
@@ -63,7 +71,6 @@ namespace ElectroJournal.Pages.AdminPanel
             conn.Close(); //Закрываем соединение
                           //ButtonSaveTeacher.IsEnabled = false;
         }
-
         private async void LoadDataGridJournal()
         {
             MySqlCommand command = new MySqlCommand("SELECT * FROM schedule", conn);
@@ -76,6 +83,61 @@ namespace ElectroJournal.Pages.AdminPanel
 
             });
             DataGridShedule.ItemsSource = dt.AsDataView();
+        }
+
+        */
+
+        private void SettingSheet()
+        {
+            var worksheet = ReoGridSchedule.Worksheets[0];
+            ReoGridSchedule.SetSettings(WorkbookSettings.View_ShowSheetTabControl, false);
+            worksheet.SetSettings(WorksheetSettings.View_ShowHeaders, false);
+            if (Properties.Settings.Default.Theme == 1) ReoGridSchedule.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
+            else ReoGridSchedule.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
+
+        }
+
+        private void ReoGridSchedule_WorkbookLoaded(object sender, EventArgs e)
+        {
+            //SettingSheet();
+            
+        }
+
+        void rgrid_AfterCellEdit(object sender, CellEventArgs e)
+        {
+            WorksheetRangeStyle MyStyle = new WorksheetRangeStyle();
+            MyStyle.Flag = PlainStyleFlag.BackColor;
+            string[] poz = ReoGridSchedule.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
+            int poz5 = int.Parse(Regex.Match(poz[0], @"\d+").Value);
+
+            var worksheet = ReoGridSchedule.CurrentWorksheet;
+            if (ReoGridSchedule.CurrentWorksheet.Cells[poz5-1, 0].DisplayText == ReoGridSchedule.CurrentWorksheet.Cells[poz[0]].DisplayText)
+            {
+                worksheet.SetRangeStyles(poz[0], new WorksheetRangeStyle
+                {
+                    Flag = PlainStyleFlag.BackColor,
+                   BackColor = Colors.IndianRed
+                });
+            }
+            Test.Content = $"{poz[0]}";
+        }
+
+        private void FillDates()
+        {
+            ReoGridSchedule.CurrentWorksheet.SetRangeDataFormat(RangePosition.EntireRange, unvell.ReoGrid.DataFormat.CellDataFormatFlag.Text, null);
+            ReoGridSchedule.CurrentWorksheet.MergeRange(new RangePosition(1, 1, 1, 5));
+            ReoGridSchedule.CurrentWorksheet.MergeRange(new RangePosition(7, 1, 1, 5));
+            ReoGridSchedule.CurrentWorksheet.MergeRange(new RangePosition(13, 1, 1, 5));
+            var wk = ReoGridSchedule.CurrentWorksheet;
+            ReoGridSchedule.CurrentWorksheet[1, 1] = "Понедельник 14.03.2022";
+            ReoGridSchedule.CurrentWorksheet[7, 1] = "Вторник 15.03.2022";
+            ReoGridSchedule.CurrentWorksheet[13, 1] = "Среда 16.03.2022";
+
+            wk.SetRangeStyles("A1:ZZ150", new WorksheetRangeStyle
+            {
+                Flag = PlainStyleFlag.HorizontalAlign,
+                HAlign = ReoGridHorAlign.Center
+            });
         }
     }
 }

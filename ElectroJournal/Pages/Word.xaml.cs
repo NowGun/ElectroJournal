@@ -174,12 +174,31 @@ namespace ElectroJournal.Pages
 
         private void ComboBoxSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
+                TextRange tr = new TextRange(RootTextBox.Selection.Start, RootTextBox.Selection.End);
+                tr.ApplyPropertyValue(TextElement.FontSizeProperty, ComboBoxSize.SelectedItem.ToString());
+            }
+            catch (Exception ex)
+            {
+
+            }
             
         }
 
         private void RootTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            /*
+            var range = new TextRange(RootTextBox.Document.ContentStart, RootTextBox.Document.ContentEnd);
+            range.ApplyPropertyValue(TextElement.FontSizeProperty, 13);
+
+            TextRange tr = new TextRange(RootTextBox.Selection.Start, RootTextBox.Selection.End);
+            tr.ApplyPropertyValue(TextElement.FontSizeProperty, ComboBoxSize.SelectedItem.ToString());*/
+        }
+
+        private void RootTextBox_TextInput(object sender, TextCompositionEventArgs e)
+        {
         }
     }
 }
+

@@ -17,6 +17,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using ElectroJournal.Classes;
 using System.Windows.Media.Animation;
+using System.Windows.Interop;
 
 namespace ElectroJournal.Windows
 {
@@ -28,7 +29,14 @@ namespace ElectroJournal.Windows
         public Help()
         {
             InitializeComponent();
-            RectangleLoad.Visibility = Visibility.Hidden;
+            //RectangleLoad.Visibility = Visibility.Hidden;
+            TitleBar.CloseActionOverride = CloseActionOverride;
+        }
+
+        private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        {
+            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+            this.Close();
         }
 
         private void MainWindow_Completed(object sender, EventArgs e)
@@ -37,7 +45,7 @@ namespace ElectroJournal.Windows
         }
 
         private void ButtonSend_Click(object sender, RoutedEventArgs e)
-        {
+        {/*
             if (!string.IsNullOrWhiteSpace(TextBoxResultA.Text) &&
                 !string.IsNullOrWhiteSpace(TextBoxResultB.Text) &&
                 !string.IsNullOrWhiteSpace(TextBoxTitle.Text) &&
@@ -62,11 +70,11 @@ namespace ElectroJournal.Windows
             else
             {
                 Notifications("Заполните поле", "red");
-            }
+            }*/
         }
 
         async private void SendMessage (string Title, string Steps, string ResultA, string ResultB)
-        {
+        {/*
             var anim = (Storyboard)FindResource("AnimLoad");
             var anim2 = (Storyboard)FindResource("AnimNot");
             bool a = false;
@@ -112,11 +120,11 @@ namespace ElectroJournal.Windows
                 ButtonSend.IsEnabled = true;
                 anim.Begin();
                 RectangleLoad.Visibility = Visibility.Hidden;
-            }
+            }*/
         }
 
         private void Notifications (string message, string color)
-        {
+        {/*
             var anim2 = (Storyboard)FindResource("AnimNot");
             switch (color) {
                 case "red":
@@ -129,7 +137,46 @@ namespace ElectroJournal.Windows
                     LabelSend.Content = message;
                     break;
             }
-            anim2.Begin();
+            anim2.Begin();*/
+        }
+
+        private bool _isDarkTheme = false;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ThemeCheck();
+        }
+
+        public void ThemeCheck()
+        {
+            int theme = Properties.Settings.Default.Theme;
+
+            _isDarkTheme = theme == 1;
+            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+
+            ApplyBackgroundEffect();
+        }
+
+        private void ApplyBackgroundEffect()
+        {
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+
+            WPFUI.Background.Manager.Remove(windowHandle);
+
+            if (_isDarkTheme)
+            {
+                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
+            }
+            else
+            {
+                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
+            }
+
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                this.Background = System.Windows.Media.Brushes.Transparent;
+                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            }
         }
     }
 }

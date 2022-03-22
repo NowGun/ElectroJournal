@@ -82,7 +82,10 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
-            //((MainWindow)Application.Current.MainWindow).AnimLog(true);
+            ((MainWindow)Application.Current.MainWindow).LabelScheduleCall.Content = "";
+            ((MainWindow)Application.Current.MainWindow).timer2.Stop();
+            ((MainWindow)Application.Current.MainWindow).animLabel = true;
+            ((MainWindow)Application.Current.MainWindow).AnimLog(true);
         }
 
         private async void LoadData()

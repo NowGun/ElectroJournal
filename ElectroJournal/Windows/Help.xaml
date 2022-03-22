@@ -1,73 +1,45 @@
-﻿<Window x:Class="ElectroJournal.Windows.Help"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ElectroJournal.Windows"
-        mc:Ignorable="d"
-        Title="Баг-трекер" Height="700" Width="1000" ResizeMode="NoResize">
+﻿<Window
+    x:Class="ElectroJournal.Windows.Help"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ElectroJournal.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
+    Title="Баг-трекер"
+    Width="1000"
+    Height="700"
+    Loaded="Window_Loaded"
+    ResizeMode="NoResize"
+    Style="{DynamicResource UiWindowRounded}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Window.Resources>
-        <Storyboard x:Key="AnimNot">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelSend" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:01.2000000" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:01.4000000" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        <Storyboard x:Key="AnimNot" />
 
-        <Storyboard x:Key="AnimLoad">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="RectangleLoad">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <PowerEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="360">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <PowerEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        <Storyboard x:Key="AnimLoad" />
 
-        <Storyboard x:Key="AnimShowLoading">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RectangleLoad">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        <Storyboard x:Key="AnimShowLoading" />
     </Window.Resources>
-    <Grid Background="#FFEDF1F4" Margin="0,1,0,0">
-        <Rectangle Fill="White" HorizontalAlignment="Center" Height="620" Margin="0,23,0,0" RadiusY="6" RadiusX="6" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="920"/>
-        <Label Content="Отчет о баге" HorizontalAlignment="Left" Height="30" Margin="85,33,0,0" VerticalAlignment="Top" Width="175" FontSize="16" VerticalContentAlignment="Center" Foreground="Black"/>
-        <Label Content="Заголовок" HorizontalAlignment="Left" Height="40" Margin="100,103,0,0" VerticalAlignment="Top" Width="208" FontSize="14" VerticalContentAlignment="Center" Foreground="#CC000000"/>
-        <TextBox x:Name="TextBoxTitle" Style="{StaticResource TextBoxStyleNew}" HorizontalAlignment="Left" Height="38" Margin="320,104,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="555"/>
-        <Label Content="Шаги воспроизведения" HorizontalAlignment="Left" Height="40" Margin="100,183,0,0" VerticalAlignment="Top" Width="208" FontSize="14" Foreground="#CC000000"/>
-        <TextBox x:Name="TextBoxSteps" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="158" Margin="320,184,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="555" VerticalContentAlignment="Top"/>
-        <Label Content="Фактический результат" HorizontalAlignment="Left" Height="40" Margin="100,383,0,0" VerticalAlignment="Top" Width="208" FontSize="14" VerticalContentAlignment="Center" Foreground="#CC000000"/>
-        <TextBox x:Name="TextBoxResultA" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="38" Margin="320,384,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="555"/>
-        <Label Content="При совершении действия А, происходит Б" HorizontalAlignment="Left" Height="21" Margin="325,422,0,0" VerticalAlignment="Top" Width="555" VerticalContentAlignment="Center" Foreground="#CC646464"/>
-        <Label Content="Ожидаемый результат" HorizontalAlignment="Left" Height="40" Margin="100,463,0,0" VerticalAlignment="Top" Width="208" FontSize="14" VerticalContentAlignment="Center" Foreground="#CC000000"/>
-        <TextBox x:Name="TextBoxResultB" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="38" Margin="320,464,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="555"/>
-        <Label Content="При совершении действия А, должно происходить В" HorizontalAlignment="Left" Height="21" Margin="325,502,0,0" VerticalAlignment="Top" Width="555" VerticalContentAlignment="Center" Foreground="#CC646464"/>
-        <Button x:Name="ButtonSend" Style="{StaticResource ButtonAccent}" Content="Отправить" HorizontalAlignment="Left" Height="35" Margin="785,593,0,0" VerticalAlignment="Top" Width="150" FontSize="14" Click="ButtonSend_Click"/>
-        <Label Content="При нажатии на кнопку &quot;Отправить&quot;, будут отправлены введенные данные для обработки." HorizontalAlignment="Left" Height="40" Margin="100,583,0,0" VerticalAlignment="Top" Width="521" VerticalContentAlignment="Center" Foreground="#FF828282"/>
-        <Image HorizontalAlignment="Left" Height="30" Margin="50,33,0,0" VerticalAlignment="Top" Width="30" Source="/ElectroJournal;component/Images/icons8-баг-96.png"/>
-        <Label x:Name="LabelSend" Content="" HorizontalAlignment="Left" Height="30" Margin="265,33,0,0" VerticalAlignment="Top" Width="642" Background="{x:Null}" Foreground="Black" FontSize="14" Padding="0,5,0,5"/>
-        <Rectangle x:Name="RectangleLoad" HorizontalAlignment="Left" Height="35" Margin="735,593,0,0" VerticalAlignment="Top" Width="35" RenderTransformOrigin="0.5,0.5">
-            <Rectangle.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Rectangle.RenderTransform>
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/34px-Vector_Loading.svg.png"/>
-            </Rectangle.Fill>
-        </Rectangle>
+    <Grid>
+        <wpfui:TitleBar
+            x:Name="TitleBar"
+            Title="Отчет о баге"
+            Grid.Row="0"
+            Height="48"
+            ApplicationNavigation="True"
+            Icon="/Images/Logo/logo75.png"
+            ShowMaximize="False"
+            ShowMinimize="False" />
+
+        <wpfui:Card Margin="30,69,30,40">
+            <Grid>
+                <RichTextBox x:Name="RRTBname" Margin="20,43,52,257"/>
+                <Label Content="Опишите проблему" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+                <Button x:Name="ButtonSend" Style="{DynamicResource WPFUIButtonAccent}" Content="Отправить" HorizontalAlignment="Left" Margin="757,512,0,0" VerticalAlignment="Top" Height="37" Width="157" FontSize="14"/>
+            </Grid>
+        </wpfui:Card>
 
     </Grid>
 </Window>

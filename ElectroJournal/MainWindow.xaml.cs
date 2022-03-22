@@ -69,7 +69,7 @@ namespace ElectroJournal
         SettingMigration SettingMig = new SettingMigration();
         
         private readonly NotificationManager _notificationManager = new NotificationManager();
-        System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
+        public System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
 
         const string name = "ElectroJournal";
 
@@ -152,7 +152,7 @@ namespace ElectroJournal
         }
 
         bool checkFiilScheduleDB = true;
-        bool animLabel = true;
+        public bool animLabel = true;
 
         List<string> ScheduleStart = new List<string>();
         List<string> ScheduleEnd = new List<string>();
@@ -261,14 +261,15 @@ namespace ElectroJournal
                                 FillComboBoxGroups();
                                 //ComboBoxGroup.SelectedIndex = 0;
                                 Frame.Navigate(new Pages.Journal());
-                                Notifications("Оповещение", "Авторизация прошла успешно");
+                                //Notifications("Оповещение", "Авторизация прошла успешно");
 
                                 timer2.Tick += new EventHandler(SheduleCall);
                                 timer2.Interval = new TimeSpan(0, 0, 1);
                                 timer2.Start();
-
+                                
                                 GridNLogin.Visibility = Visibility.Hidden;
                                 GridLogin.Visibility = Visibility.Hidden;
+                                anim3.Begin();
                                 GridMenu.Visibility = Visibility.Visible;
                                 Frame.Visibility = Visibility.Visible;
                                 NavigationViewItemJournal.IsSelected = true;
@@ -334,18 +335,7 @@ namespace ElectroJournal
 
         private void Frame_ContentRendered(object sender, EventArgs e)
         {
-            if (!loginbool)
-            {
-                GridLogin.Visibility = Visibility.Hidden;
-                ButtonShowLogin.IsEnabled = true;
-            }
-            loginbool = false;
-            Frame.Visibility = Visibility.Visible;
-
-            var anim = (Storyboard)FindResource("AnimOpenFrame");
-            var anim2 = (Storyboard)FindResource("AnimCloseFrame");
-            //anim2.Begin();
-            anim.Begin();
+            
         }
 
         public void Notifications(string title, string text)
@@ -391,9 +381,6 @@ namespace ElectroJournal
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
-
-            
-
         }
 
         private void CompletionLogin()
@@ -578,11 +565,6 @@ namespace ElectroJournal
 
         }
 
-        private void MenuItemEJCalculator_Click(object sender, RoutedEventArgs e)
-        {
-            new Calculator().Show();
-        }
-
         private void MenuItemEJSettings_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(new Pages.Setting());
@@ -728,6 +710,22 @@ namespace ElectroJournal
         private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Setting());
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (!loginbool)
+            {
+                GridLogin.Visibility = Visibility.Hidden;
+                ButtonShowLogin.IsEnabled = true;
+            }
+            loginbool = false;
+            Frame.Visibility = Visibility.Visible;
+
+            var anim = (Storyboard)FindResource("AnimOpenFrame");
+            var anim2 = (Storyboard)FindResource("AnimCloseFrame");
+            //anim2.Begin();
+            anim.Begin();
         }
     }
 }

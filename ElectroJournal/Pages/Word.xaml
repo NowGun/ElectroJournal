@@ -103,6 +103,38 @@
                     Fill="#FFF4F4F5"
                     Stretch="Fill"
                     Stroke="#FFD2D2D2" />
+                <ToolBarTray
+                    Height="35"
+                    Margin="10,47,299,3"
+                    Background="#006B4F4F">
+                    <ToolBar
+                        Height="34"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                        <ToggleButton
+                            Command="ApplicationCommands.Undo"
+                            FontWeight="Bold"
+                            ToolTip="Bold">
+                            <wpfui:Icon Glyph="ArrowUndo20" />
+                        </ToggleButton>
+                        <ToggleButton Command="ApplicationCommands.Redo" ToolTip="Italic">
+                            <wpfui:Icon Glyph="ArrowRedo20" />
+                        </ToggleButton>
+                    </ToolBar>
+                    <ToolBar
+                        Height="34"
+                        Margin="3,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
+                        <ToggleButton Command="EditingCommands.IncreaseFontSize">
+                            <wpfui:Icon Glyph="FontIncrease20" />
+                        </ToggleButton>
+                        <ToggleButton
+                            Command="EditingCommands.DecreaseFontSize">
+                            <wpfui:Icon Glyph="FontDecrease20" />
+                        </ToggleButton>
+                    </ToolBar>
+                </ToolBarTray>
             </Grid>
         </wpfui:Card>
         <RichTextBox
@@ -114,7 +146,7 @@
             BorderThickness="0"
             GotFocus="RootTextBox_GotFocus"
             PreviewKeyDown="RootTextBox_PreviewKeyDown"
-            PreviewKeyUp="RootTextBox_PreviewKeyUp" KeyDown="RootTextBox_KeyDown" />
+            PreviewKeyUp="RootTextBox_PreviewKeyUp" KeyDown="RootTextBox_KeyDown" TextInput="RootTextBox_TextInput" />
 
         <StatusBar
             x:Name="RootStatusBar"

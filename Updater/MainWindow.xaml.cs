@@ -88,19 +88,24 @@ namespace Updater
 
         private void DownloadFiles()
         {
-            WebClient wc = new WebClient();
+            try
+            {
+                WebClient wc = new WebClient();
 
-            string url = "http://techno-review.ru/download/net5.0-windows.zip";
-            string name = "ElectroJournal.zip";
+                string url = "http://techno-review.ru/download/net5.0-windows.zip";
+                string name = "ElectroJournal.zip";
 
-            //wc.DownloadFile(url, name);
+                //wc.DownloadFile(url, name);
 
-            wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-            wc.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-            stopwatch.Start();
-            wc.DownloadFileAsync(new Uri(url), name);
+                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+                stopwatch.Start();
+                wc.DownloadFileAsync(new Uri(url), name);
+            }
+            catch (Exception ex)
+            {
 
-            
+            }
         }
 
         void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
