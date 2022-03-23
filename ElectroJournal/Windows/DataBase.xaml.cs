@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -25,7 +26,10 @@ namespace ElectroJournal.Windows
         {
             InitializeComponent();
             LoadData();
+            TitleBar.CloseActionOverride = CloseActionOverride;
         }
+
+        private bool _isDarkTheme = false;
 
         XmlDocument xmlDocument = new XmlDocument();
 
@@ -68,6 +72,48 @@ namespace ElectroJournal.Windows
             var anim = (Storyboard)FindResource("AnimLabelNotyfication");
             SaveData();
             anim.Begin();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ThemeCheck();
+        }
+
+        public void ThemeCheck()
+        {
+            int theme = Properties.Settings.Default.Theme;
+
+            _isDarkTheme = theme == 1;
+            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+
+            ApplyBackgroundEffect();
+        }
+
+        private void ApplyBackgroundEffect()
+        {
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+
+            WPFUI.Background.Manager.Remove(windowHandle);
+
+            if (_isDarkTheme)
+            {
+                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
+            }
+            else
+            {
+                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
+            }
+
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                this.Background = System.Windows.Media.Brushes.Transparent;
+                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            }
+        }
+        private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        {
+            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+            this.Close();
         }
     }
 }

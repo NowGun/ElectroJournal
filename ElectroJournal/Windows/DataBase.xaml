@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+        Style="{DynamicResource UiWindowRounded}"
         xmlns:local="clr-namespace:ElectroJournal.Windows"
         mc:Ignorable="d"
-        Title="Настройка БД" Height="300" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Normal">
+        Title="Настройка БД" Height="290" Width="480" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Normal" Loaded="Window_Loaded">
     <Window.Resources>
         <Storyboard x:Key="AnimLabelNotyfication">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelNotyfication" Storyboard.TargetProperty="(UIElement.Opacity)">
@@ -32,19 +34,31 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
-    <Grid Background="#FFECF1F4">
-        <Rectangle Fill="White" HorizontalAlignment="Left" Height="240" Margin="34,10,0,0" Stroke="#FFE6E9EB" VerticalAlignment="Top" Width="415" RadiusY="4.834" RadiusX="4.834"/>
+    <Grid>
+        <wpfui:TitleBar
+            x:Name="TitleBar"
+            Title="Изменение данных для подключения"
+            Grid.Row="0"
+            Height="48"
+            ApplicationNavigation="True"
+            Icon="/Images/Logo/logo75.png"
+            ShowMaximize="False"
+            ShowMinimize="False" />
 
-        <TextBox x:Name="TextBoxServer" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="229,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186"/>
-        <TextBox x:Name="TextBoxUser" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="229,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186"/>
-        <TextBox x:Name="TextBoxPassword" Style="{StaticResource ResourceKey=TextBoxStyleNew}" HorizontalAlignment="Left" Height="30" Margin="229,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186"/>
-        <Label Content="IP-адрес" HorizontalAlignment="Left" Height="30" Margin="52,64,0,0" VerticalAlignment="Top" Width="172" FontSize="14" Foreground="#CC000000" VerticalContentAlignment="Center"/>
-        <Label Content="Название пользователя" HorizontalAlignment="Left" Height="30" Margin="52,109,0,0" VerticalAlignment="Top" Width="172" FontSize="14" Foreground="#CC000000" VerticalContentAlignment="Center"/>
-        <Label Content="Пароль" HorizontalAlignment="Left" Height="30" Margin="52,154,0,0" VerticalAlignment="Top" Width="172" FontSize="14" Foreground="#CC000000" VerticalContentAlignment="Center"/>
-        <Button x:Name="ButtonSave" Style="{StaticResource ResourceKey=ButtonAccent}" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="290,199,0,0" VerticalAlignment="Top" Width="130" FontSize="14" Click="ButtonSave_Click"/>
-        <Label x:Name="LabelNotyfication" Content="Данные сохранены" HorizontalAlignment="Left" Height="35" Margin="60,199,0,0" VerticalAlignment="Top" Width="172" Padding="5,0,5,0" VerticalContentAlignment="Center" Background="{x:Null}" Foreground="#FF028E51" Opacity="0"/>
-        <Label Content="Изменение данных для подключения" HorizontalAlignment="Left" Height="25" Margin="75,19,0,0" VerticalAlignment="Top" Width="280" FontSize="14" Foreground="Black" VerticalContentAlignment="Center"/>
-        <Image HorizontalAlignment="Left" Height="25" Margin="45,19,0,0" VerticalAlignment="Top" Width="25" Source="/Images/icons8-database-administrator-48.png"/>
+        <TextBox x:Name="TextBoxServer" HorizontalAlignment="Left" Height="35" Margin="250,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="TextBoxUser" HorizontalAlignment="Left" Height="35" Margin="250,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="35" Margin="250,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        <Label Content="IP-адрес" HorizontalAlignment="Left" Height="30" Margin="45,72,0,0" VerticalAlignment="Top" Width="172" FontSize="16" VerticalContentAlignment="Center"/>
+        <Label Content="Имя пользователя" HorizontalAlignment="Left" Height="30" Margin="45,126,0,0" VerticalAlignment="Top" Width="180" FontSize="16" VerticalContentAlignment="Center"/>
+        <Label Content="Пароль" HorizontalAlignment="Left" Height="30" Margin="45,180,0,0" VerticalAlignment="Top" Width="172" FontSize="16" VerticalContentAlignment="Center"/>
+
+        <wpfui:Card Margin="0,234,0,0" VerticalAlignment="Bottom" Height="70">
+            <Grid>
+
+            </Grid>
+        </wpfui:Card>
+        <Button x:Name="ButtonSave" Style="{StaticResource WPFUIButtonAccent}" Content="Сохранить" HorizontalAlignment="Right" Height="35" Margin="0,0,30,16" VerticalAlignment="Bottom" Width="130" FontSize="14" Click="ButtonSave_Click"/>
+        <Label x:Name="LabelNotyfication" Content="Данные сохранены" HorizontalAlignment="Right" Margin="0,0,165,24" VerticalAlignment="Bottom" Padding="5,0,5,0" VerticalContentAlignment="Center" Background="{x:Null}" Foreground="#FF0AC775" Opacity="0" HorizontalContentAlignment="Center" FontSize="14"/>
 
     </Grid>
 </Window>

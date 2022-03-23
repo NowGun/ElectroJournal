@@ -77,6 +77,7 @@
     <None Remove="Images\Startup\startupImage.png" />
     <None Remove="logo75.ico" />
     <None Remove="Settings\Settings.xml" />
+    <None Remove="Windows\qrnew.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -198,6 +199,7 @@
     <Resource Include="Settings\Settings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Windows\qrnew.png" />
   </ItemGroup>
 
   <ItemGroup>

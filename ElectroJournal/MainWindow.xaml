@@ -16,6 +16,8 @@
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
     Title="ElectroJournal"
     Width="1280"
+    MinWidth="800"
+    MinHeight="600"
     Height="720"
     Closing="Window_Closing"
     Icon="/Images/Logo/logo75.png"
@@ -152,7 +154,7 @@
 
         <Grid
             x:Name="GridNLogin"
-            Margin="0,48,0,604" d:IsHidden="True">
+            Margin="0,48,0,0" VerticalAlignment="Top" d:IsHidden="True">
             <ui:NavigationView
                 x:Name="NavViewMenuNLogin"
                 Height="40"
@@ -197,7 +199,7 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Height="36" RenderTransformOrigin="0.5,0.5" >
+                    Height="36" RenderTransformOrigin="0.5,0.5" d:IsHidden="True" >
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -310,9 +312,9 @@
             Position="TopRight" />
         <Grid
             x:Name="GridMenu"
-            Height="551"
+            Height="593"
             MinWidth="1272"
-            Margin="0,48,0,0"
+            Margin="0,6,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
             Visibility="Visible">
@@ -320,7 +322,7 @@
                 x:Name="RectangleBackToMenu"
                 Width="28"
                 Height="32"
-                Margin="17,5,0,0"
+                Margin="20,47,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
@@ -329,11 +331,11 @@
                 MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" />
             <Grid
                 x:Name="GridUser"
-                Margin="0,0,20,0"
+                Margin="0,42,17,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal">
-                    <Label x:Name="TextBlockTeacher" Content="Фамиля И.О." FontSize="14" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <Label x:Name="TextBlockTeacher" Content="Фамиля И.О." FontSize="14" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0"/>
                     <ui:PersonPicture
                     x:Name="PersonPicture"
                     Width="40"
@@ -342,14 +344,14 @@
                     VerticalAlignment="Center"
                     MouseLeave="RectangleUser_MouseLeave"
                     MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                    MouseMove="RectangleUser_MouseMove" />
-                    <wpfui:Icon x:Name="IconSetting" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp"/>
+                    MouseMove="RectangleUser_MouseMove" HorizontalAlignment="Right" />
+                    <wpfui:Icon x:Name="IconSetting" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" HorizontalAlignment="Right"/>
                 </StackPanel>
             </Grid>
             <Path
                 x:Name="PathMenu"
                 Height="1"
-                Margin="0,49,0,0"
+                Margin="3,91,-3,0"
                 VerticalAlignment="Top"
                 Data="M42.5,48 L1220.0239,48"
                 Stretch="Fill"
@@ -367,7 +369,7 @@
                 x:Name="NavViewMenuAdmin"
                 Height="40"
                 MinWidth="100"
-                Margin="45,0,510,0"
+                Margin="48,42,507,0"
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
@@ -409,7 +411,7 @@
                 x:Name="NavViewMenu"
                 Height="40"
                 MinWidth="100"
-                Margin="45,0,330,0"
+                Margin="48,42,365,0"
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
@@ -440,7 +442,7 @@
             <Grid
                 x:Name="GridComboGroups"
                 Height="35" VerticalAlignment="Top" HorizontalAlignment="Right"
-                Margin="0,-40,155,0"
+                Margin="0,0,155,0"
                 >
                 <ComboBox
                     x:Name="ComboBoxGroup"
@@ -465,7 +467,7 @@
         <wpfui:Card
             x:Name="GridLogin"
             Height="254"
-            Margin="480,225,480,225" HorizontalAlignment="Center" VerticalAlignment="Center">
+            Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid
                 x:Name="GridLogin2"
                 Width="322"

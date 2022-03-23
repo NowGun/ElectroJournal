@@ -18,6 +18,7 @@ using System.Data;
 using ElectroJournal.Classes;
 using System.Windows.Media.Animation;
 using System.Windows.Interop;
+using Microsoft.Win32;
 
 namespace ElectroJournal.Windows
 {
@@ -33,6 +34,8 @@ namespace ElectroJournal.Windows
             TitleBar.CloseActionOverride = CloseActionOverride;
         }
 
+        private string path;
+
         private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             ((MainWindow)Application.Current.MainWindow).ThemeCheck();
@@ -41,58 +44,45 @@ namespace ElectroJournal.Windows
 
         private void MainWindow_Completed(object sender, EventArgs e)
         {
-            (Resources["AnimLoad"] as Storyboard).Begin();
         }
 
         private void ButtonSend_Click(object sender, RoutedEventArgs e)
-        {/*
-            if (!string.IsNullOrWhiteSpace(TextBoxResultA.Text) &&
-                !string.IsNullOrWhiteSpace(TextBoxResultB.Text) &&
-                !string.IsNullOrWhiteSpace(TextBoxTitle.Text) &&
-                !string.IsNullOrWhiteSpace(TextBoxSteps.Text))
+        {
+            ProgressBarSend.Visibility = Visibility.Visible;
+            string text = new TextRange(RRTBname.Document.ContentStart, RRTBname.Document.ContentEnd).Text;
+
+            if (!string.IsNullOrWhiteSpace(text))
             {
                 ButtonSend.IsEnabled = false;
-                RectangleLoad.Visibility = Visibility.Visible;
-                (Resources["AnimLoad"] as Storyboard).Completed += new EventHandler(MainWindow_Completed);
 
-                var anim = (Storyboard)FindResource("AnimLoad");
-                anim.Begin();
-
-                var anim2 = (Storyboard)FindResource("AnimShowLoading");
-                anim2.Begin();
-
-                string Title = TextBoxTitle.Text;
-                string Steps = TextBoxSteps.Text;
-                string ResultA = TextBoxResultA.Text;
-                string ResultB = TextBoxResultB.Text;
-                SendMessage(Title, Steps, ResultA, ResultB);
+                SendMessage(text, path);
             }
             else
             {
-                Notifications("Заполните поле", "red");
-            }*/
+                Notifications("Ошибка", "Заполните поле");
+            }
         }
 
-        async private void SendMessage (string Title, string Steps, string ResultA, string ResultB)
-        {/*
-            var anim = (Storyboard)FindResource("AnimLoad");
-            var anim2 = (Storyboard)FindResource("AnimNot");
+        async private void SendMessage (string text, string path)
+        {
             bool a = false;
 
-            // отправитель - устанавливаем адрес и отображаемое в письме имя
-            MailAddress from = new MailAddress("zhirowdaniil@gmail.com", "User");
-            // кому отправляем
+            MailAddress from = new MailAddress("help@techno-review.ru", "Новый баг");
             MailAddress to = new MailAddress("nowgun98@gmail.com");
-            // создаем объект сообщения
             MailMessage m = new MailMessage(from, to);
-            // тема письма
-            m.Subject = Title;
-            // текст письма
-            m.Body = "Шаги воспроизведения:\n" + Steps + "\n\nПри Совершении действия А, происходит действие Б\n" + ResultA + "\n\nПри Совершении действия А, происходит действие В\n" + ResultB;
+
+            if (!String.IsNullOrEmpty(path))
+            {
+                Attachment file = new Attachment(path);
+                m.Attachments.Add(file);
+            }
+
+            m.Subject = "Новый баг - ElectroJournal";
+            m.Body = text;
             // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("smtp.elasticemail.com", 2525);
+            SmtpClient smtp = new SmtpClient("smtp.beget.com", 2525);
             // логин и пароль
-            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "E0E7027197724CDBDAFAD917FB914057C0CB");
+            smtp.Credentials = new NetworkCredential("help@techno-review.ru", "64580082Now");
             smtp.EnableSsl = true;
 
             await Task.Run(() =>
@@ -109,35 +99,24 @@ namespace ElectroJournal.Windows
 
             if (!a)
             {
-                Notifications("Сообщение отправлено", "green");
+                Notifications("Успешно", "Сообщение отправлено");
                 ButtonSend.IsEnabled = true;
-                anim.Begin();
-                RectangleLoad.Visibility = Visibility.Hidden;
+                ProgressBarSend.Visibility = Visibility.Hidden;
             }
             else if (a)
             {
-                Notifications("Отсутствует подключение к интернету", "red");
+                Notifications("Ошибка", "Отсутствует подключение к интернету");
                 ButtonSend.IsEnabled = true;
-                anim.Begin();
-                RectangleLoad.Visibility = Visibility.Hidden;
-            }*/
+                ProgressBarSend.Visibility = Visibility.Hidden;
+            }
         }
 
-        private void Notifications (string message, string color)
-        {/*
-            var anim2 = (Storyboard)FindResource("AnimNot");
-            switch (color) {
-                case "red":
-                    LabelSend.Foreground = Brushes.Red;
-                    LabelSend.Content = message;
-                    break;
-
-                case "green":
-                    LabelSend.Foreground = Brushes.Green;
-                    LabelSend.Content = message;
-                    break;
-            }
-            anim2.Begin();*/
+        private void Notifications (string message, string title)
+        {
+            RootSnackbar.Title = message;
+            RootSnackbar.Content = title;
+            //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
+            RootSnackbar.Expand();
         }
 
         private bool _isDarkTheme = false;
@@ -176,6 +155,19 @@ namespace ElectroJournal.Windows
             {
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            }
+        }
+
+        private void ButtonBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog myDialog = new OpenFileDialog();
+            myDialog.Filter = "Изображения(*.jpg;*.png)|*.JPG;*.PNG" + "|Все файлы (*.*)|*.* ";
+            myDialog.CheckFileExists = true;
+            myDialog.Multiselect = true;
+            if (myDialog.ShowDialog() == true)
+            {
+                TextBoxPath.Text = myDialog.FileName;
+                path = myDialog.FileName;
             }
         }
     }

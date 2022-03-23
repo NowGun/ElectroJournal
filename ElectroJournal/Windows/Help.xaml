@@ -33,13 +33,20 @@
             ShowMaximize="False"
             ShowMinimize="False" />
 
-        <wpfui:Card Margin="30,69,30,40">
-            <Grid>
-                <RichTextBox x:Name="RRTBname" Margin="20,43,52,257"/>
-                <Label Content="Опишите проблему" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
-                <Button x:Name="ButtonSend" Style="{DynamicResource WPFUIButtonAccent}" Content="Отправить" HorizontalAlignment="Left" Margin="757,512,0,0" VerticalAlignment="Top" Height="37" Width="157" FontSize="14"/>
-            </Grid>
-        </wpfui:Card>
+        <wpfui:Snackbar
+                x:Name="RootSnackbar"
+                Timeout="3000" Margin="24,0,220,24" FontSize="16" />
+
+        <Grid Margin="40,48,40,25">
+            <RichTextBox x:Name="RRTBname" Margin="0,43,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="293" Width="900"/>
+            <Label Content="Опишите проблему" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
+            <Button x:Name="ButtonSend" Style="{DynamicResource WPFUIButtonAccent}" Content="Отправить" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="37" Width="157" FontSize="14" Click="ButtonSend_Click"/>
+            <Label Content="Добавить файл" HorizontalAlignment="Left" Margin="10,376,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
+            <TextBox x:Name="TextBoxPath" HorizontalAlignment="Left" Margin="49,418,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="616" Height="35"/>
+            <Button x:Name="ButtonBrowser" Style="{DynamicResource WPFUIButtonStandard}" Content="Обзор..." HorizontalAlignment="Left" Margin="670,418,0,0" VerticalAlignment="Top" Height="35" Width="115" FontSize="14" Click="ButtonBrowser_Click"/>
+            <Label Content="Путь" HorizontalAlignment="Left" Margin="10,423,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Normal"/>
+            <ProgressBar x:Name="ProgressBarSend" Margin="27,0,188,23" IsIndeterminate="True" VerticalAlignment="Bottom" Visibility="Hidden" />
+        </Grid>
 
     </Grid>
 </Window>

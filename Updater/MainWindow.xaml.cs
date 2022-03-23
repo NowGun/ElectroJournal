@@ -36,7 +36,14 @@ namespace Updater
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ThemeCheck();
-            //WebBrowserUpdate.Refresh();
+            try
+            {
+                WebBrowserUpdate.Refresh();
+            } 
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private bool _isDarkTheme = false;
