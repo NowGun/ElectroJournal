@@ -95,12 +95,20 @@ namespace ElectroJournal.Pages
             }
         }
 
-
         public Word()
         {
             InitializeComponent();
             DataContext = DataStack;
             //FillComboBoxFonts();
+            string[] FontStandartSize = new string[] { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" };
+
+            foreach (string font in FontStandartSize)
+            {
+                ComboBoxSize.Items.Add(font);
+            }
+            
+            ComboBoxFont.SelectedIndex = 4;
+            ComboBoxSize.SelectedIndex = 5;
         }
 
         private EditorDataStack DataStack = new();
@@ -132,7 +140,25 @@ namespace ElectroJournal.Pages
         private void RootTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             UpdateLine();
-            
+
+
+            string fontName = ComboBoxFont.SelectedItem.ToString();
+
+            if (fontName != null)
+            {
+                RootTextBox.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
+                RootTextBox.Focus();
+            }
+
+            try
+            {
+
+                RootTextBox.Selection.ApplyPropertyValue(FontSizeProperty, ComboBoxSize.SelectedItem.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ComboBoxSize.SelectedItem.ToString());
+            }
         }
 
         private void FillComboBoxFonts()
@@ -159,12 +185,8 @@ namespace ElectroJournal.Pages
 
         private void ComboBoxFont_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-        }
+            string fontName = ComboBoxFont.SelectedItem.ToString();
 
-        private void ComboBoxFont_ContextMenuClosing(object sender, ContextMenuEventArgs e)
-        {
-            string fontName = (string)ComboBoxFont.SelectedItem;
             if (fontName != null)
             {
                 RootTextBox.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
@@ -176,12 +198,12 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                TextRange tr = new TextRange(RootTextBox.Selection.Start, RootTextBox.Selection.End);
-                tr.ApplyPropertyValue(TextElement.FontSizeProperty, ComboBoxSize.SelectedItem.ToString());
+
+                RootTextBox.Selection.ApplyPropertyValue(FontSizeProperty, ComboBoxSize.SelectedItem.ToString());
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message + ComboBoxSize.SelectedItem.ToString());
             }
             
         }
@@ -198,6 +220,7 @@ namespace ElectroJournal.Pages
 
         private void RootTextBox_TextInput(object sender, TextCompositionEventArgs e)
         {
+
         }
     }
 }

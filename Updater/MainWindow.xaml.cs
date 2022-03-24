@@ -42,7 +42,7 @@ namespace Updater
             } 
             catch (Exception ex)
             {
-
+                //WebBrowserUpdate.GoBack();
             }
         }
 
