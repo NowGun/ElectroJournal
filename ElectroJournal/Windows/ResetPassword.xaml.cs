@@ -16,6 +16,8 @@ using ElectroJournal.Classes;
 using ElectroJournal.Pages;
 using MySql.Data.MySqlClient;
 using System.Net;
+using System.Windows.Interop;
+using System.Windows.Media.Animation;
 
 namespace ElectroJournal.Windows
 {
@@ -27,16 +29,23 @@ namespace ElectroJournal.Windows
         public ResetPassword()
         {
             InitializeComponent();
-            GridResetOldPassword.Visibility = Visibility.Hidden;
-            GridNewPassword.Visibility = Visibility.Hidden;
+            GridVerifySecretCode.Visibility = Visibility.Hidden;
+            TitleBar.CloseActionOverride = CloseActionOverride;
         }
 
         DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
         MySqlConnection conn = DataBaseConn.GetDBConnection();
+        private bool _isDarkTheme = false;
 
         bool a = true;
         int secretCode = 0;
+
+        private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        {
+            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+            this.Close();
+        }
 
         private void FramePassword_Initialized(object sender, EventArgs e)
         {
@@ -51,52 +60,6 @@ namespace ElectroJournal.Windows
                 //FramePassword.Navigate(new Pages.ResetPassword.ConfirmSMS());
             }
         }
-
-        private void LabelOldPassword_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            GridSelectReset.Visibility = Visibility.Hidden;
-            GridResetOldPassword.Visibility = Visibility.Visible;
-            TextBoxGridResetLogin.Text = Properties.Settings.Default.Login;            
-        }
-
-        private void LabelLogin_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            GridSelectReset.Visibility= Visibility.Hidden;
-            GridNewPassword.Visibility= Visibility.Visible;
-            TextBoxGridMailLogin.Text = Properties.Settings.Default.Login;
-        }
-
-        private void ButtonSaveGridReset_Click(object sender, RoutedEventArgs e)
-        {
-            if (TextBoxGridResetLogin.Text != string.Empty && PasswordBoxGridResetNewPassord.Password != string.Empty && PasswordBoxGridResetOldPassword.Password != string.Empty && PasswordBoxGridResetVerify.Password != string.Empty) 
-            {
-                if (PasswordBoxGridResetNewPassord.Password == PasswordBoxGridResetVerify.Password)
-                {
-                    MySqlCommand command = new MySqlCommand("UPDATE `teachers` SET `teachers_password` = @passwordnew WHERE `teachers_login` = @login AND `teachers_password` = @password", conn);
-
-                    command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxGridResetLogin.Text;
-                    command.Parameters.Add("@password", MySqlDbType.VarChar).Value = DbControls.Hash(PasswordBoxGridResetOldPassword.Password);
-                    command.Parameters.Add("@passwordnew", MySqlDbType.VarChar).Value = DbControls.Hash(PasswordBoxGridResetNewPassord.Password);
-
-                    conn.Open();
-
-                    if (command.ExecuteNonQuery() == 1)
-                    {
-                        LabelNotify.Content = "Пароль успешно изменен";
-                    }
-                    conn.Close();
-                }
-                else
-                {
-                    LabelNotify.Content = "Пароли не совпадают";
-                }
-            }
-            else
-            {
-                LabelNotify.Content = "Заполните все поля";
-            }
-        }
-        
 
         private void ButtonGridmailContinue_Click(object sender, RoutedEventArgs e)
         {
@@ -117,26 +80,19 @@ namespace ElectroJournal.Windows
                         Properties.Settings.Default.UserID = read.GetInt32(2);
                         Properties.Settings.Default.Save();
                         secretCode = SendMail(TextBoxGridMailMail.Text);
+                        GridLoginMail.Visibility = Visibility.Hidden;
                         GridVerifySecretCode.Visibility = Visibility.Visible;
-                        ButtonGridmailContinue.Content = "Далее";
+                        ButtonGridmailContinue.Visibility = Visibility.Hidden;
+                        TextBoxCode1.Focus();
+                        //ButtonGridmailContinue.Content = "Далее";
                         a = false;
                     }
+                    else Notifications("Логин или почта введены неверно", "Уведомление");
 
                     conn.Close();
                 }
-            }
-            else if (!a)
-            {
-                if (Convert.ToString(secretCode) == TextBoxGridMailCode.Text)
-                {
-                    GridLoginMail.Visibility = Visibility.Hidden;
-                    GridMailNewPassword.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    LabelNotify.Content = "Введенный код неверен";
-                }
-            }
+                else Notifications("Заполните поля", "Уведомление");
+            }            
         }
 
         private int SendMail(string mail)
@@ -145,7 +101,7 @@ namespace ElectroJournal.Windows
             int secretCode = random.Next(100000, 999999);
 
             // отправитель - устанавливаем адрес и отображаемое в письме имя
-            MailAddress from = new MailAddress("zhirowdaniil@gmail.com", "ElectroJournal");
+            MailAddress from = new MailAddress("help@techno-review.ru", "Восстановление пароля");
             // кому отправляем
             MailAddress to = new MailAddress(mail);
             // создаем объект сообщения
@@ -155,9 +111,9 @@ namespace ElectroJournal.Windows
             // текст письма
             m.Body = "Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: " + secretCode + "\n\n\n\n\n\n\n";
             // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("smtp.elasticemail.com", 2525);
+            SmtpClient smtp = new SmtpClient("smtp.beget.com", 2525);
             // логин и пароль
-            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "E0E7027197724CDBDAFAD917FB914057C0CB");
+            smtp.Credentials = new NetworkCredential("help@techno-review.ru", "64580082Now");
             smtp.EnableSsl = true;
                         
              try
@@ -166,15 +122,14 @@ namespace ElectroJournal.Windows
              }
              catch (SmtpException)
              {
-                 LabelNotify.Content = "Произошла ошибка";
-             }
+                Notifications("Произошла ошибка", "Ошибка");
+            }
 
             return secretCode;
         }
 
         private void ButtonGridMailRepeatCode_Click(object sender, RoutedEventArgs e)
         {
-
             if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
             {
                 MySqlCommand command = new MySqlCommand("SELECT `teachers_login`, `teachers_mail`, `idteachers` FROM `teachers` WHERE `teachers_login` = @login AND `teachers_mail` = @mail", conn);
@@ -187,6 +142,12 @@ namespace ElectroJournal.Windows
 
                 if (read.Read())
                 {
+                    TextBoxCode1.Clear();
+                    TextBoxCode2.Clear();
+                    TextBoxCode3.Clear();
+                    TextBoxCode4.Clear();
+                    TextBoxCode5.Clear();
+                    TextBoxCode6.Clear();
                     secretCode = SendMail(TextBoxGridMailMail.Text);
                 }
                 conn.Close();
@@ -208,19 +169,100 @@ namespace ElectroJournal.Windows
 
                     if (command.ExecuteNonQuery() == 1)
                     {
-                        LabelNotify.Content = "Пароль успешно изменен";
+                        ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
+                        this.Close();
                     }
                     conn.Close();
                 }
                 else
                 {
-                    LabelNotify.Content = "Пароли не совпадают";
+                    Notifications("Пароли не совпадают", "Ошибка");
                 }
             }
             else
             {
-                LabelNotify.Content = "Заполните все поля";
+                Notifications("Заполните все поля", "Ошибка");
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ThemeCheck();
+        }
+
+        public void ThemeCheck()
+        {
+            int theme = Properties.Settings.Default.Theme;
+
+            _isDarkTheme = theme == 1;
+            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+
+            ApplyBackgroundEffect();
+        }
+
+        private void ApplyBackgroundEffect()
+        {
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+
+            WPFUI.Background.Manager.Remove(windowHandle);
+
+            if (_isDarkTheme)
+            {
+                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
+            }
+            else
+            {
+                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
+            }
+
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                this.Background = System.Windows.Media.Brushes.Transparent;
+                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            }
+        }
+
+        private void Notifications(string message, string title)
+        {
+            RootSnackbar.Title = title;
+            RootSnackbar.Content = message;
+            //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
+            RootSnackbar.Expand();
+        }
+
+        private int tbc = 1;
+
+        private void TextBoxCode1_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (TextBoxCode1.Text != String.Empty &&
+                TextBoxCode2.Text != String.Empty &&
+                TextBoxCode3.Text != String.Empty &&
+                TextBoxCode4.Text != String.Empty &&
+                TextBoxCode5.Text != String.Empty &&
+                TextBoxCode6.Text != String.Empty)
+            {
+                if (Convert.ToString(secretCode) == $"{TextBoxCode1.Text}{TextBoxCode2.Text}{TextBoxCode3.Text}{TextBoxCode4.Text}{TextBoxCode5.Text}{TextBoxCode6.Text}")
+                {
+                    GridVerifySecretCode.Visibility = Visibility.Hidden;
+                    GridMailNewPassword.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    var anim = (Storyboard)FindResource("AnimBadCode");
+                    anim.Begin();
+                    Notifications("Введенный код неверен", "Ошибка");
+                }
+            }
+            else
+            {
+                if (tbc == 1) TextBoxCode2.Focus();
+                else if (tbc == 2) TextBoxCode3.Focus();
+                else if (tbc == 3) TextBoxCode4.Focus();
+                else if (tbc == 4) TextBoxCode5.Focus();
+                else if (tbc == 5) TextBoxCode6.Focus();
+
+                tbc++;
+            }            
         }
     }
 }

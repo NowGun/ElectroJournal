@@ -36,7 +36,7 @@ namespace ElectroJournal.Windows
 
         private string path;
 
-        private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             ((MainWindow)Application.Current.MainWindow).ThemeCheck();
             this.Close();
@@ -56,6 +56,9 @@ namespace ElectroJournal.Windows
                 ButtonSend.IsEnabled = false;
 
                 SendMessage(text, path);
+
+                TextBoxPath.Text = "";
+                RRTBname.Document.Blocks.Clear();
             }
             else
             {

@@ -23,6 +23,7 @@
         <Storyboard x:Key="AnimShowLoading" />
     </Window.Resources>
     <Grid>
+
         <wpfui:TitleBar
             x:Name="TitleBar"
             Title="Отчет о баге"

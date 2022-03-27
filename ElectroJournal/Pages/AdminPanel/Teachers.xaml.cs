@@ -85,7 +85,8 @@ namespace ElectroJournal.Pages.AdminPanel
                             var teac = await db.Teachers.Where(p => p.TeachersLogin == TextBoxTeachersLogin.Text).ToListAsync();
 
                             Teacher teacher = new Teacher { TeachersName = FIO[1], TeachersSurname = FIO[0], TeachersPatronymic = FIO[2], TeachersLogin = TextBoxTeachersLogin.Text,
-                            TeachersPassword = DbControls.Hash(PasswordBoxTeachers.Password), TeachersMail = TextBoxTeachersMail1.Text, TeachersPhone = TextBoxTeachersPhone1.Text, TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString() };
+                            TeachersPassword = DbControls.Hash(PasswordBoxTeachers.Password), TeachersMail = TextBoxTeachersMail1.Text, TeachersPhone = TextBoxTeachersPhone1.Text, 
+                                TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString() };
 
                             if (teac.Count == 0)
                             {

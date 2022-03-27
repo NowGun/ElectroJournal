@@ -65,7 +65,7 @@ namespace ElectroJournal.Windows
             }
         }
 
-        private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             ((MainWindow)Application.Current.MainWindow).ThemeCheck();
             this.Close();

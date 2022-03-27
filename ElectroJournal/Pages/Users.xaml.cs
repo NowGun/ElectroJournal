@@ -53,12 +53,7 @@ namespace ElectroJournal.Pages
 
         private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
-            ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
-            //((MainWindow)Application.Current.MainWindow).AnimLog(true);
-
-            new Windows.ResetPassword().ShowDialog();
+            new Windows.ChangePassword().ShowDialog();
         }
 
         private void LabelChangePhoto_MouseLeave(object sender, MouseEventArgs e)

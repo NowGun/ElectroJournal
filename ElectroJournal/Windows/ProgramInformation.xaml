@@ -10,7 +10,7 @@
     Width="600"
     Height="397"
     Style="{DynamicResource UiWindowRounded}"
-    mc:Ignorable="d" Loaded="Window_Loaded">
+    mc:Ignorable="d" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <Grid>
         <wpfui:TitleBar
             x:Name="TitleBar"
