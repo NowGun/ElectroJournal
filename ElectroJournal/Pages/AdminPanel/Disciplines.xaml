@@ -8,63 +8,150 @@
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Disciplines"
-    Width="1280"
-    Height="605"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     mc:Ignorable="d">
 
     <Grid>
-        <ListBox x:Name="ListBoxDisciplines"
-            Width="235"
-            Height="320"
-            Margin="90,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            d:ItemsSource="{d:SampleData ItemCount=5}" />
-        <Label
-            Width="90"
-            Height="25"
-            Margin="30,20,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Предметы"
-            FontSize="16" />
-        <TextBox
-            x:Name="TextBoxName"
-            Width="180"
-            Margin="400,85,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="TextBox"
-            TextWrapping="Wrap" />
-        <TextBox
-            Width="180"
-            Margin="400,124,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="TextBox"
-            TextWrapping="Wrap" />
-        <TextBox
-            Width="180"
-            Margin="400,163,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="TextBox"
-            TextWrapping="Wrap" />
-        <Button
-            x:Name="ButtonSave"
-            Margin="425,275,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="ButtonSave_Click"
-            Content="Button" />
-        <ProgressBar
-                    x:Name="ProgressBar"
-                    Margin="0,0,164,124"
+        <wpfui:Card Margin="288,60,35,56">
+            <Grid>
+
+                <ProgressBar
+                    x:Name="ProgressBarTeachers"
+                    Margin="717,422,135,17"
                     Foreground="#FF3567BC"
                     IsIndeterminate="True"
                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                    Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    Visibility="Hidden" />
+                <Button
+                    x:Name="ButtonSave"
+                    Width="120"
+                    Height="35"
+                    Margin="0,0,10,10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Click="ButtonSave_Click"
+                    Content="Сохранить"
+                    FontSize="14"
+                    IsDefault="True"
+                    Style="{StaticResource WPFUIButtonAccent}" />
+                <Label
+                    Height="35"
+                    Margin="25,150,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Индекс "
+                    FontSize="16" />
+                <wpfui:TextBox
+                    x:Name="TextBoxTeachersFIO"
+                    Width="160"
+                    Height="35"
+                    Margin="280,150,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontSize="14"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    x:Name="TextBoxTeachersPhone1"
+                    Width="263"
+                    Height="35"
+                    Margin="280,88,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    x:Name="TextBoxTeachersMail1"
+                    Width="263"
+                    Height="35"
+                    Margin="280,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap" />
+                <Label
+                    Height="35"
+                    Margin="25,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Полное название"
+                    FontSize="16" />
+                <Label
+                    Height="35"
+                    Margin="25,88,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="Сокращенное название"
+                    FontSize="16" />
+                <Label
+                    Width="349"
+                    Margin="25,0,0,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content="* - обязательные для заполнения поля"
+                    FontSize="16" />
+                <Label
+                    x:Name="LabelGroup"
+                    Height="35"
+                    Margin="14,167,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Content=""
+                    FontSize="16" />
+
+            </Grid>
+        </wpfui:Card>
+        <Button
+            x:Name="ButtonAdd"
+            Width="115"
+            Height="35"
+            Margin="20,0,0,16"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="Добавить"
+            FontSize="14"
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
+        <Button
+            x:Name="ButtonDelete"
+            Width="115"
+            Height="35"
+            Margin="155,0,0,16"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="Удалить"
+            FontSize="14"
+            IsEnabled="False"
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
+        <ListBox
+            x:Name="ListViewTeachers"
+            Width="250"
+            Margin="20,100,0,56"
+            HorizontalAlignment="Left"
+            d:ItemsSource="{d:SampleData ItemCount=5}" />
+        <wpfui:SearchBox
+            x:Name="SearchBox"
+            Width="250"
+            Height="35"
+            Margin="20,60,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Placeholder="Поиск" />
+        <ComboBox
+            x:Name="ComboBoxSortingTeacher"
+            Width="250"
+            Height="35"
+            Margin="20,20,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            SelectedIndex="0">
+            <ComboBoxItem Content="А-Я" />
+            <ComboBoxItem Content="Я-А" />
+        </ComboBox>
     </Grid>
 </Page>

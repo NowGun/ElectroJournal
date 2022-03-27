@@ -29,7 +29,8 @@ namespace ElectroJournal.Pages.AdminPanel
         }
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {         
+        {    
+            /*
             using (zhirovContext db = new zhirovContext())
             {
                 Discipline discipline = new Discipline { DisciplinesNameAbbreviated = TextBoxName.Text };
@@ -37,11 +38,11 @@ namespace ElectroJournal.Pages.AdminPanel
                 db.Disciplines.Add(discipline);
                 await db.SaveChangesAsync();
                 FillListBoxDisciplines();
-            }
+            }*/
         }
 
         private async void FillListBoxDisciplines()
-        {
+        {/*
             using (zhirovContext db = new zhirovContext())
             {
                 await db.Disciplines.ForEachAsync(p => 
@@ -50,7 +51,7 @@ namespace ElectroJournal.Pages.AdminPanel
                 });
 
                 
-            }
+            }*/
         }
     }
 }
