@@ -60,9 +60,6 @@ namespace ElectroJournal
             TitleBar.CloseActionOverride = CloseActionOverride;
             //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
-
-            
-
         }
 
         
@@ -240,7 +237,8 @@ namespace ElectroJournal
                         {
                             foreach (var l in login)
                             {
-                                TextBlockTeacher.Content = l.TeachersSurname + " " + l.TeachersName;
+                                TextBlockTeacher.Content = $"{l.TeachersName} {l.TeachersSurname}";
+                                PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
 
                                 switch (l.TeachersAccesAdminPanel)
                                 {
@@ -458,6 +456,7 @@ namespace ElectroJournal
                         process.Kill();
                     }
                 }
+
                    */
             }
         }
@@ -465,15 +464,20 @@ namespace ElectroJournal
 
         private void MessageBox_LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-
-            foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+            try
             {
-                process.Kill();
+                Process.Start("Updater.exe");
             }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
+            }
+            (sender as WPFUI.Controls.MessageBox)?.Close();
         }
 
         private void MessageBox_RightButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
+            //(sender as WPFUI.Controls.MessageBox)?.Close();
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
 
@@ -679,6 +683,7 @@ namespace ElectroJournal
             SettingMig.CheckStart();
             CompletionLogin();
             ThemeCheck();
+
         }
 
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
@@ -726,6 +731,24 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimCloseFrame");
             //anim2.Begin();
             anim.Begin();
+        }
+
+        private async void Window_ContentRendered(object sender, EventArgs e)
+        {
+            SettingsControl sControl = new SettingsControl();
+
+            if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+            {
+                WPFUI.Controls.MessageBox messageBox = new WPFUI.Controls.MessageBox();
+
+                messageBox.ButtonLeftName = "Скачать";
+                messageBox.ButtonRightName = "Закрыть";
+                messageBox.ButtonLeftClick += MessageBox_LeftButtonClick;
+                messageBox.ButtonRightClick += MessageBox_RightButtonClick;
+                messageBox.Title = "Оповещение";
+                messageBox.Content = $"Доступно новое обновление ElectroJournal\n{Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
+                messageBox.ShowDialog();
+            }            
         }
     }
 }

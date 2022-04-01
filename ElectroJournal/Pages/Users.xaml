@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ElectroJournal.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI" xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
     Title="Users"
     mc:Ignorable="d">
 
@@ -15,18 +15,13 @@
                 Margin="-11,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch">
-                <Rectangle
-                    Width="120"
-                    Height="120"
-                    Margin="38,24,0,0"
+                <ui:PersonPicture
+                    x:Name="PersonPicture"
+                    Width="118"
+                    Height="127"
+                    Margin="38,26,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    RadiusX="61"
-                    RadiusY="61">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="/ElectroJournal;component/Images/pepe.jpg" Stretch="UniformToFill" />
-                    </Rectangle.Fill>
-                </Rectangle>
+                    VerticalAlignment="Top" />
                 <Label
                     x:Name="LabelChangePhoto"
                     Width="100"

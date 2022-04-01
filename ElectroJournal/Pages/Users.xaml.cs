@@ -68,7 +68,15 @@ namespace ElectroJournal.Pages
 
         private void LabelChangePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog myDialog = new OpenFileDialog();
+            myDialog.Filter = "Изображения(*.jpg;*.png)|*.JPG;*.PNG" + "|Все файлы (*.*)|*.* ";
+            myDialog.CheckFileExists = true;
+            myDialog.Multiselect = true;
+            if (myDialog.ShowDialog() == true)
+            {
+                //TextBoxPath.Text = myDialog.FileName;
+                //path = myDialog.FileName;
+            }
         }
 
         public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e)
@@ -93,7 +101,33 @@ namespace ElectroJournal.Pages
                 {
                     string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
 
-                    TextBlockFIO.Content = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
+                    //PersonPicture.DisplayName = $"{t.TeachersName} {t.TeachersSurname}";
+                    
+
+                    
+                        var myImage = new Image();
+                        var stringPath = @"https://thefilmstage.com/wp-content/uploads/2020/07/Feels-Good-Man-1.jpg";
+
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                    bitmapImage.EndInit();
+
+                    myImage.Source = bitmapImage;
+
+                       /* Uri imageUri = new Uri(stringPath, UriKind.Absolute);
+                        BitmapImage imageBitmap = new BitmapImage(imageUri);
+                        myImage.Source = imageBitmap;*/
+
+                        PersonPicture.ProfilePicture = bitmapImage;
+                    
+                    
+
+                    
+
+
+
+                    TextBlockFIO.Content = FIO;
                     PasswordBoxPassword.Password = t.TeachersPassword;
                     LabelIDUser.Content = "Id: " + t.Idteachers;
                     TextBoxPhone.Text = t.TeachersPhone;

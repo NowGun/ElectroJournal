@@ -24,7 +24,7 @@
     Loaded="Window_Loaded"
     Style="{DynamicResource UiWindowRounded}"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d" WindowState="Normal">
+    mc:Ignorable="d" WindowState="Normal" ContentRendered="Window_ContentRendered">
     <Window.Resources>
         <Storyboard x:Key="AnimLoadLogin">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
@@ -155,6 +155,7 @@
         <Grid
             x:Name="GridNLogin"
             Margin="0,48,0,0" VerticalAlignment="Top" d:IsHidden="True">
+            <wpfui:Icon x:Name="IconSetting2" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" HorizontalAlignment="Left" Margin="1243,0,0,0"/>
             <ui:NavigationView
                 x:Name="NavViewMenuNLogin"
                 Height="40"
@@ -183,9 +184,9 @@
                 x:Name="ButtonShowLogin"
                 Width="140"
                 Height="30"
-                Margin="0,5,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
+                Margin="1090,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Click="ButtonShowLogin_Click"
                 Content="Войти"
                 FontSize="14"
@@ -264,10 +265,10 @@
                     x:Name="MenuItemEJBug"
                     Click="MenuItemEJBug_Click"
                     Header="Баг-репортер" />
-                <MenuItem
+                <!-- <MenuItem
                     x:Name="MenuItemEJSettings"
                     Click="MenuItemEJSettings_Click"
-                    Header="Настройки" />
+                    Header="Настройки" /> -->
             </MenuItem>
             <MenuItem
                 x:Name="MenuBoard"
@@ -373,7 +374,7 @@
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
-                PaneDisplayMode="Top" d:IsHidden="True">
+                PaneDisplayMode="Top">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
                         x:Name="NavigationViewItemTeachers"
@@ -405,6 +406,11 @@
                         Content="Расписание"
                         MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"
                         PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                    <ui:NavigationViewItem
+                        x:Name="NavigationViewItemAcademicYears"
+                        Content="Учебные года"
+                        MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"
+                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
             <ui:NavigationView
@@ -415,7 +421,7 @@
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
-                PaneDisplayMode="Top">
+                PaneDisplayMode="Top" d:IsHidden="True">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
                         x:Name="NavigationViewItemJournal"

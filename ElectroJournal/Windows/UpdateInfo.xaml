@@ -1,0 +1,25 @@
+﻿<Window x:Class="ElectroJournal.Windows.UpdateInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ElectroJournal.Windows" xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+        Style="{DynamicResource UiWindowRounded}"
+        mc:Ignorable="d"
+        Title="UpdateInfo" Height="250" Width="600" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <wpfui:TitleBar
+            x:Name="TitleBar"
+            Title="Отчет о баге"
+            Grid.Row="0"
+            Height="48"
+            ApplicationNavigation="True"
+            Icon="/Images/Logo/logo75.png"
+            ShowMaximize="False"
+            ShowMinimize="False" />
+        <Button x:Name="ButtonDownload" Content="Скачать" HorizontalAlignment="Right" Style="{DynamicResource WPFUIButtonAccent}" Margin="0,0,170,10" VerticalAlignment="Bottom" Height="35" Width="155" FontSize="16" Click="ButtonDownload_Click"/>
+        <Button x:Name="ButtonClose" Content="Закрыть" HorizontalAlignment="Right" Style="{DynamicResource WPFUIButtonStandard}" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="35" Width="155" FontSize="16" Click="ButtonClose_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,78,0,0" TextWrapping="Wrap" Text="Доступно обновление" VerticalAlignment="Top" FontSize="16"/>
+        <wpfui:Icon Glyph="ArrowSync24" FontSize="125" HorizontalAlignment="Right" Margin="0,78,10,0" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
