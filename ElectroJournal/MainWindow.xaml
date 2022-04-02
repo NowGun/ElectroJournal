@@ -48,26 +48,14 @@
         </Storyboard>
         <Storyboard x:Key="AnimOpenFrame">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" >
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="127.605">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -155,7 +143,7 @@
         <Grid
             x:Name="GridNLogin"
             Margin="0,48,0,0" VerticalAlignment="Top" d:IsHidden="True">
-            <wpfui:Icon x:Name="IconSetting2" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" HorizontalAlignment="Left" Margin="1243,0,0,0"/>
+            <wpfui:Icon x:Name="IconSetting2" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" HorizontalAlignment="Right" Margin="0,0,17,0"/>
             <ui:NavigationView
                 x:Name="NavViewMenuNLogin"
                 Height="40"
@@ -184,8 +172,8 @@
                 x:Name="ButtonShowLogin"
                 Width="140"
                 Height="30"
-                Margin="1090,0,0,0"
-                HorizontalAlignment="Left"
+                Margin="0,0,45,0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Click="ButtonShowLogin_Click"
                 Content="Войти"
@@ -200,7 +188,7 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Height="36" RenderTransformOrigin="0.5,0.5" d:IsHidden="True" >
+                    Height="36" RenderTransformOrigin="0.5,0.5" >
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -295,7 +283,7 @@
             Margin="0,99,0,0"
             Content=""
             NavigationUIVisibility="Hidden"
-            RenderTransformOrigin="0.5,0.5" Navigated="Frame_Navigated">
+            RenderTransformOrigin="0.5,0.5" Navigated="Frame_Navigated" Navigating="Frame_Navigating">
             <Frame.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -473,7 +461,7 @@
         <wpfui:Card
             x:Name="GridLogin"
             Height="254"
-            Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" d:IsHidden="True">
             <Grid
                 x:Name="GridLogin2"
                 Width="322"

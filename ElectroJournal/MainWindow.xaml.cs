@@ -238,7 +238,8 @@ namespace ElectroJournal
                             foreach (var l in login)
                             {
                                 TextBlockTeacher.Content = $"{l.TeachersName} {l.TeachersSurname}";
-                                PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
+                                
+                                RefreshImage(l.TeachersImage);
 
                                 switch (l.TeachersAccesAdminPanel)
                                 {
@@ -749,6 +750,34 @@ namespace ElectroJournal
                 messageBox.Content = $"Доступно новое обновление ElectroJournal\n{Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
                 messageBox.ShowDialog();
             }            
+        }
+
+        private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.Back)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        public void RefreshImage(string path)
+        {
+            if (path != null)
+            {
+                var stringPath = $@"{path}";
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                bitmapImage.EndInit();
+                PersonPicture.ProfilePicture = bitmapImage;
+            }
+            else
+            {
+                PersonPicture.ProfilePicture = null;
+                PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
+            }
         }
     }
 }

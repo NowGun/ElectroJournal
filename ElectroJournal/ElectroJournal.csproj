@@ -92,7 +92,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.4" />
+    <PackageReference Include="Renci.SshNet.Async" Version="1.4.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="SSH.NET" Version="2020.0.1" />
     <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="unvell.ReoGridWPF.dll" Version="3.0.0" />
   </ItemGroup>
@@ -125,6 +127,9 @@
     </Reference>
     <Reference Include="NickBuhro.Translit">
       <HintPath>..\..\ElectroJournalNetFramework\ElectroJournal\dll\NickBuhro.Translit.dll</HintPath>
+    </Reference>
+    <Reference Include="SFTPService">
+      <HintPath>dll\SFTPService.dll</HintPath>
     </Reference>
     <Reference Include="SmsRu">
       <HintPath>..\..\ElectroJournalNetFramework\ElectroJournal\dll\SmsRu.dll</HintPath>

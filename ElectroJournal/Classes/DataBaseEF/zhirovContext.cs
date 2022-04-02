@@ -646,7 +646,7 @@ namespace ElectroJournal.DataBase
                     .HasColumnName("teachers_acces_admin_panel");
 
                 entity.Property(e => e.TeachersImage)
-                    .HasColumnType("mediumblob")
+                    .HasColumnType("text")
                     .HasColumnName("teachers_image");
 
                 entity.Property(e => e.TeachersLogin)

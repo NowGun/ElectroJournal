@@ -20,6 +20,10 @@ using Microsoft.Win32;
 using ElectroJournal.Classes;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
+using SFTPService;
+using Renci.SshNet;
+using System.Threading;
+using System.Drawing;
 
 namespace ElectroJournal.Pages
 {
@@ -34,6 +38,9 @@ namespace ElectroJournal.Pages
             LoadData();
         }
 
+        private static string? path;
+
+
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             using (zhirovContext db = new zhirovContext())
@@ -44,9 +51,35 @@ namespace ElectroJournal.Pages
                 {
                     teacher.TeachersPhone = TextBoxPhone.Text;
                     teacher.TeachersMail = TextBoxMail.Text;
+                    teacher.TeachersImage = $@"http://192.168.3.200/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}";
                     await db.SaveChangesAsync();
 
-                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
+                    try
+                    {
+                        using (SftpClient client = new SftpClient(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password)))
+                        {
+                            client.Connect();
+                            if (client.IsConnected)
+                            {
+                                var fileStream = new FileStream($@"{path}", FileMode.Open);
+
+                                if (path != null)
+                                {
+                                    //client.DeleteFile($@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                    client.UploadFile(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                    client.Disconnect();
+                                    client.Dispose();
+                                    LoadData();
+                                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
+                                }
+                                fileStream.Close();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
         }
@@ -74,8 +107,22 @@ namespace ElectroJournal.Pages
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
-                //TextBoxPath.Text = myDialog.FileName;
-                //path = myDialog.FileName;
+                ButtonSave.IsEnabled = true;
+                path = myDialog.FileName;
+
+                BitmapImage bitmap = new BitmapImage();
+                
+                //var stream = File.OpenRead(path);
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                //bitmap.StreamSource = stream;
+                bitmap.UriSource = new Uri(path, UriKind.Absolute);
+                bitmap.EndInit();
+/*                stream.Close();
+                stream.Dispose();*/
+
+                PersonPicture.ProfilePicture = bitmap;
             }
         }
 
@@ -87,6 +134,7 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
             ((MainWindow)Application.Current.MainWindow).LabelScheduleCall.Content = "";
             ((MainWindow)Application.Current.MainWindow).timer2.Stop();
+            ((MainWindow)Application.Current.MainWindow).ButtonShowLogin.IsEnabled = false;
             ((MainWindow)Application.Current.MainWindow).animLabel = true;
             ((MainWindow)Application.Current.MainWindow).AnimLog(true);
         }
@@ -95,46 +143,39 @@ namespace ElectroJournal.Pages
         {
             using (zhirovContext db = new zhirovContext())
             {
-                var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).ToListAsync();
+                var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
 
-                foreach (var t in teachers)
+                string FIO = teachers.TeachersSurname + " " + teachers.TeachersName + " " + teachers.TeachersPatronymic;
+
+                if (teachers.TeachersImage != null)
                 {
-                    string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
+                    var myImage = new System.Windows.Controls.Image();
 
-                    //PersonPicture.DisplayName = $"{t.TeachersName} {t.TeachersSurname}";
-                    
-
-                    
-                        var myImage = new Image();
-                        var stringPath = @"https://thefilmstage.com/wp-content/uploads/2020/07/Feels-Good-Man-1.jpg";
+                    var stringPath = $@"{teachers.TeachersImage}";
 
                     BitmapImage bitmapImage = new BitmapImage();
                     bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                     bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
                     bitmapImage.EndInit();
+                    PersonPicture.ProfilePicture = bitmapImage;
 
-                    myImage.Source = bitmapImage;
-
-                       /* Uri imageUri = new Uri(stringPath, UriKind.Absolute);
-                        BitmapImage imageBitmap = new BitmapImage(imageUri);
-                        myImage.Source = imageBitmap;*/
-
-                        PersonPicture.ProfilePicture = bitmapImage;
-                    
-                    
-
-                    
-
-
-
-                    TextBlockFIO.Content = FIO;
-                    PasswordBoxPassword.Password = t.TeachersPassword;
-                    LabelIDUser.Content = "Id: " + t.Idteachers;
-                    TextBoxPhone.Text = t.TeachersPhone;
-                    TextBoxMail.Text = t.TeachersMail;
-
-                    ButtonSave.IsEnabled = false;
+                    ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
                 }
+                else
+                {
+                    PersonPicture.ProfilePicture = null;
+                    PersonPicture.DisplayName = $"{teachers.TeachersName} {teachers.TeachersSurname}";
+                }
+
+                TextBlockFIO.Content = FIO;
+                PasswordBoxPassword.Password = teachers.TeachersPassword;
+                LabelIDUser.Content = "Id: " + teachers.Idteachers;
+                TextBoxPhone.Text = teachers.TeachersPhone;
+                TextBoxMail.Text = teachers.TeachersMail;
+
+                ButtonSave.IsEnabled = false;
             }
         }
 

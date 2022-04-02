@@ -20,7 +20,7 @@ namespace ElectroJournal.DataBase
         public string TeachersName { get; set; }
         public string TeachersSurname { get; set; }
         public string TeachersPatronymic { get; set; }
-        public byte[] TeachersImage { get; set; }
+        public string TeachersImage { get; set; }
         public string TeachersAccesAdminPanel { get; set; }
         public string TeachersPhone { get; set; }
         public string TeachersMail { get; set; }
