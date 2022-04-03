@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Setting"
-    mc:Ignorable="d" Unloaded="Page_Unloaded">
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d">
 
     <Grid>
 
@@ -34,7 +35,8 @@
                     Click="ButtonSave_Click"
                     Content="Сохранить"
                     FontSize="14"
-                    Style="{StaticResource WPFUIButtonAccent}" Visibility="Hidden" />
+                    Style="{StaticResource WPFUIButtonAccent}"
+                    Visibility="Hidden" />
                 <Label
                     Width="195"
                     Height="35"
@@ -44,7 +46,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Content="Версия 0.30.4 от 31.03.2022"
+                    Content="Версия 0.31 от 31.03.2022"
                     FontSize="14" />
                 <Label
                     Height="35"
@@ -73,7 +75,8 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" Click="CheckBox_Click" />
+                    Click="CheckBox_Click"
+                    Content="" />
                 <CheckBox
                     x:Name="CheckBoxAutoRun"
                     Width="20"
@@ -83,7 +86,8 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" Click="CheckBox_Click" />
+                    Click="CheckBox_Click"
+                    Content="" />
                 <Label
                     Height="35"
                     Margin="27,57,674,452"
@@ -123,7 +127,8 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" Click="CheckBox_Click" />
+                    Click="CheckBox_Click"
+                    Content="" />
                 <Label
                     x:Name="LabelIpAddress"
                     Height="35"
@@ -183,7 +188,8 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" Click="CheckBox_Click" />
+                    Click="CheckBox_Click"
+                    Content="" />
 
             </Grid>
         </wpfui:Card>

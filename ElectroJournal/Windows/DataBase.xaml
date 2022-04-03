@@ -45,9 +45,9 @@
             ShowMaximize="False"
             ShowMinimize="False" />
 
-        <TextBox x:Name="TextBoxServer" HorizontalAlignment="Left" Height="35" Margin="250,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="TextBoxServer" MaxLength="15" HorizontalAlignment="Left" Height="35" Margin="250,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" PreviewTextInput="TextBoxServer_PreviewTextInput"/>
         <TextBox x:Name="TextBoxUser" HorizontalAlignment="Left" Height="35" Margin="250,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
-        <TextBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="35" Margin="250,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        <PasswordBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="35" Margin="250,177,0,0" VerticalAlignment="Top" Width="200"/>
         <Label Content="IP-адрес" HorizontalAlignment="Left" Height="30" Margin="45,72,0,0" VerticalAlignment="Top" Width="172" FontSize="16" VerticalContentAlignment="Center"/>
         <Label Content="Имя пользователя" HorizontalAlignment="Left" Height="30" Margin="45,126,0,0" VerticalAlignment="Top" Width="180" FontSize="16" VerticalContentAlignment="Center"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Height="30" Margin="45,180,0,0" VerticalAlignment="Top" Width="172" FontSize="16" VerticalContentAlignment="Center"/>

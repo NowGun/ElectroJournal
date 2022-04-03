@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Updater" xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Style="{DynamicResource UiWindowRounded}" Loaded="Window_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" WindowState="Normal">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800" Style="{DynamicResource UiWindowRounded}" Loaded="Window_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" WindowState="Normal" Background="White">
+    <Grid Background="White">
         <wpfui:TitleBar x:Name="TitleBar" Grid.Row="0" ApplicationNavigation="True"  Height="48" Title="Обновление ElectroJournal"/>
         <ProgressBar x:Name="ProgressBarLoad" Margin="40,362,40,60" Value="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" >
             <ProgressBar.RenderTransform>

@@ -66,9 +66,6 @@ namespace StartEJ
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
-
-
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

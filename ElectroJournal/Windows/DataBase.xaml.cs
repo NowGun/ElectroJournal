@@ -31,47 +31,32 @@ namespace ElectroJournal.Windows
 
         private bool _isDarkTheme = false;
 
-        XmlDocument xmlDocument = new XmlDocument();
-
         private void LoadData()
         {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
-            //string user = xmlDocument.GetElementsByTagName("username")[0].InnerText;
-            //string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
-
-            string server = Properties.Settings.Default.Server;
-            string user = Properties.Settings.Default.UserName;
-            string password = Properties.Settings.Default.Password;
-
-            TextBoxServer.Text = server;
-            TextBoxUser.Text = user;
-            TextBoxPassword.Text = password;
+            TextBoxServer.Text = Properties.Settings.Default.Server;
+            TextBoxUser.Text = Properties.Settings.Default.UserName;
+            TextBoxPassword.Password = Properties.Settings.Default.Password;
         }
 
         private void SaveData()
         {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+            if (!String.IsNullOrWhiteSpace(TextBoxServer.Text) && !String.IsNullOrWhiteSpace(TextBoxUser.Text) && !String.IsNullOrWhiteSpace(TextBoxPassword.Password))
+            {
+                Properties.Settings.Default.Server = TextBoxServer.Text;
+                Properties.Settings.Default.UserName = TextBoxUser.Text;
+                Properties.Settings.Default.Password = TextBoxPassword.Password;
 
-            // XmlNode server = xmlDocument.GetElementsByTagName("server")[0];
-            // XmlNode user = xmlDocument.GetElementsByTagName("username")[0];
-            // XmlNode password = xmlDocument.GetElementsByTagName("password")[0];
+                Properties.Settings.Default.Save();
 
-
-
-            Properties.Settings.Default.Server = TextBoxServer.Text;
-            Properties.Settings.Default.UserName = TextBoxUser.Text;
-            Properties.Settings.Default.Password = TextBoxPassword.Text;
-
-            Properties.Settings.Default.Save();
-            //xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные изменены");
+                this.Close();
+            }
+            else ((MainWindow)Application.Current.MainWindow).Notifications("Уведомление", "Заполните все поля");
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            var anim = (Storyboard)FindResource("AnimLabelNotyfication");
             SaveData();
-            anim.Begin();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -114,6 +99,14 @@ namespace ElectroJournal.Windows
         {
             ((MainWindow)Application.Current.MainWindow).ThemeCheck();
             this.Close();
+        }
+
+        private void TextBoxServer_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!(Char.IsDigit(e.Text, 0) || (e.Text == ".")))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

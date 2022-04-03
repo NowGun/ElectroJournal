@@ -67,7 +67,7 @@ namespace ElectroJournal.Pages
 
             SettingsControl settingsControl = new();
             settingsControl.CheckAutoRun();
-            settingsControl.CompletionLogin();
+            //settingsControl.CompletionLogin();
             ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
             ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
         }

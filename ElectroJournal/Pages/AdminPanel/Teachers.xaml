@@ -22,7 +22,7 @@
                     x:Name="PersonPicture"
                     Width="150"
                     Height="150"
-                    Margin="10,12,712,0"
+                    Margin="10,12,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     MouseLeftButtonUp="PersonPicture_MouseLeftButtonUp" />
@@ -48,7 +48,7 @@
                     Style="{StaticResource WPFUIButtonAccent}" />
                 <Label
                     Height="35"
-                    Margin="25,237,777,187"
+                    Margin="25,237,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
@@ -68,7 +68,7 @@
                     TextWrapping="Wrap" />
                 <Label
                     Height="35"
-                    Margin="25,287,777,137"
+                    Margin="22,287,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
@@ -87,7 +87,7 @@
                     x:Name="CheckBoxAdminAccess"
                     Width="245"
                     Height="30"
-                    Margin="25,337,602,92"
+                    Margin="25,337,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Доступ к панели администратора"

@@ -20,14 +20,12 @@
                     x:Name="PersonPicture"
                     Width="118"
                     Height="127"
-                    Margin="38,26,0,0"
+                    Margin="38,19,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top" />
                 <Label
                     x:Name="LabelChangePhoto"
-                    Width="100"
-                    Height="26"
-                    Margin="48,149,0,0"
+                    Margin="48,142,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Center"
@@ -37,12 +35,12 @@
                     Foreground="#FF046ED2"
                     MouseLeave="LabelChangePhoto_MouseLeave"
                     MouseLeftButtonUp="LabelChangePhoto_MouseLeftButtonUp"
-                    MouseMove="LabelChangePhoto_MouseMove" />
+                    MouseMove="LabelChangePhoto_MouseMove" FontSize="14" />
                 <Label
                     x:Name="LabelIDUser"
                     Width="37"
                     Height="20"
-                    Margin="178,116,0,0"
+                    Margin="178,109,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="id: 0"
@@ -63,7 +61,7 @@
                     x:Name="ButtonLogoutUser"
                     Width="132"
                     Height="30"
-                    Margin="0,24,24,0"
+                    Margin="0,17,24,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     x:FieldModifier="public"
@@ -74,11 +72,23 @@
                     x:Name="TextBlockFIO"
                     Width="310"
                     Height="71"
-                    Margin="178,36,0,0"
+                    Margin="178,29,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Фамилия И. О."
                     FontSize="20" />
+                <Label
+                    x:Name="LabelDeletePhoto"
+                    Margin="54,167,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="Удалить фото"
+                    Foreground="#FFDA2222"
+                    MouseLeave="LabelChangePhoto_MouseLeave"
+                    MouseLeftButtonUp="LabelDeletePhoto_MouseLeftButtonUp"
+                    MouseMove="LabelChangePhoto_MouseMove" FontSize="14" />
             </Grid>
 
         </wpfui:Card>

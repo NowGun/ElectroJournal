@@ -257,6 +257,10 @@ namespace ElectroJournal
 
                                 Properties.Settings.Default.Save();
 
+                                NavViewMenu.Visibility = Visibility.Visible;
+                                NavViewMenuAdmin.Visibility = Visibility.Hidden;
+                                RectangleBackToMenu.Visibility = Visibility.Hidden;
+
                                 FillComboBoxGroups();
                                 //ComboBoxGroup.SelectedIndex = 0;
                                 Frame.Navigate(new Pages.Journal());
@@ -603,7 +607,7 @@ namespace ElectroJournal
 
         private void NavigationViewItemScheduleAdmin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
+            Frame.Navigate(new Pages.AdminPanel.AcademicYears());
         }
 
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
@@ -627,13 +631,16 @@ namespace ElectroJournal
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SettingMig.CheckStart();
-            settingsControl.CompletionLogin();
+            //settingsControl.CompletionLogin();
             ThemeCheck();
 
         }
 
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
         {
+            var anim = (Storyboard)FindResource("AnimOpenLogin");
+            anim.Begin();
+
             ButtonShowLogin.IsEnabled = false;
             Frame.Visibility = Visibility.Hidden;
             GridLogin.Visibility = Visibility.Visible;
@@ -682,19 +689,26 @@ namespace ElectroJournal
         private async void Window_ContentRendered(object sender, EventArgs e)
         {
             SettingsControl sControl = new SettingsControl();
-
-            if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+            try
             {
-                WPFUI.Controls.MessageBox messageBox = new WPFUI.Controls.MessageBox();
+                if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                {
+                    WPFUI.Controls.MessageBox messageBox = new WPFUI.Controls.MessageBox();
 
-                messageBox.ButtonLeftName = "Скачать";
-                messageBox.ButtonRightName = "Закрыть";
-                messageBox.ButtonLeftClick += MessageBox_LeftButtonClick;
-                messageBox.ButtonRightClick += MessageBox_RightButtonClick;
-                messageBox.Title = "Оповещение";
-                messageBox.Content = $"Доступно новое обновление ElectroJournal\n{Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
-                messageBox.ShowDialog();
-            }            
+                    messageBox.ButtonLeftName = "Скачать";
+                    messageBox.ButtonRightName = "Закрыть";
+                    messageBox.ButtonLeftClick += MessageBox_LeftButtonClick;
+                    messageBox.ButtonRightClick += MessageBox_RightButtonClick;
+                    messageBox.Title = "Оповещение";
+                    messageBox.Content = $"Доступно новое обновление ElectroJournal\n{Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
+                    messageBox.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Notifications("Уведомление", "Невозможно подключиться к базе данных" + ex);
+            }
+               
         }
 
         private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)

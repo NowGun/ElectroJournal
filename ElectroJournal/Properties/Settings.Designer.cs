@@ -178,7 +178,7 @@ namespace ElectroJournal.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.30.4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.31")]
         public string Version {
             get {
                 return ((string)(this["Version"]));

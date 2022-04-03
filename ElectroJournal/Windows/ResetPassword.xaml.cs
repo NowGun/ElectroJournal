@@ -18,6 +18,8 @@ using MySql.Data.MySqlClient;
 using System.Net;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
+using ElectroJournal.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectroJournal.Windows
 {
@@ -33,9 +35,7 @@ namespace ElectroJournal.Windows
             TitleBar.CloseActionOverride = CloseActionOverride;
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
         DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
         private bool _isDarkTheme = false;
 
         bool a = true;
@@ -47,55 +47,37 @@ namespace ElectroJournal.Windows
             this.Close();
         }
 
-        private void FramePassword_Initialized(object sender, EventArgs e)
+        private async void ButtonGridmailContinue_Click(object sender, RoutedEventArgs e)
         {
-            //FramePassword.Navigate(new Pages.ResetPassword.ConfirmPassword());
-        }
-
-        private void ButtonPassword_Click(object sender, RoutedEventArgs e)
-        {
-            Pages.ResetPassword.ConfirmPassword cp = new Pages.ResetPassword.ConfirmPassword();
-            if (cp.TextBoxNewPassword.Text != null && cp.TextBoxReturnNewPassword.Text != null && cp.TextBoxOldPassword.Text != null)
-            {
-                //FramePassword.Navigate(new Pages.ResetPassword.ConfirmSMS());
-            }
-        }
-
-        private void ButtonGridmailContinue_Click(object sender, RoutedEventArgs e)
-        {
+            TextBoxGridMailMail.IsEnabled = false;
+            TextBoxGridMailLogin.IsEnabled = false;
+            ButtonGridmailContinue.IsEnabled = false;
+            ButtonGridmailContinue.Content = "Проверка...";
             if (a)
             {
                 if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
                 {
-                    MySqlCommand command = new MySqlCommand("SELECT `teachers_login`, `teachers_mail`, `idteachers` FROM `teachers` WHERE `teachers_login` = @login AND `teachers_mail` = @mail", conn);
-
-                    command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxGridMailLogin.Text;
-                    command.Parameters.Add("@mail", MySqlDbType.Text).Value = TextBoxGridMailMail.Text;
-
-                    conn.Open();
-                    MySqlDataReader read = command.ExecuteReader();
-
-                    if (read.Read())
+                    using (zhirovContext db = new())
                     {
-                        Properties.Settings.Default.UserID = read.GetInt32(2);
-                        Properties.Settings.Default.Save();
-                        secretCode = SendMail(TextBoxGridMailMail.Text);
-                        GridLoginMail.Visibility = Visibility.Hidden;
-                        GridVerifySecretCode.Visibility = Visibility.Visible;
-                        ButtonGridmailContinue.Visibility = Visibility.Hidden;
-                        TextBoxCode1.Focus();
-                        //ButtonGridmailContinue.Content = "Далее";
-                        a = false;
+                        Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                        if (teacher != null)
+                        {
+                            Properties.Settings.Default.UserID = (int)teacher.Idteachers;
+                            Properties.Settings.Default.Save();
+                            secretCode = await SendMail(TextBoxGridMailMail.Text);                            
+                        }
+                        else Notifications("Логин или почта введены неверно", "Уведомление");
                     }
-                    else Notifications("Логин или почта введены неверно", "Уведомление");
-
-                    conn.Close();
                 }
                 else Notifications("Заполните поля", "Уведомление");
-            }            
+            }
+            TextBoxGridMailMail.IsEnabled = true;
+            TextBoxGridMailLogin.IsEnabled = true;
+            ButtonGridmailContinue.IsEnabled = true;
+            ButtonGridmailContinue.Content = "Отправить код";
         }
 
-        private int SendMail(string mail)
+        private async Task<int> SendMail(string mail)
         {
             Random random = new Random();
             int secretCode = random.Next(100000, 999999);
@@ -115,64 +97,66 @@ namespace ElectroJournal.Windows
             // логин и пароль
             smtp.Credentials = new NetworkCredential("help@techno-review.ru", "64580082Now");
             smtp.EnableSsl = true;
-                        
-             try
-             {
-                 smtp.Send(m);
-             }
-             catch (SmtpException)
-             {
-                Notifications("Произошла ошибка", "Ошибка");
+
+            try
+            {
+                await smtp.SendMailAsync(m);
+                GridLoginMail.Visibility = Visibility.Hidden;
+                GridVerifySecretCode.Visibility = Visibility.Visible;
+                ButtonGridmailContinue.Visibility = Visibility.Hidden;
+                TextBoxCode1.Focus();
+                a = false;
+            }
+            catch (SmtpException)
+            {
+                Notifications("Почтовый сервис недоступен", "Ошибка");
             }
 
             return secretCode;
         }
 
-        private void ButtonGridMailRepeatCode_Click(object sender, RoutedEventArgs e)
+        private async void ButtonGridMailRepeatCode_Click(object sender, RoutedEventArgs e)
         {
             if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
             {
-                MySqlCommand command = new MySqlCommand("SELECT `teachers_login`, `teachers_mail`, `idteachers` FROM `teachers` WHERE `teachers_login` = @login AND `teachers_mail` = @mail", conn);
-
-                command.Parameters.Add("@login", MySqlDbType.VarChar).Value = TextBoxGridMailLogin.Text;
-                command.Parameters.Add("@mail", MySqlDbType.Text).Value = TextBoxGridMailMail.Text;
-
-                conn.Open();
-                MySqlDataReader read = command.ExecuteReader();
-
-                if (read.Read())
+                using (zhirovContext db = new())
                 {
-                    TextBoxCode1.Clear();
-                    TextBoxCode2.Clear();
-                    TextBoxCode3.Clear();
-                    TextBoxCode4.Clear();
-                    TextBoxCode5.Clear();
-                    TextBoxCode6.Clear();
-                    secretCode = SendMail(TextBoxGridMailMail.Text);
+                    Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                    if (teacher != null)
+                    {
+                        TextBoxCode1.Clear();
+                        TextBoxCode2.Clear();
+                        TextBoxCode3.Clear();
+                        TextBoxCode4.Clear();
+                        TextBoxCode5.Clear();
+                        TextBoxCode6.Clear();
+                        secretCode = await SendMail(TextBoxGridMailMail.Text);
+                    }
+                    else Notifications("Логин или почта введены неверно", "Уведомление");
                 }
-                conn.Close();
             }
         }
 
-        private void ButtonSaveNewPassword_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSaveNewPassword_Click(object sender, RoutedEventArgs e)
         {
             if (TextBoxVerifyNewPassword.Text != string.Empty && TextBoxNewPassword.Text != string.Empty)
             {
                 if (TextBoxVerifyNewPassword.Text == TextBoxNewPassword.Text)
                 {
-                    MySqlCommand command = new MySqlCommand("UPDATE `teachers` SET `teachers_password` = @passwordnew WHERE `idteachers` = @id", conn);
-
-                    command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Properties.Settings.Default.UserID;
-                    command.Parameters.Add("@passwordnew", MySqlDbType.VarChar).Value = DbControls.Hash(TextBoxVerifyNewPassword.Text);
-
-                    conn.Open();
-
-                    if (command.ExecuteNonQuery() == 1)
+                    using (zhirovContext db = new())
                     {
-                        ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
-                        this.Close();
+                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                        if (teacher != null)
+                        {
+                            teacher.TeachersPassword = DbControls.Hash(TextBoxVerifyNewPassword.Text);
+                            await db.SaveChangesAsync();
+
+                            ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
+                            this.Close();
+                        }
+                        else Notifications("Логин или пароль введены неверно", "Уведомление");
                     }
-                    conn.Close();
                 }
                 else
                 {

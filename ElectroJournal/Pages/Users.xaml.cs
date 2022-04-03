@@ -109,6 +109,7 @@ namespace ElectroJournal.Pages
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
+                LabelDeletePhoto.Visibility = Visibility.Visible;
                 ButtonSave.IsEnabled = true;
                 path = myDialog.FileName;
 
@@ -132,8 +133,8 @@ namespace ElectroJournal.Pages
         {
             SettingsControl sc = new();
 
-            ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
-            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";            
+            /*((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
+            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";*/            
             //sc.CompletionLogin();
             ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
             ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
@@ -156,6 +157,7 @@ namespace ElectroJournal.Pages
 
                 if (!String.IsNullOrWhiteSpace(teachers.TeachersImage))
                 {
+                    LabelDeletePhoto.Visibility = Visibility.Visible;
                     var myImage = new System.Windows.Controls.Image();
 
                     var stringPath = $@"{teachers.TeachersImage}";
@@ -172,6 +174,7 @@ namespace ElectroJournal.Pages
                 }
                 else
                 {
+                    LabelDeletePhoto.Visibility = Visibility.Hidden;
                     PersonPicture.ProfilePicture = null;
                     PersonPicture.DisplayName = $"{teachers.TeachersName} {teachers.TeachersSurname}";
                 }
@@ -194,6 +197,48 @@ namespace ElectroJournal.Pages
         private void TextBoxMail_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             ButtonSave.IsEnabled = true;
+        }
+
+        private async void LabelDeletePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            using (zhirovContext db = new())
+            {
+                var teacher = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
+
+                if (!String.IsNullOrWhiteSpace(teacher.TeachersImage))
+                {
+                    teacher.TeachersImage = "";
+                    await db.SaveChangesAsync();
+
+                    try 
+                    {
+                        using (SftpClient client = new SftpClient(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password)))
+                        {
+                            client.Connect();
+                            if (client.IsConnected)
+                            {
+                                var fileStream = new FileStream($@"{path}", FileMode.Open);
+
+                                if (path != null)
+                                {
+                                    client.DeleteFile($@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                    client.Disconnect();
+                                    client.Dispose();
+                                    ((MainWindow)Application.Current.MainWindow).RefreshImage(teacher.TeachersImage);
+                                }
+                                fileStream.Close();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    { 
+                        MessageBox.Show(ex.Message);
+                    }                    
+                }
+                PersonPicture.ProfilePicture = null;
+                PersonPicture.DisplayName = $"{teacher.TeachersName} {teacher.TeachersSurname}";
+            }
+            LabelDeletePhoto.Visibility = Visibility.Hidden;
         }
     }
 }

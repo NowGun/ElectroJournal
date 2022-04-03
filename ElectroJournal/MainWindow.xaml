@@ -17,8 +17,8 @@
     Title="ElectroJournal"
     Width="1280"
     Height="720"
-    MinWidth="800"
-    MinHeight="600"
+    MinWidth="1280"
+    MinHeight="720"
     Closing="Window_Closing"
     ContentRendered="Window_ContentRendered"
     Icon="/Images/Logo/logo75.png"
@@ -134,6 +134,27 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="AnimOpenLogin">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
 
 
     </Window.Resources>
@@ -145,8 +166,7 @@
         <Grid
             x:Name="GridNLogin"
             Margin="0,48,0,0"
-            VerticalAlignment="Top"
-            d:IsHidden="True">
+            VerticalAlignment="Top">
             <wpfui:Icon
                 x:Name="IconSetting2"
                 Margin="0,0,17,0"
@@ -192,24 +212,6 @@
                 Style="{DynamicResource WPFUIButtonStandard}" />
 
         </Grid>
-        <Label
-            x:Name="LabelScheduleCall"
-            Height="36"
-            Margin="225,6,434,0"
-            Padding="0,0,10,4"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
         <wpfui:TitleBar
             x:Name="TitleBar"
             Grid.Row="0"
@@ -321,7 +323,25 @@
             Margin="0,6,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
-            Visibility="Visible">
+            Visibility="Visible" d:IsHidden="True">
+            <Label
+            x:Name="LabelScheduleCall"
+            Height="36"
+            Margin="245,0,435,0"
+            Padding="0,0,10,4"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
             <wpfui:Icon
                 x:Name="RectangleBackToMenu"
                 Width="28"
@@ -333,41 +353,6 @@
                 FontSize="20"
                 Glyph="ArrowLeft12"
                 MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" />
-            <Grid
-                x:Name="GridUser"
-                Margin="0,42,17,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top">
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        x:Name="TextBlockTeacher"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Content="Фамиля И.О."
-                        FontSize="14"
-                        MouseLeave="RectangleUser_MouseLeave"
-                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                        MouseMove="RectangleUser_MouseMove" />
-                    <ui:PersonPicture
-                        x:Name="PersonPicture"
-                        Width="40"
-                        Height="40"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        MouseLeave="RectangleUser_MouseLeave"
-                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                        MouseMove="RectangleUser_MouseMove" />
-                    <wpfui:Icon
-                        x:Name="IconSetting"
-                        HorizontalAlignment="Right"
-                        FontSize="20"
-                        Glyph="Settings20"
-                        PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
-                </StackPanel>
-            </Grid>
             <Path
                 x:Name="PathMenu"
                 Height="1"
@@ -389,7 +374,7 @@
                 x:Name="NavViewMenuAdmin"
                 Height="40"
                 MinWidth="100"
-                Margin="48,42,507,0"
+                Margin="48,42,0,0"
                 VerticalAlignment="Top"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
@@ -436,7 +421,7 @@
                 x:Name="NavViewMenu"
                 Height="40"
                 MinWidth="100"
-                Margin="48,42,365,0"
+                Margin="48,42,0,0"
                 VerticalAlignment="Top"
                 d:IsHidden="True"
                 IsBackButtonVisible="Collapsed"
@@ -465,6 +450,43 @@
                         PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
+            <Grid
+                x:Name="GridUser"
+                Margin="0,42,17,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        x:Name="TextBlockTeacher"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="Фамиля И.О."
+                        FontSize="14"
+                        MouseLeave="RectangleUser_MouseLeave"
+                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
+                        MouseMove="RectangleUser_MouseMove" />
+                    <ui:PersonPicture
+                        x:Name="PersonPicture"
+                        Width="40"
+                        Height="40"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        MouseLeave="RectangleUser_MouseLeave"
+                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
+                        MouseMove="RectangleUser_MouseMove" />
+                    <wpfui:Icon
+                        x:Name="IconSetting"
+                        HorizontalAlignment="Right"
+                        FontSize="20"
+                        Glyph="Settings20"
+                        MouseMove="RectangleUser_MouseMove"
+                        MouseLeave="RectangleUser_MouseLeave"
+                        PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
+                </StackPanel>
+            </Grid>
             <Grid
                 x:Name="GridComboGroups"
                 Height="35"
@@ -499,8 +521,7 @@
             Height="254"
             Margin="0,0,0,0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            d:IsHidden="True">
+            VerticalAlignment="Center">
             <Grid
                 x:Name="GridLogin2"
                 Width="322"
