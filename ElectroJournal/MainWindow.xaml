@@ -16,15 +16,17 @@
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
     Title="ElectroJournal"
     Width="1280"
+    Height="720"
     MinWidth="800"
     MinHeight="600"
-    Height="720"
     Closing="Window_Closing"
+    ContentRendered="Window_ContentRendered"
     Icon="/Images/Logo/logo75.png"
     Loaded="Window_Loaded"
     Style="{DynamicResource UiWindowRounded}"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d" WindowState="Normal" ContentRendered="Window_ContentRendered">
+    WindowState="Normal"
+    mc:Ignorable="d">
     <Window.Resources>
         <Storyboard x:Key="AnimLoadLogin">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
@@ -50,12 +52,12 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -72,11 +74,11 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimToBlackTheme"/>
+        <Storyboard x:Key="AnimToBlackTheme" />
         <Storyboard x:Key="AnimLogoutUser">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
@@ -86,18 +88,18 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridNLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimCloseFrame">
@@ -110,24 +112,24 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-13.026">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -142,8 +144,16 @@
 
         <Grid
             x:Name="GridNLogin"
-            Margin="0,48,0,0" VerticalAlignment="Top" d:IsHidden="True">
-            <wpfui:Icon x:Name="IconSetting2" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" HorizontalAlignment="Right" Margin="0,0,17,0"/>
+            Margin="0,48,0,0"
+            VerticalAlignment="Top"
+            d:IsHidden="True">
+            <wpfui:Icon
+                x:Name="IconSetting2"
+                Margin="0,0,17,0"
+                HorizontalAlignment="Right"
+                FontSize="20"
+                Glyph="Settings20"
+                PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
             <ui:NavigationView
                 x:Name="NavViewMenuNLogin"
                 Height="40"
@@ -178,23 +188,25 @@
                 Click="ButtonShowLogin_Click"
                 Content="Войти"
                 FontSize="14"
-                Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
+                IsEnabled="False"
+                Style="{DynamicResource WPFUIButtonStandard}" />
 
         </Grid>
         <Label
-                    x:Name="LabelScheduleCall"
-                    Margin="225,6,434,0"
-                    Padding="0,0,10,4"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Height="36" RenderTransformOrigin="0.5,0.5" >
+            x:Name="LabelScheduleCall"
+            Height="36"
+            Margin="225,6,434,0"
+            Padding="0,0,10,4"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
@@ -239,8 +251,9 @@
                 Height="43"
                 Padding="6,0,6,0"
                 HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"                
-                FontSize="14" Header="ElectroJournal">
+                VerticalContentAlignment="Center"
+                FontSize="14"
+                Header="ElectroJournal">
                 <MenuItem
                     x:Name="MenuItemEJHelp"
                     Click="MenuItemEJHelp_Click"
@@ -256,7 +269,7 @@
                 <!-- <MenuItem
                     x:Name="MenuItemEJSettings"
                     Click="MenuItemEJSettings_Click"
-                    Header="Настройки" /> -->
+                    Header="Настройки" />-->
             </MenuItem>
             <MenuItem
                 x:Name="MenuBoard"
@@ -282,8 +295,10 @@
             x:Name="Frame"
             Margin="0,99,0,0"
             Content=""
+            Navigated="Frame_Navigated"
+            Navigating="Frame_Navigating"
             NavigationUIVisibility="Hidden"
-            RenderTransformOrigin="0.5,0.5" Navigated="Frame_Navigated" Navigating="Frame_Navigating">
+            RenderTransformOrigin="0.5,0.5">
             <Frame.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -324,17 +339,33 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal">
-                    <Label x:Name="TextBlockTeacher" Content="Фамиля И.О." FontSize="14" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0"/>
+                    <Label
+                        x:Name="TextBlockTeacher"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="Фамиля И.О."
+                        FontSize="14"
+                        MouseLeave="RectangleUser_MouseLeave"
+                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
+                        MouseMove="RectangleUser_MouseMove" />
                     <ui:PersonPicture
-                    x:Name="PersonPicture"
-                    Width="40"
-                    Height="40"
-                    Margin="0,0,10,0"
-                    VerticalAlignment="Center"
-                    MouseLeave="RectangleUser_MouseLeave"
-                    MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                    MouseMove="RectangleUser_MouseMove" HorizontalAlignment="Right" />
-                    <wpfui:Icon x:Name="IconSetting" Glyph="Settings20" FontSize="20" PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" HorizontalAlignment="Right"/>
+                        x:Name="PersonPicture"
+                        Width="40"
+                        Height="40"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        MouseLeave="RectangleUser_MouseLeave"
+                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
+                        MouseMove="RectangleUser_MouseMove" />
+                    <wpfui:Icon
+                        x:Name="IconSetting"
+                        HorizontalAlignment="Right"
+                        FontSize="20"
+                        Glyph="Settings20"
+                        PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
                 </StackPanel>
             </Grid>
             <Path
@@ -407,9 +438,10 @@
                 MinWidth="100"
                 Margin="48,42,365,0"
                 VerticalAlignment="Top"
+                d:IsHidden="True"
                 IsBackButtonVisible="Collapsed"
                 IsSettingsVisible="False"
-                PaneDisplayMode="Top" d:IsHidden="True">
+                PaneDisplayMode="Top">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
                         x:Name="NavigationViewItemJournal"
@@ -435,33 +467,40 @@
             </ui:NavigationView>
             <Grid
                 x:Name="GridComboGroups"
-                Height="35" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Height="35"
                 Margin="0,0,155,0"
-                >
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top">
                 <ComboBox
                     x:Name="ComboBoxGroup"
                     Width="200"
                     Height="35"
                     Margin="80,0,0,0"
                     HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
                     Grid.IsSharedSizeScope="True"
-                    RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" SelectionChanged="ComboBoxGroup_SelectionChanged">
+                    RenderTransformOrigin="0.5,0.5"
+                    SelectionChanged="ComboBoxGroup_SelectionChanged">
                     <ComboBoxItem Content="ПКС 4" />
                 </ComboBox>
                 <Label
                     x:Name="LabelGroup"
                     Width="60"
                     Height="35"
+                    Margin="20,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Content="Группа:" Margin="20,0,0,0" />
+                    Content="Группа:" />
             </Grid>
         </Grid>
         <wpfui:Card
             x:Name="GridLogin"
             Height="254"
-            Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" d:IsHidden="True">
+            Margin="0,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            d:IsHidden="True">
             <Grid
                 x:Name="GridLogin2"
                 Width="322"

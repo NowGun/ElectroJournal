@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Setting"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Unloaded="Page_Unloaded">
 
     <Grid>
 
@@ -34,7 +34,7 @@
                     Click="ButtonSave_Click"
                     Content="Сохранить"
                     FontSize="14"
-                    Style="{StaticResource WPFUIButtonAccent}" />
+                    Style="{StaticResource WPFUIButtonAccent}" Visibility="Hidden" />
                 <Label
                     Width="195"
                     Height="35"
@@ -57,7 +57,7 @@
                     FontSize="14" />
                 <Label
                     Height="35"
-                    Margin="27,233,667,276"
+                    Margin="27,167,0,0"
                     Padding="10,0,0,4"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -68,12 +68,12 @@
                     x:Name="CheckBoxCollapseToTray"
                     Width="20"
                     Height="20"
-                    Margin="547,240,0,0"
+                    Margin="547,174,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" />
+                    Content="" Click="CheckBox_Click" />
                 <CheckBox
                     x:Name="CheckBoxAutoRun"
                     Width="20"
@@ -83,7 +83,7 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" />
+                    Content="" Click="CheckBox_Click" />
                 <Label
                     Height="35"
                     Margin="27,57,674,452"
@@ -107,7 +107,7 @@
                 </ComboBox>
                 <Label
                     Height="30"
-                    Margin="27,290,667,224"
+                    Margin="27,222,0,0"
                     Padding="10,0,0,4"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -118,12 +118,12 @@
                     x:Name="CheckBoxAnim"
                     Width="20"
                     Height="20"
-                    Margin="547,295,0,0"
+                    Margin="547,227,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Center"
-                    Content="" />
+                    Content="" Click="CheckBox_Click" />
                 <Label
                     x:Name="LabelIpAddress"
                     Height="35"
@@ -166,16 +166,24 @@
                     FontSize="18"
                     FontWeight="Bold" />
                 <Label
-                    Width="260"
-                    Height="40"
-                    Margin="7,187,0,0"
+                    Height="30"
+                    Margin="27,272,0,0"
+                    Padding="10,0,0,4"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
-                    Content="Настройки запуска"
-                    FontFamily="Segoe UI"
-                    FontSize="18"
-                    FontWeight="Bold" />
+                    Content="Запомнить логин и пароль при входе"
+                    FontSize="14" />
+                <CheckBox
+                    x:Name="CheckBoxRememberData"
+                    Width="20"
+                    Height="20"
+                    Margin="547,277,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    Content="" Click="CheckBox_Click" />
 
             </Grid>
         </wpfui:Card>

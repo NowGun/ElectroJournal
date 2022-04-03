@@ -1,4 +1,5 @@
-﻿using ElectroJournal.Windows;
+﻿using ElectroJournal.Classes;
+using ElectroJournal.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,88 +27,49 @@ namespace ElectroJournal.Pages
         public Setting()
         {
             InitializeComponent();
-            LoadSave();
+            LoadApp();            
         }
 
-        XmlDocument xmlDocument = new XmlDocument();
-
-        private void LoadSave ()
-        {
-            LoadRun();
-            LoadBD();
-            LoadApp();
-        }
+        private bool isLoaded = false;
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {          
-            SaveApp();
-            SaveRun();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).CheckAutoRun();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).SetAutorunValue(Properties.Settings.Default.AutoRun);
-            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
-        }
-
-        private void LoadBD()
-        {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
-
-            string server = Properties.Settings.Default.Server;
-            LabelIpAddress.Content = server;
+            
+            
         }
 
         private void LoadApp()
         {
+            string server = Properties.Settings.Default.Server;
             int theme = Properties.Settings.Default.Theme;
             bool animation = Properties.Settings.Default.Animation;
-
-            ComboBoxTheme.SelectedIndex = theme;
-
-            CheckBoxAnim.IsChecked = animation;
-        }
-
-        private void LoadRun()
-        {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //string autorun = xmlDocument.GetElementsByTagName("autorun")[0].InnerText;
-            //string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
-            
             bool autorun = Properties.Settings.Default.AutoRun;
             bool tray = Properties.Settings.Default.Tray;
+            bool rememberLogin = Properties.Settings.Default.RememberData;
 
+            ComboBoxTheme.SelectedIndex = theme;
+            CheckBoxRememberData.IsChecked = rememberLogin;
+            CheckBoxAnim.IsChecked = animation;
             CheckBoxAutoRun.IsChecked = autorun;
             CheckBoxCollapseToTray.IsChecked = tray;
+            LabelIpAddress.Content = server;
         }
 
         private void SaveApp()
         {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //XmlNode theme = xmlDocument.GetElementsByTagName("Theme")[0];
-            //XmlNode animation = xmlDocument.GetElementsByTagName("animation")[0];
-
             Properties.Settings.Default.Theme = ComboBoxTheme.SelectedIndex;
-
-
-            Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? true;
-
-            Properties.Settings.Default.Save();
-            //xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-        }
-
-        private void SaveRun()
-        {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //XmlNode autorun = xmlDocument.GetElementsByTagName("autorun")[0];
-            //XmlNode collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0];
-
-
-
+            Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? false;
             Properties.Settings.Default.AutoRun = CheckBoxAutoRun.IsChecked ?? false;
             Properties.Settings.Default.Tray = CheckBoxCollapseToTray.IsChecked ?? false;
+            Properties.Settings.Default.RememberData = CheckBoxRememberData.IsChecked ?? false;
 
             Properties.Settings.Default.Save();
-            //xmlDocument.Save("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
+
+            SettingsControl settingsControl = new();
+            settingsControl.CheckAutoRun();
+            settingsControl.CompletionLogin();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
         }
 
         private void ButtonChangeBD_Click(object sender, RoutedEventArgs e)
@@ -132,8 +94,22 @@ namespace ElectroJournal.Pages
 
         private void ComboBoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (IsLoaded)
+            {
+                SaveApp();
+                ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+            }
+            else isLoaded = true;            
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
             SaveApp();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            isLoaded = false;
         }
     }
 }

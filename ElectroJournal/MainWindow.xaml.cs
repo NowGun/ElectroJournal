@@ -45,8 +45,7 @@ namespace ElectroJournal
         public MainWindow()
         {
             //CheckVersionWindows();
-            InitializeComponent();
-            
+            InitializeComponent();            
             
             GridMenu.Visibility = Visibility.Hidden;
             Frame.Visibility = Visibility.Hidden;
@@ -54,26 +53,27 @@ namespace ElectroJournal
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
 
-            GridNLogin.Visibility = Visibility.Visible;
+            
+            settingsControl.CheckAutoRun();
+            settingsControl.CheckTray();
 
-            CheckAutoRun();
+            GridNLogin.Visibility = Visibility.Visible;
             TitleBar.CloseActionOverride = CloseActionOverride;
-            //ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             MenuBoard.Visibility = Visibility.Hidden;
         }
 
+        SettingsControl settingsControl = new();
+        SettingMigration SettingMig = new();
         
-        SettingMigration SettingMig = new SettingMigration();
-        
-        private readonly NotificationManager _notificationManager = new NotificationManager();
-        public System.Windows.Threading.DispatcherTimer timer2 = new System.Windows.Threading.DispatcherTimer();
+        private readonly NotificationManager _notificationManager = new();
+        public System.Windows.Threading.DispatcherTimer timer2 = new();
 
-        const string name = "ElectroJournal";
+        
 
         private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             bool a;
-            a = CheckTray();
+            a = settingsControl.CheckTray();
 
             if (a)
             {
@@ -91,7 +91,7 @@ namespace ElectroJournal
             else if (!a)
             {
 
-                ContentDialogExample dialog = new ContentDialogExample();
+                ContentDialogExample dialog = new();
                 var result = await dialog.ShowAsync();
 
                 if (result == ContentDialogResult.Primary)
@@ -151,9 +151,9 @@ namespace ElectroJournal
         bool checkFiilScheduleDB = true;
         public bool animLabel = true;
 
-        List<string> ScheduleStart = new List<string>();
-        List<string> ScheduleEnd = new List<string>();
-        List<int> ScheduleNumber = new List<int>();
+        List<string> ScheduleStart = new();
+        List<string> ScheduleEnd = new();
+        List<int> ScheduleNumber = new();
 
         private async void SheduleCall(object sender, EventArgs e)
         {
@@ -217,14 +217,14 @@ namespace ElectroJournal
             ButtonLogin.IsEnabled = false;
             TextBoxLogin.IsEnabled = false;
             TextBoxPassword.IsEnabled = false;
-            DataBaseControls DbControls = new DataBaseControls();
+            DataBaseControls DbControls = new();
             string pass = DbControls.Hash(TextBoxPassword.Password);
 
             var anim = (Storyboard)FindResource("AnimLoadLogin");
             var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
 
 
-            using (zhirovContext db = new zhirovContext())
+            using (zhirovContext db = new())
             {
                 bool isAvalaible = await db.Database.CanConnectAsync();
                 if (isAvalaible)
@@ -380,16 +380,7 @@ namespace ElectroJournal
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
-        }
-
-        private void CompletionLogin()
-        {
-            string username = Properties.Settings.Default.UserName;
-            string password = Properties.Settings.Default.Password;
-
-            //TextBoxLogin.Text = username;
-           // TextBoxPassword.Password = password;
-        }
+        }        
 
         public void AnimLog(bool a)
         {
@@ -403,7 +394,7 @@ namespace ElectroJournal
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool a;
-            a = CheckTray();
+            a = settingsControl.CheckTray();
             e.Cancel = true;
 
             if (a)
@@ -482,53 +473,7 @@ namespace ElectroJournal
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
 
-        private bool CheckTray()
-        {
-            //bool a;
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //string collapsetotray = xmlDocument.GetElementsByTagName("collapsetotray")[0].InnerText;
-
-            bool tray = Properties.Settings.Default.Tray;
-
-            //a = bool.Parse(collapsetotray);
-
-            return tray;
-        }
-
-        public void CheckAutoRun()
-        {
-            //xmlDocument.Load("C:/projects/ElectroJournalNetFramework/ElectroJournal/Settings/Settings.xml");
-            //string autorun = xmlDocument.GetElementsByTagName("autorun")[0].InnerText;
-
-            bool autorun = Properties.Settings.Default.AutoRun;
-
-            if (autorun)
-            {
-                SetAutorunValue(true);
-            }
-            else SetAutorunValue(false);
-        }
-
-        public bool SetAutorunValue(bool autorun)
-        {
-            string ExePath = System.Windows.Forms.Application.ExecutablePath;
-            RegistryKey reg;
-            reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\");
-            try
-            {
-                if (autorun)
-                    reg.SetValue(name, ExePath);
-                else
-                    reg.DeleteValue(name);
-
-                reg.Close();
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
-        }
+        
 
         private void ImageForgotPassword_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -682,7 +627,7 @@ namespace ElectroJournal
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SettingMig.CheckStart();
-            CompletionLogin();
+            settingsControl.CompletionLogin();
             ThemeCheck();
 
         }
@@ -762,13 +707,13 @@ namespace ElectroJournal
 
         public void RefreshImage(string path)
         {
-            if (path != null)
+            if (!String.IsNullOrWhiteSpace(path))
             {
                 var stringPath = $@"{path}";
 
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CacheOption = BitmapCacheOption.Default;
                 bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
                 bitmapImage.EndInit();
                 PersonPicture.ProfilePicture = bitmapImage;

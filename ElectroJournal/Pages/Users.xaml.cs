@@ -24,6 +24,8 @@ using SFTPService;
 using Renci.SshNet;
 using System.Threading;
 using System.Drawing;
+using System.Drawing.Imaging;
+using Renci.SshNet.Async;
 
 namespace ElectroJournal.Pages
 {
@@ -40,9 +42,9 @@ namespace ElectroJournal.Pages
 
         private static string? path;
 
-
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            ProgressBar.Visibility = Visibility.Visible;
             using (zhirovContext db = new zhirovContext())
             {
                 Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
@@ -64,9 +66,8 @@ namespace ElectroJournal.Pages
                                 var fileStream = new FileStream($@"{path}", FileMode.Open);
 
                                 if (path != null)
-                                {
-                                    //client.DeleteFile($@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
-                                    client.UploadFile(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                {                                  
+                                    await client.UploadAsync(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
                                     client.Disconnect();
                                     client.Dispose();
                                     LoadData();
@@ -82,6 +83,7 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
+            ProgressBar.Visibility = Visibility.Hidden;
         }
 
         private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
@@ -128,6 +130,11 @@ namespace ElectroJournal.Pages
 
         public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e)
         {
+            SettingsControl sc = new();
+
+            ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
+            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";            
+            //sc.CompletionLogin();
             ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
             ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
@@ -147,7 +154,7 @@ namespace ElectroJournal.Pages
 
                 string FIO = teachers.TeachersSurname + " " + teachers.TeachersName + " " + teachers.TeachersPatronymic;
 
-                if (teachers.TeachersImage != null)
+                if (!String.IsNullOrWhiteSpace(teachers.TeachersImage))
                 {
                     var myImage = new System.Windows.Controls.Image();
 

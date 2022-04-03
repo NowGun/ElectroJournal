@@ -184,5 +184,17 @@ namespace ElectroJournal.Properties {
                 return ((string)(this["Version"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RememberData {
+            get {
+                return ((bool)(this["RememberData"]));
+            }
+            set {
+                this["RememberData"] = value;
+            }
+        }
     }
 }
