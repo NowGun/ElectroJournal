@@ -171,6 +171,17 @@ namespace ElectroJournal.Windows
             {
                 TextBoxPath.Text = myDialog.FileName;
                 path = myDialog.FileName;
+
+
+                /*var stringPath = $@"{teachers.TeachersImage}";
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                bitmapImage.EndInit();
+                Image.fback*/
             }
         }
     }

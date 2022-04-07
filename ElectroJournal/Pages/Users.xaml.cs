@@ -53,7 +53,7 @@ namespace ElectroJournal.Pages
                 {
                     teacher.TeachersPhone = TextBoxPhone.Text;
                     teacher.TeachersMail = TextBoxMail.Text;
-                    teacher.TeachersImage = $@"http://192.168.3.200/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}";
+                    teacher.TeachersImage = $@"http://193.33.230.80/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}";
                     await db.SaveChangesAsync();
 
                     try
@@ -133,9 +133,9 @@ namespace ElectroJournal.Pages
         {
             SettingsControl sc = new();
 
-            /*((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
-            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";*/            
-            //sc.CompletionLogin();
+            ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
+            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
+            sc.CompletionLogin();
             ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
             ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
@@ -149,6 +149,10 @@ namespace ElectroJournal.Pages
 
         private async void LoadData()
         {
+            var anim = (Storyboard)FindResource("AnimLoad");
+            var anim2 = (Storyboard)FindResource("AnimLoadComplete");
+            anim.Begin();
+
             using (zhirovContext db = new zhirovContext())
             {
                 var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
@@ -187,6 +191,7 @@ namespace ElectroJournal.Pages
 
                 ButtonSave.IsEnabled = false;
             }
+            anim2.Begin();
         }
 
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)

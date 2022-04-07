@@ -166,7 +166,7 @@
         <Grid
             x:Name="GridNLogin"
             Margin="0,48,0,0"
-            VerticalAlignment="Top">
+            VerticalAlignment="Top" d:IsHidden="True">
             <wpfui:Icon
                 x:Name="IconSetting2"
                 Margin="0,0,17,0"
@@ -212,6 +212,24 @@
                 Style="{DynamicResource WPFUIButtonStandard}" />
 
         </Grid>
+        <Label
+            x:Name="LabelScheduleCall"
+            Height="36"
+            Margin="245,6,435,0"
+            Padding="0,0,10,4"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
         <wpfui:TitleBar
             x:Name="TitleBar"
             Grid.Row="0"
@@ -323,25 +341,7 @@
             Margin="0,6,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
-            Visibility="Visible" d:IsHidden="True">
-            <Label
-            x:Name="LabelScheduleCall"
-            Height="36"
-            Margin="245,0,435,0"
-            Padding="0,0,10,4"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            RenderTransformOrigin="0.5,0.5">
-                <Label.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </Label.RenderTransform>
-            </Label>
+            Visibility="Visible">
             <wpfui:Icon
                 x:Name="RectangleBackToMenu"
                 Width="28"
@@ -413,8 +413,7 @@
                     <ui:NavigationViewItem
                         x:Name="NavigationViewItemAcademicYears"
                         Content="Учебные года"
-                        MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemAcademicYears_MouseLeftButtonUp" />
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
             <ui:NavigationView

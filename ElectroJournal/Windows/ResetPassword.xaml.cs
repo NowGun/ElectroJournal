@@ -49,32 +49,39 @@ namespace ElectroJournal.Windows
 
         private async void ButtonGridmailContinue_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxGridMailMail.IsEnabled = false;
-            TextBoxGridMailLogin.IsEnabled = false;
-            ButtonGridmailContinue.IsEnabled = false;
-            ButtonGridmailContinue.Content = "Проверка...";
-            if (a)
+            try
             {
-                if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
+                TextBoxGridMailMail.IsEnabled = false;
+                TextBoxGridMailLogin.IsEnabled = false;
+                ButtonGridmailContinue.IsEnabled = false;
+                ButtonGridmailContinue.Content = "Проверка...";
+                if (a)
                 {
-                    using (zhirovContext db = new())
+                    if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
                     {
-                        Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
-                        if (teacher != null)
+                        using (zhirovContext db = new())
                         {
-                            Properties.Settings.Default.UserID = (int)teacher.Idteachers;
-                            Properties.Settings.Default.Save();
-                            secretCode = await SendMail(TextBoxGridMailMail.Text);                            
+                            Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                            if (teacher != null)
+                            {
+                                Properties.Settings.Default.UserID = (int)teacher.Idteachers;
+                                Properties.Settings.Default.Save();
+                                secretCode = await SendMail(TextBoxGridMailMail.Text);
+                            }
+                            else Notifications("Логин или почта введены неверно", "Уведомление");
                         }
-                        else Notifications("Логин или почта введены неверно", "Уведомление");
                     }
+                    else Notifications("Заполните поля", "Уведомление");
                 }
-                else Notifications("Заполните поля", "Уведомление");
+                TextBoxGridMailMail.IsEnabled = true;
+                TextBoxGridMailLogin.IsEnabled = true;
+                ButtonGridmailContinue.IsEnabled = true;
+                ButtonGridmailContinue.Content = "Отправить код";
             }
-            TextBoxGridMailMail.IsEnabled = true;
-            TextBoxGridMailLogin.IsEnabled = true;
-            ButtonGridmailContinue.IsEnabled = true;
-            ButtonGridmailContinue.Content = "Отправить код";
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }            
         }
 
         private async Task<int> SendMail(string mail)
@@ -117,6 +124,9 @@ namespace ElectroJournal.Windows
 
         private async void ButtonGridMailRepeatCode_Click(object sender, RoutedEventArgs e)
         {
+            ButtonGridMailRepeatCode.IsEnabled = false;
+            ButtonGridMailRepeatCode.Content = "Отправка";
+
             if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
             {
                 using (zhirovContext db = new())
@@ -135,6 +145,9 @@ namespace ElectroJournal.Windows
                     else Notifications("Логин или почта введены неверно", "Уведомление");
                 }
             }
+
+            ButtonGridMailRepeatCode.IsEnabled = true;
+            ButtonGridMailRepeatCode.Content = "Отправить заново";
         }
 
         private async void ButtonSaveNewPassword_Click(object sender, RoutedEventArgs e)
@@ -235,10 +248,21 @@ namespace ElectroJournal.Windows
                     var anim = (Storyboard)FindResource("AnimBadCode");
                     anim.Begin();
                     Notifications("Введенный код неверен", "Ошибка");
+
+                    TextBoxCode1.Clear();
+                    TextBoxCode2.Clear();
+                    TextBoxCode3.Clear();
+                    TextBoxCode4.Clear();
+                    TextBoxCode5.Clear();
+                    TextBoxCode6.Clear();
+
+                    TextBoxCode1.Focus();
                 }
             }
             else
             {
+                if (tbc == 6) tbc = 1;
+
                 if (tbc == 1) TextBoxCode2.Focus();
                 else if (tbc == 2) TextBoxCode3.Focus();
                 else if (tbc == 3) TextBoxCode4.Focus();

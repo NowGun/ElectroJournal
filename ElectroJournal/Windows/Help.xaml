@@ -9,7 +9,7 @@
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
     Title="Баг-трекер"
     Width="1000"
-    Height="700"
+    Height="619"
     Loaded="Window_Loaded"
     ResizeMode="NoResize"
     Style="{DynamicResource UiWindowRounded}"
@@ -36,18 +36,24 @@
 
         <wpfui:Snackbar
                 x:Name="RootSnackbar"
-                Timeout="3000" Margin="24,0,220,24" FontSize="16" />
+                Timeout="3000" Margin="339,0,235,19" FontSize="16" />
 
-        <Grid Margin="40,48,40,25">
-            <RichTextBox x:Name="RRTBname" Margin="0,43,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="293" Width="900"/>
-            <Label Content="Опишите проблему" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
-            <Button x:Name="ButtonSend" Style="{DynamicResource WPFUIButtonAccent}" Content="Отправить" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="37" Width="157" FontSize="14" Click="ButtonSend_Click"/>
-            <Label Content="Добавить файл" HorizontalAlignment="Left" Margin="10,376,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
-            <TextBox x:Name="TextBoxPath" HorizontalAlignment="Left" Margin="49,418,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="616" Height="35"/>
-            <Button x:Name="ButtonBrowser" Style="{DynamicResource WPFUIButtonStandard}" Content="Обзор..." HorizontalAlignment="Left" Margin="670,418,0,0" VerticalAlignment="Top" Height="35" Width="115" FontSize="14" Click="ButtonBrowser_Click"/>
-            <Label Content="Путь" HorizontalAlignment="Left" Margin="10,423,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Normal"/>
+        <Grid Margin="305,48,40,19">
+            <RichTextBox x:Name="RRTBname" Margin="36,129,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="125" Width="600"/>
+            <Label Content="Опишите проблему" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
+            <Button x:Name="ButtonSend" Style="{DynamicResource WPFUIButtonAccent}" Content="Отправить" HorizontalAlignment="Right" Margin="0,0,19,10" VerticalAlignment="Bottom" Height="37" Width="157" FontSize="14" Click="ButtonSend_Click"/>
+            <Label Content="Добавить файл" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
+            <TextBox x:Name="TextBoxPath" HorizontalAlignment="Left" Margin="249,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Height="35"/>
+            <Button x:Name="ButtonBrowser" Style="{DynamicResource WPFUIButtonStandard}" Content="Обзор..." HorizontalAlignment="Left" Margin="561,322,0,0" VerticalAlignment="Top" Height="35" Width="75" FontSize="14" Click="ButtonBrowser_Click"/>
+            <Label Content="Путь" HorizontalAlignment="Left" Margin="210,327,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Normal"/>
             <ProgressBar x:Name="ProgressBarSend" Margin="27,0,188,23" IsIndeterminate="True" VerticalAlignment="Bottom" Visibility="Hidden" />
+            <Label Content="Заголовок" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
+            <TextBox HorizontalAlignment="Left" Margin="36,43,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="600"/>
+            <Rectangle HorizontalAlignment="Left" Height="150" Margin="36,309,0,0" Stroke="#FFCECECE" VerticalAlignment="Top" Width="150" StrokeThickness="1" RadiusX="8" RadiusY="8"/>
         </Grid>
+        <wpfui:SearchBox Placeholder="Поиск" Margin="20,53,730,515" Height="35" />
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,143,730,19"/>
+        <ComboBox HorizontalAlignment="Left" Margin="20,103,0,0" VerticalAlignment="Top" Width="250" Height="35"/>
 
     </Grid>
 </Window>

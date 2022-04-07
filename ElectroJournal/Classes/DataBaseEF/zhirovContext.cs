@@ -52,7 +52,8 @@ namespace ElectroJournal.DataBase
                 // Connection String.
                 String connString = "Server=" + server + ";Database=" + database + ";User Id=" + username + ";password=" + password;
 
-                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"));
+                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), builder => builder.EnableRetryOnFailure());
+                
             }
         }
 

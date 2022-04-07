@@ -46,7 +46,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Content="Версия 0.31 от 31.03.2022"
+                    Content="Версия 0.31.1 от 31.03.2022"
                     FontSize="14" />
                 <Label
                     Height="35"

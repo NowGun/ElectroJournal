@@ -9,240 +9,304 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Users"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <Storyboard x:Key="AnimLoad">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="10">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarTeachers" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimLoadComplete">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="10">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarTeachers" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
     <Grid>
-        <wpfui:Card Margin="40,20,40,385" VerticalAlignment="Top">
-            <Grid
-                Margin="-11,0,0,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <ui:PersonPicture
-                    x:Name="PersonPicture"
-                    Width="118"
-                    Height="127"
-                    Margin="38,19,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top" />
-                <Label
-                    x:Name="LabelChangePhoto"
-                    Margin="48,142,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Background="{x:Null}"
-                    Content="Изменить фото"
-                    Foreground="#FF046ED2"
-                    MouseLeave="LabelChangePhoto_MouseLeave"
-                    MouseLeftButtonUp="LabelChangePhoto_MouseLeftButtonUp"
-                    MouseMove="LabelChangePhoto_MouseMove" FontSize="14" />
-                <Label
-                    x:Name="LabelIDUser"
-                    Width="37"
-                    Height="20"
-                    Margin="178,109,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="id: 0"
-                    FontSize="14" />
-                <TextBlock
-                    x:Name="TextBlockFIO1"
-                    Width="270"
-                    Height="75"
-                    Margin="178,36,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    FontSize="20"
-                    FontWeight="Normal"
-                    Text="Фамилия И. О."
-                    TextWrapping="Wrap"
-                    Visibility="Hidden" />
-                <Button
-                    x:Name="ButtonLogoutUser"
-                    Width="132"
-                    Height="30"
-                    Margin="0,17,24,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    x:FieldModifier="public"
-                    Click="ButtonLogoutUser_Click"
-                    Content="Выйти из аккаунта "
-                    Style="{StaticResource WPFUIButtonStandard}" />
-                <Label
-                    x:Name="TextBlockFIO"
-                    Width="310"
-                    Height="71"
-                    Margin="178,29,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="Фамилия И. О."
-                    FontSize="20" />
-                <Label
-                    x:Name="LabelDeletePhoto"
-                    Margin="54,167,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Content="Удалить фото"
-                    Foreground="#FFDA2222"
-                    MouseLeave="LabelChangePhoto_MouseLeave"
-                    MouseLeftButtonUp="LabelDeletePhoto_MouseLeftButtonUp"
-                    MouseMove="LabelChangePhoto_MouseMove" FontSize="14" />
-            </Grid>
+        <Grid x:Name="grid">
+            <Grid.Effect>
+                <BlurEffect KernelType="Gaussian" Radius="0" />
+            </Grid.Effect>
 
-        </wpfui:Card>
+            <wpfui:Card Margin="40,20,40,385" VerticalAlignment="Top">
+                <Grid
+                    Margin="-11,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <ui:PersonPicture
+                        x:Name="PersonPicture"
+                        Width="118"
+                        Height="127"
+                        Margin="38,19,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top" />
+                    <Label
+                        x:Name="LabelChangePhoto"
+                        Margin="48,142,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="{x:Null}"
+                        Content="Изменить фото"
+                        FontSize="14"
+                        Foreground="#FF046ED2"
+                        MouseLeave="LabelChangePhoto_MouseLeave"
+                        MouseLeftButtonUp="LabelChangePhoto_MouseLeftButtonUp"
+                        MouseMove="LabelChangePhoto_MouseMove" />
+                    <Label
+                        x:Name="LabelIDUser"
+                        Width="37"
+                        Height="20"
+                        Margin="178,109,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="id: 0"
+                        FontSize="14" />
+                    <TextBlock
+                        x:Name="TextBlockFIO1"
+                        Width="270"
+                        Height="75"
+                        Margin="178,36,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontSize="20"
+                        FontWeight="Normal"
+                        Text="Фамилия И. О."
+                        TextWrapping="Wrap"
+                        Visibility="Hidden" />
+                    <Button
+                        x:Name="ButtonLogoutUser"
+                        Width="132"
+                        Height="30"
+                        Margin="0,17,24,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        x:FieldModifier="public"
+                        Click="ButtonLogoutUser_Click"
+                        Content="Выйти из аккаунта "
+                        Style="{StaticResource WPFUIButtonStandard}" />
+                    <Label
+                        x:Name="TextBlockFIO"
+                        Width="310"
+                        Height="71"
+                        Margin="178,29,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Фамилия И. О."
+                        FontSize="20" />
+                    <Label
+                        x:Name="LabelDeletePhoto"
+                        Margin="54,167,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="Удалить фото"
+                        FontSize="14"
+                        Foreground="#FFDA2222"
+                        MouseLeave="LabelChangePhoto_MouseLeave"
+                        MouseLeftButtonUp="LabelDeletePhoto_MouseLeftButtonUp"
+                        MouseMove="LabelChangePhoto_MouseMove" />
+                </Grid>
 
-        <wpfui:Card Margin="40,260,40,45" VerticalAlignment="Stretch">
-            <Grid
-                Margin="-10,0,0,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <Label
-                    Width="100"
-                    Height="35"
-                    Margin="57,66,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Телефон:"
-                    FontSize="16" />
-                <TextBox
-                    x:Name="TextBoxPhone"
-                    Width="185"
-                    Height="36"
-                    Margin="157,66,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    PreviewTextInput="TextBoxPhone_PreviewTextInput"
-                    Text="89999999999"
-                    TextWrapping="Wrap" />
-                <Label
-                    Width="100"
-                    Height="35"
-                    Margin="57,127,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Почта:"
-                    FontSize="16" />
-                <TextBox
-                    x:Name="TextBoxMail"
-                    Width="185"
-                    Height="35"
-                    Margin="157,127,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    PreviewTextInput="TextBoxMail_PreviewTextInput"
-                    Text="pochta@gmail.com"
-                    TextWrapping="Wrap" />
-                <Label
-                    Width="100"
-                    Height="35"
-                    Margin="457,66,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Кабинет:"
-                    FontSize="16" />
-                <Label
-                    Width="100"
-                    Height="35"
-                    Margin="457,127,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Группа:"
-                    FontSize="16" />
-                <TextBox
-                    x:Name="TextBoxGroup"
-                    Width="185"
-                    Height="35"
-                    Margin="557,127,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    IsReadOnly="True"
-                    Text="ПКС 4"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    x:Name="TextBoxCabinet"
-                    Width="185"
-                    Height="35"
-                    Margin="557,66,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    IsReadOnly="True"
-                    Text="45"
-                    TextWrapping="Wrap" />
-                <Label
-                    Width="100"
-                    Height="35"
-                    Margin="457,187,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Пароль:"
-                    FontSize="16" />
-                <PasswordBox
-                    x:Name="PasswordBoxPassword"
-                    Width="185"
-                    Height="35"
-                    Margin="557,187,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    IsEnabled="False"
-                    Password="**************" />
-                <Button
-                    x:Name="ButtonResetPassword"
-                    Width="185"
-                    Height="25"
-                    Margin="557,227,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Click="ButtonResetPassword_Click"
-                    Content="Сменить пароль"
-                    Style="{StaticResource WPFUIButtonStandard}" />
-                <ProgressBar
-                    x:Name="ProgressBar"
-                    Foreground="#FF3567BC"
-                    IsIndeterminate="True"
-                    Style="{StaticResource MaterialDesignCircularProgressBar}" Margin="0,0,148,7" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Hidden" />
-                <Button
-                    x:Name="ButtonSave"
-                    Width="120"
-                    Height="35"
-                    Margin="0,0,23,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Click="ButtonSave_Click"
-                    Content="Сохранить"
-                    FontSize="14"
-                    IsEnabled="False"
-                    Style="{StaticResource WPFUIButtonAccent}" />
-                <Label
-                    Width="247.368"
-                    Height="40"
-                    Margin="37,19,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Контактная информация"
-                    FontFamily="Segoe UI"
-                    FontSize="18"
-                    FontWeight="Normal" />
-                <Label
-                    Width="240"
-                    Height="40"
-                    Margin="437,19,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="Основная информация"
-                    FontFamily="Segoe UI"
-                    FontSize="18"
-                    FontWeight="Normal" />
-            </Grid>
+            </wpfui:Card>
 
-        </wpfui:Card>
+            <wpfui:Card Margin="40,260,40,45" VerticalAlignment="Stretch">
+                <Grid
+                    Margin="-10,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <Label
+                        Width="100"
+                        Height="35"
+                        Margin="57,66,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        Content="Телефон:"
+                        FontSize="16" />
+                    <TextBox
+                        x:Name="TextBoxPhone"
+                        Width="185"
+                        Height="36"
+                        Margin="157,66,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        PreviewTextInput="TextBoxPhone_PreviewTextInput"
+                        Text="89999999999"
+                        TextWrapping="Wrap" />
+                    <Label
+                        Width="100"
+                        Height="35"
+                        Margin="57,127,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        Content="Почта:"
+                        FontSize="16" />
+                    <TextBox
+                        x:Name="TextBoxMail"
+                        Width="185"
+                        Height="35"
+                        Margin="157,127,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        PreviewTextInput="TextBoxMail_PreviewTextInput"
+                        Text="pochta@gmail.com"
+                        TextWrapping="Wrap" />
+                    <Label
+                        Width="100"
+                        Height="35"
+                        Margin="457,66,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        Content="Кабинет:"
+                        FontSize="16" />
+                    <Label
+                        Width="100"
+                        Height="35"
+                        Margin="457,127,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        Content="Группа:"
+                        FontSize="16" />
+                    <TextBox
+                        x:Name="TextBoxGroup"
+                        Width="185"
+                        Height="35"
+                        Margin="557,127,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        Text="ПКС 4"
+                        TextWrapping="Wrap" />
+                    <TextBox
+                        x:Name="TextBoxCabinet"
+                        Width="185"
+                        Height="35"
+                        Margin="557,66,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsReadOnly="True"
+                        Text="45"
+                        TextWrapping="Wrap" />
+                    <Label
+                        Width="100"
+                        Height="35"
+                        Margin="457,187,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        Content="Пароль:"
+                        FontSize="16" />
+                    <PasswordBox
+                        x:Name="PasswordBoxPassword"
+                        Width="185"
+                        Height="35"
+                        Margin="557,187,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        IsEnabled="False"
+                        Password="**************" />
+                    <Button
+                        x:Name="ButtonResetPassword"
+                        Width="185"
+                        Height="25"
+                        Margin="557,227,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="ButtonResetPassword_Click"
+                        Content="Сменить пароль"
+                        Style="{StaticResource WPFUIButtonStandard}" />
+                    <ProgressBar
+                        x:Name="ProgressBar"
+                        Margin="0,0,148,7"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Foreground="#FF3567BC"
+                        IsIndeterminate="True"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Visibility="Hidden" />
+                    <Button
+                        x:Name="ButtonSave"
+                        Width="120"
+                        Height="35"
+                        Margin="0,0,23,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Click="ButtonSave_Click"
+                        Content="Сохранить"
+                        FontSize="14"
+                        IsEnabled="False"
+                        Style="{StaticResource WPFUIButtonAccent}" />
+                    <Label
+                        Width="247.368"
+                        Height="40"
+                        Margin="37,19,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        Content="Контактная информация"
+                        FontFamily="Segoe UI"
+                        FontSize="18"
+                        FontWeight="Normal" />
+                    <Label
+                        Width="240"
+                        Height="40"
+                        Margin="437,19,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Основная информация"
+                        FontFamily="Segoe UI"
+                        FontSize="18"
+                        FontWeight="Normal" />
+                </Grid>
+
+            </wpfui:Card>
+        </Grid>
+        <ProgressBar
+            x:Name="ProgressBarTeachers"
+            Margin="426,300,426,300"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Foreground="#FF3567BC"
+            IsIndeterminate="True"
+            Style="{StaticResource MaterialDesignCircularProgressBar}"
+            Visibility="Visible" />
     </Grid>
 </Page>

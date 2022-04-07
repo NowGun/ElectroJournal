@@ -178,7 +178,7 @@ namespace ElectroJournal.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.31")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.31.1")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -194,6 +194,18 @@ namespace ElectroJournal.Properties {
             }
             set {
                 this["RememberData"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PassProfile {
+            get {
+                return ((string)(this["PassProfile"]));
+            }
+            set {
+                this["PassProfile"] = value;
             }
         }
     }

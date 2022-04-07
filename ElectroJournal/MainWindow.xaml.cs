@@ -214,69 +214,82 @@ namespace ElectroJournal
 
         private async void Login()
         {
-            ButtonLogin.IsEnabled = false;
-            TextBoxLogin.IsEnabled = false;
-            TextBoxPassword.IsEnabled = false;
-            DataBaseControls DbControls = new();
-            string pass = DbControls.Hash(TextBoxPassword.Password);
-
-            var anim = (Storyboard)FindResource("AnimLoadLogin");
-            var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
-
-
-            using (zhirovContext db = new())
+            try
             {
-                bool isAvalaible = await db.Database.CanConnectAsync();
-                if (isAvalaible)
+                ButtonLogin.IsEnabled = false;
+                TextBoxLogin.IsEnabled = false;
+                TextBoxPassword.IsEnabled = false;
+                DataBaseControls DbControls = new();
+                string pass = DbControls.Hash(TextBoxPassword.Password);
+
+                var anim = (Storyboard)FindResource("AnimLoadLogin");
+                var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
+
+
+                using (zhirovContext db = new())
                 {
-                    if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
+                    bool isAvalaible = await db.Database.CanConnectAsync();
+                    if (isAvalaible)
                     {
-                        var login = await db.Teachers.Where(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == pass).ToListAsync();
-
-                        if (login.Count != 0)
+                        if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
                         {
-                            foreach (var l in login)
+                            var login = await db.Teachers.Where(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == pass).ToListAsync();
+
+                            if (login.Count != 0)
                             {
-                                TextBlockTeacher.Content = $"{l.TeachersName} {l.TeachersSurname}";
-                                
-                                RefreshImage(l.TeachersImage);
-
-                                switch (l.TeachersAccesAdminPanel)
+                                foreach (var l in login)
                                 {
-                                    case "True":
-                                        NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
-                                        break;
+                                    TextBlockTeacher.Content = $"{l.TeachersName} {l.TeachersSurname}";
 
-                                    case "False":
-                                        NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
-                                        break;
+                                    RefreshImage(l.TeachersImage);
+
+                                    switch (l.TeachersAccesAdminPanel)
+                                    {
+                                        case "True":
+                                            NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
+                                            break;
+
+                                        case "False":
+                                            NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
+                                            break;
+                                    }
+
+                                    Properties.Settings.Default.UserID = (int)l.Idteachers;
+                                    Properties.Settings.Default.Login = TextBoxLogin.Text;
+                                    Properties.Settings.Default.PassProfile = TextBoxPassword.Password;
+
+                                    Properties.Settings.Default.Save();
+
+                                    NavViewMenu.Visibility = Visibility.Visible;
+                                    NavViewMenuAdmin.Visibility = Visibility.Hidden;
+                                    RectangleBackToMenu.Visibility = Visibility.Hidden;
+
+                                    FillComboBoxGroups();
+                                    //ComboBoxGroup.SelectedIndex = 0;
+                                    Frame.Navigate(new Pages.Journal());
+                                    //Notifications("Оповещение", "Авторизация прошла успешно");
+
+                                    timer2.Tick += new EventHandler(SheduleCall);
+                                    timer2.Interval = new TimeSpan(0, 0, 1);
+                                    timer2.Start();
+
+                                    GridNLogin.Visibility = Visibility.Hidden;
+                                    GridLogin.Visibility = Visibility.Hidden;
+                                    anim3.Begin();
+                                    GridMenu.Visibility = Visibility.Visible;
+                                    Frame.Visibility = Visibility.Visible;
+                                    NavigationViewItemJournal.IsSelected = true;
+
+                                    anim.Stop();
+                                    RectangleLoadLogin.Visibility = Visibility.Hidden;
+                                    TextBoxLogin.IsEnabled = true;
+                                    TextBoxPassword.IsEnabled = true;
+                                    ButtonLogin.IsEnabled = true;
                                 }
-
-                                Properties.Settings.Default.UserID = (int)l.Idteachers;
-                                Properties.Settings.Default.Login = TextBoxLogin.Text;
-
-                                Properties.Settings.Default.Save();
-
-                                NavViewMenu.Visibility = Visibility.Visible;
-                                NavViewMenuAdmin.Visibility = Visibility.Hidden;
-                                RectangleBackToMenu.Visibility = Visibility.Hidden;
-
-                                FillComboBoxGroups();
-                                //ComboBoxGroup.SelectedIndex = 0;
-                                Frame.Navigate(new Pages.Journal());
-                                //Notifications("Оповещение", "Авторизация прошла успешно");
-
-                                timer2.Tick += new EventHandler(SheduleCall);
-                                timer2.Interval = new TimeSpan(0, 0, 1);
-                                timer2.Start();
-                                
-                                GridNLogin.Visibility = Visibility.Hidden;
-                                GridLogin.Visibility = Visibility.Hidden;
-                                anim3.Begin();
-                                GridMenu.Visibility = Visibility.Visible;
-                                Frame.Visibility = Visibility.Visible;
-                                NavigationViewItemJournal.IsSelected = true;
-
+                            }
+                            else
+                            {
+                                Notifications("Ошибка", "Логин или пароль введен неверно");
                                 anim.Stop();
                                 RectangleLoadLogin.Visibility = Visibility.Hidden;
                                 TextBoxLogin.IsEnabled = true;
@@ -286,38 +299,31 @@ namespace ElectroJournal
                         }
                         else
                         {
-                            Notifications("Ошибка", "Логин или пароль введен неверно");
+                            Notifications("Ошибка", "Заполните поле");
                             anim.Stop();
                             RectangleLoadLogin.Visibility = Visibility.Hidden;
                             TextBoxLogin.IsEnabled = true;
                             TextBoxPassword.IsEnabled = true;
                             ButtonLogin.IsEnabled = true;
-                        }                        
+                        }
                     }
                     else
                     {
-                        Notifications("Ошибка", "Заполните поле");
                         anim.Stop();
                         RectangleLoadLogin.Visibility = Visibility.Hidden;
                         TextBoxLogin.IsEnabled = true;
                         TextBoxPassword.IsEnabled = true;
                         ButtonLogin.IsEnabled = true;
+                        Notifications("Ошибка", "База данных недоступна");
                     }
-                }
-                else
-                {
-                    anim.Stop();
-                    RectangleLoadLogin.Visibility = Visibility.Hidden;
-                    TextBoxLogin.IsEnabled = true;
-                    TextBoxPassword.IsEnabled = true;
-                    ButtonLogin.IsEnabled = true;
-                    Notifications("Ошибка", "База данных недоступна");
                 }
             }
 
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
             //command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = PBKDF2HashHelper.VerifyPassword(TextBoxPassword.Password, (string)command.ExecuteScalar());
-                       
-            
         }
 
 
@@ -607,7 +613,7 @@ namespace ElectroJournal
 
         private void NavigationViewItemScheduleAdmin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Frame.Navigate(new Pages.AdminPanel.AcademicYears());
+            Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
         }
 
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
@@ -631,7 +637,7 @@ namespace ElectroJournal
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SettingMig.CheckStart();
-            //settingsControl.CompletionLogin();
+            settingsControl.CompletionLogin();
             ThemeCheck();
 
         }
@@ -706,7 +712,7 @@ namespace ElectroJournal
             }
             catch (Exception ex)
             {
-                Notifications("Уведомление", "Невозможно подключиться к базе данных" + ex);
+                Notifications("Уведомление", "Проверка обновления неудачная");
             }
                
         }
@@ -737,6 +743,11 @@ namespace ElectroJournal
                 PersonPicture.ProfilePicture = null;
                 PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
             }
+        }
+
+        private void NavigationViewItemAcademicYears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Frame.Navigate(new Pages.AdminPanel.AcademicYears());
         }
     }
 }

@@ -77,11 +77,8 @@ namespace ElectroJournal.Classes
         {
             if (Properties.Settings.Default.RememberData)
             {
-                string username = Properties.Settings.Default.UserName;
-                string password = Properties.Settings.Default.Password;
-
-                ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = username;
-                ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = password;
+                ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = Properties.Settings.Default.Login;
+                ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = Properties.Settings.Default.PassProfile;
             }
         }
     }
