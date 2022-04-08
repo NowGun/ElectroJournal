@@ -35,12 +35,11 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             InitializeComponent();
 
-            ListViewTeachersRefresh();
+            ComboBoxSortingTeacher.SelectedIndex = 0;
+            //ListViewTeachersRefresh();
             //TextBoxTeachersPassword.Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(16);
 
-        }
-
-        
+        }        
 
         List<int> idTeachers = new List<int>();
 

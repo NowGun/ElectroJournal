@@ -52,7 +52,6 @@ namespace ElectroJournal
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
-
             
             settingsControl.CheckAutoRun();
             settingsControl.CheckTray();
@@ -257,6 +256,7 @@ namespace ElectroJournal
                                     Properties.Settings.Default.UserID = (int)l.Idteachers;
                                     Properties.Settings.Default.Login = TextBoxLogin.Text;
                                     Properties.Settings.Default.PassProfile = TextBoxPassword.Password;
+                                    Properties.Settings.Default.FirstName = l.TeachersName;
 
                                     Properties.Settings.Default.Save();
 

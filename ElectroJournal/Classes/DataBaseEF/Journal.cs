@@ -13,9 +13,11 @@ namespace ElectroJournal.DataBase
         public uint TeachersIdteachers { get; set; }
         public DateTime? JournalDate { get; set; }
         public int? JournalScore { get; set; }
+        public uint StudyperiodIdstudyperiod { get; set; }
 
         public virtual Discipline DisciplinesIddisciplinesNavigation { get; set; }
         public virtual Student StudentsIdstudentsNavigation { get; set; }
+        public virtual Studyperiod StudyperiodIdstudyperiodNavigation { get; set; }
         public virtual Teacher TeachersIdteachersNavigation { get; set; }
     }
 }

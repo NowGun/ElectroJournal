@@ -11,15 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Net.Mail;
 using ElectroJournal.Classes;
 using ElectroJournal.Pages;
-using MySql.Data.MySqlClient;
 using System.Net;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace ElectroJournal.Windows
 {
@@ -89,8 +89,34 @@ namespace ElectroJournal.Windows
             Random random = new Random();
             int secretCode = random.Next(100000, 999999);
 
-            // отправитель - устанавливаем адрес и отображаемое в письме имя
-            MailAddress from = new MailAddress("help@techno-review.ru", "Восстановление пароля");
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Joey Tribbiani", "code@electrojournal.ru"));
+            message.To.Add(new MailboxAddress("Mrs. Chanandler Bong", "zhirowdaniil@gmail.com"));
+            message.Subject = "How you doin'?";
+
+            message.Body = new TextPart("plain")
+            {
+                Text = @"Hey Chandler,
+
+I just wanted to let you know that Monica and I were going to go play some paintball, you in?
+
+-- Joey"
+            };
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("electrojournal.ru", 25, false);
+
+                // Note: only needed if the SMTP server requires authentication
+                //client.Authenticate("root", "");
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
+
+            /*// отправитель - устанавливаем адрес и отображаемое в письме имя
+            MailAddress from = new MailAddress("root@daniil-server.org", "Восстановление пароля");
             // кому отправляем
             MailAddress to = new MailAddress(mail);
             // создаем объект сообщения
@@ -100,9 +126,9 @@ namespace ElectroJournal.Windows
             // текст письма
             m.Body = "Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: " + secretCode + "\n\n\n\n\n\n\n";
             // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("smtp.beget.com", 2525);
+            SmtpClient smtp = new SmtpClient("daniil-server", 25);
             // логин и пароль
-            smtp.Credentials = new NetworkCredential("help@techno-review.ru", "64580082Now");
+            smtp.Credentials = new NetworkCredential("root", "64580082");
             smtp.EnableSsl = true;
 
             try
@@ -117,7 +143,7 @@ namespace ElectroJournal.Windows
             catch (SmtpException)
             {
                 Notifications("Почтовый сервис недоступен", "Ошибка");
-            }
+            }*/
 
             return secretCode;
         }

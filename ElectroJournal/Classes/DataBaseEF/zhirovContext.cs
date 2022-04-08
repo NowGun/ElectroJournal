@@ -19,6 +19,7 @@ namespace ElectroJournal.DataBase
 
         public virtual DbSet<Basistraining> Basistrainings { get; set; }
         public virtual DbSet<Cabinet> Cabinets { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Date> Dates { get; set; }
         public virtual DbSet<Discipline> Disciplines { get; set; }
@@ -31,6 +32,7 @@ namespace ElectroJournal.DataBase
         public virtual DbSet<Requestcabinet> Requestcabinets { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Studyperiod> Studyperiods { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<TeachersHasGroup> TeachersHasGroups { get; set; }
         public virtual DbSet<Typeclass> Typeclasses { get; set; }
@@ -53,7 +55,7 @@ namespace ElectroJournal.DataBase
                 String connString = "Server=" + server + ";Database=" + database + ";User Id=" + username + ";password=" + password;
 
                 optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), builder => builder.EnableRetryOnFailure());
-                
+
             }
         }
 
@@ -127,6 +129,49 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.HousingIdhousing)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_cabinet_housing");
+            });
+
+            modelBuilder.Entity<Chat>(entity =>
+            {
+                entity.HasKey(e => e.Idchat)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("chat");
+
+                entity.HasIndex(e => e.TeachersFrom, "fk_chat_teachers1_idx");
+
+                entity.HasIndex(e => e.TeachersTo, "fk_chat_teachers2_idx");
+
+                entity.HasIndex(e => e.Idchat, "idchat_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Idchat).HasColumnName("idchat");
+
+                entity.Property(e => e.ChatDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("chat_date")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.ChatText)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("chat_text");
+
+                entity.Property(e => e.TeachersFrom).HasColumnName("teachers_from");
+
+                entity.Property(e => e.TeachersTo).HasColumnName("teachers_to");
+
+                entity.HasOne(d => d.TeachersFromNavigation)
+                    .WithMany(p => p.ChatTeachersFromNavigations)
+                    .HasForeignKey(d => d.TeachersFrom)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_chat_teachers1");
+
+                entity.HasOne(d => d.TeachersToNavigation)
+                    .WithMany(p => p.ChatTeachersToNavigations)
+                    .HasForeignKey(d => d.TeachersTo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_chat_teachers2");
             });
 
             modelBuilder.Entity<Course>(entity =>
@@ -345,6 +390,8 @@ namespace ElectroJournal.DataBase
 
                 entity.HasIndex(e => e.StudentsIdstudents, "fk_journal_students1_idx");
 
+                entity.HasIndex(e => e.StudyperiodIdstudyperiod, "fk_journal_studyperiod1_idx");
+
                 entity.HasIndex(e => e.TeachersIdteachers, "fk_journal_teachers1_idx");
 
                 entity.HasIndex(e => e.Idjournal, "idjournal_UNIQUE")
@@ -362,6 +409,8 @@ namespace ElectroJournal.DataBase
 
                 entity.Property(e => e.StudentsIdstudents).HasColumnName("students_idstudents");
 
+                entity.Property(e => e.StudyperiodIdstudyperiod).HasColumnName("studyperiod_idstudyperiod");
+
                 entity.Property(e => e.TeachersIdteachers).HasColumnName("teachers_idteachers");
 
                 entity.HasOne(d => d.DisciplinesIddisciplinesNavigation)
@@ -375,6 +424,12 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.StudentsIdstudents)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_journal_students1");
+
+                entity.HasOne(d => d.StudyperiodIdstudyperiodNavigation)
+                    .WithMany(p => p.Journals)
+                    .HasForeignKey(d => d.StudyperiodIdstudyperiod)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_journal_studyperiod1");
 
                 entity.HasOne(d => d.TeachersIdteachersNavigation)
                     .WithMany(p => p.Journals)
@@ -629,6 +684,24 @@ namespace ElectroJournal.DataBase
                     .HasColumnName("students_surname");
             });
 
+            modelBuilder.Entity<Studyperiod>(entity =>
+            {
+                entity.HasKey(e => e.Idstudyperiod)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("studyperiod");
+
+                entity.HasIndex(e => e.Idstudyperiod, "idstudyperiod_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Idstudyperiod).HasColumnName("idstudyperiod");
+
+                entity.Property(e => e.StudyperiodStart)
+                    .IsRequired()
+                    .HasMaxLength(45)
+                    .HasColumnName("studyperiod_start");
+            });
+
             modelBuilder.Entity<Teacher>(entity =>
             {
                 entity.HasKey(e => e.Idteachers)
@@ -637,6 +710,9 @@ namespace ElectroJournal.DataBase
                 entity.ToTable("teachers");
 
                 entity.HasIndex(e => e.Idteachers, "idteachers_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.TeachersLogin, "teachers_login_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Idteachers).HasColumnName("idteachers");

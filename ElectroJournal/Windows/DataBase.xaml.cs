@@ -49,6 +49,7 @@ namespace ElectroJournal.Windows
                 Properties.Settings.Default.Save();
 
                 ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные изменены");
+                ((MainWindow)Application.Current.MainWindow).ThemeCheck();
                 this.Close();
             }
             else ((MainWindow)Application.Current.MainWindow).Notifications("Уведомление", "Заполните все поля");

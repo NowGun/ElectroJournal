@@ -26,6 +26,9 @@ using System.Threading;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Renci.SshNet.Async;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace ElectroJournal.Pages
 {
@@ -37,10 +40,20 @@ namespace ElectroJournal.Pages
         public Users()
         {
             InitializeComponent();
+            CardUser.Visibility = Visibility.Hidden;
             LoadData();
+            ListViewTeachersRefresh();
+
+            ListViewTeachers.SelectedIndex = 0;
         }
 
+        List<int> idTeachers = new List<int>();
+
         private static string? path;
+
+        public System.Windows.Threading.DispatcherTimer timer2 = new();
+
+        private string firstname;
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
@@ -149,49 +162,57 @@ namespace ElectroJournal.Pages
 
         private async void LoadData()
         {
-            var anim = (Storyboard)FindResource("AnimLoad");
-            var anim2 = (Storyboard)FindResource("AnimLoadComplete");
-            anim.Begin();
-
-            using (zhirovContext db = new zhirovContext())
+            try
             {
-                var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
+                var anim = (Storyboard)FindResource("AnimLoad");
+                var anim2 = (Storyboard)FindResource("AnimLoadComplete");
+                anim.Begin();
 
-                string FIO = teachers.TeachersSurname + " " + teachers.TeachersName + " " + teachers.TeachersPatronymic;
-
-                if (!String.IsNullOrWhiteSpace(teachers.TeachersImage))
+                using (zhirovContext db = new zhirovContext())
                 {
-                    LabelDeletePhoto.Visibility = Visibility.Visible;
-                    var myImage = new System.Windows.Controls.Image();
+                    var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
 
-                    var stringPath = $@"{teachers.TeachersImage}";
+                    string FIO = teachers.TeachersSurname + " " + teachers.TeachersName + " " + teachers.TeachersPatronymic;
 
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                    bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                    bitmapImage.EndInit();
-                    PersonPicture.ProfilePicture = bitmapImage;
+                    if (!String.IsNullOrWhiteSpace(teachers.TeachersImage))
+                    {
+                        LabelDeletePhoto.Visibility = Visibility.Visible;
+                        var myImage = new System.Windows.Controls.Image();
 
-                    ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
+                        var stringPath = $@"{teachers.TeachersImage}";
+
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                        bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                        bitmapImage.EndInit();
+                        PersonPicture.ProfilePicture = bitmapImage;
+
+                        ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
+                    }
+                    else
+                    {
+                        LabelDeletePhoto.Visibility = Visibility.Hidden;
+                        PersonPicture.ProfilePicture = null;
+                        PersonPicture.DisplayName = $"{teachers.TeachersName} {teachers.TeachersSurname}";
+                    }
+
+                    TextBlockFIO.Content = FIO;
+                    PasswordBoxPassword.Password = teachers.TeachersPassword;
+                    LabelIDUser.Content = "Id: " + teachers.Idteachers;
+                    TextBoxPhone.Text = teachers.TeachersPhone;
+                    TextBoxMail.Text = teachers.TeachersMail;
+
+                    ButtonSave.IsEnabled = false;
                 }
-                else
-                {
-                    LabelDeletePhoto.Visibility = Visibility.Hidden;
-                    PersonPicture.ProfilePicture = null;
-                    PersonPicture.DisplayName = $"{teachers.TeachersName} {teachers.TeachersSurname}";
-                }
-
-                TextBlockFIO.Content = FIO;
-                PasswordBoxPassword.Password = teachers.TeachersPassword;
-                LabelIDUser.Content = "Id: " + teachers.Idteachers;
-                TextBoxPhone.Text = teachers.TeachersPhone;
-                TextBoxMail.Text = teachers.TeachersMail;
-
-                ButtonSave.IsEnabled = false;
+                anim2.Begin();
             }
-            anim2.Begin();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -245,5 +266,266 @@ namespace ElectroJournal.Pages
             }
             LabelDeletePhoto.Visibility = Visibility.Hidden;
         }
+
+
+        private async void ListViewTeachersRefresh()
+        {
+            try
+            {
+                ListViewTeachers.Items.Clear();
+                idTeachers.Clear();
+                ObservableCollection<UsersListBox> co1 = new ObservableCollection<UsersListBox>();
+
+                co1.Add(new UsersListBox
+                {
+                    textFIO = $"Моя страница"
+                });
+
+                using (zhirovContext db = new zhirovContext())
+                {
+                    await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
+                    {
+                        if (!String.IsNullOrWhiteSpace(t.TeachersImage))
+                        {
+                            var myImage = new System.Windows.Controls.Image();
+
+                            var stringPath = $@"{t.TeachersImage}";
+
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                            bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                            bitmapImage.EndInit();
+
+                            co1.Add(new UsersListBox
+                            {
+
+                                image = bitmapImage,
+                                textFIO = $"{t.TeachersSurname} {t.TeachersName}"
+                            });
+                        }
+                        else
+                        {
+                            co1.Add(new UsersListBox
+                            {
+
+                                imageDN = $"{t.TeachersSurname} {t.TeachersName}",
+                                textFIO = $"{t.TeachersSurname} {t.TeachersName}"
+                            });
+                        }
+
+                        idTeachers.Add((int)t.Idteachers);
+                        ListViewTeachers.ItemsSource = co1;
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+        }
+
+        private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (ListViewTeachers.SelectedItem != null)
+                {
+                    if (ListViewTeachers.SelectedIndex != 0)
+                    {
+                        CardUser.Visibility = Visibility.Visible;
+                        grid.Visibility = Visibility.Hidden;
+
+                        using (zhirovContext db = new zhirovContext())
+                        {
+                            var teachers = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
+
+                            foreach (var t in teachers)
+                            {
+                                TextBlockName.Content = t.TeachersSurname + " " + t.TeachersName;
+
+                                if (!String.IsNullOrWhiteSpace(t.TeachersImage))
+                                {
+                                    var myImage = new System.Windows.Controls.Image();
+                                    var stringPath = $@"{t.TeachersImage}";
+
+                                    firstname = t.TeachersName;
+                                    timer2.Tick += new EventHandler(ListBoxMessageRefresh);
+                                    timer2.Interval = new TimeSpan(0, 0, 1);
+                                    timer2.Start();
+
+                                    BitmapImage bitmapImage = new BitmapImage();
+                                    bitmapImage.BeginInit();
+                                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                                    bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                                    bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                                    bitmapImage.EndInit();
+                                    PersonPictureUser.ProfilePicture = bitmapImage;
+                                }
+                                else
+                                {
+                                    PersonPictureUser.ProfilePicture = null;
+                                    PersonPictureUser.DisplayName = $"{t.TeachersName} {t.TeachersSurname}";
+                                }
+                                ListBoxMessageRefresh2();
+                            }
+                        }
+                    }
+                    else if (ListViewTeachers.SelectedIndex == 0)
+                    {
+                        timer2.Stop();
+                        CardUser.Visibility = Visibility.Hidden;
+                        grid.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
+
+        private async void ButtonSend_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (zhirovContext db = new())
+                {
+                    Chat chat = new Chat
+                    {
+                        TeachersFrom = (uint)Properties.Settings.Default.UserID,
+                        TeachersTo = (uint)idTeachers[ListViewTeachers.SelectedIndex - 1],
+                        ChatText = TextBoxMessage.Text
+                    };
+
+                    await db.Chats.AddAsync(chat);
+                    await db.SaveChangesAsync();
+
+                    //ListBoxMessageRefresh();
+                    //ListBoxMessageRefresh2();
+                    /*                ListBoxMessage.Items.MoveCurrentToLast();
+                                    ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                                    ListBoxMessage.ScrollIntoView();*/
+                    TextBoxMessage.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
+
+        private async void ListBoxMessageRefresh(object sender, EventArgs e)
+        {
+            try 
+            {
+                ObservableCollection<MessageListBox> co1 = new ObservableCollection<MessageListBox>();
+                using (zhirovContext db = new zhirovContext())
+                {
+                    await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idTeachers[ListViewTeachers.SelectedIndex - 1]) ||
+                    (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idTeachers[ListViewTeachers.SelectedIndex - 1])).ForEachAsync(c =>
+                    {
+                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idTeachers[ListViewTeachers.SelectedIndex - 1])
+                        {
+                            co1.Add(new MessageListBox
+                            {
+                                name = firstname,
+                                text = c.ChatText,
+                                time = Convert.ToString(c.ChatDate)
+                            });
+                        }
+                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idTeachers[ListViewTeachers.SelectedIndex - 1])
+                        {
+                            co1.Add(new MessageListBox
+                            {
+                                name = Properties.Settings.Default.FirstName,
+                                text = c.ChatText,
+                                time = Convert.ToString(c.ChatDate)
+                            });
+                        }
+                    });
+                    //idTeachers.Add((int)t.Idteachers);
+                    ListBoxMessage.ItemsSource = co1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            
+        }
+
+        private async void ListBoxMessageRefresh2()
+        {
+            try
+            {
+                IList<MessageListBox> co1 = new List<MessageListBox>();
+                co1.Clear();
+                using (zhirovContext db = new zhirovContext())
+                {
+                    await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idTeachers[ListViewTeachers.SelectedIndex - 1]) ||
+                    (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idTeachers[ListViewTeachers.SelectedIndex - 1])).ForEachAsync(c =>
+                    {
+                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idTeachers[ListViewTeachers.SelectedIndex - 1])
+                        {
+                            co1.Add(new MessageListBox
+                            {
+                                name = firstname,
+                                text = c.ChatText,
+                                time = Convert.ToString(c.ChatDate)
+                            });
+                        }
+                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idTeachers[ListViewTeachers.SelectedIndex - 1])
+                        {
+                            co1.Add(new MessageListBox
+                            {
+                                name = Properties.Settings.Default.FirstName,
+                                text = c.ChatText,
+                                time = Convert.ToString(c.ChatDate)
+                            });
+                        }
+
+                    });
+                    //idTeachers.Add((int)t.Idteachers);
+                    ListBoxMessage.ItemsSource = co1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+
+        }
+
+        private void Page_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                timer2.Stop();
+                CardUser.Visibility = Visibility.Hidden;
+                grid.Visibility = Visibility.Visible;
+            }            
+        }
+    }
+
+    public class UsersListBox
+    {
+        public BitmapImage? image { get; set; }
+        public string? imageDN { get; set; }
+        public string? textFIO { get; set; }
+    }
+
+    public class MessageListBox
+    {
+        public string? name { get; set; }
+        public string? text { get; set; }
+        public string? time { get; set; }
     }
 }
