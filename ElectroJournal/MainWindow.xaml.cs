@@ -59,6 +59,13 @@ namespace ElectroJournal
             GridNLogin.Visibility = Visibility.Visible;
             TitleBar.CloseActionOverride = CloseActionOverride;
             MenuBoard.Visibility = Visibility.Hidden;
+
+
+
+
+            //labvel.Content = new System.Net.WebClient().DownloadString("https://api.ipify.org");
+
+
         }
 
         SettingsControl settingsControl = new();

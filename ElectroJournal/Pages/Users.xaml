@@ -10,7 +10,7 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Users"
     KeyUp="Page_KeyUp"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Unloaded="Page_Unloaded">
     <Page.Resources>
         <Storyboard x:Key="AnimLoad">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
@@ -65,27 +65,37 @@
             Width="275"
             Margin="20,15,0,30"
             HorizontalAlignment="Left">
+
             <ListBox x:Name="ListViewTeachers" SelectionChanged="ListViewTeachers_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-
                             <ui:PersonPicture
                                 x:Name="PersonPicture"
                                 Width="50"
                                 Height="50"
                                 DisplayName="{Binding imageDN}"
                                 ProfilePicture="{Binding image}" />
-
-                            <TextBlock
-                                Margin="5,0,0,0"
+                            <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                                <TextBlock
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Text="{Binding textFIO}" />
+                                <TextBlock Text="{Binding lastMessage}"/>
+                            </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <ProgressBar
+            x:Name="ProgressBarTeachers2"
+            Margin="122,275,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Foreground="#FF3567BC"
+            IsIndeterminate="True"
+            Style="{StaticResource MaterialDesignCircularProgressBar}"
+            Visibility="Visible" />
 
         </Grid>
         <wpfui:Card x:Name="CardUser" Margin="320,15,15,30">
@@ -104,30 +114,34 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="18"
-                        />
+                        FontSize="18" />
                 </Grid>
-                <ListBox x:Name="ListBoxMessage" Margin="0,72,0,58">
+                <ListBox
+                    x:Name="ListBoxMessage"
+                    Margin="0,72,0,58"
+                    Padding="2,2,2,0"
+                    VerticalContentAlignment="Bottom"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel Orientation="Horizontal">
+                            <Grid Margin="10,0,10,0">
+                                <StackPanel FlowDirection="{Binding flowStack}" Orientation="Horizontal">
                                     <Label
-                                        HorizontalAlignment="Left"
+                                        HorizontalAlignment="{Binding hAligment}"
                                         VerticalAlignment="Top"
                                         Content="{Binding name}"
-                                        FontSize="16"
-                                        FontWeight="Bold" />
+                                        FontSize="16" />
                                     <Label
                                         Padding="0,4,0,0"
-                                        HorizontalAlignment="Left"
+                                        HorizontalAlignment="{Binding hAligment}"
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content=" - "
                                         FontSize="13" />
                                     <Label
                                         Padding="0,4,0,0"
-                                        HorizontalAlignment="Left"
+                                        HorizontalAlignment="{Binding hAligment}"
                                         VerticalAlignment="Top"
                                         VerticalContentAlignment="Center"
                                         Content="{Binding time}"
@@ -135,9 +149,11 @@
                                 </StackPanel>
                                 <StackPanel Margin="0,25,0,0" Orientation="Vertical">
                                     <TextBlock
-                                        Margin="10,0,0,0"
+                                        Margin="15,0,0,0"
+                                        HorizontalAlignment="{Binding hAligment}"
                                         FontSize="16"
-                                        Text="{Binding text}" />
+                                        Text="{Binding text}"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
