@@ -26,7 +26,7 @@ namespace ElectroJournal
 
         public App()
         {
-            /*// Try to grab mutex
+            // Try to grab mutex
             bool createdNew;
             _mutex = new Mutex(true, "WpfApplication", out createdNew);
 
@@ -48,7 +48,7 @@ namespace ElectroJournal
             {
                 // Add Event handler to exit event
                 Exit += CloseMutexHandler;
-            }*/
+            }
         }
 
         protected virtual void CloseMutexHandler(object sender, EventArgs e)

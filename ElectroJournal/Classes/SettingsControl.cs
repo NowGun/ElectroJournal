@@ -1,4 +1,5 @@
 ﻿using ElectroJournal.Classes.DataBaseEJ;
+using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
@@ -80,6 +81,28 @@ namespace ElectroJournal.Classes
                 ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = Properties.Settings.Default.Login;
                 ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = Properties.Settings.Default.PassProfile;
             }
+        }
+
+        public async Task<bool> ExitUser()
+        {
+            using (zhirovContext db = new())
+            {
+                bool isAvalaible = await db.Database.CanConnectAsync();
+                if (isAvalaible)
+                {
+                    Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                    if (teacher != null)
+                    {
+                        teacher.TeachersStatus = 0;
+                    }
+
+                    await db.SaveChangesAsync();
+
+                    return true;
+                }
+                return false;              
+            }           
         }
     }
 }

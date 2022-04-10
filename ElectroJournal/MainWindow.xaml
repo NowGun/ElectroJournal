@@ -138,22 +138,41 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut"/>
+                        <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimExitProgram">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="stackPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False"/>
+            </BooleanAnimationUsingKeyFrames>
         </Storyboard>
 
 
@@ -162,498 +181,520 @@
 
 
     <Grid x:Name="GridDefault" x:FieldModifier="public">
-
-        <Grid
-            x:Name="GridNLogin"
-            Margin="0,48,0,0"
-            VerticalAlignment="Top" d:IsHidden="True">
-            <wpfui:Icon
-                x:Name="IconSetting2"
-                Margin="0,0,17,0"
-                HorizontalAlignment="Right"
-                FontSize="20"
-                Glyph="Settings20"
-                PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
-            <ui:NavigationView
-                x:Name="NavViewMenuNLogin"
-                Height="40"
-                MinWidth="100"
-                Margin="10,0,365,0"
+        <Grid x:Name="grid">
+            <Grid.Effect>
+                <BlurEffect KernelType="Gaussian" Radius="0" />
+            </Grid.Effect>
+            <Grid
+                x:Name="GridNLogin"
+                Margin="0,48,0,0"
                 VerticalAlignment="Top"
-                IsBackButtonVisible="Collapsed"
-                IsSettingsVisible="False"
-                PaneDisplayMode="Top">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemSchedule1"
-                        Content="Расписание"
-                        PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemBoard1"
-                        Content="Доска"
-                        PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemWord1"
-                        Content="Текстовый редактор"
-                        PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
-            <Button
-                x:Name="ButtonShowLogin"
-                Width="140"
-                Height="30"
-                Margin="0,0,45,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Click="ButtonShowLogin_Click"
-                Content="Войти"
-                FontSize="14"
-                IsEnabled="False"
-                Style="{DynamicResource WPFUIButtonStandard}" />
+                d:IsHidden="True">
+                <wpfui:Icon
+                    x:Name="IconSetting2"
+                    Margin="0,0,17,0"
+                    HorizontalAlignment="Right"
+                    FontSize="20"
+                    Glyph="Settings20"
+                    PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
+                <ui:NavigationView
+                    x:Name="NavViewMenuNLogin"
+                    Height="40"
+                    MinWidth="100"
+                    Margin="10,0,365,0"
+                    VerticalAlignment="Top"
+                    IsBackButtonVisible="Collapsed"
+                    IsSettingsVisible="False"
+                    PaneDisplayMode="Top">
+                    <ui:NavigationView.MenuItems>
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemSchedule1"
+                            Content="Расписание"
+                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemBoard1"
+                            Content="Доска"
+                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemWord1"
+                            Content="Текстовый редактор"
+                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
+                    </ui:NavigationView.MenuItems>
+                </ui:NavigationView>
+                <Button
+                    x:Name="ButtonShowLogin"
+                    Width="140"
+                    Height="30"
+                    Margin="0,0,45,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Click="ButtonShowLogin_Click"
+                    Content="Войти"
+                    FontSize="14"
+                    IsEnabled="False"
+                    Style="{DynamicResource WPFUIButtonStandard}" />
 
-        </Grid>
-        <Label
-            x:Name="LabelScheduleCall"
-            Height="36"
-            Margin="245,6,435,0"
-            Padding="0,0,10,4"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            RenderTransformOrigin="0.5,0.5">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <wpfui:TitleBar
-            x:Name="TitleBar"
-            Grid.Row="0"
-            Height="48"
-            ApplicationNavigation="True"
-            Background="#00000000"
-            Icon="/Images/Logo/logo75.png"
-            MinimizeToTray="False"
-            NotifyIconDoubleClick="TitleBar_NotifyIconDoubleClick"
-            NotifyIconImage="/Images/Logo/logo75.png"
-            NotifyIconTooltip="ElectroJournal"
-            UseNotifyIcon="True">
-            <wpfui:TitleBar.NotifyIconMenu>
-                <ContextMenu>
-                    <MenuItem
-                        x:Name="MenuItemOpen"
-                        Click="MenuItemOpen_Click"
-                        Header="Открыть"
-                        Icon="{x:Static wpfuiCommon:Icon.Library28}"
-                        Tag="open" />
-                    <MenuItem
-                        x:Name="MenuItemExit"
-                        Click="MenuItemExit_Click"
-                        Header="Выйти"
-                        Icon="{x:Static wpfuiCommon:Icon.Library28}"
-                        Tag="exit" />
-                </ContextMenu>
-            </wpfui:TitleBar.NotifyIconMenu>
-        </wpfui:TitleBar>
-        <Menu
-            x:Name="MenuEJ"
-            Height="50"
-            Margin="48,-2,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}">
-            <MenuItem
-                Height="43"
-                Padding="6,0,6,0"
+            </Grid>
+            <Label
+                x:Name="LabelScheduleCall"
+                Height="36"
+                Margin="245,6,435,0"
+                Padding="0,0,10,4"
+                VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
-                FontSize="14"
-                Header="ElectroJournal">
-                <MenuItem
-                    x:Name="MenuItemEJHelp"
-                    Click="MenuItemEJHelp_Click"
-                    Header="Справка" />
-                <MenuItem
-                    x:Name="MenuItemEJProgInfo"
-                    Click="MenuItemEJProgInfo_Click"
-                    Header="О программе" />
-                <MenuItem
-                    x:Name="MenuItemEJBug"
-                    Click="MenuItemEJBug_Click"
-                    Header="Баг-репортер" />
-                <!-- <MenuItem
-                    x:Name="MenuItemEJSettings"
-                    Click="MenuItemEJSettings_Click"
-                    Header="Настройки" />-->
-            </MenuItem>
-            <MenuItem
-                x:Name="MenuBoard"
-                Height="42"
-                Header="Доска">
-                <MenuItem Header="Открыть" />
-                <MenuItem Header="Сохранить" />
-                <MenuItem Header="Сохранить как">
-                    <MenuItem Header="Изображение в формате PNG" />
-                    <MenuItem Header="Изображение в формате JPEG" />
-                </MenuItem>
-                <MenuItem
-                    x:Name="MenuItemBoardPrint"
-                    Click="MenuItemBoardPrint_Click"
-                    Header="Печать" />
-                <MenuItem
-                    x:Name="MenuItemBoardFullScreen"
-                    Click="MenuItemBoardFullScreen_Click"
-                    Header="Во весь экран" />
-            </MenuItem>
-        </Menu>
-        <Frame
-            x:Name="Frame"
-            Margin="0,99,0,0"
-            Content=""
-            Navigated="Frame_Navigated"
-            Navigating="Frame_Navigating"
-            NavigationUIVisibility="Hidden"
-            RenderTransformOrigin="0.5,0.5">
-            <Frame.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Frame.RenderTransform>
-        </Frame>
-        <controls1:NotificationArea
-            x:Name="WindowArea"
-            Margin="0,99,8,8"
-            d:IsHidden="True"
-            MaxItems="3"
-            Position="TopRight" />
-        <Grid
-            x:Name="GridMenu"
-            Height="593"
-            MinWidth="1272"
-            Margin="0,6,0,0"
-            VerticalAlignment="Top"
-            x:FieldModifier="public"
-            Visibility="Visible">
-            <wpfui:Icon
-                x:Name="RectangleBackToMenu"
-                Width="28"
-                Height="32"
-                Margin="20,47,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                HorizontalContentAlignment="Center"
-                FontSize="20"
-                Glyph="ArrowLeft12"
-                MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" />
-            <Path
-                x:Name="PathMenu"
-                Height="1"
-                Margin="3,91,-3,0"
-                VerticalAlignment="Top"
-                Data="M42.5,48 L1220.0239,48"
-                Stretch="Fill"
-                Stroke="#FFEDEDED"
-                Visibility="Visible">
-                <Path.Effect>
-                    <DropShadowEffect
-                        BlurRadius="5"
-                        Opacity="0.1"
-                        ShadowDepth="1"
-                        Color="#7F3A3A3A" />
-                </Path.Effect>
-            </Path>
-            <ui:NavigationView
-                x:Name="NavViewMenuAdmin"
-                Height="40"
-                MinWidth="100"
-                Margin="48,42,0,0"
-                VerticalAlignment="Top"
-                IsBackButtonVisible="Collapsed"
-                IsSettingsVisible="False"
-                PaneDisplayMode="Top">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemTeachers"
-                        Content="Преподаватели"
-                        MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemDisciplines"
-                        Content="Предметы"
-                        MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemStudents"
-                        Content="Студенты"
-                        MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemGroups"
-                        Content="Группы"
-                        MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemCabinets"
-                        Content="Кабинеты"
-                        MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemScheduleAdmin"
-                        Content="Расписание"
-                        MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"
-                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemAcademicYears"
-                        Content="Учебные года"
-                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" MouseLeftButtonUp="NavigationViewItemAcademicYears_MouseLeftButtonUp" />
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
-            <ui:NavigationView
-                x:Name="NavViewMenu"
-                Height="40"
-                MinWidth="100"
-                Margin="48,42,0,0"
-                VerticalAlignment="Top"
-                d:IsHidden="True"
-                IsBackButtonVisible="Collapsed"
-                IsSettingsVisible="False"
-                PaneDisplayMode="Top">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemJournal"
-                        Content="Журнал"
-                        PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemSchedule"
-                        Content="Расписание"
-                        PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemBoard"
-                        Content="Доска"
-                        PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemWord"
-                        Content="Текстовый редактор"
-                        PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
-                    <ui:NavigationViewItem
-                        x:Name="NavigationViewItemAdminPanel"
-                        Content="Панель администратора"
-                        PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
-            <Grid
-                x:Name="GridUser"
-                Margin="0,42,17,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top">
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        x:Name="TextBlockTeacher"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Content="Фамиля И.О."
-                        FontSize="14"
-                        MouseLeave="RectangleUser_MouseLeave"
-                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                        MouseMove="RectangleUser_MouseMove" />
-                    <ui:PersonPicture
-                        x:Name="PersonPicture"
-                        Width="40"
-                        Height="40"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        MouseLeave="RectangleUser_MouseLeave"
-                        MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                        MouseMove="RectangleUser_MouseMove" />
-                    <wpfui:Icon
-                        x:Name="IconSetting"
-                        HorizontalAlignment="Right"
-                        FontSize="20"
-                        Glyph="Settings20"
-                        MouseMove="RectangleUser_MouseMove"
-                        MouseLeave="RectangleUser_MouseLeave"
-                        PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
-                </StackPanel>
-            </Grid>
-            <Grid
-                x:Name="GridComboGroups"
-                Height="35"
-                Margin="0,0,155,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top">
-                <ComboBox
-                    x:Name="ComboBoxGroup"
-                    Width="200"
-                    Height="35"
-                    Margin="80,0,0,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Grid.IsSharedSizeScope="True"
-                    RenderTransformOrigin="0.5,0.5"
-                    SelectionChanged="ComboBoxGroup_SelectionChanged">
-                    <ComboBoxItem Content="ПКС 4" />
-                </ComboBox>
-                <Label
-                    x:Name="LabelGroup"
-                    Width="60"
-                    Height="35"
-                    Margin="20,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Content="Группа:" />
-            </Grid>
-        </Grid>
-        <wpfui:Card
-            x:Name="GridLogin"
-            Height="254"
-            Margin="0,0,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Grid
-                x:Name="GridLogin2"
-                Width="322"
-                Height="254"
-                Margin="-12,0,0,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
                 RenderTransformOrigin="0.5,0.5">
-                <Grid.RenderTransform>
+                <Label.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform />
                         <SkewTransform />
                         <RotateTransform />
                         <TranslateTransform />
                     </TransformGroup>
-                </Grid.RenderTransform>
-
-
-                <Label
-                    x:Name="LabelPasswordGridLogin"
-                    Width="116"
-                    Height="30"
-                    Margin="60,0,0,0"
-                    Padding="0,5,5,5"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Content="Пароль"
-                    FontSize="14" />
-                <Label
-                    x:Name="LabelLoginGridLogin"
-                    Width="176"
-                    Height="30"
-                    Margin="60,32,0,0"
-                    Padding="0,5,5,5"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="Введите логин"
+                </Label.RenderTransform>
+            </Label>
+            <wpfui:TitleBar
+                x:Name="TitleBar"
+                Grid.Row="0"
+                Height="48"
+                ApplicationNavigation="True"
+                Background="#00000000"
+                Icon="/Images/Logo/logo75.png"
+                MinimizeToTray="False"
+                NotifyIconDoubleClick="TitleBar_NotifyIconDoubleClick"
+                NotifyIconImage="/Images/Logo/logo75.png"
+                NotifyIconTooltip="ElectroJournal"
+                UseNotifyIcon="True">
+                <wpfui:TitleBar.NotifyIconMenu>
+                    <ContextMenu>
+                        <MenuItem
+                            x:Name="MenuItemOpen"
+                            Click="MenuItemOpen_Click"
+                            Header="Открыть"
+                            Icon="{x:Static wpfuiCommon:Icon.Library28}"
+                            Tag="open" />
+                        <MenuItem
+                            x:Name="MenuItemExit"
+                            Click="MenuItemExit_Click"
+                            Header="Выйти"
+                            Icon="{x:Static wpfuiCommon:Icon.Library28}"
+                            Tag="exit" />
+                    </ContextMenu>
+                </wpfui:TitleBar.NotifyIconMenu>
+            </wpfui:TitleBar>
+            <Menu
+                x:Name="MenuEJ"
+                Height="50"
+                Margin="48,-2,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}">
+                <MenuItem
+                    Height="43"
+                    Padding="6,0,6,0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
                     FontSize="14"
-                    RenderTransformOrigin="0.517,0.558" />
-                <Button
-                    x:Name="ButtonLogin"
-                    Width="102"
-                    Height="25"
-                    Margin="176,192,0,0"
+                    Header="ElectroJournal">
+                    <MenuItem
+                        x:Name="MenuItemEJHelp"
+                        Click="MenuItemEJHelp_Click"
+                        Header="Справка" />
+                    <MenuItem
+                        x:Name="MenuItemEJProgInfo"
+                        Click="MenuItemEJProgInfo_Click"
+                        Header="О программе" />
+                    <MenuItem
+                        x:Name="MenuItemEJBug"
+                        Click="MenuItemEJBug_Click"
+                        Header="Баг-репортер" />
+                    <!-- <MenuItem
+                    x:Name="MenuItemEJSettings"
+                    Click="MenuItemEJSettings_Click"
+                    Header="Настройки" />-->
+                </MenuItem>
+                <MenuItem
+                    x:Name="MenuBoard"
+                    Height="42"
+                    Header="Доска">
+                    <MenuItem Header="Открыть" />
+                    <MenuItem Header="Сохранить" />
+                    <MenuItem Header="Сохранить как">
+                        <MenuItem Header="Изображение в формате PNG" />
+                        <MenuItem Header="Изображение в формате JPEG" />
+                    </MenuItem>
+                    <MenuItem
+                        x:Name="MenuItemBoardPrint"
+                        Click="MenuItemBoardPrint_Click"
+                        Header="Печать" />
+                    <MenuItem
+                        x:Name="MenuItemBoardFullScreen"
+                        Click="MenuItemBoardFullScreen_Click"
+                        Header="Во весь экран" />
+                </MenuItem>
+            </Menu>
+            <Frame
+                x:Name="Frame"
+                Margin="0,99,0,0"
+                Content=""
+                Navigated="Frame_Navigated"
+                Navigating="Frame_Navigating"
+                NavigationUIVisibility="Hidden"
+                RenderTransformOrigin="0.5,0.5">
+                <Frame.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Frame.RenderTransform>
+            </Frame>
+            <controls1:NotificationArea
+                x:Name="WindowArea"
+                Margin="0,99,8,8"
+                d:IsHidden="True"
+                MaxItems="3"
+                Position="TopRight" />
+            <Grid
+                x:Name="GridMenu"
+                Height="593"
+                MinWidth="1272"
+                Margin="0,6,0,0"
+                VerticalAlignment="Top"
+                x:FieldModifier="public"
+                Visibility="Visible">
+                <wpfui:Icon
+                    x:Name="RectangleBackToMenu"
+                    Width="28"
+                    Height="32"
+                    Margin="20,47,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Click="ButtonLogin_Click"
-                    Content="Войти"
-                    Cursor="Hand"
-                    IsDefault="True"
-                    Style="{DynamicResource WPFUIButtonAccent}" />
-                <PasswordBox
-                    x:Name="TextBoxPassword"
-                    Width="220"
-                    Height="36"
-                    Margin="58,142,0,0"
-                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Center"
+                    FontSize="20"
+                    Glyph="ArrowLeft12"
+                    MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" />
+                <Path
+                    x:Name="PathMenu"
+                    Height="1"
+                    Margin="3,91,-3,0"
                     VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    FontSize="16"
-                    Password="admin" />
-                <TextBox
-                    x:Name="TextBoxLogin"
-                    Width="220"
-                    Height="36"
-                    Margin="58,62,0,0"
-                    Padding="6,0"
-                    HorizontalAlignment="Left"
+                    Data="M42.5,48 L1220.0239,48"
+                    Stretch="Fill"
+                    Stroke="#FFEDEDED"
+                    Visibility="Visible">
+                    <Path.Effect>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Opacity="0.1"
+                            ShadowDepth="1"
+                            Color="#7F3A3A3A" />
+                    </Path.Effect>
+                </Path>
+                <ui:NavigationView
+                    x:Name="NavViewMenuAdmin"
+                    Height="40"
+                    MinWidth="100"
+                    Margin="48,42,0,0"
                     VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    FontSize="16"
-                    HorizontalScrollBarVisibility="Auto"
-                    MaxLength="20"
-                    Text="admin"
-                    TextWrapping="Wrap" />
-                <Rectangle
-                    x:Name="RectangleLoadLogin"
-                    Width="25"
-                    Height="25"
-                    Margin="283,192,0,0"
-                    HorizontalAlignment="Left"
+                    IsBackButtonVisible="Collapsed"
+                    IsSettingsVisible="False"
+                    PaneDisplayMode="Top">
+                    <ui:NavigationView.MenuItems>
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemTeachers"
+                            Content="Преподаватели"
+                            MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemDisciplines"
+                            Content="Предметы"
+                            MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemStudents"
+                            Content="Студенты"
+                            MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemGroups"
+                            Content="Группы"
+                            MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemCabinets"
+                            Content="Кабинеты"
+                            MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemScheduleAdmin"
+                            Content="Расписание"
+                            MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemAcademicYears"
+                            Content="Учебные года"
+                            MouseLeftButtonUp="NavigationViewItemAcademicYears_MouseLeftButtonUp"
+                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                    </ui:NavigationView.MenuItems>
+                </ui:NavigationView>
+                <ui:NavigationView
+                    x:Name="NavViewMenu"
+                    Height="40"
+                    MinWidth="100"
+                    Margin="48,42,0,0"
                     VerticalAlignment="Top"
+                    d:IsHidden="True"
+                    IsBackButtonVisible="Collapsed"
+                    IsSettingsVisible="False"
+                    PaneDisplayMode="Top">
+                    <ui:NavigationView.MenuItems>
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemJournal"
+                            Content="Журнал"
+                            PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemSchedule"
+                            Content="Расписание"
+                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemBoard"
+                            Content="Доска"
+                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemWord"
+                            Content="Текстовый редактор"
+                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
+                        <ui:NavigationViewItem
+                            x:Name="NavigationViewItemAdminPanel"
+                            Content="Панель администратора"
+                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                    </ui:NavigationView.MenuItems>
+                </ui:NavigationView>
+                <Grid
+                    x:Name="GridUser"
+                    Margin="0,42,17,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            x:Name="TextBlockTeacher"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Фамиля И.О."
+                            FontSize="14"
+                            MouseLeave="RectangleUser_MouseLeave"
+                            MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
+                            MouseMove="RectangleUser_MouseMove" />
+                        <ui:PersonPicture
+                            x:Name="PersonPicture"
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            MouseLeave="RectangleUser_MouseLeave"
+                            MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
+                            MouseMove="RectangleUser_MouseMove" />
+                        <wpfui:Icon
+                            x:Name="IconSetting"
+                            HorizontalAlignment="Right"
+                            FontSize="20"
+                            Glyph="Settings20"
+                            MouseLeave="RectangleUser_MouseLeave"
+                            MouseMove="RectangleUser_MouseMove"
+                            PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
+                    </StackPanel>
+                </Grid>
+                <Grid
+                    x:Name="GridComboGroups"
+                    Height="35"
+                    Margin="0,0,155,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+                    <ComboBox
+                        x:Name="ComboBoxGroup"
+                        Width="200"
+                        Height="35"
+                        Margin="80,0,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Grid.IsSharedSizeScope="True"
+                        RenderTransformOrigin="0.5,0.5"
+                        SelectionChanged="ComboBoxGroup_SelectionChanged">
+                        <ComboBoxItem Content="ПКС 4" />
+                    </ComboBox>
+                    <Label
+                        x:Name="LabelGroup"
+                        Width="60"
+                        Height="35"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="Группа:" />
+                </Grid>
+            </Grid>
+            <wpfui:Card
+                x:Name="GridLogin"
+                Height="254"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Grid
+                    x:Name="GridLogin2"
+                    Width="322"
+                    Height="254"
+                    Margin="-12,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     RenderTransformOrigin="0.5,0.5">
-                    <Rectangle.RenderTransform>
+                    <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
                             <SkewTransform />
                             <RotateTransform />
                             <TranslateTransform />
                         </TransformGroup>
-                    </Rectangle.RenderTransform>
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="Images/34px-Vector_Loading.svg.png" />
-                    </Rectangle.Fill>
-                </Rectangle>
-                <Image
-                    x:Name="ImageForgotPassword"
-                    Width="27"
-                    Height="25"
-                    Margin="58,192,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    MouseLeave="ImageForgotPassword_MouseLeave"
-                    MouseLeftButtonUp="ImageForgotPassword_MouseLeftButtonUp"
-                    MouseMove="ImageForgotPassword_MouseMove"
-                    Source="/Images/icons8-password-reset-48.png"
-                    ToolTip="Сменить пароль" />
-                <Image
-                    x:Name="ImageChangeDB"
-                    Width="27"
-                    Height="25"
-                    Margin="92,192,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    MouseLeave="ImageForgotPassword_MouseLeave"
-                    MouseLeftButtonUp="ImageChangeDB_MouseLeftButtonUp"
-                    MouseMove="ImageForgotPassword_MouseMove"
-                    Source="/Images/icons8-database-administrator-48.png"
-                    ToolTip="Сменить соединение базы данных" />
-                <Button
-                    x:Name="ButtonOpenNotLogin"
-                    Margin="173,26,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Background="#FFF3F3F3"
-                    Click="ButtonOpenNotLogin_Click"
-                    Content="NLogin"
-                    Cursor="Hand"
-                    Visibility="Hidden" />
+                    </Grid.RenderTransform>
 
-            </Grid>
 
-        </wpfui:Card>
+                    <Label
+                        x:Name="LabelPasswordGridLogin"
+                        Width="116"
+                        Height="30"
+                        Margin="60,0,0,0"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Пароль"
+                        FontSize="14" />
+                    <Label
+                        x:Name="LabelLoginGridLogin"
+                        Width="176"
+                        Height="30"
+                        Margin="60,32,0,0"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Введите логин"
+                        FontSize="14"
+                        RenderTransformOrigin="0.517,0.558" />
+                    <Button
+                        x:Name="ButtonLogin"
+                        Width="102"
+                        Height="25"
+                        Margin="176,192,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="ButtonLogin_Click"
+                        Content="Войти"
+                        Cursor="Hand"
+                        IsDefault="True"
+                        Style="{DynamicResource WPFUIButtonAccent}" />
+                    <PasswordBox
+                        x:Name="TextBoxPassword"
+                        Width="220"
+                        Height="36"
+                        Margin="58,142,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        Password="admin" />
+                    <TextBox
+                        x:Name="TextBoxLogin"
+                        Width="220"
+                        Height="36"
+                        Margin="58,62,0,0"
+                        Padding="6,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        HorizontalScrollBarVisibility="Auto"
+                        MaxLength="20"
+                        Text="admin"
+                        TextWrapping="Wrap" />
+                    <Rectangle
+                        x:Name="RectangleLoadLogin"
+                        Width="25"
+                        Height="25"
+                        Margin="283,192,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        RenderTransformOrigin="0.5,0.5">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="Images/34px-Vector_Loading.svg.png" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Image
+                        x:Name="ImageForgotPassword"
+                        Width="27"
+                        Height="25"
+                        Margin="58,192,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        MouseLeave="ImageForgotPassword_MouseLeave"
+                        MouseLeftButtonUp="ImageForgotPassword_MouseLeftButtonUp"
+                        MouseMove="ImageForgotPassword_MouseMove"
+                        Source="/Images/icons8-password-reset-48.png"
+                        ToolTip="Сменить пароль" />
+                    <Image
+                        x:Name="ImageChangeDB"
+                        Width="27"
+                        Height="25"
+                        Margin="92,192,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        MouseLeave="ImageForgotPassword_MouseLeave"
+                        MouseLeftButtonUp="ImageChangeDB_MouseLeftButtonUp"
+                        MouseMove="ImageForgotPassword_MouseMove"
+                        Source="/Images/icons8-database-administrator-48.png"
+                        ToolTip="Сменить соединение базы данных" />
+                    <Button
+                        x:Name="ButtonOpenNotLogin"
+                        Margin="173,26,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="#FFF3F3F3"
+                        Click="ButtonOpenNotLogin_Click"
+                        Content="NLogin"
+                        Cursor="Hand"
+                        Visibility="Hidden" />
 
+                </Grid>
+
+            </wpfui:Card>
+
+        </Grid>
+        <StackPanel
+            x:Name="stackPanel"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Opacity="0"
+            Orientation="Horizontal">
+            <ProgressBar
+                x:Name="ProgressBar"
+                Margin="0,0,5,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="#FF3567BC"
+                IsIndeterminate="True"
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Visibility="Visible" />
+            <Label Content="Идет попытка сохранения данных, пожалуйста подождите" FontSize="16" />
+        </StackPanel>
     </Grid>
 </Window>

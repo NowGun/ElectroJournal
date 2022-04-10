@@ -54,7 +54,7 @@ namespace ElectroJournal.DataBase
                 // Connection String.
                 String connString = "Server=" + server + ";Database=" + database + ";User Id=" + username + ";password=" + password;
 
-                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), builder => builder.EnableRetryOnFailure());
+                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"));
 
             }
         }
@@ -751,6 +751,8 @@ namespace ElectroJournal.DataBase
                 entity.Property(e => e.TeachersPhone)
                     .HasMaxLength(12)
                     .HasColumnName("teachers_phone");
+
+                entity.Property(e => e.TeachersStatus).HasColumnName("teachers_status");
 
                 entity.Property(e => e.TeachersSurname)
                     .HasMaxLength(45)

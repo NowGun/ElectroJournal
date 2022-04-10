@@ -26,6 +26,7 @@ namespace ElectroJournal.DataBase
         public string TeachersAccesAdminPanel { get; set; }
         public string TeachersPhone { get; set; }
         public string TeachersMail { get; set; }
+        public sbyte? TeachersStatus { get; set; }
 
         public virtual ICollection<Chat> ChatTeachersFromNavigations { get; set; }
         public virtual ICollection<Chat> ChatTeachersToNavigations { get; set; }

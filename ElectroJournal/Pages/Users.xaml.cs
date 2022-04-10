@@ -41,25 +41,21 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             CardUser.Visibility = Visibility.Hidden;
+            DataContext = this;
+            datA = new ObservableCollection<UsersListBox>();
             LoadData();
-
-            timer1.Tick += new EventHandler(ListViewTeachersRefresh);
-            timer1.Interval = new TimeSpan(0, 0, 1);
-            //timer1.Start();
-            ListViewTeachersRefresh2();
-            //ListViewTeachers.SelectedIndex = 0;
-
+            ListViewTeachersRefresh();
+            ListViewTeachers.SelectedIndex = 0;
         }
 
-        List<int> idTeachers = new List<int>();
-
-        private static string? path;
-        private int idUser = 0;
-
         public System.Windows.Threading.DispatcherTimer timer2 = new();
-        public System.Windows.Threading.DispatcherTimer timer1 = new();
-
+        List<int> idTeachers = new List<int>();
+        private static string? path;
         private string? firstname;
+        private bool checkLastM = true;
+
+        public ObservableCollection<UsersListBox> datA { get; set; }
+        public UsersListBox SelectedData { get; set; }
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
@@ -104,22 +100,18 @@ namespace ElectroJournal.Pages
             }
             ProgressBar.Visibility = Visibility.Hidden;
         }
-
         private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
         {
             new Windows.ChangePassword().ShowDialog();
         }
-
         private void LabelChangePhoto_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Arrow;
-        }
-
+        }        
         private void LabelChangePhoto_MouseMove(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Hand;
         }
-
         private void LabelChangePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog myDialog = new OpenFileDialog();
@@ -147,11 +139,11 @@ namespace ElectroJournal.Pages
                 PersonPicture.ProfilePicture = bitmap;
             }
         }
-
         public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e)
         {
             SettingsControl sc = new();
 
+            sc.ExitUser();
             ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
             ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
             sc.CompletionLogin();
@@ -165,7 +157,6 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).animLabel = true;
             ((MainWindow)Application.Current.MainWindow).AnimLog(true);
         }
-
         private async void LoadData()
         {
             try
@@ -217,20 +208,16 @@ namespace ElectroJournal.Pages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            
+            }            
         }
-
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             ButtonSave.IsEnabled = true;
         }
-
         private void TextBoxMail_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             ButtonSave.IsEnabled = true;
         }
-
         private async void LabelDeletePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             using (zhirovContext db = new())
@@ -272,213 +259,51 @@ namespace ElectroJournal.Pages
             }
             LabelDeletePhoto.Visibility = Visibility.Hidden;
         }
-
-
-        private async void ListViewTeachersRefresh(object sender, EventArgs e)
+        private async void ListViewTeachersRefresh()
         {
             try
             {
+                datA.Clear();
                 idTeachers.Clear();
-                ObservableCollection<UsersListBox> co1 = new ObservableCollection<UsersListBox>();
-                co1.Clear();
-                co1.Add(new UsersListBox
+
+                string status = "Hidden";
+                string lmess = "";
+
+                datA.Add(new UsersListBox
                 {
+                    online = "Hidden",
                     textFIO = $"Моя страница"
                 });
 
                 using (zhirovContext db = new())
                 {
-
-                    /*await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ForEachAsync(async t =>
-                    {
-                        Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == t.Idteachers) || (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == t.Idteachers)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
-                        if (!String.IsNullOrWhiteSpace(t.TeachersImage))
-                        {
-                            var myImage = new System.Windows.Controls.Image();
-
-                            var stringPath = $@"{t.TeachersImage}";
-
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                            bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                            bitmapImage.EndInit();
-
-                            if (chat != null)
-                            {
-                                if (chat.ChatText != null)
-                                {
-                                    co1.Add(new UsersListBox
-                                    {
-                                        lastMessage = chat.ChatText,
-                                        image = bitmapImage,
-                                        textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                    });
-                                }
-
-                            }
-                            else
-                            {
-                                co1.Add(new UsersListBox
-                                {
-                                    lastMessage = "",
-                                    image = bitmapImage,
-                                    textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                });
-                            }
-                        }
-                        else
-                        {
-                            if (chat != null)
-                            {
-                                if (chat.ChatText != null)
-                                {
-                                    co1.Add(new UsersListBox
-                                    {
-                                        lastMessage = chat.ChatText,
-                                        imageDN = $"{t.TeachersSurname} {t.TeachersName}",
-                                        textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                    });
-                                }
-
-                            }
-                            else
-                            {
-                                co1.Add(new UsersListBox
-                                {
-                                    lastMessage = "",
-                                    imageDN = $"{t.TeachersSurname} {t.TeachersName}",
-                                    textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                });
-                            }
-
-                        }
-
-
-
-                        idTeachers.Add((int)t.Idteachers);
-
-                    });*/
-
-
-
                     ProgressBarTeachers2.Visibility = Visibility.Visible;
-
-                    
-
-                    var t2 = await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ToListAsync();
-                    
-                    foreach (var t in t2)
-                    {
-                        Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == t.Idteachers) || (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == t.Idteachers)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
-                        if (!String.IsNullOrWhiteSpace(t.TeachersImage))
-                        {
-                            var myImage = new System.Windows.Controls.Image();
-
-                            var stringPath = $@"{t.TeachersImage}";
-
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                            bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                            bitmapImage.EndInit();
-
-                            if (chat != null)
-                            {
-                                if (chat.ChatText != null)
-                                {
-                                    co1.Add(new UsersListBox
-                                    {
-                                        lastMessage = chat.ChatText,
-                                        image = bitmapImage,
-                                        textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                    });
-                                }
-
-                            }
-                            else
-                            {
-                                co1.Add(new UsersListBox
-                                {
-                                    lastMessage = "",
-                                    image = bitmapImage,
-                                    textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                });
-                            }
-                        }
-                        else
-                        {
-                            if (chat != null)
-                            {
-                                if (chat.ChatText != null)
-                                {
-                                    co1.Add(new UsersListBox
-                                    {
-                                        lastMessage = chat.ChatText,
-                                        imageDN = $"{t.TeachersSurname} {t.TeachersName}",
-                                        textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                    });
-                                }
-
-                            }
-                            else
-                            {
-                                co1.Add(new UsersListBox
-                                {
-                                    lastMessage = "",
-                                    imageDN = $"{t.TeachersSurname} {t.TeachersName}",
-                                    textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-                                });
-                            }
-
-                        }
-                        idTeachers.Add((int)t.Idteachers);
-                    }
-                    ListViewTeachers.ItemsSource = co1;
-                    ProgressBarTeachers2.Visibility = Visibility.Hidden;
-                }
-                
-                    
-            }
-            catch (Exception ex)
-            {
-               //MessageBox.Show(ex.Message);
-            }
-           
-        }
-
-        private async void ListViewTeachersRefresh2()
-        {
-            try
-            {
-                idTeachers.Clear();
-                ObservableCollection<UsersListBox> co1 = new ObservableCollection<UsersListBox>();
-                co1.Clear();
-                co1.Add(new UsersListBox
-                {
-                    textFIO = $"Моя страница"
-                });
-
-                using (zhirovContext db = new())
-                {
-
-
-
-                    ProgressBarTeachers2.Visibility = Visibility.Visible;
-
-
 
                     var t2 = await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ToListAsync();
 
                     foreach (var t in t2)
                     {
-                        //Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == t.Idteachers) || (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == t.Idteachers)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
+                        Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == t.Idteachers) || (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == t.Idteachers)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
+
+                        if (t.TeachersStatus == 1) status = "Visible"; 
+                        else status = "Hidden";
+
+                        if (chat != null)
+                        {
+                            if (chat.TeachersTo == Properties.Settings.Default.UserID && chat.TeachersFrom == t.Idteachers)
+                            {
+                                lmess = chat.ChatText;
+                            }
+                            else if (chat.TeachersFrom == Properties.Settings.Default.UserID && chat.TeachersTo == t.Idteachers)
+                            {
+                                lmess = $"Вы: {chat.ChatText}";
+                            }
+                        }
+                        else lmess = "";
+
                         if (!String.IsNullOrWhiteSpace(t.TeachersImage))
                         {
                             var myImage = new System.Windows.Controls.Image();
-
                             var stringPath = $@"{t.TeachersImage}";
 
                             BitmapImage bitmapImage = new BitmapImage();
@@ -488,79 +313,61 @@ namespace ElectroJournal.Pages
                             bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
                             bitmapImage.EndInit();
 
-
-                            co1.Add(new UsersListBox
+                            datA.Add(new UsersListBox
                             {
-
+                                online = status,
+                                lastMessage = lmess,
                                 image = bitmapImage,
                                 textFIO = $"{t.TeachersSurname} {t.TeachersName}"
-
                             });
                         }
-                    
-
                         else
                         {
-
-                            co1.Add(new UsersListBox
+                            datA.Add(new UsersListBox
                             {
-
+                                online = status,
+                                lastMessage = lmess,
                                 imageDN = $"{t.TeachersSurname} {t.TeachersName}",
                                 textFIO = $"{t.TeachersSurname} {t.TeachersName}"
                             });
-
-
                         }
                         idTeachers.Add((int)t.Idteachers);
                     }
-                    ListViewTeachers.ItemsSource = co1;
                     ProgressBarTeachers2.Visibility = Visibility.Hidden;
                 }
-
-
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
-
         }
-
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-
-
-
-           /* try
+           try
             {
-                if (ListViewTeachers.SelectedItem != null)
-                {
-                    idUser = ListViewTeachers.SelectedIndex - 1;
-                    idUser = idTeachers[idUser];
-                }
-                
-
                 if (ListViewTeachers.SelectedItem != null)
                 {
                     if (ListViewTeachers.SelectedIndex != 0)
                     {
+                        var anim = (Storyboard)FindResource("AnimMessage");
+                        anim.Begin();
+                        ListBoxMessageRefresh2();
                         CardUser.Visibility = Visibility.Visible;
                         grid.Visibility = Visibility.Hidden;
 
                         using (zhirovContext db = new zhirovContext())
                         {
-                            var teachers = await db.Teachers.Where(p => p.Idteachers == idUser).ToListAsync();
+                            var teachers = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
 
                             foreach (var t in teachers)
                             {
                                 TextBlockName.Content = t.TeachersSurname + " " + t.TeachersName;
                                 firstname = t.TeachersName;
-                                
+
                                 if (!String.IsNullOrWhiteSpace(t.TeachersImage))
                                 {
                                     var myImage = new System.Windows.Controls.Image();
-                                    var stringPath = $@"{t.TeachersImage}";                                    
+                                    var stringPath = $@"{t.TeachersImage}";
 
                                     BitmapImage bitmapImage = new BitmapImage();
                                     bitmapImage.BeginInit();
@@ -575,7 +382,7 @@ namespace ElectroJournal.Pages
                                     PersonPictureUser.ProfilePicture = null;
                                     PersonPictureUser.DisplayName = $"{t.TeachersName} {t.TeachersSurname}";
                                 }
-                                ListBoxMessageRefresh2();
+                                
                                 timer2.Tick += new EventHandler(ListBoxMessageRefresh);
                                 timer2.Interval = new TimeSpan(0, 0, 1);
                                 timer2.Start();
@@ -584,6 +391,8 @@ namespace ElectroJournal.Pages
                     }
                     else if (ListViewTeachers.SelectedIndex == 0)
                     {
+                        var anim = (Storyboard)FindResource("AnimOpenLK");
+                        anim.Begin();
                         timer2.Stop();
                         CardUser.Visibility = Visibility.Hidden;
                         grid.Visibility = Visibility.Visible;
@@ -592,11 +401,9 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
-            }*/
-            
+                MessageBox.Show(ex.Message);
+            }            
         }
-
         private async void ButtonSend_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -608,7 +415,7 @@ namespace ElectroJournal.Pages
                         Chat chat = new Chat
                         {
                             TeachersFrom = (uint)Properties.Settings.Default.UserID,
-                            TeachersTo = (uint)idUser,
+                            TeachersTo = (uint)idTeachers[ListViewTeachers.SelectedIndex - 1],
                             ChatText = TextBoxMessage.Text
                         };
                         
@@ -616,6 +423,7 @@ namespace ElectroJournal.Pages
                         await db.SaveChangesAsync();                        
 
                         TextBoxMessage.Clear();
+                        checkLastM = true;
                         ListBoxMessageRefresh2();
                     }                    
                 }
@@ -623,123 +431,145 @@ namespace ElectroJournal.Pages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            
+            }            
         }
-
-        private async void ListBoxMessageRefresh(object sender, EventArgs e)
+        private async void CheckNewMess(int index)
         {
-            try 
+            try
             {
-                ObservableCollection<MessageListBox> co1 = new ObservableCollection<MessageListBox>();
-                using (zhirovContext db = new zhirovContext())
-                {
-                    var a2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idUser) ||
-                    (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idUser)).ToListAsync();
-                    
-                    foreach (var c in a2)
-                    {
-                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idUser)
-                        {
-                            co1.Add(new MessageListBox
-                            {
-                                name = firstname,
-                                text = c.ChatText,
-                                time = Convert.ToString(c.ChatDate)
-                            });
+                string lmess = "";
+                string status = "Hidden";
 
-                        }
-                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idUser)
+                using (zhirovContext db = new())
+                {
+                    Teacher? t2 = await db.Teachers.Where(t => t.Idteachers == index).FirstOrDefaultAsync();
+                    Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index) ||
+                    (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
+
+                    if (t2.TeachersStatus == 1) status = "Visible";
+                    else status = "Hidden";
+
+                    if (chat != null)
+                    {
+                        if (chat.TeachersTo == Properties.Settings.Default.UserID && chat.TeachersFrom == index)
                         {
-                            co1.Add(new MessageListBox
-                            {
-                                name = Properties.Settings.Default.FirstName,
-                                text = c.ChatText,
-                                time = Convert.ToString(c.ChatDate),
-                                hAligment = "Right",
-                                flowStack = "RightToLeft"
-                            });
+                            lmess = chat.ChatText;
+                        }
+                        else if (chat.TeachersFrom == Properties.Settings.Default.UserID && chat.TeachersTo == index)
+                        {
+                            lmess = $"Вы: {chat.ChatText}";
                         }
                     }
-                    
-                    ListBoxMessage.ItemsSource = co1;
-                    ListBoxMessage.Items.MoveCurrentToLast();
-                    ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                    else lmess = "";
+
+                    SelectedData.lastMessage = lmess;
+                    SelectedData.online = status;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }            
+            }
         }
+        private async void ListBoxMessageRefresh(object sender, EventArgs e)
+        {
+            try
+            {
+                int index = idTeachers[ListViewTeachers.SelectedIndex - 1];
+                ObservableCollection<MessageListBox> co1 = new ObservableCollection<MessageListBox>();
+                using (zhirovContext db = new zhirovContext())
+                {
+                    if (ListViewTeachers.SelectedIndex != 0)
+                    {
+                        var a2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index) ||
+                            (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)).ToListAsync();
 
+                        foreach (var c in a2)
+                        {
+                            if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)
+                            {
+                                co1.Add(new MessageListBox
+                                {
+                                    name = firstname,
+                                    text = c.ChatText,
+                                    time = Convert.ToString(c.ChatDate)
+                                });
+
+                            }
+                            else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)
+                            {
+                                co1.Add(new MessageListBox
+                                {
+                                    name = Properties.Settings.Default.FirstName,
+                                    text = c.ChatText,
+                                    time = Convert.ToString(c.ChatDate),
+                                    hAligment = "Right",
+                                    flowStack = "RightToLeft"
+                                });
+                            }
+                        }
+
+                        ListBoxMessage.ItemsSource = co1;
+
+                        if (checkLastM)
+                        {
+                            ListBoxMessage.Items.MoveCurrentToLast();
+                            ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                        }
+                        CheckNewMess(index);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private async void ListBoxMessageRefresh2()
         {
             try
             {
+                int index = idTeachers[ListViewTeachers.SelectedIndex - 1];
                 ObservableCollection<MessageListBox> co1 = new ObservableCollection<MessageListBox>();
-                //co1.Clear();
                 using (zhirovContext db = new zhirovContext())
                 {
-                    /*await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idTeachers[idUser]) ||
-                    (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idTeachers[idUser])).ForEachAsync(c =>
+                    if (ListViewTeachers.SelectedIndex != 0)
                     {
-                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idTeachers[idUser])
-                        {
-                            co1.Add(new MessageListBox
-                            {
-                                name = firstname,
-                                text = c.ChatText,
-                                time = Convert.ToString(c.ChatDate)
-                            });
-                        }
-                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idTeachers[idUser])
-                        {                            
-                            co1.Add(new MessageListBox
-                            {
-                                name = Properties.Settings.Default.FirstName,
-                                text = c.ChatText,
-                                time = Convert.ToString(c.ChatDate),
-                                hAligment = "Right",
-                                flowStack = "RightToLeft"
-                            });
-                        }
-                        
-                    });*/
+                        var c2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index) ||
+                        (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)).ToListAsync();
 
-
-                    var c2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idUser) ||
-                    (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idUser)).ToListAsync();
-
-                    foreach (var c in c2)
-                    {
-                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == idUser)
+                        foreach (var c in c2)
                         {
-                            co1.Add(new MessageListBox
+                            if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)
                             {
-                                name = firstname,
-                                text = c.ChatText,
-                                time = Convert.ToString(c.ChatDate)
-                            });
+                                co1.Add(new MessageListBox
+                                {
+                                    name = firstname,
+                                    text = c.ChatText,
+                                    time = Convert.ToString(c.ChatDate)
+                                });
+                            }
+                            else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)
+                            {
+                                co1.Add(new MessageListBox
+                                {
+                                    name = Properties.Settings.Default.FirstName,
+                                    text = c.ChatText,
+                                    time = Convert.ToString(c.ChatDate),
+                                    hAligment = "Right",
+                                    flowStack = "RightToLeft"
+                                });
+                            }
                         }
-                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == idUser)
+
+                        ListBoxMessage.ItemsSource = co1;
+
+                        if (checkLastM)
                         {
-                            co1.Add(new MessageListBox
-                            {
-                                name = Properties.Settings.Default.FirstName,
-                                text = c.ChatText,
-                                time = Convert.ToString(c.ChatDate),
-                                hAligment = "Right",
-                                flowStack = "RightToLeft"
-                            });
+                            ListBoxMessage.Items.MoveCurrentToLast();
+                            ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
                         }
                     }
-                    
-
-                    ListBoxMessage.ItemsSource = co1;
-
-                    ListBoxMessage.Items.MoveCurrentToLast();
-                    ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);;
                 }
             }
             catch (Exception ex)
@@ -747,7 +577,6 @@ namespace ElectroJournal.Pages
                 //MessageBox.Show(ex.Message);
             }
         }
-
         private void Page_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -758,22 +587,52 @@ namespace ElectroJournal.Pages
                 grid.Visibility = Visibility.Visible;
             }            
         }
-
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             timer2.Stop();
-            timer1.Stop();
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            //ListViewTeachersRefresh2();
+        }
+        private void ListBoxMessage_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                checkLastM = false;
+            }
         }
     }
 
-    public class UsersListBox
+    public class UsersListBox : NotifyPropertyChanged
     {
+        string? lMessage;
+        string? cOnline;
         public BitmapImage? image { get; set; }
         public string? imageDN { get; set; }
         public string? textFIO { get; set; }
-        public string? lastMessage { get; set; }
-    }
+        public string? online
+        {
+            get => cOnline;
 
+            set
+            {
+                cOnline = value;
+                RaisePropertyChanged("online");
+            }
+        }
+        public string? lastMessage
+        { 
+            get => lMessage; 
+
+            set
+            {
+                lMessage = value;
+                RaisePropertyChanged("lastMessage");
+            }
+
+        }
+    }
     public class MessageListBox
     {
         public string? name { get; set; }
@@ -781,5 +640,15 @@ namespace ElectroJournal.Pages
         public string? time { get; set; }
         public string? hAligment { get; set; }
         public string? flowStack { get; set; }
+    }
+    public class NotifyPropertyChanged : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

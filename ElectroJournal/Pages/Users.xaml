@@ -10,7 +10,9 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Users"
     KeyUp="Page_KeyUp"
-    mc:Ignorable="d" Unloaded="Page_Unloaded">
+    Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d">
     <Page.Resources>
         <Storyboard x:Key="AnimLoad">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
@@ -54,6 +56,58 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="AnimMessage">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CardUser" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CardUser" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-7.04">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimOpenLK">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-2.5">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
 
 
 
@@ -66,39 +120,95 @@
             Margin="20,15,0,30"
             HorizontalAlignment="Left">
 
-            <ListBox x:Name="ListViewTeachers" SelectionChanged="ListViewTeachers_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
+            <ListBox
+                x:Name="ListViewTeachers"
+                ItemsSource="{Binding datA}"
+                SelectedValue="{Binding SelectedData, Mode=TwoWay}"
+                SelectionChanged="ListViewTeachers_SelectionChanged">
+                <!--<ListBoxItem>
+                    <StackPanel Orientation="Horizontal" Width="256">
+                        <Grid>
                             <ui:PersonPicture
-                                x:Name="PersonPicture"
+                                x:Name="PersonPicture2"
                                 Width="50"
                                 Height="50"
                                 DisplayName="{Binding imageDN}"
                                 ProfilePicture="{Binding image}" />
-                            <StackPanel Orientation="Vertical" Margin="5,0,0,0">
-                                <TextBlock
+                            <Ellipse
+                                Width="12"
+                                Height="12"
+                                Margin="0,0,1,1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Fill="#FF4BB34B"
+                                Stroke="#99CCCCCC" StrokeThickness="1.5" />
+                        </Grid>
+                        <StackPanel Margin="5,0,10,0" Orientation="Vertical">
+                            <TextBlock
                                 VerticalAlignment="Center"
                                 FontSize="14"
-                                Text="{Binding textFIO}" />
-                                <TextBlock Text="{Binding lastMessage}"/>
+                                Text="asdfasdf" />
+                            <TextBlock Text="asdfasdfasfdfdfdfавпрвапрвапрвапрвапррварвапрвапрвапрdff"  />
+                        </StackPanel>
+                    </StackPanel>
+                </ListBoxItem>-->
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Grid>
+                                <ui:PersonPicture
+                                    x:Name="PersonPicture2"
+                                    Width="50"
+                                    Height="50"
+                                    DisplayName="{Binding imageDN}"
+                                    ProfilePicture="{Binding image}" />
+                                <Ellipse
+                                    Width="12"
+                                    Height="12"
+                                    Margin="0,0,1,1"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Fill="#FF4BB34B"
+                                    Stroke="#99CCCCCC"
+                                    StrokeThickness="1.5"
+                                    Visibility="{Binding online}" />
+                            </Grid>
+                            <StackPanel Margin="5,0,5,0" Orientation="Vertical">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    Text="{Binding textFIO}" 
+                                    TextWrapping="Wrap" Margin="0,2,5,0"/>
+                                <TextBlock Text="{Binding lastMessage}" TextTrimming="CharacterEllipsis" Width="185" Margin="0,3,0,0" />
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             <ProgressBar
-            x:Name="ProgressBarTeachers2"
-            Margin="122,275,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Foreground="#FF3567BC"
-            IsIndeterminate="True"
-            Style="{StaticResource MaterialDesignCircularProgressBar}"
-            Visibility="Visible" />
+                x:Name="ProgressBarTeachers2"
+                Margin="122,275,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Foreground="#FF3567BC"
+                IsIndeterminate="True"
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Visibility="Hidden" />
 
         </Grid>
-        <wpfui:Card x:Name="CardUser" Margin="320,15,15,30">
+        <wpfui:Card
+            x:Name="CardUser"
+            Margin="320,15,15,30"
+            RenderTransformOrigin="0.5,0.5">
+            <wpfui:Card.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </wpfui:Card.RenderTransform>
             <Grid>
 
                 <Grid VerticalAlignment="Top">
@@ -121,6 +231,7 @@
                     Margin="0,72,0,58"
                     Padding="2,2,2,0"
                     VerticalContentAlignment="Bottom"
+                    PreviewMouseWheel="ListBoxMessage_PreviewMouseWheel"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListBox.ItemTemplate>
@@ -190,7 +301,16 @@
             x:Name="grid"
             Margin="320,0,15,0"
             d:IsHidden="True"
+            RenderTransformOrigin="0.5,0.5"
             Visibility="Visible">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Grid.RenderTransform>
             <Grid.Effect>
                 <BlurEffect KernelType="Gaussian" Radius="0" />
             </Grid.Effect>

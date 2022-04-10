@@ -60,12 +60,7 @@ namespace ElectroJournal
             TitleBar.CloseActionOverride = CloseActionOverride;
             MenuBoard.Visibility = Visibility.Hidden;
 
-
-
-
-            //labvel.Content = new System.Net.WebClient().DownloadString("https://api.ipify.org");
-
-
+            //labvel.Content = new System.Net.WebClient().DownloadString("https://api.ipify.org"); ip-адрес 
         }
 
         SettingsControl settingsControl = new();
@@ -78,8 +73,11 @@ namespace ElectroJournal
 
         private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
+
             bool a;
             a = settingsControl.CheckTray();
+            SettingsControl sc = new();
+            var anim = (Storyboard)FindResource("AnimExitProgram");
 
             if (a)
             {
@@ -96,16 +94,20 @@ namespace ElectroJournal
             }
             else if (!a)
             {
-
                 ContentDialogExample dialog = new();
                 var result = await dialog.ShowAsync();
 
                 if (result == ContentDialogResult.Primary)
                 {
-                    foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                    anim.Begin();
+                    bool b = await sc.ExitUser();
+                    if (b || !b)
                     {
-                        process.Kill();
-                    }
+                        foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                        {
+                            process.Kill();
+                        }
+                    }                    
                 }
                 else { }                
             }
@@ -231,7 +233,6 @@ namespace ElectroJournal
                 var anim = (Storyboard)FindResource("AnimLoadLogin");
                 var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
 
-
                 using (zhirovContext db = new())
                 {
                     bool isAvalaible = await db.Database.CanConnectAsync();
@@ -266,6 +267,15 @@ namespace ElectroJournal
                                     Properties.Settings.Default.FirstName = l.TeachersName;
 
                                     Properties.Settings.Default.Save();
+
+                                    Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                                    if (teacher != null)
+                                    {
+                                        teacher.TeachersStatus = 1;
+                                    }
+
+                                    await db.SaveChangesAsync();
 
                                     NavViewMenu.Visibility = Visibility.Visible;
                                     NavViewMenuAdmin.Visibility = Visibility.Hidden;
