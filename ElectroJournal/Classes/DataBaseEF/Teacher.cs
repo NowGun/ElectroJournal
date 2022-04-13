@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectroJournal.Classes.DataBaseEF;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -13,6 +14,7 @@ namespace ElectroJournal.DataBase
             ChatTeachersToNavigations = new HashSet<Chat>();
             Journals = new HashSet<Journal>();
             Schedules = new HashSet<Schedule>();
+            Settings = new HashSet<Setting>();
             TeachersHasGroups = new HashSet<TeachersHasGroup>();
         }
 
@@ -32,6 +34,7 @@ namespace ElectroJournal.DataBase
         public virtual ICollection<Chat> ChatTeachersToNavigations { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
+        public virtual ICollection<Setting> Settings { get; set; }
         public virtual ICollection<TeachersHasGroup> TeachersHasGroups { get; set; }
     }
 }

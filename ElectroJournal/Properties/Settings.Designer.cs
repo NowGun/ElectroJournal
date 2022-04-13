@@ -178,7 +178,7 @@ namespace ElectroJournal.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.31.4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.31.5")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -218,6 +218,30 @@ namespace ElectroJournal.Properties {
             }
             set {
                 this["FirstName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowPhone {
+            get {
+                return ((bool)(this["ShowPhone"]));
+            }
+            set {
+                this["ShowPhone"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowEmail {
+            get {
+                return ((bool)(this["ShowEmail"]));
+            }
+            set {
+                this["ShowEmail"] = value;
             }
         }
     }

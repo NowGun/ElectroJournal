@@ -75,7 +75,7 @@ namespace ElectroJournal.Pages.AdminPanel
                                 ListViewTeachersRefresh();
                                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                             }
-                        }                        
+                        }       
                     }
                     else
                     {

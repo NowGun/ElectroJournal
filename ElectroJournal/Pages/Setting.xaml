@@ -7,13 +7,334 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Setting"
+    Loaded="Page_Loaded"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Storyboard x:Key="AnimOpenSave">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="StackPanelSave" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimCloseSave">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="StackPanelSave" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimOpenSyncPrivate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="stackPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="stackPanel1" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="10">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimCloseSyncPrivate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="stackPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="stackPanel1" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="10">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
 
     <Grid>
 
         <wpfui:Card Margin="20,20,20,15">
             <Grid>
+                <wpfui:DynamicScrollViewer
+                    Margin="7,0,0,122"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    HorizontalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <wpfui:CardExpander
+                            x:Name="CardExpanderDefault"
+                            Width="850"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            FontSize="18"
+                            FontWeight="Normal"
+                            Header="Настройки приложения"
+                            IsExpanded="True">
+                            <StackPanel>
+                                <StackPanel Margin="40,10,0,0" Orientation="Horizontal">
+                                    <Label
+                                        Height="35"
+                                        Padding="0,0,422.7,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Center"
+                                        Content="Выберите тему"
+                                        FontSize="14" />
+                                    <ComboBox
+                                        x:Name="ComboBoxTheme"
+                                        Width="220"
+                                        Height="35"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        FontSize="14"
+                                        SelectionChanged="ComboBoxTheme_SelectionChanged">
+                                        <ComboBoxItem Content="Светлая" />
+                                        <ComboBoxItem Content="Темная" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                                    <Label
+                                        Height="35"
+                                        Margin="40,0,0,0"
+                                        Padding="0,0,64.8,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Center"
+                                        Content="Автоматически запускать ElectroJournal после включения компьютера"
+                                        FontSize="14" />
+                                    <CheckBox
+                                        x:Name="CheckBoxAutoRun"
+                                        Width="20"
+                                        Height="20"
+                                        Padding="0,0,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        Click="CheckBox_Click"
+                                        Content="" />
+                                </StackPanel>
+                                <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                                    <Label
+                                        Height="35"
+                                        Margin="40,0,0,0"
+                                        Padding="0,0,106.1,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Center"
+                                        Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal"
+                                        FontSize="14" />
+                                    <CheckBox
+                                        x:Name="CheckBoxCollapseToTray"
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        Click="CheckBox_Click"
+                                        Content="" />
+                                </StackPanel>
+                                <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                                    <Label
+                                        Height="30"
+                                        Margin="40,0,0,0"
+                                        Padding="0,0,384.4,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Center"
+                                        Content="Включить анимацию"
+                                        FontSize="14" />
+                                    <CheckBox
+                                        x:Name="CheckBoxAnim"
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        Click="CheckBox_Click"
+                                        Content="" />
+                                </StackPanel>
+                                <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                                    <Label
+                                        Height="30"
+                                        Margin="40,0,0,0"
+                                        Padding="0,0,277.2,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        VerticalContentAlignment="Center"
+                                        Content="Запомнить логин и пароль при входе"
+                                        FontSize="14" />
+                                    <CheckBox
+                                        x:Name="CheckBoxRememberData"
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        Click="CheckBox_Click"
+                                        Content="" />
+                                </StackPanel>
+                            </StackPanel>
+                        </wpfui:CardExpander>
+                        <wpfui:CardExpander
+                            x:Name="CardExpanderPrivate"
+                            Width="850"
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Expanded="CardExpanderPrivate_Expanded"
+                            FontSize="18"
+                            FontWeight="Normal"
+                            Header="Настройки приватности">
+                            <Grid>
+                                <StackPanel x:Name="stackPanel1">
+                                    <StackPanel.Effect>
+                                        <BlurEffect Radius="0" />
+                                    </StackPanel.Effect>
+                                    <StackPanel x:Name="stackPanel2">
+                                        <!--<Label
+                                Width="260"
+                                Height="40"
+                                Margin="0,15,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                VerticalContentAlignment="Center"
+                                Content="Настройки приватности"
+                                FontFamily="Segoe UI"
+                                FontSize="18"
+                                FontWeight="Bold" />-->
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label
+                                                Height="30"
+                                                Margin="40,0,0,0"
+                                                Padding="0,0,334,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                VerticalContentAlignment="Center"
+                                                Content="Показывать номер телефона"
+                                                FontSize="14" />
+                                            <CheckBox
+                                                x:Name="CheckBoxShowPhone"
+                                                Width="20"
+                                                Height="20"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Click="CheckBoxDB_Click"
+                                                Content="" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                                            <Label
+                                                Height="30"
+                                                Margin="40,0,0,0"
+                                                Padding="0,0,403.5,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                VerticalContentAlignment="Center"
+                                                Content="Показывать почту"
+                                                FontSize="14" />
+                                            <CheckBox
+                                                x:Name="CheckBoxShowEmail"
+                                                Width="20"
+                                                Height="20"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Click="CheckBoxDB_Click"
+                                                Content="" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel
+                                    x:Name="stackPanel"
+                                    Margin="0,0,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Opacity="0"
+                                    Orientation="Horizontal">
+                                    <ProgressBar
+                                        x:Name="ProgressBar"
+                                        Foreground="#FF3567BC"
+                                        IsIndeterminate="True"
+                                        Style="{StaticResource MaterialDesignCircularProgressBar}" />
+                                    <Label Margin="10,0,0,0" Content="Синхронизация данных" />
+                                </StackPanel>
+
+                            </Grid>
+
+                        </wpfui:CardExpander>
+                        <!--<Label
+                            Width="260"
+                            Height="40"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            VerticalContentAlignment="Center"
+                            Content="Настройки приложения"
+                            FontFamily="Segoe UI"
+                            FontSize="18"
+                            FontWeight="Bold" />
+
+                        <Grid>
+
+                        </Grid>-->
+                    </StackPanel>
+                </wpfui:DynamicScrollViewer>
+                <StackPanel
+                    x:Name="StackPanelSave"
+                    Margin="0,0,10,10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Opacity="0"
+                    Orientation="Horizontal">
+                    <ProgressBar
+                        x:Name="ProgressBarTeachers"
+                        Foreground="#FF3567BC"
+                        IsIndeterminate="True"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}" />
+                    <Label
+                        Margin="10,0,0,0"
+                        Padding="0,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="Сохранение данных, пожалуйста подождите"
+                        FontSize="14" />
+                </StackPanel>
                 <Button
                     x:Name="ButtonOpenUpdater"
                     Width="200"
@@ -46,93 +367,12 @@
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Content="Версия 0.31.5 от 11.04.2022"
+                    Content="Версия 0.31.6 от 14.04.2022"
                     FontSize="14" />
-                <Label
-                    Height="35"
-                    Margin="27,112,667,397"
-                    Padding="10,0,0,4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Автоматически запускать ElectroJournal после включения компьютера"
-                    FontSize="14" />
-                <Label
-                    Height="35"
-                    Margin="27,167,0,0"
-                    Padding="10,0,0,4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="При нажатии кнопки &quot;Закрыть&quot; сворачивать окно ElectroJournal"
-                    FontSize="14" />
-                <CheckBox
-                    x:Name="CheckBoxCollapseToTray"
-                    Width="20"
-                    Height="20"
-                    Margin="547,174,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Click="CheckBox_Click"
-                    Content="" />
-                <CheckBox
-                    x:Name="CheckBoxAutoRun"
-                    Width="20"
-                    Height="20"
-                    Margin="547,119,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Click="CheckBox_Click"
-                    Content="" />
-                <Label
-                    Height="35"
-                    Margin="27,57,674,452"
-                    Padding="10,0,0,4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Выберите тему"
-                    FontSize="14" />
-                <ComboBox
-                    x:Name="ComboBoxTheme"
-                    Width="220"
-                    Height="35"
-                    Margin="547,57,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    FontSize="14"
-                    SelectionChanged="ComboBoxTheme_SelectionChanged">
-                    <ComboBoxItem Content="Светлая" />
-                    <ComboBoxItem Content="Темная" />
-                </ComboBox>
-                <Label
-                    Height="30"
-                    Margin="27,222,0,0"
-                    Padding="10,0,0,4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Включить анимацию"
-                    FontSize="14" />
-                <CheckBox
-                    x:Name="CheckBoxAnim"
-                    Width="20"
-                    Height="20"
-                    Margin="547,227,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Click="CheckBox_Click"
-                    Content="" />
                 <Label
                     x:Name="LabelIpAddress"
                     Height="35"
-                    Margin="187,0,0,89"
+                    Margin="187,0,0,56"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     VerticalContentAlignment="Center"
@@ -142,7 +382,7 @@
                     x:Name="ButtonChangeBD"
                     Width="150"
                     Height="35"
-                    Margin="307,0,0,91"
+                    Margin="307,0,0,58"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     VerticalContentAlignment="Center"
@@ -152,44 +392,16 @@
                     Style="{StaticResource WPFUIButtonStandard}" />
                 <Label
                     Height="35"
-                    Margin="7,0,0,89"
+                    Margin="7,0,0,56"
                     Padding="10,0,0,4"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     VerticalContentAlignment="Center"
                     Content="Ip-адрес базы данных: "
                     FontSize="14" />
-                <Label
-                    Width="260"
-                    Height="40"
-                    Margin="7,12,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Настройки приложения"
-                    FontFamily="Segoe UI"
-                    FontSize="18"
-                    FontWeight="Bold" />
-                <Label
-                    Height="30"
-                    Margin="27,272,0,0"
-                    Padding="10,0,0,4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Запомнить логин и пароль при входе"
-                    FontSize="14" />
-                <CheckBox
-                    x:Name="CheckBoxRememberData"
-                    Width="20"
-                    Height="20"
-                    Margin="547,277,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Center"
-                    Click="CheckBox_Click"
-                    Content="" />
+
+
+
 
             </Grid>
         </wpfui:Card>

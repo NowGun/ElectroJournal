@@ -1,4 +1,5 @@
 ﻿using System;
+using ElectroJournal.Classes.DataBaseEF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -31,6 +32,7 @@ namespace ElectroJournal.DataBase
         public virtual DbSet<Periodclass> Periodclasses { get; set; }
         public virtual DbSet<Requestcabinet> Requestcabinets { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Studyperiod> Studyperiods { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
@@ -624,6 +626,33 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.WeekdayIdweekday)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_schedule_weekday1");
+            });
+
+            modelBuilder.Entity<Setting>(entity =>
+            {
+                entity.HasKey(e => e.Idsettings)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("settings");
+
+                entity.HasIndex(e => e.TeachersIdteachers, "fk_settings_teachers1_idx");
+
+                entity.HasIndex(e => e.Idsettings, "idsettings_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Idsettings).HasColumnName("idsettings");
+
+                entity.Property(e => e.SettingsEmail).HasColumnName("settings_email");
+
+                entity.Property(e => e.SettingsPhone).HasColumnName("settings_phone");
+
+                entity.Property(e => e.TeachersIdteachers).HasColumnName("teachers_idteachers");
+
+                entity.HasOne(d => d.TeachersIdteachersNavigation)
+                    .WithMany(p => p.Settings)
+                    .HasForeignKey(d => d.TeachersIdteachers)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_settings_teachers1");
             });
 
             modelBuilder.Entity<Student>(entity =>

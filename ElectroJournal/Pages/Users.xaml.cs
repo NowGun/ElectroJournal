@@ -46,6 +46,7 @@ namespace ElectroJournal.Pages
             LoadData();
             ListViewTeachersRefresh();
             ListViewTeachers.SelectedIndex = 0;
+            ApplyBackgroundEffect();
         }
 
         public System.Windows.Threading.DispatcherTimer timer2 = new();
@@ -53,6 +54,7 @@ namespace ElectroJournal.Pages
         private static string? path;
         private string? firstname;
         private bool checkLastM = true;
+        private bool checkBorder = true;
 
         public ObservableCollection<UsersListBox> datA { get; set; }
         public UsersListBox SelectedData { get; set; }
@@ -144,6 +146,7 @@ namespace ElectroJournal.Pages
             SettingsControl sc = new();
 
             sc.ExitUser();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).isEntry = false;
             ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
             ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
             sc.CompletionLogin();
@@ -263,11 +266,11 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                datA.Clear();
-                idTeachers.Clear();
+                var anim = (Storyboard)FindResource("AnimLoadTeachers");
+                var anim2 = (Storyboard)FindResource("AnimLoadTeachersSuc");
+                anim.Begin();
 
-                string status = "Hidden";
-                string lmess = "";
+                datA.Clear();
 
                 datA.Add(new UsersListBox
                 {
@@ -275,10 +278,13 @@ namespace ElectroJournal.Pages
                     textFIO = $"Моя страница"
                 });
 
+                idTeachers.Clear();
+
+                string status = "Hidden";
+                string lmess = "";
+
                 using (zhirovContext db = new())
                 {
-                    ProgressBarTeachers2.Visibility = Visibility.Visible;
-
                     var t2 = await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ToListAsync();
 
                     foreach (var t in t2)
@@ -333,8 +339,8 @@ namespace ElectroJournal.Pages
                         }
                         idTeachers.Add((int)t.Idteachers);
                     }
-                    ProgressBarTeachers2.Visibility = Visibility.Hidden;
                 }
+                anim2.Begin();
             }
             catch (Exception ex)
             {
@@ -344,16 +350,23 @@ namespace ElectroJournal.Pages
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
            try
-            {
+           {
+                timer2.Stop();
+
                 if (ListViewTeachers.SelectedItem != null)
                 {
                     if (ListViewTeachers.SelectedIndex != 0)
                     {
+                        var anim3 = (Storyboard)FindResource("AnimLoadMessagesSuc");
+                        var anim2 = (Storyboard)FindResource("AnimLoadMessages");
                         var anim = (Storyboard)FindResource("AnimMessage");
                         anim.Begin();
+                        anim2.Begin();
+
                         ListBoxMessageRefresh2();
                         CardUser.Visibility = Visibility.Visible;
                         grid.Visibility = Visibility.Hidden;
+                        checkLastM = true;
 
                         using (zhirovContext db = new zhirovContext())
                         {
@@ -363,6 +376,7 @@ namespace ElectroJournal.Pages
                             {
                                 TextBlockName.Content = t.TeachersSurname + " " + t.TeachersName;
                                 firstname = t.TeachersName;
+                                LoadUserInfo();
 
                                 if (!String.IsNullOrWhiteSpace(t.TeachersImage))
                                 {
@@ -384,10 +398,11 @@ namespace ElectroJournal.Pages
                                 }
                                 
                                 timer2.Tick += new EventHandler(ListBoxMessageRefresh);
-                                timer2.Interval = new TimeSpan(0, 0, 1);
+                                timer2.Interval = new TimeSpan(0, 0, 0, 1);
                                 timer2.Start();
                             }
                         }
+                        anim3.Begin();
                     }
                     else if (ListViewTeachers.SelectedIndex == 0)
                     {
@@ -401,7 +416,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "ListViewTeachers_SelectionChanged");
             }            
         }
         private async void ButtonSend_Click(object sender, RoutedEventArgs e)
@@ -569,7 +584,7 @@ namespace ElectroJournal.Pages
                             ListBoxMessage.Items.MoveCurrentToLast();
                             ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
                         }
-                    }
+                    }                    
                 }
             }
             catch (Exception ex)
@@ -583,6 +598,7 @@ namespace ElectroJournal.Pages
             {
                 ListViewTeachers.SelectedIndex = 0;
                 timer2.Stop();
+                SelectedData.lastMessage = "";
                 CardUser.Visibility = Visibility.Hidden;
                 grid.Visibility = Visibility.Visible;
             }            
@@ -600,6 +616,63 @@ namespace ElectroJournal.Pages
             if (e.Delta > 0)
             {
                 checkLastM = false;
+            }
+        }
+
+        private async void LoadUserInfo()
+        {
+            try
+            {
+                using (zhirovContext db = new zhirovContext())
+                {
+                    var setting = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
+
+                    foreach (var s in setting)
+                    {
+                        Teacher? teacher = await db.Teachers.Where(t => t.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
+
+                        if (s.SettingsPhone == 1) labelPhoneUser.Content = teacher.TeachersPhone;
+                        else labelPhoneUser.Content = "Скрыт";
+
+                        if (s.SettingsEmail == 1) LabelMailUser.Content = teacher.TeachersMail;
+                        else LabelMailUser.Content = "Скрыт";
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message, "LoadUserInfo");
+            }
+        }
+
+        private void PersonPictureUser_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (checkBorder)
+            {
+                var anim = (Storyboard)FindResource("AnimOpenUserInfo");
+                anim.Begin();
+                checkBorder = false;
+            }
+            else
+            {
+                var anim = (Storyboard)FindResource("AnimCloseUserInformation");
+                anim.Begin();
+                checkBorder = true;
+            }            
+        }
+
+        private void ApplyBackgroundEffect()
+        {
+            int theme = Properties.Settings.Default.Theme;
+            bool _isDarkTheme = theme == 1;
+
+            if (_isDarkTheme)
+            {
+                BorderUserInfo.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#2D2D2D");
+            }
+            else
+            {
+                BorderUserInfo.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FBFBFB");
             }
         }
     }

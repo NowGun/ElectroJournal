@@ -1,5 +1,7 @@
 ﻿using ElectroJournal.Classes;
+using ElectroJournal.DataBase;
 using ElectroJournal.Windows;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -27,6 +30,9 @@ namespace ElectroJournal.Pages
         public Setting()
         {
             InitializeComponent();
+            
+            
+
             LoadApp();            
         }
 
@@ -51,8 +57,43 @@ namespace ElectroJournal.Pages
             CheckBoxRememberData.IsChecked = rememberLogin;
             CheckBoxAnim.IsChecked = animation;
             CheckBoxAutoRun.IsChecked = autorun;
-            CheckBoxCollapseToTray.IsChecked = tray;
+            CheckBoxCollapseToTray.IsChecked = tray;           
             LabelIpAddress.Content = server;
+        }
+
+        private async void LoadSettingDB()
+        {
+            try
+            {
+                var anim2 = (Storyboard)FindResource("AnimCloseSyncPrivate");
+                using (zhirovContext db = new())
+                {
+                    Classes.DataBaseEF.Setting? s = await db.Settings.FirstOrDefaultAsync(s => s.TeachersIdteachers == Properties.Settings.Default.UserID);
+
+                    if (s != null)
+                    {
+                        if (s.SettingsPhone == 1) Properties.Settings.Default.ShowPhone = true;
+                        else Properties.Settings.Default.ShowPhone = false;
+                        
+                        if (s.SettingsEmail == 1) Properties.Settings.Default.ShowEmail = true;
+                        else Properties.Settings.Default.ShowEmail = false;
+
+                        Properties.Settings.Default.Save();
+                    }
+                }
+
+                bool showPhone = Properties.Settings.Default.ShowPhone;
+                bool showEmail = Properties.Settings.Default.ShowEmail;
+
+                CheckBoxShowPhone.IsChecked = showPhone;
+                CheckBoxShowEmail.IsChecked = showEmail;
+
+                anim2.Begin();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "LoadSettingDB");
+            }
         }
 
         private void SaveApp()
@@ -62,6 +103,8 @@ namespace ElectroJournal.Pages
             Properties.Settings.Default.AutoRun = CheckBoxAutoRun.IsChecked ?? false;
             Properties.Settings.Default.Tray = CheckBoxCollapseToTray.IsChecked ?? false;
             Properties.Settings.Default.RememberData = CheckBoxRememberData.IsChecked ?? false;
+            Properties.Settings.Default.ShowPhone = CheckBoxShowPhone.IsChecked ?? false;
+            Properties.Settings.Default.ShowEmail = CheckBoxShowEmail.IsChecked ?? false;
 
             Properties.Settings.Default.Save();
 
@@ -110,6 +153,54 @@ namespace ElectroJournal.Pages
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             isLoaded = false;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (((MainWindow)System.Windows.Application.Current.MainWindow).isEntry)
+            {
+                CardExpanderPrivate.Visibility = Visibility.Visible;
+            }
+            else CardExpanderPrivate.Visibility = Visibility.Hidden;
+        }
+
+        private void CheckBoxDB_Click(object sender, RoutedEventArgs e)
+        {
+            SaveDataDB();
+        }
+
+        private async void SaveDataDB()
+        {
+            var anim = (Storyboard)FindResource("AnimOpenSave");
+            var anim2 = (Storyboard)FindResource("AnimCloseSave");
+            anim.Begin();
+            Properties.Settings.Default.ShowPhone = CheckBoxShowPhone.IsChecked ?? false;
+            Properties.Settings.Default.ShowEmail = CheckBoxShowEmail.IsChecked ?? false;
+
+            Properties.Settings.Default.Save();
+
+            using (zhirovContext db = new zhirovContext())
+            {
+                Classes.DataBaseEF.Setting? setting = await db.Settings.FirstOrDefaultAsync(s => s.TeachersIdteachers == Properties.Settings.Default.UserID);                
+
+                if (setting != null)
+                {
+                    setting.SettingsEmail = (sbyte)((bool)CheckBoxShowEmail.IsChecked ? 1 : 0);
+                    setting.SettingsPhone = (sbyte)((bool)CheckBoxShowPhone.IsChecked ? 1 : 0);
+
+                    await db.SaveChangesAsync();
+
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                }
+            }
+            anim2.Begin();
+        }
+
+        private void CardExpanderPrivate_Expanded(object sender, RoutedEventArgs e)
+        {
+            var anim = (Storyboard)FindResource("AnimOpenSyncPrivate");            
+            anim.Begin();
+            LoadSettingDB();
         }
     }
 }

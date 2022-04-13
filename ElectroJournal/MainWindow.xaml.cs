@@ -68,7 +68,7 @@ namespace ElectroJournal
         
         private readonly NotificationManager _notificationManager = new();
         public System.Windows.Threading.DispatcherTimer timer2 = new();
-
+        public bool isEntry = false;
         
 
         private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
@@ -281,6 +281,7 @@ namespace ElectroJournal
                                     NavViewMenuAdmin.Visibility = Visibility.Hidden;
                                     RectangleBackToMenu.Visibility = Visibility.Hidden;
 
+                                    isEntry = true;
                                     FillComboBoxGroups();
                                     //ComboBoxGroup.SelectedIndex = 0;
                                     Frame.Navigate(new Pages.Journal());
@@ -407,7 +408,7 @@ namespace ElectroJournal
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
-        }        
+        }
 
         public void AnimLog(bool a)
         {

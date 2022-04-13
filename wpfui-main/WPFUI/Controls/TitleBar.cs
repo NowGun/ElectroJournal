@@ -470,36 +470,43 @@ namespace WPFUI.Controls
 
         private void RootGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton != MouseButtonState.Pressed || ParentWindow == null) return;
-
-            // prevent firing from double clicking when the mouse never actually moved
-            User32.GetCursorPos(out var currentMousePos);
-
-            if (currentMousePos.X == _doubleClickPoint.X && currentMousePos.Y == _doubleClickPoint.Y) return;
-
-            if (IsMaximized)
+            try
             {
-                var screenPoint = PointToScreen(e.MouseDevice.GetPosition(this));
-                screenPoint.X /= Common.Dpi.SystemDpiXScale();
-                screenPoint.Y /= Common.Dpi.SystemDpiYScale();
+                if (e.LeftButton != MouseButtonState.Pressed || ParentWindow == null) return;
 
-                // TODO: refine the Left value to be more accurate
-                // - This calculation is good enough using the center
-                //   of the titlebar, however this isn't quite accurate for
-                //   how the OS operates.
-                // - It should be set as a % (e.g. screen X / maximized width),
-                //   then offset from the left to line up more naturally.
-                ParentWindow.Left = screenPoint.X - (ParentWindow.RestoreBounds.Width * 0.5);
-                ParentWindow.Top = screenPoint.Y;
+                // prevent firing from double clicking when the mouse never actually moved
+                User32.GetCursorPos(out var currentMousePos);
 
-                // style has to be quickly swapped to avoid restore animation delay
-                var style = ParentWindow.WindowStyle;
-                ParentWindow.WindowStyle = WindowStyle.None;
-                ParentWindow.WindowState = WindowState.Normal;
-                ParentWindow.WindowStyle = style;
+                if (currentMousePos.X == _doubleClickPoint.X && currentMousePos.Y == _doubleClickPoint.Y) return;
+
+                if (IsMaximized)
+                {
+                    var screenPoint = PointToScreen(e.MouseDevice.GetPosition(this));
+                    screenPoint.X /= Common.Dpi.SystemDpiXScale();
+                    screenPoint.Y /= Common.Dpi.SystemDpiYScale();
+
+                    // TODO: refine the Left value to be more accurate
+                    // - This calculation is good enough using the center
+                    //   of the titlebar, however this isn't quite accurate for
+                    //   how the OS operates.
+                    // - It should be set as a % (e.g. screen X / maximized width),
+                    //   then offset from the left to line up more naturally.
+                    ParentWindow.Left = screenPoint.X - (ParentWindow.RestoreBounds.Width * 0.5);
+                    ParentWindow.Top = screenPoint.Y;
+
+                    // style has to be quickly swapped to avoid restore animation delay
+                    var style = ParentWindow.WindowStyle;
+                    ParentWindow.WindowStyle = WindowStyle.None;
+                    ParentWindow.WindowState = WindowState.Normal;
+                    ParentWindow.WindowStyle = style;
+                }
+
+                ParentWindow.DragMove();
             }
+            catch (Exception ex)
+            {
 
-            ParentWindow.DragMove();
+            }            
         }
 
         private void ParentWindow_StateChanged(object sender, EventArgs e)
