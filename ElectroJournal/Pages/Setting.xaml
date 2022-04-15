@@ -238,15 +238,15 @@
                                 FontFamily="Segoe UI"
                                 FontSize="18"
                                 FontWeight="Bold" />-->
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                             <Label
                                                 Height="30"
-                                                Margin="40,0,0,0"
+                                                Margin="40,0,28.5,0"
                                                 Padding="0,0,334,0"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Top"
                                                 VerticalContentAlignment="Center"
-                                                Content="Показывать номер телефона"
+                                                Content="Скрыть номер телефона"
                                                 FontSize="14" />
                                             <CheckBox
                                                 x:Name="CheckBoxShowPhone"
@@ -262,12 +262,12 @@
                                         <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
                                             <Label
                                                 Height="30"
-                                                Margin="40,0,0,0"
+                                                Margin="40,0,28.5,0"
                                                 Padding="0,0,403.5,0"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Top"
                                                 VerticalContentAlignment="Center"
-                                                Content="Показывать почту"
+                                                Content="Скрыть почту"
                                                 FontSize="14" />
                                             <CheckBox
                                                 x:Name="CheckBoxShowEmail"

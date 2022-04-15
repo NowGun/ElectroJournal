@@ -496,7 +496,7 @@
         <wpfui:Card
             x:Name="CardUser"
             Margin="320,15,15,30"
-            RenderTransformOrigin="0.5,0.5">
+            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
             <wpfui:Card.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -520,7 +520,7 @@
                     </ListBox.Effect>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="10,0,10,0">
+                            <Grid Margin="15,0,15,0">
                                 <StackPanel FlowDirection="{Binding flowStack}" Orientation="Horizontal">
                                     <Label
                                         HorizontalAlignment="{Binding hAligment}"
@@ -544,7 +544,7 @@
                                 </StackPanel>
                                 <StackPanel Margin="0,25,0,0" Orientation="Vertical">
                                     <TextBlock
-                                        Margin="15,0,0,0"
+                                        Margin="{Binding margin}"
                                         HorizontalAlignment="{Binding hAligment}"
                                         FontSize="16"
                                         Text="{Binding text}"
@@ -669,7 +669,7 @@
             x:Name="grid"
             Margin="320,0,15,0"
             RenderTransformOrigin="0.5,0.5"
-            Visibility="Visible" d:IsHidden="True">
+            Visibility="Visible">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -682,7 +682,7 @@
                 <BlurEffect KernelType="Gaussian" Radius="0" />
             </Grid.Effect>
 
-            <wpfui:Card Margin="0,20,0,385" VerticalAlignment="Top">
+            <wpfui:Card Margin="0,14,0,0" VerticalAlignment="Top">
                 <Grid
                     Margin="-11,0,0,0"
                     HorizontalAlignment="Stretch"
@@ -716,7 +716,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="id: 0"
-                        FontSize="14" />
+                        FontSize="14" Visibility="Hidden" />
                     <TextBlock
                         x:Name="TextBlockFIO1"
                         Width="270"
@@ -766,7 +766,7 @@
 
             </wpfui:Card>
 
-            <wpfui:Card Margin="0,260,0,45" VerticalAlignment="Stretch">
+            <wpfui:Card Margin="0,275,0,30">
                 <Grid
                     Margin="-10,0,0,0"
                     HorizontalAlignment="Stretch"
@@ -793,9 +793,9 @@
                     <Label
                         Width="100"
                         Height="35"
-                        Margin="57,0,0,0"
+                        Margin="57,127,0,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Top"
                         VerticalContentAlignment="Center"
                         Content="Почта:"
                         FontSize="16" />
@@ -803,9 +803,9 @@
                         x:Name="TextBoxMail"
                         Width="185"
                         Height="35"
-                        Margin="157,0,0,0"
+                        Margin="157,127,0,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Top"
                         PreviewTextInput="TextBoxMail_PreviewTextInput"
                         Text="pochta@gmail.com"
                         TextWrapping="Wrap" />

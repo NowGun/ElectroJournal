@@ -55,6 +55,7 @@ namespace ElectroJournal.Pages
         private string? firstname;
         private bool checkLastM = true;
         private bool checkBorder = true;
+        private bool isPressed = false;
 
         public ObservableCollection<UsersListBox> datA { get; set; }
         public UsersListBox SelectedData { get; set; }
@@ -62,6 +63,8 @@ namespace ElectroJournal.Pages
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             ProgressBar.Visibility = Visibility.Visible;
+            ButtonSave.IsEnabled = false;
+            
             using (zhirovContext db = new zhirovContext())
             {
                 Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
@@ -87,6 +90,7 @@ namespace ElectroJournal.Pages
                                     await client.UploadAsync(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
                                     client.Disconnect();
                                     client.Dispose();
+                                    isPressed = true;
                                     LoadData();
                                     ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
                                 }
@@ -100,6 +104,7 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
+            ButtonSave.IsEnabled = true;
             ProgressBar.Visibility = Visibility.Hidden;
         }
         private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
@@ -160,6 +165,23 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).animLabel = true;
             ((MainWindow)Application.Current.MainWindow).AnimLog(true);
         }
+        public ImageSource GetImageUser(string path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                var stringPath = $@"{path}";
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                bitmapImage.EndInit();
+
+                return bitmapImage;
+            }
+            return null;
+        }
         private async void LoadData()
         {
             try
@@ -177,8 +199,6 @@ namespace ElectroJournal.Pages
                     if (!String.IsNullOrWhiteSpace(teachers.TeachersImage))
                     {
                         LabelDeletePhoto.Visibility = Visibility.Visible;
-                        var myImage = new System.Windows.Controls.Image();
-
                         var stringPath = $@"{teachers.TeachersImage}";
 
                         BitmapImage bitmapImage = new BitmapImage();
@@ -189,7 +209,11 @@ namespace ElectroJournal.Pages
                         bitmapImage.EndInit();
                         PersonPicture.ProfilePicture = bitmapImage;
 
-                        ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
+                        if (isPressed)
+                        {
+                            ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
+                            isPressed = false;
+                        }                        
                     }
                     else
                     {
@@ -210,7 +234,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "LoadData");
             }            
         }
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -416,6 +440,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
+                timer2.Stop();
                 MessageBox.Show(ex.Message, "ListViewTeachers_SelectionChanged");
             }            
         }
@@ -507,6 +532,7 @@ namespace ElectroJournal.Pages
                                 {
                                     name = firstname,
                                     text = c.ChatText,
+                                    margin = "15,0,0,0",
                                     time = Convert.ToString(c.ChatDate)
                                 });
 
@@ -518,6 +544,7 @@ namespace ElectroJournal.Pages
                                     name = Properties.Settings.Default.FirstName,
                                     text = c.ChatText,
                                     time = Convert.ToString(c.ChatDate),
+                                    margin = "300,0,0,0",
                                     hAligment = "Right",
                                     flowStack = "RightToLeft"
                                 });
@@ -537,7 +564,8 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                timer2.Stop();
+                MessageBox.Show(ex.Message, "ListBoxMessageRefresh");
             }
         }
         private async void ListBoxMessageRefresh2()
@@ -561,6 +589,7 @@ namespace ElectroJournal.Pages
                                 {
                                     name = firstname,
                                     text = c.ChatText,
+                                    margin = "15,0,0,0",
                                     time = Convert.ToString(c.ChatDate)
                                 });
                             }
@@ -572,6 +601,7 @@ namespace ElectroJournal.Pages
                                     text = c.ChatText,
                                     time = Convert.ToString(c.ChatDate),
                                     hAligment = "Right",
+                                    margin = "300,0,0,0",
                                     flowStack = "RightToLeft"
                                 });
                             }
@@ -618,7 +648,6 @@ namespace ElectroJournal.Pages
                 checkLastM = false;
             }
         }
-
         private async void LoadUserInfo()
         {
             try
@@ -644,7 +673,6 @@ namespace ElectroJournal.Pages
                 MessageBox.Show(ex.Message, "LoadUserInfo");
             }
         }
-
         private void PersonPictureUser_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (checkBorder)
@@ -660,7 +688,6 @@ namespace ElectroJournal.Pages
                 checkBorder = true;
             }            
         }
-
         private void ApplyBackgroundEffect()
         {
             int theme = Properties.Settings.Default.Theme;
@@ -713,6 +740,7 @@ namespace ElectroJournal.Pages
         public string? time { get; set; }
         public string? hAligment { get; set; }
         public string? flowStack { get; set; }
+        public string? margin { get; set; }
     }
     public class NotifyPropertyChanged : INotifyPropertyChanged
     {

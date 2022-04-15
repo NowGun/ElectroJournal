@@ -72,11 +72,11 @@ namespace ElectroJournal.Pages
 
                     if (s != null)
                     {
-                        if (s.SettingsPhone == 1) Properties.Settings.Default.ShowPhone = true;
-                        else Properties.Settings.Default.ShowPhone = false;
+                        if (s.SettingsPhone == 1) Properties.Settings.Default.ShowPhone = false;
+                        else Properties.Settings.Default.ShowPhone = true;
                         
-                        if (s.SettingsEmail == 1) Properties.Settings.Default.ShowEmail = true;
-                        else Properties.Settings.Default.ShowEmail = false;
+                        if (s.SettingsEmail == 1) Properties.Settings.Default.ShowEmail = false;
+                        else Properties.Settings.Default.ShowEmail = true;
 
                         Properties.Settings.Default.Save();
                     }
@@ -185,8 +185,8 @@ namespace ElectroJournal.Pages
 
                 if (setting != null)
                 {
-                    setting.SettingsEmail = (sbyte)((bool)CheckBoxShowEmail.IsChecked ? 1 : 0);
-                    setting.SettingsPhone = (sbyte)((bool)CheckBoxShowPhone.IsChecked ? 1 : 0);
+                    setting.SettingsEmail = (sbyte)((bool)CheckBoxShowEmail.IsChecked ? 0 : 1);
+                    setting.SettingsPhone = (sbyte)((bool)CheckBoxShowPhone.IsChecked ? 0 : 1);
 
                     await db.SaveChangesAsync();
 

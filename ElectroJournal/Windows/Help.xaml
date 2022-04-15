@@ -23,7 +23,6 @@
         <Storyboard x:Key="AnimShowLoading" />
     </Window.Resources>
     <Grid>
-
         <wpfui:TitleBar
             x:Name="TitleBar"
             Title="Отчет о баге"
@@ -35,25 +34,130 @@
             ShowMinimize="False" />
 
         <wpfui:Snackbar
-                x:Name="RootSnackbar"
-                Timeout="3000" Margin="339,0,235,19" FontSize="16" />
+            x:Name="RootSnackbar"
+            Margin="339,0,235,19"
+            FontSize="16"
+            Timeout="3000" />
 
         <Grid Margin="305,48,40,19">
-            <RichTextBox x:Name="RRTBname" Margin="36,129,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="125" Width="600"/>
-            <Label Content="Опишите проблему" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
-            <Button x:Name="ButtonSend" Style="{DynamicResource WPFUIButtonAccent}" Content="Отправить" HorizontalAlignment="Right" Margin="0,0,19,10" VerticalAlignment="Bottom" Height="37" Width="157" FontSize="14" Click="ButtonSend_Click"/>
-            <Label Content="Добавить файл" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
-            <TextBox x:Name="TextBoxPath" HorizontalAlignment="Left" Margin="249,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Height="35"/>
-            <Button x:Name="ButtonBrowser" Style="{DynamicResource WPFUIButtonStandard}" Content="Обзор..." HorizontalAlignment="Left" Margin="561,322,0,0" VerticalAlignment="Top" Height="35" Width="75" FontSize="14" Click="ButtonBrowser_Click"/>
-            <Label Content="Путь" HorizontalAlignment="Left" Margin="210,327,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Normal"/>
-            <ProgressBar x:Name="ProgressBarSend" Margin="27,0,188,23" IsIndeterminate="True" VerticalAlignment="Bottom" Visibility="Hidden" />
-            <Label Content="Заголовок" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Normal"/>
-            <TextBox HorizontalAlignment="Left" Margin="36,43,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="600"/>
-            <Rectangle HorizontalAlignment="Left" Height="150" Margin="36,309,0,0" Stroke="#FFCECECE" VerticalAlignment="Top" Width="150" StrokeThickness="1" RadiusX="8" RadiusY="8"/>
+            <RichTextBox
+                x:Name="RRTBname"
+                Width="600"
+                Height="125"
+                Margin="36,129,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" />
+            <Label
+                Margin="10,96,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Опишите проблему"
+                FontSize="18"
+                FontWeight="Normal" />
+            <Button
+                x:Name="ButtonSend"
+                Width="157"
+                Height="37"
+                Margin="0,0,19,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="ButtonSend_Click"
+                Content="Отправить"
+                FontSize="14"
+                Style="{DynamicResource WPFUIButtonAccent}" />
+            <Label
+                Margin="10,276,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Добавить фото"
+                FontSize="18"
+                FontWeight="Normal" />
+            <TextBox
+                x:Name="TextBoxPath"
+                Width="307"
+                Height="35"
+                Margin="249,322,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap" />
+            <Button
+                x:Name="ButtonBrowser"
+                Width="75"
+                Height="35"
+                Margin="561,322,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="ButtonBrowser_Click"
+                Content="Обзор..."
+                FontSize="14"
+                Style="{DynamicResource WPFUIButtonStandard}" />
+            <Label
+                Margin="210,327,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Путь"
+                FontSize="16"
+                FontWeight="Normal" />
+            <ProgressBar
+                x:Name="ProgressBarSend"
+                Margin="27,0,188,23"
+                VerticalAlignment="Bottom"
+                IsIndeterminate="True"
+                Visibility="Hidden" />
+            <Label
+                Margin="10,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Заголовок"
+                FontSize="18"
+                FontWeight="Normal" />
+            <TextBox
+                Width="600"
+                Margin="36,43,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="TextBox"
+                TextWrapping="Wrap" />
+            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,313,425,71"/>
         </Grid>
-        <wpfui:SearchBox Placeholder="Поиск" Margin="20,53,730,515" Height="35" />
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,143,730,19"/>
-        <ComboBox HorizontalAlignment="Left" Margin="20,103,0,0" VerticalAlignment="Top" Width="250" Height="35"/>
+        <wpfui:SearchBox
+            Height="35"
+            Margin="20,53,730,515"
+            Placeholder="Поиск" />
+        <ListBox
+            x:Name="ListBoxBugs"
+            Margin="20,143,730,19"
+            ItemsSource="{Binding datA}"
+            SelectedValue="{Binding SelectedData, Mode=TwoWay}"
+            VirtualizingPanel.ScrollUnit="Pixel">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{Binding btitle}"
+                                TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="{Binding bstatus}" />
+                        </Grid>
+                        <TextBlock
+                            Margin="5,2,0,0"
+                            Text="{Binding btext}"
+                            TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ComboBox
+            Width="250"
+            Height="35"
+            Margin="20,103,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
 
     </Grid>
 </Window>

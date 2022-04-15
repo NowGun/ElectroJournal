@@ -196,6 +196,8 @@
                     HorizontalAlignment="Right"
                     FontSize="20"
                     Glyph="Settings20"
+                    MouseMove="RectangleUser_MouseMove"
+                    MouseLeave="RectangleUser_MouseLeave"
                     PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
                 <ui:NavigationView
                     x:Name="NavViewMenuNLogin"
@@ -505,8 +507,8 @@
                             HorizontalAlignment="Right"
                             FontSize="20"
                             Glyph="Settings20"
-                            MouseLeave="RectangleUser_MouseLeave"
                             MouseMove="RectangleUser_MouseMove"
+                            MouseLeave="RectangleUser_MouseLeave"
                             PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
                     </StackPanel>
                 </Grid>

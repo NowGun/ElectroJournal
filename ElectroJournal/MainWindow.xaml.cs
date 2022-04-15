@@ -65,11 +65,19 @@ namespace ElectroJournal
 
         SettingsControl settingsControl = new();
         SettingMigration SettingMig = new();
-        
+
         private readonly NotificationManager _notificationManager = new();
         public System.Windows.Threading.DispatcherTimer timer2 = new();
         public bool isEntry = false;
-        
+
+        bool checkFiilScheduleDB = true;
+        public bool animLabel = true; 
+        private bool _isDarkTheme = false;
+        private  bool loginbool = true;
+
+        List<string> ScheduleStart = new();
+        List<string> ScheduleEnd = new();
+        List<int> ScheduleNumber = new();
 
         private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
@@ -112,7 +120,6 @@ namespace ElectroJournal
                 else { }                
             }
         }
-
         private void CheckVersionWindows()
         {
             if (Environment.OSVersion.Version.Major >= 10)
@@ -120,28 +127,23 @@ namespace ElectroJournal
                 WPFUI.Background.Manager.Apply(this);
             }
         }
-
         private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Users());
             NavigationViewItemJournal.IsSelected = false;
         }
-
         private void RectangleUser_MouseMove(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Hand;
         }
-
         private void RectangleUser_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Arrow;
         }
-
         private void MainWindow_Completed(object sender, EventArgs e)
         {
             (Resources["AnimLoadLogin"] as Storyboard).Begin();
         }
-
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
             RectangleLoadLogin.Visibility = Visibility.Visible;
@@ -155,14 +157,6 @@ namespace ElectroJournal
 
             Login();           
         }
-
-        bool checkFiilScheduleDB = true;
-        public bool animLabel = true;
-
-        List<string> ScheduleStart = new();
-        List<string> ScheduleEnd = new();
-        List<int> ScheduleNumber = new();
-
         private async void SheduleCall(object sender, EventArgs e)
         {
             if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
@@ -219,7 +213,6 @@ namespace ElectroJournal
                 }
             }
         }
-
         private async void Login()
         {
             try
@@ -240,7 +233,7 @@ namespace ElectroJournal
                     {
                         if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
                         {
-                            var login = await db.Teachers.Where(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == pass).ToListAsync();
+                            var login = await db.Teachers.Where(p => p.TeachersLogin == TextBoxLogin.Text.Trim() && p.TeachersPassword == pass).ToListAsync();
 
                             if (login.Count != 0)
                             {
@@ -343,8 +336,6 @@ namespace ElectroJournal
             }
             //command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = PBKDF2HashHelper.VerifyPassword(TextBoxPassword.Password, (string)command.ExecuteScalar());
         }
-
-
         private void RectangleBackToMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var anim = (Storyboard)FindResource("AnimOpenMenu");
@@ -357,23 +348,16 @@ namespace ElectroJournal
             NavigationViewItemJournal.IsSelected = true;
             Frame.Navigate(new Pages.Journal());
         }
-
-        bool loginbool = true;
-
         private void Frame_ContentRendered(object sender, EventArgs e)
         {
             
         }
-
         public void Notifications(string title, string text)
         {
             _notificationManager.Show(
                 new NotificationContent { Title = title, Message = text, Type = NotificationType.Information },
                 areaName: "WindowArea");
         }
-
-        private bool _isDarkTheme = false;
-
         public void ThemeCheck()
         {
             int theme = Properties.Settings.Default.Theme;
@@ -383,7 +367,6 @@ namespace ElectroJournal
 
             ApplyBackgroundEffect();
         }
-
         private void ApplyBackgroundEffect()
         {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
@@ -409,7 +392,6 @@ namespace ElectroJournal
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
         }
-
         public void AnimLog(bool a)
         {
             if (a)
@@ -418,7 +400,6 @@ namespace ElectroJournal
                 anim.Begin();
             }
         }
-
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool a;
@@ -480,8 +461,6 @@ namespace ElectroJournal
                    */
             }
         }
-
-
         private void MessageBox_LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             try
@@ -494,20 +473,15 @@ namespace ElectroJournal
             }
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
-
         private void MessageBox_RightButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             //(sender as WPFUI.Controls.MessageBox)?.Close();
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
-
-        
-
         private void ImageForgotPassword_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Arrow;
         }
-
         private void ImageForgotPassword_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Properties.Settings.Default.Login = TextBoxLogin.Text;
@@ -515,17 +489,14 @@ namespace ElectroJournal
 
             new Windows.ResetPassword().ShowDialog();
         }
-
         private void ImageForgotPassword_MouseMove(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Hand;
         }
-
         private void ImageChangeDB_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             new DBUser().ShowDialog();
         }
-
         private void MenuItemBoardPrint_Click(object sender, RoutedEventArgs e)
         {
             Board board = new Board();
@@ -537,37 +508,30 @@ namespace ElectroJournal
 
             ((Board)Frame.Content).GridInkCanvas.Visibility = Visibility.Visible;
         }
-
         private void MenuItemBoardFullScreen_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void MenuItemEJSettings_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(new Pages.Setting());
         }
-
         private void MenuItemEJUpdate_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("Updater.exe"); //Запуск программы обновления
         }
-
         private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void MenuItemEJProgInfo_Click(object sender, RoutedEventArgs e)
         {
             new ProgramInformation().ShowDialog();
         }
-
         private void MenuItemEJBug_Click(object sender, RoutedEventArgs e)
         {
             new Help().ShowDialog();
         }
-
         private void ButtonOpenNotLogin_Click(object sender, RoutedEventArgs e)
         {
             GridLogin.Visibility = Visibility.Hidden;
@@ -575,26 +539,23 @@ namespace ElectroJournal
             Frame.Visibility = Visibility.Visible;
         }
 
+        #region События меню
         private void NavigationViewItemBoard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Board());
         }
-
         private void NavigationViewItemJournal_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Journal());
         }
-
         private void NavigationViewItemSchedule_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Schedule());
         }
-
         private void NavigationViewItemWord_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Word());
         }
-
         private void NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             NavViewMenu.Visibility = Visibility.Hidden;
@@ -603,42 +564,36 @@ namespace ElectroJournal
             RectangleBackToMenu.Visibility = Visibility.Visible;
             Frame.Navigate(new Pages.AdminPanel.Teachers());
         }
-
         private void NavigationViewItemDisciplines_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.Disciplines());
         }
-
         private void NavigationViewItemTeachers_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.Teachers());
         }
-
         private void NavigationViewItemStudents_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.Students());
         }
-
         private void NavigationViewItemGroups_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.Groups());
         }
-
         private void NavigationViewItemCabinets_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.Cabinet());
         }
-
         private void NavigationViewItemScheduleAdmin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
         }
+        #endregion
 
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
         {
             Show();
         }
-
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
             foreach (var process in Process.GetProcessesByName("ElectroJournal"))
@@ -646,12 +601,10 @@ namespace ElectroJournal
                 process.Kill();
             }
         }
-
         private void TitleBar_NotifyIconDoubleClick(object sender, RoutedEventArgs e)
         {
             Show();
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SettingMig.CheckStart();
@@ -659,7 +612,6 @@ namespace ElectroJournal
             ThemeCheck();
 
         }
-
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
         {
             var anim = (Storyboard)FindResource("AnimOpenLogin");
@@ -669,8 +621,6 @@ namespace ElectroJournal
             Frame.Visibility = Visibility.Hidden;
             GridLogin.Visibility = Visibility.Visible;
         }
-
-
         private async void FillComboBoxGroups()
         {
             ComboBoxGroup.Items.Clear();
@@ -683,17 +633,14 @@ namespace ElectroJournal
                 });
             }
         }
-
         private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Frame.Navigate(new Pages.Journal());
         }
-
         private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.Setting());
         }
-
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             if (!loginbool)
@@ -709,7 +656,6 @@ namespace ElectroJournal
             //anim2.Begin();
             anim.Begin();
         }
-
         private async void Window_ContentRendered(object sender, EventArgs e)
         {
             SettingsControl sControl = new SettingsControl();
@@ -734,7 +680,6 @@ namespace ElectroJournal
             }
                
         }
-
         private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             if (e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.Back)
@@ -742,7 +687,6 @@ namespace ElectroJournal
                 e.Cancel = true;
             }
         }
-
         public void RefreshImage(string path)
         {
             if (!String.IsNullOrWhiteSpace(path))
@@ -762,7 +706,23 @@ namespace ElectroJournal
                 PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
             }
         }
+        public ImageSource GetImageUser(string path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                var stringPath = $@"{path}";
 
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                bitmapImage.EndInit();
+
+                return bitmapImage;
+            }
+            return null;
+        }
         private void NavigationViewItemAcademicYears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Frame.Navigate(new Pages.AdminPanel.AcademicYears());

@@ -19,6 +19,11 @@ using ElectroJournal.Classes;
 using System.Windows.Media.Animation;
 using System.Windows.Interop;
 using Microsoft.Win32;
+using ElectroJournal.DataBase;
+using System.Collections.ObjectModel;
+using ElectroJournal.Classes.DataBaseEJ;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace ElectroJournal.Windows
 {
@@ -32,20 +37,24 @@ namespace ElectroJournal.Windows
             InitializeComponent();
             //RectangleLoad.Visibility = Visibility.Hidden;
             TitleBar.CloseActionOverride = CloseActionOverride;
+            ListBoxBugsRefresh();
         }
 
         private string path;
+        List<int> idBugs = new List<int>();
+        private bool _isDarkTheme = false;
+
+        public ObservableCollection<BugsListBox> datA { get; set; }
+        public BugsListBox SelectedData { get; set; }
 
         private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             ((MainWindow)Application.Current.MainWindow).ThemeCheck();
             this.Close();
         }
-
         private void MainWindow_Completed(object sender, EventArgs e)
         {
         }
-
         private void ButtonSend_Click(object sender, RoutedEventArgs e)
         {
             ProgressBarSend.Visibility = Visibility.Visible;
@@ -65,7 +74,6 @@ namespace ElectroJournal.Windows
                 Notifications("Ошибка", "Заполните поле");
             }
         }
-
         async private void SendMessage (string text, string path)
         {
             bool a = false;
@@ -113,7 +121,6 @@ namespace ElectroJournal.Windows
                 ProgressBarSend.Visibility = Visibility.Hidden;
             }
         }
-
         private void Notifications (string message, string title)
         {
             RootSnackbar.Title = message;
@@ -121,14 +128,10 @@ namespace ElectroJournal.Windows
             //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
             RootSnackbar.Expand();
         }
-
-        private bool _isDarkTheme = false;
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ThemeCheck();
         }
-
         public void ThemeCheck()
         {
             int theme = Properties.Settings.Default.Theme;
@@ -138,7 +141,6 @@ namespace ElectroJournal.Windows
 
             ApplyBackgroundEffect();
         }
-
         private void ApplyBackgroundEffect()
         {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
@@ -160,7 +162,6 @@ namespace ElectroJournal.Windows
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
         }
-
         private void ButtonBrowser_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog myDialog = new OpenFileDialog();
@@ -184,5 +185,48 @@ namespace ElectroJournal.Windows
                 Image.fback*/
             }
         }
+        private async void ListBoxBugsRefresh()
+        {
+            try
+            {
+                idBugs.Clear();
+
+                using (ejContext db = new())
+                {
+                    var bugs = await db.Bugreporters.ToListAsync();
+
+                    foreach (var bu in bugs)
+                    {
+                        datA.Add(new BugsListBox
+                        {
+                            btitle = bu.BugreporterTitle,
+                            btext = bu.BugreporterMessage,
+                        });
+                        idBugs.Add((int)bu.Idbugreporter);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ListBoxBugsRefresh");
+            }
+        }
+    }
+
+    public class BugsListBox : NotifyPropertyChanged
+    {
+        public string? btitle { get; set; }
+        public string? btext { get; set; }
+        public string? bstatus { get; set; }
+    }
+    public class NotifyPropertyChanged : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
