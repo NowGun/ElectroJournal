@@ -30,9 +30,6 @@ namespace ElectroJournal.Pages
         public Setting()
         {
             InitializeComponent();
-            
-            
-
             LoadApp();            
         }
 
@@ -46,19 +43,13 @@ namespace ElectroJournal.Pages
 
         private void LoadApp()
         {
-            string server = Properties.Settings.Default.Server;
-            int theme = Properties.Settings.Default.Theme;
-            bool animation = Properties.Settings.Default.Animation;
-            bool autorun = Properties.Settings.Default.AutoRun;
-            bool tray = Properties.Settings.Default.Tray;
-            bool rememberLogin = Properties.Settings.Default.RememberData;
-
-            ComboBoxTheme.SelectedIndex = theme;
-            CheckBoxRememberData.IsChecked = rememberLogin;
-            CheckBoxAnim.IsChecked = animation;
-            CheckBoxAutoRun.IsChecked = autorun;
-            CheckBoxCollapseToTray.IsChecked = tray;           
-            LabelIpAddress.Content = server;
+            //CheckBoxAnim.IsChecked = Properties.Settings.Default.Animation;
+            ComboBoxTheme.SelectedIndex = Properties.Settings.Default.Theme;
+            CheckBoxRememberData.IsChecked = Properties.Settings.Default.RememberData;
+            CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
+            CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;           
+            LabelIpAddress.Content = Properties.Settings.Default.Server;
+            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 16.04.2022";
         }
 
         private async void LoadSettingDB()
@@ -99,7 +90,7 @@ namespace ElectroJournal.Pages
         private void SaveApp()
         {
             Properties.Settings.Default.Theme = ComboBoxTheme.SelectedIndex;
-            Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? false;
+            //Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? false;
             Properties.Settings.Default.AutoRun = CheckBoxAutoRun.IsChecked ?? false;
             Properties.Settings.Default.Tray = CheckBoxCollapseToTray.IsChecked ?? false;
             Properties.Settings.Default.RememberData = CheckBoxRememberData.IsChecked ?? false;
@@ -123,15 +114,42 @@ namespace ElectroJournal.Pages
             new DBUser().ShowDialog();
         }
 
-        private void ButtonOpenUpdater_Click(object sender, RoutedEventArgs e)
+        private async void ButtonOpenUpdater_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (ButtonOpenUpdater.Content != "Скачать")
             {
-                Process.Start("Updater.exe");
+                SettingsControl sControl = new SettingsControl();
+
+                var anim = (Storyboard)FindResource("AnimOpenCheckUpdate");
+                var anim2 = (Storyboard)FindResource("AnimYNewUpdate");
+                var anim3 = (Storyboard)FindResource("AnimCloseCheckUpdate");
+                anim.Begin();
+                ButtonOpenUpdater.IsEnabled = false;
+
+                if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                {
+                    anim2.Begin();
+                    LabelNewVersion.Content = $"Доступно новое обновление {Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
+                    ButtonOpenUpdater.Content = "Скачать";
+                    ButtonOpenUpdater.IsEnabled = true;
+                }
+                else
+                {
+                    anim3.Begin();
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Обновлений не найдено");
+                    ButtonOpenUpdater.IsEnabled = true;
+                }
             }
-            catch (System.ComponentModel.Win32Exception)
+            else if (ButtonOpenUpdater.Content == "Скачать")
             {
-                ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
+                try
+                {
+                    Process.Start("Updater.exe");
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
+                }
             }
         }
 

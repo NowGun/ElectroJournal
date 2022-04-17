@@ -496,7 +496,7 @@
         <wpfui:Card
             x:Name="CardUser"
             Margin="320,15,15,30"
-            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
+            RenderTransformOrigin="0.5,0.5">
             <wpfui:Card.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -669,7 +669,7 @@
             x:Name="grid"
             Margin="320,0,15,0"
             RenderTransformOrigin="0.5,0.5"
-            Visibility="Visible">
+            Visibility="Visible" d:IsHidden="True">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

@@ -206,6 +206,7 @@ namespace ElectroJournal.Pages
                         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                         bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                         bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                        bitmapImage.DecodePixelHeight = 350;
                         bitmapImage.EndInit();
                         PersonPicture.ProfilePicture = bitmapImage;
 
@@ -341,6 +342,7 @@ namespace ElectroJournal.Pages
                             bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                             bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                             bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                            bitmapImage.DecodePixelHeight = 100;
                             bitmapImage.EndInit();
 
                             datA.Add(new UsersListBox
@@ -412,6 +414,7 @@ namespace ElectroJournal.Pages
                                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                                     bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                                     bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                                    //bitmapImage.DecodePixelHeight = 100;
                                     bitmapImage.EndInit();
                                     PersonPictureUser.ProfilePicture = bitmapImage;
                                 }
@@ -532,7 +535,7 @@ namespace ElectroJournal.Pages
                                 {
                                     name = firstname,
                                     text = c.ChatText,
-                                    margin = "15,0,0,0",
+                                    margin = "15,0,300,0",
                                     time = Convert.ToString(c.ChatDate)
                                 });
 
@@ -589,7 +592,7 @@ namespace ElectroJournal.Pages
                                 {
                                     name = firstname,
                                     text = c.ChatText,
-                                    margin = "15,0,0,0",
+                                    margin = "15,0,300,0",
                                     time = Convert.ToString(c.ChatDate)
                                 });
                             }

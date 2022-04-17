@@ -61,6 +61,7 @@
     <None Remove="Images\Icons\icons8-back-96.png" />
     <None Remove="Images\Icons\icons8-calculator-96.png" />
     <None Remove="Images\Icons\icons8-gear-96.png" />
+    <None Remove="Images\Icons\icons8-ok-144.png" />
     <None Remove="Images\Icons\icons8-server-96.png" />
     <None Remove="Images\Icons\icons8-update-left-rotation-96.png" />
     <None Remove="Images\Icons\icons8-напоминания-96.png" />
@@ -77,6 +78,9 @@
     <None Remove="Images\Startup\startupImage.png" />
     <None Remove="logo75.ico" />
     <None Remove="Settings\Settings.xml" />
+    <None Remove="Windows\asdf.jpg" />
+    <None Remove="Windows\JW4T3_Ooy7s.jpg" />
+    <None Remove="Windows\l10WkKcEKo0.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -189,6 +193,7 @@
     <Resource Include="Images\Icons\icons8-back-96.png" />
     <Resource Include="Images\Icons\icons8-calculator-96.png" />
     <Resource Include="Images\Icons\icons8-gear-96.png" />
+    <Resource Include="Images\Icons\icons8-ok-144.png" />
     <Resource Include="Images\Icons\icons8-server-96.png" />
     <Resource Include="Images\Icons\icons8-update-left-rotation-96.png" />
     <Resource Include="Images\Icons\icons8-напоминания-96.png" />

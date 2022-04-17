@@ -45,14 +45,14 @@ namespace ElectroJournal
         public MainWindow()
         {
             //CheckVersionWindows();
-            InitializeComponent();            
-            
+            InitializeComponent();
+
             GridMenu.Visibility = Visibility.Hidden;
             Frame.Visibility = Visibility.Hidden;
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
-            
+
             settingsControl.CheckAutoRun();
             settingsControl.CheckTray();
 
@@ -71,9 +71,9 @@ namespace ElectroJournal
         public bool isEntry = false;
 
         bool checkFiilScheduleDB = true;
-        public bool animLabel = true; 
+        public bool animLabel = true;
         private bool _isDarkTheme = false;
-        private  bool loginbool = true;
+        private bool loginbool = true;
 
         List<string> ScheduleStart = new();
         List<string> ScheduleEnd = new();
@@ -97,7 +97,7 @@ namespace ElectroJournal
 
                 };
                 _notificationManager.Show(content);
-                
+
                 this.Hide();
             }
             else if (!a)
@@ -115,9 +115,9 @@ namespace ElectroJournal
                         {
                             process.Kill();
                         }
-                    }                    
+                    }
                 }
-                else { }                
+                else { }
             }
         }
         private void CheckVersionWindows()
@@ -126,11 +126,6 @@ namespace ElectroJournal
             {
                 WPFUI.Background.Manager.Apply(this);
             }
-        }
-        private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.Users());
-            NavigationViewItemJournal.IsSelected = false;
         }
         private void RectangleUser_MouseMove(object sender, MouseEventArgs e)
         {
@@ -155,7 +150,7 @@ namespace ElectroJournal
             var anim2 = (Storyboard)FindResource("AnimShowLoading");
             anim2.Begin();
 
-            Login();           
+            Login();
         }
         private async void SheduleCall(object sender, EventArgs e)
         {
@@ -178,7 +173,7 @@ namespace ElectroJournal
                             ScheduleNumber.Add(t.PeriodclassesNumber);
                             checkFiilScheduleDB = false;
                         }
-                    }                    
+                    }
                 }
 
                 var anim = (Storyboard)FindResource("AnimLabelScheduleCall");
@@ -191,7 +186,7 @@ namespace ElectroJournal
                         {
                             if (animLabel) anim.Begin();
                             animLabel = false;
-                                                        
+
                             LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " +
                                (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
                             break;
@@ -350,7 +345,7 @@ namespace ElectroJournal
         }
         private void Frame_ContentRendered(object sender, EventArgs e)
         {
-            
+
         }
         public void Notifications(string title, string text)
         {
@@ -369,8 +364,9 @@ namespace ElectroJournal
         }
         private void ApplyBackgroundEffect()
         {
+
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-            
+
             WPFUI.Background.Manager.Remove(windowHandle);
 
             if (_isDarkTheme)
@@ -378,16 +374,22 @@ namespace ElectroJournal
                 WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 PathMenu.Stroke = (SolidColorBrush)new BrushConverter().ConvertFromString("#222222");
+                GridWhiteTheme.Visibility = Visibility.Hidden;
+                GridBlackTheme.Visibility = Visibility.Visible;
             }
             else
             {
                 WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                 PathMenu.Stroke = (SolidColorBrush)new BrushConverter().ConvertFromString("#EDEDED");
+                GridBlackTheme.Visibility = Visibility.Hidden;
+                GridWhiteTheme.Visibility = Visibility.Visible;
             }
 
             if (Environment.OSVersion.Version.Build >= 22000)
             {
+                GridBlackTheme.Visibility = Visibility.Hidden;
+                GridWhiteTheme.Visibility = Visibility.Hidden;
                 this.Background = System.Windows.Media.Brushes.Transparent;
                 WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
             }
@@ -542,7 +544,7 @@ namespace ElectroJournal
         #region События меню
         private void NavigationViewItemBoard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Frame.Navigate(new Pages.Board());
+            Frame.Navigate(new Board());
         }
         private void NavigationViewItemJournal_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -588,6 +590,15 @@ namespace ElectroJournal
         {
             Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
         }
+        private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Pages.Users user = new();
+            Frame.Navigate(user);
+            //GC.Collect();
+            //user = null;
+            //Frame.Navigate(new Pages.Users());
+            NavigationViewItemJournal.IsSelected = false;
+        }
         #endregion
 
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
@@ -610,7 +621,6 @@ namespace ElectroJournal
             SettingMig.CheckStart();
             settingsControl.CompletionLogin();
             ThemeCheck();
-
         }
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -678,7 +688,7 @@ namespace ElectroJournal
             {
                 Notifications("Уведомление", "Проверка обновления неудачная");
             }
-               
+
         }
         private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
@@ -697,6 +707,7 @@ namespace ElectroJournal
                 bitmapImage.BeginInit();
                 bitmapImage.CacheOption = BitmapCacheOption.Default;
                 bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                bitmapImage.DecodePixelHeight = 100;
                 bitmapImage.EndInit();
                 PersonPicture.ProfilePicture = bitmapImage;
             }
@@ -727,5 +738,14 @@ namespace ElectroJournal
         {
             Frame.Navigate(new Pages.AdminPanel.AcademicYears());
         }
+    }
+
+    public class BackgroundGrid
+    {
+        public string? color1 { get; set; }
+        public string? color2 { get; set; }
+        public string? color3 { get; set; }
+        public string? color4 { get; set; }
+        public string? color5 { get; set; }
     }
 }

@@ -81,6 +81,237 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="AnimYNewUpdate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressBar" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="445">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelNewVersion" Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static VerticalAlignment.Center}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static VerticalAlignment.Center}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelNewVersion" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <DiscreteDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="LabelNewVersion" Storyboard.TargetProperty="(Control.Padding)">
+                <EasingThicknessKeyFrame KeyTime="00:00:00" Value="0,0,0,4">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+                <EasingThicknessKeyFrame KeyTime="00:00:00.3000000" Value="0,0,0,0">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+            </ThicknessAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelNewVersion" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Collapsed}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase Amplitude="2" EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-21.987">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.885">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.885">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.361">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.042">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="LabelNewVersion" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                <EasingThicknessKeyFrame KeyTime="00:00:00.1000000" Value="0,0,0,0">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+                <EasingThicknessKeyFrame KeyTime="00:00:00.6000000" Value="10,0,0,0">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimOpenCheckUpdate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridCheckUpdate" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridCheckUpdate" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.462">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridCheckUpdate" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-119.667">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimCloseCheckUpdate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridCheckUpdate" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridCheckUpdate" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0.004">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridCheckUpdate" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="-221.667">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
 
     <Grid>
@@ -167,7 +398,7 @@
                                         Click="CheckBox_Click"
                                         Content="" />
                                 </StackPanel>
-                                <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                                <!--<StackPanel Margin="0,20,0,0" Orientation="Horizontal" Visibility="Hidden">
                                     <Label
                                         Height="30"
                                         Margin="40,0,0,0"
@@ -187,7 +418,7 @@
                                         VerticalContentAlignment="Center"
                                         Click="CheckBox_Click"
                                         Content="" />
-                                </StackPanel>
+                                </StackPanel>-->
                                 <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
                                     <Label
                                         Height="30"
@@ -335,6 +566,54 @@
                         Content="Сохранение данных, пожалуйста подождите"
                         FontSize="14" />
                 </StackPanel>
+                <Grid
+                    x:Name="GridCheckUpdate"
+                    Margin="410,455,90,12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Opacity="0"
+                    RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            x:Name="image"
+                            Width="35"
+                            Height="35"
+                            RenderTransformOrigin="0.5,0.5"
+                            Source="/Images/Icons/icons8-ok-144.png"
+                            Visibility="Collapsed">
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                        <ProgressBar
+                            x:Name="progressBar"
+                            Width="445"
+                            Margin="0,12,0,12"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsIndeterminate="True" />
+                        <Label
+                            x:Name="LabelNewVersion"
+                            Margin="0,0,0,0"
+                            Padding="0,0,0,4"
+                            VerticalAlignment="Center"
+                            Content="Обновление найдено"
+                            Visibility="Collapsed" />
+                    </StackPanel>
+                </Grid>
                 <Button
                     x:Name="ButtonOpenUpdater"
                     Width="200"
@@ -358,16 +637,16 @@
                     FontSize="14"
                     Style="{StaticResource WPFUIButtonAccent}"
                     Visibility="Hidden" />
-                <Label
+                <Label x:Name="LabelVersion"
                     Width="195"
                     Height="35"
                     Margin="7,0,0,12"
-                    Padding="10,0,0,4"
+                    Padding="10,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Content="Версия 0.31.6 от 14.04.2022"
+                    Content="Версия 0.32 от 16.04.2022"
                     FontSize="14" />
                 <Label
                     x:Name="LabelIpAddress"
@@ -399,10 +678,6 @@
                     VerticalContentAlignment="Center"
                     Content="Ip-адрес базы данных: "
                     FontSize="14" />
-
-
-
-
             </Grid>
         </wpfui:Card>
     </Grid>

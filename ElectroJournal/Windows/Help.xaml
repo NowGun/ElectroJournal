@@ -74,17 +74,17 @@
                 FontWeight="Normal" />
             <TextBox
                 x:Name="TextBoxPath"
-                Width="307"
+                Width="428"
                 Height="35"
-                Margin="249,322,0,0"
+                Margin="75,312,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="ButtonBrowser"
-                Width="75"
+                Width="128"
                 Height="35"
-                Margin="561,322,0,0"
+                Margin="508,312,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="ButtonBrowser_Click"
@@ -92,7 +92,7 @@
                 FontSize="14"
                 Style="{DynamicResource WPFUIButtonStandard}" />
             <Label
-                Margin="210,327,0,0"
+                Margin="36,317,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Путь"
@@ -118,7 +118,18 @@
                 VerticalAlignment="Top"
                 Text="TextBox"
                 TextWrapping="Wrap" />
-            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,313,425,71"/>
+            <ListBox
+                Width="431"
+                Height="144"
+                Margin="36,352,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}">
+                <ListBoxItem>
+                    <TextBlock Text="asddfgsfgsdf" />
+                </ListBoxItem>
+            </ListBox>
         </Grid>
         <wpfui:SearchBox
             Height="35"
