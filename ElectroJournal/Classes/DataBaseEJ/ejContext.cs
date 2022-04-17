@@ -17,6 +17,7 @@ namespace ElectroJournal.Classes.DataBaseEJ
         }
 
         public virtual DbSet<Bugreporter> Bugreporters { get; set; }
+        public virtual DbSet<Chapter> Chapters { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<Version> Versions { get; set; }
 
@@ -41,6 +42,8 @@ namespace ElectroJournal.Classes.DataBaseEJ
 
                 entity.ToTable("bugreporter");
 
+                entity.HasIndex(e => e.ChapterIdchapter, "fk_bugreporter_chapter1_idx");
+
                 entity.HasIndex(e => e.StatusIdstatus, "fk_bugreporter_status_idx");
 
                 entity.HasIndex(e => e.Idbugreporter, "idbugreporter_UNIQUE")
@@ -62,13 +65,39 @@ namespace ElectroJournal.Classes.DataBaseEJ
                     .HasColumnType("text")
                     .HasColumnName("bugreporter_title");
 
+                entity.Property(e => e.ChapterIdchapter).HasColumnName("chapter_idchapter");
+
                 entity.Property(e => e.StatusIdstatus).HasColumnName("status_idstatus");
+
+                entity.HasOne(d => d.ChapterIdchapterNavigation)
+                    .WithMany(p => p.Bugreporters)
+                    .HasForeignKey(d => d.ChapterIdchapter)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_bugreporter_chapter1");
 
                 entity.HasOne(d => d.StatusIdstatusNavigation)
                     .WithMany(p => p.Bugreporters)
                     .HasForeignKey(d => d.StatusIdstatus)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_bugreporter_status");
+            });
+
+            modelBuilder.Entity<Chapter>(entity =>
+            {
+                entity.HasKey(e => e.Idchapter)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("chapter");
+
+                entity.HasIndex(e => e.Idchapter, "idchapter_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Idchapter).HasColumnName("idchapter");
+
+                entity.Property(e => e.ChapterName)
+                    .IsRequired()
+                    .HasMaxLength(45)
+                    .HasColumnName("chapter_name");
             });
 
             modelBuilder.Entity<Status>(entity =>

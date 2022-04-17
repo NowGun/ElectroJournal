@@ -40,7 +40,6 @@ namespace ElectroJournal.Pages
             
             
         }
-
         private void LoadApp()
         {
             //CheckBoxAnim.IsChecked = Properties.Settings.Default.Animation;
@@ -51,7 +50,6 @@ namespace ElectroJournal.Pages
             LabelIpAddress.Content = Properties.Settings.Default.Server;
             LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 16.04.2022";
         }
-
         private async void LoadSettingDB()
         {
             try
@@ -86,7 +84,6 @@ namespace ElectroJournal.Pages
                 MessageBox.Show(ex.Message, "LoadSettingDB");
             }
         }
-
         private void SaveApp()
         {
             Properties.Settings.Default.Theme = ComboBoxTheme.SelectedIndex;
@@ -105,7 +102,6 @@ namespace ElectroJournal.Pages
             ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
             ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
         }
-
         private void ButtonChangeBD_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
@@ -113,46 +109,51 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
             new DBUser().ShowDialog();
         }
-
         private async void ButtonOpenUpdater_Click(object sender, RoutedEventArgs e)
         {
-            if (ButtonOpenUpdater.Content != "Скачать")
+            try
             {
-                SettingsControl sControl = new SettingsControl();
-
-                var anim = (Storyboard)FindResource("AnimOpenCheckUpdate");
-                var anim2 = (Storyboard)FindResource("AnimYNewUpdate");
-                var anim3 = (Storyboard)FindResource("AnimCloseCheckUpdate");
-                anim.Begin();
-                ButtonOpenUpdater.IsEnabled = false;
-
-                if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                if (ButtonOpenUpdater.Content != "Скачать")
                 {
-                    anim2.Begin();
-                    LabelNewVersion.Content = $"Доступно новое обновление {Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
-                    ButtonOpenUpdater.Content = "Скачать";
-                    ButtonOpenUpdater.IsEnabled = true;
+                    SettingsControl sControl = new SettingsControl();
+
+                    var anim = (Storyboard)FindResource("AnimOpenCheckUpdate");
+                    var anim2 = (Storyboard)FindResource("AnimYNewUpdate");
+                    var anim3 = (Storyboard)FindResource("AnimCloseCheckUpdate");
+                    anim.Begin();
+                    ButtonOpenUpdater.IsEnabled = false;
+
+                    if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                    {
+                        anim2.Begin();
+                        LabelNewVersion.Content = $"Доступно новое обновление {Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
+                        ButtonOpenUpdater.Content = "Скачать";
+                        ButtonOpenUpdater.IsEnabled = true;
+                    }
+                    else
+                    {
+                        anim3.Begin();
+                        ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Обновлений не найдено");
+                        ButtonOpenUpdater.IsEnabled = true;
+                    }
                 }
-                else
+                else if (ButtonOpenUpdater.Content == "Скачать")
                 {
-                    anim3.Begin();
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Обновлений не найдено");
-                    ButtonOpenUpdater.IsEnabled = true;
+                    try
+                    {
+                        Process.Start("Updater.exe");
+                    }
+                    catch (System.ComponentModel.Win32Exception)
+                    {
+                        ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
+                    }
                 }
             }
-            else if (ButtonOpenUpdater.Content == "Скачать")
+            catch (Exception ex)
             {
-                try
-                {
-                    Process.Start("Updater.exe");
-                }
-                catch (System.ComponentModel.Win32Exception)
-                {
-                    ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
-                }
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Не удалось проверить");
             }
         }
-
         private void ComboBoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (IsLoaded)
@@ -162,17 +163,14 @@ namespace ElectroJournal.Pages
             }
             else isLoaded = true;            
         }
-
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
             SaveApp();
         }
-
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             isLoaded = false;
         }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (((MainWindow)System.Windows.Application.Current.MainWindow).isEntry)
@@ -181,12 +179,10 @@ namespace ElectroJournal.Pages
             }
             else CardExpanderPrivate.Visibility = Visibility.Hidden;
         }
-
         private void CheckBoxDB_Click(object sender, RoutedEventArgs e)
         {
             SaveDataDB();
         }
-
         private async void SaveDataDB()
         {
             var anim = (Storyboard)FindResource("AnimOpenSave");
@@ -213,7 +209,6 @@ namespace ElectroJournal.Pages
             }
             anim2.Begin();
         }
-
         private void CardExpanderPrivate_Expanded(object sender, RoutedEventArgs e)
         {
             var anim = (Storyboard)FindResource("AnimOpenSyncPrivate");            

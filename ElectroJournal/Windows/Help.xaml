@@ -66,7 +66,7 @@
                 FontSize="14"
                 Style="{DynamicResource WPFUIButtonAccent}" />
             <Label
-                Margin="10,276,0,0"
+                Margin="10,330,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Добавить фото"
@@ -76,7 +76,7 @@
                 x:Name="TextBoxPath"
                 Width="428"
                 Height="35"
-                Margin="75,312,0,0"
+                Margin="75,366,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 TextWrapping="Wrap" />
@@ -84,7 +84,7 @@
                 x:Name="ButtonBrowser"
                 Width="128"
                 Height="35"
-                Margin="508,312,0,0"
+                Margin="508,366,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="ButtonBrowser_Click"
@@ -92,7 +92,7 @@
                 FontSize="14"
                 Style="{DynamicResource WPFUIButtonStandard}" />
             <Label
-                Margin="36,317,0,0"
+                Margin="36,371,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Путь"
@@ -112,63 +112,61 @@
                 FontSize="18"
                 FontWeight="Normal" />
             <TextBox
+                x:Name="TextBoxTitle"
                 Width="600"
                 Margin="36,43,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Text="TextBox"
                 TextWrapping="Wrap" />
-            <ListBox
-                Width="431"
-                Height="144"
-                Margin="36,352,0,0"
+            <Label
+                Margin="10,281,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}">
-                <ListBoxItem>
-                    <TextBlock Text="asddfgsfgsdf" />
-                </ListBoxItem>
-            </ListBox>
+                Content="Раздел"
+                FontSize="18"
+                FontWeight="Normal" />
+            <ComboBox x:Name="ComboBoxChapter" HorizontalAlignment="Left" Margin="80,277,0,0" VerticalAlignment="Top" Width="300" Height="35"/>
         </Grid>
-        <wpfui:SearchBox
-            Height="35"
-            Margin="20,53,730,515"
-            Placeholder="Поиск" />
         <ListBox
             x:Name="ListBoxBugs"
-            Margin="20,143,730,19"
+            Width="280"
+            Margin="20,53,700,19"
+            Padding="0,0,0,0"
             ItemsSource="{Binding datA}"
             SelectedValue="{Binding SelectedData, Mode=TwoWay}"
-            VirtualizingPanel.ScrollUnit="Pixel">
+            VirtualizingPanel.ScrollUnit="Pixel" SelectionChanged="ListBoxBugs_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
+                    <Grid>
                         <Grid>
                             <TextBlock
+                                Width="140"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
+                                FontSize="14"
+                                FontWeight="Bold"
                                 Text="{Binding btitle}"
                                 TextTrimming="CharacterEllipsis" />
                             <TextBlock
+                                Margin="0,0,10,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
+                                FontSize="12"
                                 Text="{Binding bstatus}" />
                         </Grid>
                         <TextBlock
-                            Margin="5,2,0,0"
+                            Width="230"
+                            Height="20"
+                            Margin="10,20,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            FontSize="14"
                             Text="{Binding btext}"
                             TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ComboBox
-            Width="250"
-            Height="35"
-            Margin="20,103,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
 
     </Grid>
 </Window>

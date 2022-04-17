@@ -38,14 +38,12 @@ namespace ElectroJournal.Windows
             //RectangleLoad.Visibility = Visibility.Hidden;
             TitleBar.CloseActionOverride = CloseActionOverride;
             ListBoxBugsRefresh();
+            ComboBoxRefresh();
         }
 
         private string path;
         List<int> idBugs = new List<int>();
         private bool _isDarkTheme = false;
-
-        public ObservableCollection<BugsListBox> datA { get; set; }
-        public BugsListBox SelectedData { get; set; }
 
         private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
@@ -55,18 +53,42 @@ namespace ElectroJournal.Windows
         private void MainWindow_Completed(object sender, EventArgs e)
         {
         }
-        private void ButtonSend_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSend_Click(object sender, RoutedEventArgs e)
         {
             ProgressBarSend.Visibility = Visibility.Visible;
-            string text = new TextRange(RRTBname.Document.ContentStart, RRTBname.Document.ContentEnd).Text;
+            ListBoxBugs.SelectedItem = null;
 
-            if (!string.IsNullOrWhiteSpace(text))
+            string text = new TextRange(RRTBname.Document.ContentStart, RRTBname.Document.ContentEnd).Text;
+            int chapter = 24;
+
+            if (ComboBoxChapter.SelectedItem != null)
+            {
+                chapter = ComboBoxChapter.SelectedIndex + 1;
+            }
+            else chapter = 24;
+
+            if (!string.IsNullOrWhiteSpace(text) || !string.IsNullOrWhiteSpace(TextBoxTitle.Text))
             {
                 ButtonSend.IsEnabled = false;
 
+                using (ejContext db = new())
+                {
+                    Bugreporter bg = new Bugreporter
+                    {
+                        BugreporterTitle = TextBoxTitle.Text,
+                        BugreporterMessage = text,
+                        StatusIdstatus = 1,
+                        ChapterIdchapter = (uint)chapter
+                    };
+                    await db.Bugreporters.AddAsync(bg);
+                    await db.SaveChangesAsync();
+                }
+
+                ListBoxBugsRefresh();
                 SendMessage(text, path);
 
                 TextBoxPath.Text = "";
+                TextBoxTitle.Text = "";
                 RRTBname.Document.Blocks.Clear();
             }
             else
@@ -170,7 +192,7 @@ namespace ElectroJournal.Windows
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
-                TextBoxPath.Text = myDialog.FileName;
+                //TextBoxPath.Text = myDialog.FileName;
                 path = myDialog.FileName;
 
 
@@ -190,20 +212,22 @@ namespace ElectroJournal.Windows
             try
             {
                 idBugs.Clear();
-
+                ObservableCollection<BugsListBox> list = new();
                 using (ejContext db = new())
                 {
-                    var bugs = await db.Bugreporters.ToListAsync();
+                    var bugs = await db.Bugreporters.Include(u => u.StatusIdstatusNavigation).ToListAsync();
 
                     foreach (var bu in bugs)
                     {
-                        datA.Add(new BugsListBox
-                        {
+                        list.Add( new BugsListBox {
                             btitle = bu.BugreporterTitle,
                             btext = bu.BugreporterMessage,
+                            bstatus = bu.StatusIdstatusNavigation?.StatusName,
                         });
+
                         idBugs.Add((int)bu.Idbugreporter);
                     }
+                    ListBoxBugs.ItemsSource = list;
                 }
             }
             catch (Exception ex)
@@ -211,22 +235,39 @@ namespace ElectroJournal.Windows
                 MessageBox.Show(ex.Message, "ListBoxBugsRefresh");
             }
         }
+        private async void ListBoxBugs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListBoxBugs.SelectedItem != null)
+            {
+                using (ejContext db = new())
+                {
+                    var bu = await db.Bugreporters.Where(b => b.Idbugreporter == idBugs[ListBoxBugs.SelectedIndex]).Include(c => c.ChapterIdchapterNavigation).FirstOrDefaultAsync();
+
+                    TextBoxTitle.Text = bu.BugreporterTitle;
+                    RRTBname.Document.Blocks.Clear();
+                    RRTBname.Document.Blocks.Add(new Paragraph(new Run(bu.BugreporterMessage)));
+                    ComboBoxChapter.SelectedItem = bu.ChapterIdchapterNavigation?.ChapterName;
+                }
+            }
+        }
+        private async void ComboBoxRefresh()
+        {
+            ComboBoxChapter.Items.Clear();
+
+            using (ejContext db = new())
+            {
+                await db.Chapters.OrderBy(c => c.Idchapter).ForEachAsync(c =>
+                {
+                    ComboBoxChapter.Items.Add(c.ChapterName);
+                });
+            }
+        }
     }
 
-    public class BugsListBox : NotifyPropertyChanged
+    public class BugsListBox
     {
         public string? btitle { get; set; }
         public string? btext { get; set; }
         public string? bstatus { get; set; }
-    }
-    public class NotifyPropertyChanged : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
     }
 }

@@ -42,7 +42,7 @@ namespace ElectroJournal.Pages.AdminPanel
         }        
 
         List<int> idTeachers = new List<int>();
-
+        private int lastFoundIndex = -1;
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
@@ -122,7 +122,6 @@ namespace ElectroJournal.Pages.AdminPanel
 
             ProgressBarTeachers.Visibility = Visibility.Hidden;
         }
-
         private async void ListViewTeachersRefresh()
         {
             ListViewTeachers.Items.Clear();
@@ -149,13 +148,10 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
-
         private void TextBoxTeachersPhone2_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
         }
-
         private void TextBoxTeachersFIO_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (ListViewTeachers.SelectedItem == null)
@@ -165,7 +161,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 TextBoxTeachersLogin.Text = Transliteration.CyrillicToLatin(TextBoxTeachersFIO.Text.Split().First(), NickBuhro.Translit.Language.Russian);
             }
         }
-
         private async void SendPasswordToUser()
         {
             try
@@ -223,14 +218,12 @@ namespace ElectroJournal.Pages.AdminPanel
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Введен некорректный Email");
             }
         }
-
         private void SendSMSToUser() // СТОИТ ОЧЕНЬ ДОРОГО, ИСПОЛЬЗОВАТЬ ТОЛЬКО В КРАЙНИХ СЛУЧАЯХ!!!!
         {
             string myApiKey = "B0361252-C8BA-5438-E643-4651FCC4E55B"; //Ваш API ключ
             SmsRu.SmsRu sms = new SmsRu.SmsRu(myApiKey);
             var response = sms.Send(TextBoxTeachersPhone1.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password);
         }
-
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             ListViewTeachers.SelectedItem = null;
@@ -241,12 +234,10 @@ namespace ElectroJournal.Pages.AdminPanel
             PasswordBoxTeachers.Clear();
             CheckBoxAdminAccess.IsChecked = false;
         }
-
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             DeleteTeachers();
         }
-
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ButtonDelete.IsEnabled = true;
@@ -271,13 +262,10 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
         private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListViewTeachersRefresh();
         }
-
-
         private void ListViewTeachers_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -285,7 +273,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 DeleteTeachers();
             }
         }
-
         private async void DeleteTeachers() 
         {
             if (ListViewTeachers.Items.Count == 0)
@@ -316,9 +303,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
-        private int lastFoundIndex = -1;
-
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             int i;
@@ -346,7 +330,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
         private void PersonPicture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();

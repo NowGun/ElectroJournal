@@ -10,7 +10,9 @@ namespace ElectroJournal.Classes.DataBaseEJ
         public string? BugreporterMessage { get; set; }
         public string? BugreporterImage { get; set; }
         public uint StatusIdstatus { get; set; }
+        public uint ChapterIdchapter { get; set; }
 
         public virtual Status? StatusIdstatusNavigation { get; set; }
+        public virtual Chapter? ChapterIdchapterNavigation { get; set; }
     }
 }

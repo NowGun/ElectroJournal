@@ -118,7 +118,6 @@ namespace ElectroJournal.Pages.AdminPanel
 
             ProgressBar.Visibility = Visibility.Hidden;                       
         }
-
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             ListBoxStudents.SelectedItem = null;
@@ -130,12 +129,10 @@ namespace ElectroJournal.Pages.AdminPanel
             DatePickerDateBirthday.Text = null;
             CheckBoxStudentsDormitory.IsChecked = false;
         }
-
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             DeleteStudent();
         }
-
         private async void ListBoxStudentsRefresh()
         {
             ListBoxStudents.Items.Clear();
@@ -164,12 +161,10 @@ namespace ElectroJournal.Pages.AdminPanel
             }
             ProgressBarListBox.Visibility = Visibility.Hidden;
         }
-
         private void TextBoxStudentsPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
         }
-
         private void ListBoxStudents_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -177,7 +172,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 DeleteStudent();
             }
         }
-
         private async void ListBoxStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ButtonDelete.IsEnabled = true;
@@ -193,7 +187,6 @@ namespace ElectroJournal.Pages.AdminPanel
                         string FIO = t.StudentsSurname + " " + t.StudentsName + " " + t.StudentsPatronymic;
                         int indexGroup = idGroups.IndexOf((int)t.GroupsIdgroups);
 
-
                         TextBoxStudentsFIO.Text = FIO;
                         DatePickerDateBirthday.SelectedDate = t.StudentsBirthday;
                         TextBoxStudentsResidence.Text = t.StudentsResidence;
@@ -206,12 +199,10 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
         private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxStudentsRefresh();
         }
-
         private async void DeleteStudent()
         {
             if (ListBoxStudents.Items.Count == 0)
@@ -242,7 +233,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
         private async void FillComboBoxStudents()
         {
             ComboBoxGroups.Items.Clear();
@@ -254,10 +244,7 @@ namespace ElectroJournal.Pages.AdminPanel
                     ComboBoxGroups.Items.Add(t.CourseName);
                 });
             }
-        }
-
-        
-
+        }           
         private async void FillListBox()
         {
             ListBoxGroups.Items.Clear();
@@ -272,7 +259,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 });
             }
         }
-
         private void ComboBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FillListBox();

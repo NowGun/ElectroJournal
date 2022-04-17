@@ -117,12 +117,10 @@ namespace ElectroJournal.Pages.AdminPanel
 
             ProgressBar.Visibility = Visibility.Hidden;
         }
-
         private void ButtonGroupDelete_Click(object sender, RoutedEventArgs e)
         {
             DeleteGroup();
         }
-
         private void ButonGroupAdd_Click(object sender, RoutedEventArgs e)
         {
             ListBoxGroups.SelectedItem = null;
@@ -137,7 +135,6 @@ namespace ElectroJournal.Pages.AdminPanel
             ComboBoxClassTeacher.SelectedItem = null;
             ComboBoxCourse.SelectedIndex = 0;
         }
-
         private async void FillListBoxGroups()
         {
             ListBoxGroups.Items.Clear();
@@ -168,7 +165,6 @@ namespace ElectroJournal.Pages.AdminPanel
             else if (ComboBoxGroupsSorting.SelectedIndex == 4) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 4 ORDER BY `groups_name`";
         */
             }
-
         private async void FillComboBoxClassTeacher()
         {
             ComboBoxClassTeacher.Items.Clear();
@@ -183,7 +179,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 });
             }
         }
-
         private async void FillComboBoxTypeLearning()
         {
             idTypeLearning.Clear();
@@ -200,7 +195,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 ComboBoxTypeLearning.SelectedIndex = 0;
             }
         }
-
         private async void ListBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //ButtonGroupDelete.IsEnabled = true;
@@ -217,7 +211,7 @@ namespace ElectroJournal.Pages.AdminPanel
                         TextBoxGroupsName.Text = t.GroupsName;
                         TextBoxGroupsNameAbbreviated.Text = t.GroupsNameAbbreviated;
                         TextBoxGroupsPrefix.Text = t.GroupsPrefix;
-                       // ComboBoxTypeLearning.SelectedItem = t.TypelearningIdtypelearningNavigation.TypelearningName;
+                        //ComboBoxTypeLearning.SelectedItem = t.TypelearningIdtypelearningNavigation.TypelearningName;
                         //ComboBoxClassTeacher.SelectedIndex = (int)t.TeachersIdteachers;
                     }
                 }
