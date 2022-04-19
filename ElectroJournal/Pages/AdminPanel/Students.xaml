@@ -92,7 +92,7 @@
                     Click="ButtonSave_Click"
                     Content="Сохранить"
                     FontSize="14"
-                    Style="{StaticResource WPFUIButtonAccent}" />
+                    Style="{StaticResource WPFUIButtonStandard}" />
                 <DatePicker
                     x:Name="DatePickerDateBirthday"
                     Width="135"
@@ -217,13 +217,13 @@
             PreviewKeyUp="ListBoxStudents_PreviewKeyUp"
             SelectionChanged="ListBoxStudents_SelectionChanged" />
         <ProgressBar
-                    x:Name="ProgressBarListBox"
-                    Margin="150,219,0,239"
-                    HorizontalAlignment="Left"
-                    Foreground="#FF3567BC"
-                    IsIndeterminate="True"
-                    Style="{StaticResource MaterialDesignCircularProgressBar}"
-                    Visibility="Hidden" />
+            x:Name="ProgressBarListBox"
+            Margin="150,219,0,239"
+            HorizontalAlignment="Left"
+            Foreground="#FF3567BC"
+            IsIndeterminate="True"
+            Style="{StaticResource MaterialDesignCircularProgressBar}"
+            Visibility="Hidden" />
         <wpfui:SearchBox
             Width="300"
             Margin="20,60,0,0"

@@ -32,7 +32,7 @@
                     Content="Сохранить"
                     FontSize="14"
                     IsDefault="True"
-                    Style="{StaticResource WPFUIButtonAccent}" />
+                    Style="{StaticResource WPFUIButtonStandard}" />
                 <Label
                     Height="35"
                     Margin="25,150,0,0"

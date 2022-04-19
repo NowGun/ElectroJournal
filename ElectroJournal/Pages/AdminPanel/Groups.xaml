@@ -125,7 +125,7 @@
                     Click="ButtonGroupSave_Click"
                     Content="Сохранить"
                     FontSize="14"
-                    Style="{DynamicResource WPFUIButtonAccent}" IsEnabled="False" />
+                    Style="{DynamicResource WPFUIButtonStandard}" Cursor="Hand" />
                 <Label
                     Width="160"
                     Height="35"
@@ -164,7 +164,7 @@
             Click="ButonGroupAdd_Click"
             Content="Добавить"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
+            Style="{DynamicResource WPFUIButtonStandard}" />
         <Button
             x:Name="ButtonGroupDelete"
             Width="130"
@@ -175,7 +175,7 @@
             Click="ButtonGroupDelete_Click"
             Content="Удалить"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
+            Style="{DynamicResource WPFUIButtonStandard}" />
         <ui:AutoSuggestBox
             x:Name="SearchBox"
             Width="280"

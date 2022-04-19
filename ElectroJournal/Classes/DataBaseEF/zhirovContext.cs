@@ -350,6 +350,11 @@ namespace ElectroJournal.DataBase
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_groups_course1");
 
+                entity.HasOne(d => d.TeachersIdteachersNavigation)
+                    .WithMany(p => p.Groups)
+                    .HasForeignKey(d => d.TeachersIdteachers)
+                    .HasConstraintName("fk_groups_teachers1");
+
                 entity.HasOne(d => d.TypelearningIdtypelearningNavigation)
                     .WithMany(p => p.Groups)
                     .HasForeignKey(d => d.TypelearningIdtypelearning)

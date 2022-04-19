@@ -34,7 +34,7 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             InitializeComponent();
 
-            FillListBoxGroups();
+            //FillListBoxGroups();
             FillComboBoxCourse();
             FillComboBoxClassTeacher();
             FillComboBoxTypeLearning();
@@ -197,23 +197,26 @@ namespace ElectroJournal.Pages.AdminPanel
         }
         private async void ListBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //ButtonGroupDelete.IsEnabled = true;
+            ButtonGroupDelete.IsEnabled = true;
 
             if (ListBoxGroups.SelectedItem != null)
             {
                 using (zhirovContext db = new zhirovContext())
                 {
-                    var groups = await db.Groups.Where(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex]).ToListAsync();
+                    var t = await db.Groups.Where(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex])
+                        .Include(p => p.TypelearningIdtypelearningNavigation)
+                        .Include(p => p.CourseIdcourseNavigation)
+                        .Include(p => p.TeachersIdteachersNavigation)
+                        .FirstOrDefaultAsync();
 
-                    foreach (var t in groups)
-                    {
+                    string fio = $"{t.TeachersIdteachersNavigation.TeachersSurname} {t.TeachersIdteachersNavigation.TeachersName} {t.TeachersIdteachersNavigation.TeachersPatronymic}";
 
-                        TextBoxGroupsName.Text = t.GroupsName;
-                        TextBoxGroupsNameAbbreviated.Text = t.GroupsNameAbbreviated;
-                        TextBoxGroupsPrefix.Text = t.GroupsPrefix;
-                        //ComboBoxTypeLearning.SelectedItem = t.TypelearningIdtypelearningNavigation.TypelearningName;
-                        //ComboBoxClassTeacher.SelectedIndex = (int)t.TeachersIdteachers;
-                    }
+                    TextBoxGroupsName.Text = t.GroupsName;
+                    TextBoxGroupsNameAbbreviated.Text = t.GroupsNameAbbreviated;
+                    TextBoxGroupsPrefix.Text = t.GroupsPrefix;
+                    ComboBoxTypeLearning.SelectedItem = t.TypelearningIdtypelearningNavigation.TypelearningName;
+                    ComboBoxCourse.SelectedItem = t.CourseIdcourseNavigation.CourseName;
+                    ComboBoxClassTeacher.SelectedItem = fio;
                 }
             }           
         }
@@ -225,7 +228,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 DeleteGroup();
             }
         }
-
         private async void DeleteGroup()
         {
             if (ListBoxGroups.Items.Count == 0)
@@ -255,12 +257,10 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
         }
-
         private void ComboBoxGroupsSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FillListBoxGroups();
         }
-
         private async void FillComboBoxCourse()
         {
             ComboBoxCourse.Items.Clear();

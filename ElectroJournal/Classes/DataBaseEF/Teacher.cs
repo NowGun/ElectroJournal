@@ -12,6 +12,7 @@ namespace ElectroJournal.DataBase
         {
             ChatTeachersFromNavigations = new HashSet<Chat>();
             ChatTeachersToNavigations = new HashSet<Chat>();
+            Groups = new HashSet<Group>();
             Journals = new HashSet<Journal>();
             Schedules = new HashSet<Schedule>();
             Settings = new HashSet<Setting>();
@@ -32,6 +33,7 @@ namespace ElectroJournal.DataBase
 
         public virtual ICollection<Chat> ChatTeachersFromNavigations { get; set; }
         public virtual ICollection<Chat> ChatTeachersToNavigations { get; set; }
+        public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<Setting> Settings { get; set; }
