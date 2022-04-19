@@ -641,6 +641,8 @@ namespace ElectroJournal
                 {
                     ComboBoxGroup.Items.Add(t.GroupsNameAbbreviated);
                 });
+
+                ComboBoxGroup.SelectedItem = "ПКС-4"; // удалить
             }
         }
         private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)

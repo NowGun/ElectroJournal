@@ -168,7 +168,7 @@ namespace ElectroJournal.Pages.AdminPanel
             string user = (string)((MainWindow)System.Windows.Application.Current.MainWindow).TextBlockTeacher.Content;
             bool a = true;
             // отправитель - устанавливаем адрес и отображаемое в письме имя
-            MailAddress from = new MailAddress("zhirowdaniil@gmail.com", user);
+            MailAddress from = new MailAddress("mail@techno-review.ru", user);
             // кому отправляем
 
                 MailAddress to = new MailAddress(TextBoxTeachersMail1.Text);
@@ -179,11 +179,11 @@ namespace ElectroJournal.Pages.AdminPanel
             m.Subject = Title;
             // текст письма
             m.Body = "Добро пожаловать в систему Электронный журнал\n\nАдминистратор зарегистрировал Вас в системе электронного журнала, ниже написаны данные для входа в вашу учетную запись.\nМы рекомендуем при первой возможности поменять пароль на более удобный Вам, так как нынешний пароль является временным." +
-                "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password + "\n\n\n\n";
+                "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password;
             // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("smtp.elasticemail.com", 2525);
+            SmtpClient smtp = new SmtpClient("connect.smtp.bz", 2525);
             // логин и пароль
-            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "E0E7027197724CDBDAFAD917FB914057C0CB");
+            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
             smtp.EnableSsl = true;
 
             await Task.Run(() =>

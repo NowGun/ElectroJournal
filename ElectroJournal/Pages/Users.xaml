@@ -896,7 +896,7 @@
                         Content="Сохранить"
                         FontSize="14"
                         IsEnabled="False"
-                        Style="{StaticResource WPFUIButtonAccent}" />
+                        Style="{StaticResource WPFUIButtonStandard}" />
                     <Label
                         Width="247.368"
                         Height="40"

@@ -18,8 +18,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
-using MailKit.Net.Smtp;
+using System.Net.Mail;
 
 namespace ElectroJournal.Windows
 {
@@ -89,46 +88,13 @@ namespace ElectroJournal.Windows
             Random random = new Random();
             int secretCode = random.Next(100000, 999999);
 
-
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Joey Tribbiani", "code@electrojournal.ru"));
-            message.To.Add(new MailboxAddress("Mrs. Chanandler Bong", "zhirowdaniil@gmail.com"));
-            message.Subject = "How you doin'?";
-
-            message.Body = new TextPart("plain")
-            {
-                Text = @"Hey Chandler,
-
-I just wanted to let you know that Monica and I were going to go play some paintball, you in?
-
--- Joey"
-            };
-
-            using (var client = new SmtpClient())
-            {
-                client.Connect("electrojournal.ru", 25, false);
-
-                // Note: only needed if the SMTP server requires authentication
-                //client.Authenticate("root", "");
-
-                client.Send(message);
-                client.Disconnect(true);
-            }
-
-            /*// отправитель - устанавливаем адрес и отображаемое в письме имя
-            MailAddress from = new MailAddress("root@daniil-server.org", "Восстановление пароля");
-            // кому отправляем
+            MailAddress from = new MailAddress("rmail@techno-review.ru", "Восстановление пароля");
             MailAddress to = new MailAddress(mail);
-            // создаем объект сообщения
             MailMessage m = new MailMessage(from, to);
-            // тема письма
             m.Subject = Title;
-            // текст письма
-            m.Body = "Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: " + secretCode + "\n\n\n\n\n\n\n";
-            // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("daniil-server", 25);
-            // логин и пароль
-            smtp.Credentials = new NetworkCredential("root", "64580082");
+            m.Body = "Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: " + secretCode;
+            SmtpClient smtp = new SmtpClient("connect.smtp.bz", 25);
+            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
             smtp.EnableSsl = true;
 
             try
@@ -143,7 +109,7 @@ I just wanted to let you know that Monica and I were going to go play some paint
             catch (SmtpException)
             {
                 Notifications("Почтовый сервис недоступен", "Ошибка");
-            }*/
+            }
 
             return secretCode;
         }

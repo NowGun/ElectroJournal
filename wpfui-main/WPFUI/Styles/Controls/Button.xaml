@@ -336,9 +336,10 @@
 
     <Style x:Key="WPFUIButtonStandard" TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualStandard}" />
-        <Setter Property="Background" Value="{DynamicResource ButtonStandardBackgroundBrushes}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ButtonStandardBorder}" />
+        <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource ButtonStandardTextRest}" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -367,17 +368,16 @@
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonStandardHover}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.8" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonPressedStandard}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource ButtonPressedStandard}" />
-                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextStandardPressedSolid}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.6" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonIsEnabledStandard}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.7" />
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ButtonStandardTextDis}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -385,6 +385,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
 </ResourceDictionary>

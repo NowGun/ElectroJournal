@@ -164,6 +164,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="stackPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <PowerEase EasingMode="EaseInOut" />
@@ -171,8 +172,12 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <BooleanAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False"/>
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False" />
             </BooleanAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="stackPanel" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 
 
@@ -181,25 +186,28 @@
 
 
     <Grid x:Name="GridDefault" x:FieldModifier="public">
-        <Grid x:Name="GridBlackTheme" Visibility="Hidden" d:IsHidden="True">
+        <Grid
+            x:Name="GridBlackTheme"
+            d:IsHidden="True"
+            Visibility="Hidden">
             <Grid.Background>
-                <LinearGradientBrush SpreadMethod="Pad" MappingMode="RelativeToBoundingBox">
-                    <GradientStop Color="#FF1D2029"/>
-                    <GradientStop Color="#FF1D2029" Offset="1"/>
-                    <GradientStop Color="#FF192033" Offset="0.457"/>
-                    <GradientStop Color="#FF192033" Offset="0.609"/>
-                    <GradientStop Color="#FF19212E" Offset="0.787"/>
+                <LinearGradientBrush MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+                    <GradientStop Color="#FF1D2029" />
+                    <GradientStop Offset="1" Color="#FF1D2029" />
+                    <GradientStop Offset="0.457" Color="#FF192033" />
+                    <GradientStop Offset="0.609" Color="#FF192033" />
+                    <GradientStop Offset="0.787" Color="#FF19212E" />
                 </LinearGradientBrush>
             </Grid.Background>
         </Grid>
-        <Grid x:Name="GridWhiteTheme" Visibility="Visible">
+        <Grid x:Name="GridWhiteTheme" Visibility="Hidden">
             <Grid.Background>
-                <LinearGradientBrush SpreadMethod="Pad" MappingMode="RelativeToBoundingBox" EndPoint="1.4,3.7" StartPoint="-0.5,1.2">
-                    <GradientStop Color="#FFECF5FA"/>
-                    <GradientStop Color="#FFF9F1EE" Offset="1"/>
-                    <GradientStop Color="#FFF9F3E7" Offset="0.417"/>
-                    <GradientStop Color="#FFEBF6F8" Offset="0.213"/>
-                    <GradientStop Color="#FFF9F2EA" Offset="0.787"/>
+                <LinearGradientBrush MappingMode="RelativeToBoundingBox" SpreadMethod="Pad" StartPoint="-0.5,1.2" EndPoint="1.4,3.7">
+                    <GradientStop Color="#FFECF5FA" />
+                    <GradientStop Offset="1" Color="#FFF9F1EE" />
+                    <GradientStop Offset="0.417" Color="#FFF9F3E7" />
+                    <GradientStop Offset="0.213" Color="#FFEBF6F8" />
+                    <GradientStop Offset="0.787" Color="#FFF9F2EA" />
                 </LinearGradientBrush>
             </Grid.Background>
         </Grid>
@@ -218,8 +226,8 @@
                     HorizontalAlignment="Right"
                     FontSize="20"
                     Glyph="Settings20"
-                    MouseMove="RectangleUser_MouseMove"
                     MouseLeave="RectangleUser_MouseLeave"
+                    MouseMove="RectangleUser_MouseMove"
                     PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
                 <ui:NavigationView
                     x:Name="NavViewMenuNLogin"
@@ -514,7 +522,7 @@
                             MouseLeave="RectangleUser_MouseLeave"
                             MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
                             MouseMove="RectangleUser_MouseMove" />
-                        <ui:PersonPicture                            
+                        <ui:PersonPicture
                             x:Name="PersonPicture"
                             Width="40"
                             Height="40"
@@ -529,8 +537,8 @@
                             HorizontalAlignment="Right"
                             FontSize="20"
                             Glyph="Settings20"
-                            MouseMove="RectangleUser_MouseMove"
                             MouseLeave="RectangleUser_MouseLeave"
+                            MouseMove="RectangleUser_MouseMove"
                             PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp" />
                     </StackPanel>
                 </Grid>
@@ -707,8 +715,8 @@
             x:Name="stackPanel"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Opacity="0"
-            Orientation="Horizontal" d:IsHidden="True">
+            Orientation="Horizontal"
+            Visibility="Hidden">
             <ProgressBar
                 x:Name="ProgressBar"
                 Margin="0,0,5,0"

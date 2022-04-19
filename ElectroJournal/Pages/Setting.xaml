@@ -396,7 +396,7 @@
                                         HorizontalContentAlignment="Stretch"
                                         VerticalContentAlignment="Center"
                                         Click="CheckBox_Click"
-                                        Content="" />
+                                        Content="" Cursor="Hand" />
                                 </StackPanel>
                                 <!--<StackPanel Margin="0,20,0,0" Orientation="Horizontal" Visibility="Hidden">
                                     <Label
@@ -552,23 +552,19 @@
                     Margin="0,0,10,10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Opacity="0"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal" Height="20" Width="316" Opacity="0">
                     <ProgressBar
                         x:Name="ProgressBarTeachers"
                         Foreground="#FF3567BC"
                         IsIndeterminate="True"
                         Style="{StaticResource MaterialDesignCircularProgressBar}" />
                     <Label
-                        Margin="10,0,0,0"
-                        Padding="0,0,0,0"
-                        VerticalAlignment="Center"
                         Content="Сохранение данных, пожалуйста подождите"
-                        FontSize="14" />
+                        FontSize="14" VerticalAlignment="Center" Padding="0,0,0,0" Margin="10,0,0,0" />
                 </StackPanel>
                 <Grid
                     x:Name="GridCheckUpdate"
-                    Margin="410,455,90,12"
+                    Margin="462,0,0,11"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     Opacity="0"
@@ -616,15 +612,15 @@
                 </Grid>
                 <Button
                     x:Name="ButtonOpenUpdater"
-                    Width="200"
+                    Width="250"
                     Height="35"
-                    Margin="202,0,0,12"
+                    Margin="207,0,0,12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     Click="ButtonOpenUpdater_Click"
                     Content="Проверить обновление"
                     FontSize="14"
-                    Style="{StaticResource WPFUIButtonStandard}" />
+                    Style="{DynamicResource WPFUIButtonStandard}" />
                 <Button
                     x:Name="ButtonSave"
                     Width="150"
@@ -668,7 +664,7 @@
                     Click="ButtonChangeBD_Click"
                     Content="Изменить"
                     FontSize="14"
-                    Style="{StaticResource WPFUIButtonStandard}" />
+                    Style="{DynamicResource WPFUIButtonStandard}" Cursor="Hand" />
                 <Label
                     Height="35"
                     Margin="7,0,0,56"

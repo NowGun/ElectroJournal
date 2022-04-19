@@ -85,7 +85,7 @@ namespace ElectroJournal.Windows
                 }
 
                 ListBoxBugsRefresh();
-                SendMessage(text, path);
+                SendMessage(text, path, TextBoxTitle.Text);
 
                 TextBoxPath.Text = "";
                 TextBoxTitle.Text = "";
@@ -96,11 +96,11 @@ namespace ElectroJournal.Windows
                 Notifications("Ошибка", "Заполните поле");
             }
         }
-        async private void SendMessage (string text, string path)
+        async private void SendMessage (string text, string path, string title)
         {
             bool a = false;
 
-            MailAddress from = new MailAddress("help@techno-review.ru", "Новый баг");
+            MailAddress from = new MailAddress("mail@techno-review.ru", "Новый баг");
             MailAddress to = new MailAddress("nowgun98@gmail.com");
             MailMessage m = new MailMessage(from, to);
 
@@ -110,12 +110,12 @@ namespace ElectroJournal.Windows
                 m.Attachments.Add(file);
             }
 
-            m.Subject = "Новый баг - ElectroJournal";
+            m.Subject = title;
             m.Body = text;
             // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("smtp.beget.com", 2525);
+            SmtpClient smtp = new SmtpClient("connect.smtp.bz", 2525);
             // логин и пароль
-            smtp.Credentials = new NetworkCredential("help@techno-review.ru", "64580082Now");
+            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
             smtp.EnableSsl = true;
 
             await Task.Run(() =>
@@ -192,7 +192,7 @@ namespace ElectroJournal.Windows
             myDialog.Multiselect = true;
             if (myDialog.ShowDialog() == true)
             {
-                //TextBoxPath.Text = myDialog.FileName;
+                TextBoxPath.Text = myDialog.FileName;
                 path = myDialog.FileName;
 
 
