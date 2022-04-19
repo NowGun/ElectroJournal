@@ -11,7 +11,7 @@
     <Grid>
         <rg:ReoGridControl x:Name="ReoGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" Margin="10,70,10,10" WorkbookLoaded="ReoGrid_WorkbookLoaded"/>
         <Label Content="Дисциплина" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="260,11,0,0"/>
-        <ComboBox HorizontalAlignment="Left" Height="35" Margin="345,5,0,0" VerticalAlignment="Top" Width="200"/>
+        <ComboBox x:Name="ComboBoxDisp" HorizontalAlignment="Left" Height="35" Margin="345,5,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="ComboBoxDisp_SelectionChanged"/>
         <Label Content="Месяц" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="565,12,0,0"/>
         <ComboBox x:Name="ComboBoxMonth" HorizontalAlignment="Left" Height="35" Margin="612,5,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="ComboBoxMonth_SelectionChanged"/>
         <Button x:Name="ButtonExcel" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="940,6,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click"/>

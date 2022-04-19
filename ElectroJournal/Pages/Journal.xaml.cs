@@ -38,7 +38,7 @@ namespace ElectroJournal.Pages
             FillComoBoxMonth();
             ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
             //FillTable();
-
+            FillComboBoxDisp();
             var ws = ReoGrid.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
         }
@@ -158,7 +158,18 @@ namespace ElectroJournal.Pages
             
         }
 
-        
+        private async void FillComboBoxDisp()
+        {
+            ComboBoxDisp.Items.Clear();
+
+            using (zhirovContext db = new zhirovContext())
+            {
+                await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
+                {
+                    ComboBoxDisp.Items.Add(t.DisciplinesNameAbbreviated);
+                });
+            }
+        }
 
         private void FillComoBoxMonth()
         {
@@ -208,6 +219,11 @@ namespace ElectroJournal.Pages
             string poz6 = Regex.Replace(poz2, @"[^A-Z]+", string.Empty);
 
             LabelTest.Content = $"оценка {ReoGrid.CurrentWorksheet.Cells[poz2].DisplayText} фио {ReoGrid.CurrentWorksheet.Cells[poz5-1, 0].DisplayText} дата {ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText} позиция {poz2}";
+        }
+
+        private void ComboBoxDisp_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

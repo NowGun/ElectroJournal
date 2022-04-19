@@ -50,22 +50,24 @@ namespace ElectroJournal.Pages.AdminPanel
 
             if (!string.IsNullOrWhiteSpace(TextBoxGroupsName.Text) && ComboBoxClassTeacher.SelectedItem != null)
             {
-
-
-                    if (ListBoxGroups.SelectedItem != null)
+                if (ListBoxGroups.SelectedItem != null)
+                {
+                    using (zhirovContext db = new zhirovContext())
                     {
-                        using (zhirovContext db = new zhirovContext())
-                        {
-                            Group? groups = await db.Groups.FirstOrDefaultAsync(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex]);
+                        Group? groups = await db.Groups
+                            .Include(p => p.TypelearningIdtypelearningNavigation)
+                            .Include(p => p.CourseIdcourseNavigation)
+                            .Include(p => p.TeachersIdteachersNavigation)
+                            .FirstOrDefaultAsync(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex]);
 
-                            if (groups != null)
-                            {
+                        if (groups != null)
+                        {
                             groups.GroupsName = TextBoxGroupsName.Text;
                             groups.GroupsNameAbbreviated = TextBoxGroupsNameAbbreviated.Text;
                             groups.GroupsPrefix = TextBoxGroupsPrefix.Text;
-                            //groups.CourseIdcourse = ComboBoxCourse.SelectedIndex;
-                            //groups.TypelearningIdtypelearning = idTypeLearning[ComboBoxTypeLearning.SelectedIndex];
-                            //groups.TeachersIdteachers = idTeachers[ComboBoxClassTeacher.SelectedIndex];
+                            groups.CourseIdcourse = (uint)ComboBoxCourse.SelectedIndex + 1;
+                            groups.TypelearningIdtypelearning = (uint)idTypeLearning[ComboBoxTypeLearning.SelectedIndex];
+                            groups.TeachersIdteachers = (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex];
 
                             await db.SaveChangesAsync();
 
@@ -80,21 +82,26 @@ namespace ElectroJournal.Pages.AdminPanel
 
                             ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                         }
-                        }
                     }
-                    else
+                }
+                else
+                {
+                    using (zhirovContext db = new zhirovContext())
                     {
-                        using (zhirovContext db = new zhirovContext())
-                        {
 
                         Group gr = new Group
                         {
-
+                            GroupsName = TextBoxGroupsName.Text,
+                            GroupsNameAbbreviated = TextBoxGroupsNameAbbreviated.Text,
+                            GroupsPrefix = TextBoxGroupsPrefix.Text,
+                            CourseIdcourse = (uint)ComboBoxCourse.SelectedIndex + 1,
+                            TypelearningIdtypelearning = (uint)idTypeLearning[ComboBoxTypeLearning.SelectedIndex],
+                            TeachersIdteachers = (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex],
                         };
 
-                            
-                                await db.Groups.AddAsync(gr);
-                                await db.SaveChangesAsync();
+
+                        await db.Groups.AddAsync(gr);
+                        await db.SaveChangesAsync();
 
                         FillListBoxGroups();
 
@@ -103,15 +110,11 @@ namespace ElectroJournal.Pages.AdminPanel
                         TextBoxGroupsPrefix.Clear();
                         ComboBoxTypeLearning.SelectedIndex = 0;
                         ComboBoxClassTeacher.SelectedItem = null;
-                        ComboBoxCourse.SelectedIndex= 0;
-
-                        ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                        ComboBoxCourse.SelectedIndex = 0;
 
                         ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
-                            
-                        }
                     }
-                
+                }
             }
             else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
 
@@ -220,7 +223,6 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }           
         }
-
         private void ListBoxGroups_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Delete)

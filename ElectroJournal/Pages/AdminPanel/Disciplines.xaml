@@ -43,7 +43,7 @@
                     Content="Индекс "
                     FontSize="16" />
                 <wpfui:TextBox
-                    x:Name="TextBoxTeachersFIO"
+                    x:Name="TextBoxIndex"
                     Width="160"
                     Height="35"
                     Margin="280,150,0,0"
@@ -52,7 +52,7 @@
                     FontSize="14"
                     TextWrapping="Wrap" />
                 <TextBox
-                    x:Name="TextBoxTeachersPhone1"
+                    x:Name="TextBoxName"
                     Width="263"
                     Height="35"
                     Margin="280,88,0,0"
@@ -60,7 +60,7 @@
                     VerticalAlignment="Top"
                     TextWrapping="Wrap" />
                 <TextBox
-                    x:Name="TextBoxTeachersMail1"
+                    x:Name="TextBoxFullName"
                     Width="263"
                     Height="35"
                     Margin="280,24,0,0"
@@ -116,7 +116,7 @@
             VerticalAlignment="Bottom"
             Content="Добавить"
             FontSize="14"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Click="ButtonAdd_Click" />
         <Button
             x:Name="ButtonDelete"
             Width="115"
@@ -127,13 +127,13 @@
             Content="Удалить"
             FontSize="14"
             IsEnabled="False"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Click="ButtonDelete_Click" />
         <ListBox
-            x:Name="ListViewTeachers"
+            x:Name="ListBoxDiscipline"
             Width="250"
             Margin="20,100,0,56"
             HorizontalAlignment="Left"
-            d:ItemsSource="{d:SampleData ItemCount=5}" />
+            d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListBoxDiscipline_SelectionChanged" PreviewKeyUp="ListBoxDiscipline_PreviewKeyUp" FontSize="14" />
         <wpfui:SearchBox
             x:Name="SearchBox"
             Width="250"
@@ -143,13 +143,13 @@
             VerticalAlignment="Top"
             Placeholder="Поиск" />
         <ComboBox
-            x:Name="ComboBoxSortingTeacher"
+            x:Name="ComboBoxSorting"
             Width="250"
             Height="35"
             Margin="20,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            SelectedIndex="0">
+            SelectedIndex="0" SelectionChanged="ComboBoxSorting_SelectionChanged">
             <ComboBoxItem Content="А-Я" />
             <ComboBoxItem Content="Я-А" />
         </ComboBox>
