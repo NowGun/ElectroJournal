@@ -327,6 +327,7 @@ namespace ElectroJournal
 
             catch (Exception ex)
             {
+                settingsControl.InputLog($"Login | {ex.Message}");
                 System.Windows.MessageBox.Show(ex.Message);
             }
             //command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = PBKDF2HashHelper.VerifyPassword(TextBoxPassword.Password, (string)command.ExecuteScalar());
@@ -592,8 +593,9 @@ namespace ElectroJournal
         }
         private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Pages.Users user = new();
-            Frame.Navigate(user);
+            Users? user;
+            Frame.Navigate(user = new());
+            user?.Dispose();
             //GC.Collect();
             //user = null;
             //Frame.Navigate(new Pages.Users());
@@ -620,6 +622,8 @@ namespace ElectroJournal
         {
             SettingMig.CheckStart();
             settingsControl.CompletionLogin();
+            settingsControl.CreateDirLogs();
+            settingsControl.LogFileCreate();
             ThemeCheck();
         }
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
@@ -688,6 +692,7 @@ namespace ElectroJournal
             }
             catch (Exception ex)
             {
+                settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
                 Notifications("Уведомление", "Проверка обновления неудачная");
             }
 

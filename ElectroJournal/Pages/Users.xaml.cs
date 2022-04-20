@@ -35,7 +35,7 @@ namespace ElectroJournal.Pages
     /// <summary>
     /// Логика взаимодействия для Users.xaml
     /// </summary>
-    public partial class Users : Page
+    public partial class Users : IDisposable
     {
         public Users()
         {
@@ -51,6 +51,8 @@ namespace ElectroJournal.Pages
 
         public System.Windows.Threading.DispatcherTimer timer2 = new();
         List<int> idTeachers = new List<int>();
+        SettingsControl settingsControl = new();
+
         private static string? path;
         private string? firstname;
         private bool checkLastM = true;
@@ -704,6 +706,11 @@ namespace ElectroJournal.Pages
             {
                 BorderUserInfo.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FBFBFB");
             }
+        }
+
+        public void Dispose()
+        {
+           // throw new NotImplementedException();
         }
     }
 

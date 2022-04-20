@@ -34,7 +34,7 @@ namespace ElectroJournal.Pages
         }
 
         private bool isLoaded = false;
-
+        SettingsControl settingsControl = new();
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {          
             
@@ -151,6 +151,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
+                settingsControl.InputLog($"ButtonOpenUpdater_Click | {ex.Message}");
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Не удалось проверить");
             }
         }
