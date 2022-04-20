@@ -23,6 +23,7 @@ using unvell.ReoGrid.Actions;
 using unvell.ReoGrid.Events;
 using unvell.ReoGrid.Graphics;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Animation;
 
 namespace ElectroJournal.Pages
 {
@@ -39,6 +40,7 @@ namespace ElectroJournal.Pages
             ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
             //FillTable();
             FillComboBoxDisp();
+            FillComboBoxYears();
             var ws = ReoGrid.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
         }
@@ -48,6 +50,9 @@ namespace ElectroJournal.Pages
 
         private void FillTable()
         {
+            var anim = (Storyboard)FindResource("AnimOpenLoad");
+            anim.Begin();
+
             FillText();
             FillStudents();
             FillDates();
@@ -84,6 +89,8 @@ namespace ElectroJournal.Pages
 
                 }
             }
+            var anim = (Storyboard)FindResource("AnimCloseLoad");
+            anim.Begin();
         }
 
         private async void FillDates()
@@ -132,6 +139,7 @@ namespace ElectroJournal.Pages
 
         private void SettingSheet()
         {
+            
             var worksheet = ReoGrid.Worksheets[0];
             ReoGrid.SetSettings(WorkbookSettings.View_ShowSheetTabControl, false);
             worksheet.SetSettings(WorksheetSettings.View_ShowHeaders, false);
@@ -169,6 +177,19 @@ namespace ElectroJournal.Pages
                     ComboBoxDisp.Items.Add(t.DisciplinesNameAbbreviated);
                 });
             }
+        }
+        private async void FillComboBoxYears()
+        {
+            ComboBoxYears.Items.Clear();
+
+            using (zhirovContext db = new zhirovContext())
+            {
+                await db.Studyperiods.OrderBy(t => t.StudyperiodStart).ForEachAsync(t =>
+                {
+                    ComboBoxYears.Items.Add(t.StudyperiodStart);
+                });
+            }
+            ComboBoxYears.SelectedIndex = 0;
         }
 
         private void FillComoBoxMonth()

@@ -88,11 +88,11 @@ namespace ElectroJournal.Windows
             Random random = new Random();
             int secretCode = random.Next(100000, 999999);
 
-            MailAddress from = new MailAddress("rmail@techno-review.ru", "Восстановление пароля");
+            MailAddress from = new MailAddress("mail@techno-review.ru", "Восстановление пароля");
             MailAddress to = new MailAddress(mail);
             MailMessage m = new MailMessage(from, to);
             m.Subject = Title;
-            m.Body = "Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: " + secretCode;
+            m.Body = $"Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: {secretCode} ";
             SmtpClient smtp = new SmtpClient("connect.smtp.bz", 25);
             smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
             smtp.EnableSsl = true;

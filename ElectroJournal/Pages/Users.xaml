@@ -496,7 +496,7 @@
         <wpfui:Card
             x:Name="CardUser"
             Margin="320,15,15,30"
-            RenderTransformOrigin="0.5,0.5">
+            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
             <wpfui:Card.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -669,7 +669,7 @@
             x:Name="grid"
             Margin="320,0,15,0"
             RenderTransformOrigin="0.5,0.5"
-            Visibility="Visible" d:IsHidden="True">
+            Visibility="Visible">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -742,8 +742,6 @@
                         Style="{StaticResource WPFUIButtonStandard}" />
                     <Label
                         x:Name="TextBlockFIO"
-                        Width="310"
-                        Height="71"
                         Margin="178,29,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
