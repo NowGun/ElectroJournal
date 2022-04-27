@@ -31,7 +31,7 @@ namespace ElectroJournal.Pages
 
         }
 
-        DrawingAttributes inkAttributes = new DrawingAttributes();
+        DrawingAttributes inkAttributes = new();
 
         private void ButtonClear_Click(object sender, RoutedEventArgs e)
         {
@@ -65,7 +65,7 @@ namespace ElectroJournal.Pages
         }
         private void ImagePrint_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            PrintDialog printDialog = new PrintDialog();
+            PrintDialog printDialog = new();
             if (printDialog.ShowDialog() == true)
             {
                 printDialog.PrintVisual(InkCanvas, "Печать изображения");

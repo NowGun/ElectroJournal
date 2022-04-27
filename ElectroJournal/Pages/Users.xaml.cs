@@ -1,34 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.IO;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ElectroJournal.Windows;
-using MySql.Data.MySqlClient;
-using System.Windows.Media.Animation;
-using Microsoft.Win32;
-using ElectroJournal.Classes;
+﻿using ElectroJournal.Classes;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
-using SFTPService;
+using Microsoft.Win32;
 using Renci.SshNet;
-using System.Threading;
-using System.Drawing;
-using System.Drawing.Imaging;
 using Renci.SshNet.Async;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace ElectroJournal.Pages
 {
@@ -50,8 +37,8 @@ namespace ElectroJournal.Pages
         }
 
         public System.Windows.Threading.DispatcherTimer timer2 = new();
-        List<int> idTeachers = new List<int>();
-        SettingsControl settingsControl = new();
+        List<int> idTeachers = new();
+
 
         private static string? path;
         private string? firstname;
@@ -66,8 +53,8 @@ namespace ElectroJournal.Pages
         {
             ProgressBar.Visibility = Visibility.Visible;
             ButtonSave.IsEnabled = false;
-            
-            using (zhirovContext db = new zhirovContext())
+
+            using (zhirovContext db = new())
             {
                 Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
 
@@ -80,24 +67,22 @@ namespace ElectroJournal.Pages
 
                     try
                     {
-                        using (SftpClient client = new SftpClient(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password)))
+                        using SftpClient client = new(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password));
+                        client.Connect();
+                        if (client.IsConnected)
                         {
-                            client.Connect();
-                            if (client.IsConnected)
-                            {
-                                var fileStream = new FileStream($@"{path}", FileMode.Open);
+                            var fileStream = new FileStream($@"{path}", FileMode.Open);
 
-                                if (path != null)
-                                {                                  
-                                    await client.UploadAsync(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
-                                    client.Disconnect();
-                                    client.Dispose();
-                                    isPressed = true;
-                                    LoadData();
-                                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
-                                }
-                                fileStream.Close();
+                            if (path != null)
+                            {
+                                await client.UploadAsync(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                client.Disconnect();
+                                client.Dispose();
+                                isPressed = true;
+                                LoadData();
+                                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
                             }
+                            fileStream.Close();
                         }
                     }
                     catch (Exception ex)
@@ -116,14 +101,14 @@ namespace ElectroJournal.Pages
         private void LabelChangePhoto_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Arrow;
-        }        
+        }
         private void LabelChangePhoto_MouseMove(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Hand;
         }
         private void LabelChangePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            OpenFileDialog myDialog = new OpenFileDialog();
+            OpenFileDialog myDialog = new();
             myDialog.Filter = "Изображения(*.jpg;*.png)|*.JPG;*.PNG" + "|Все файлы (*.*)|*.* ";
             myDialog.CheckFileExists = true;
             myDialog.Multiselect = true;
@@ -133,8 +118,8 @@ namespace ElectroJournal.Pages
                 ButtonSave.IsEnabled = true;
                 path = myDialog.FileName;
 
-                BitmapImage bitmap = new BitmapImage();
-                
+                BitmapImage bitmap = new();
+
                 //var stream = File.OpenRead(path);
                 bitmap.BeginInit();
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
@@ -142,8 +127,8 @@ namespace ElectroJournal.Pages
                 //bitmap.StreamSource = stream;
                 bitmap.UriSource = new Uri(path, UriKind.Absolute);
                 bitmap.EndInit();
-/*                stream.Close();
-                stream.Dispose();*/
+                /*                stream.Close();
+                                stream.Dispose();*/
 
                 PersonPicture.ProfilePicture = bitmap;
             }
@@ -173,7 +158,7 @@ namespace ElectroJournal.Pages
             {
                 var stringPath = $@"{path}";
 
-                BitmapImage bitmapImage = new BitmapImage();
+                BitmapImage bitmapImage = new();
                 bitmapImage.BeginInit();
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
@@ -192,7 +177,7 @@ namespace ElectroJournal.Pages
                 var anim2 = (Storyboard)FindResource("AnimLoadComplete");
                 anim.Begin();
 
-                using (zhirovContext db = new zhirovContext())
+                using (zhirovContext db = new())
                 {
                     var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
 
@@ -203,7 +188,7 @@ namespace ElectroJournal.Pages
                         LabelDeletePhoto.Visibility = Visibility.Visible;
                         var stringPath = $@"{teachers.TeachersImage}";
 
-                        BitmapImage bitmapImage = new BitmapImage();
+                        BitmapImage bitmapImage = new();
                         bitmapImage.BeginInit();
                         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                         bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
@@ -216,7 +201,7 @@ namespace ElectroJournal.Pages
                         {
                             ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
                             isPressed = false;
-                        }                        
+                        }
                     }
                     else
                     {
@@ -238,7 +223,7 @@ namespace ElectroJournal.Pages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "LoadData");
-            }            
+            }
         }
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -259,30 +244,28 @@ namespace ElectroJournal.Pages
                     teacher.TeachersImage = "";
                     await db.SaveChangesAsync();
 
-                    try 
+                    try
                     {
-                        using (SftpClient client = new SftpClient(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password)))
+                        using SftpClient client = new(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password));
+                        client.Connect();
+                        if (client.IsConnected)
                         {
-                            client.Connect();
-                            if (client.IsConnected)
-                            {
-                                var fileStream = new FileStream($@"{path}", FileMode.Open);
+                            var fileStream = new FileStream($@"{path}", FileMode.Open);
 
-                                if (path != null)
-                                {
-                                    client.DeleteFile($@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
-                                    client.Disconnect();
-                                    client.Dispose();
-                                    ((MainWindow)Application.Current.MainWindow).RefreshImage(teacher.TeachersImage);
-                                }
-                                fileStream.Close();
+                            if (path != null)
+                            {
+                                client.DeleteFile($@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                client.Disconnect();
+                                client.Dispose();
+                                ((MainWindow)Application.Current.MainWindow).RefreshImage(teacher.TeachersImage);
                             }
+                            fileStream.Close();
                         }
                     }
                     catch (Exception ex)
-                    { 
+                    {
                         MessageBox.Show(ex.Message);
-                    }                    
+                    }
                 }
                 PersonPicture.ProfilePicture = null;
                 PersonPicture.DisplayName = $"{teacher.TeachersName} {teacher.TeachersSurname}";
@@ -318,14 +301,20 @@ namespace ElectroJournal.Pages
                     {
                         Chat? chat = await db.Chats
                             .Where(c => (c.TeachersTo == Properties.Settings.Default.UserID
-                                  && c.TeachersFrom == t.Idteachers) || 
-                                  (c.TeachersFrom == Properties.Settings.Default.UserID && 
+                                  && c.TeachersFrom == t.Idteachers) ||
+                                  (c.TeachersFrom == Properties.Settings.Default.UserID &&
                                    c.TeachersTo == t.Idteachers))
                             .OrderByDescending(c => c.Idchat)
                             .FirstOrDefaultAsync();
 
-                        if (t.TeachersStatus == 1) status = "Visible"; 
-                        else status = "Hidden";
+                        if (t.TeachersStatus == 1)
+                        {
+                            status = "Visible";
+                        }
+                        else
+                        {
+                            status = "Hidden";
+                        }
 
                         if (chat != null)
                         {
@@ -338,14 +327,17 @@ namespace ElectroJournal.Pages
                                 lmess = $"Вы: {chat.ChatText}";
                             }
                         }
-                        else lmess = "";
+                        else
+                        {
+                            lmess = "";
+                        }
 
                         if (!String.IsNullOrWhiteSpace(t.TeachersImage))
                         {
-                            var myImage = new System.Windows.Controls.Image();
+                            var myImage = new Image();
                             var stringPath = $@"{t.TeachersImage}";
 
-                            BitmapImage bitmapImage = new BitmapImage();
+                            BitmapImage bitmapImage = new();
                             bitmapImage.BeginInit();
                             bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                             bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
@@ -385,8 +377,8 @@ namespace ElectroJournal.Pages
         }
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           try
-           {
+            try
+            {
                 timer2.Stop();
 
                 if (ListViewTeachers.SelectedItem != null)
@@ -404,7 +396,7 @@ namespace ElectroJournal.Pages
                         grid.Visibility = Visibility.Hidden;
                         checkLastM = true;
 
-                        using (zhirovContext db = new zhirovContext())
+                        using (zhirovContext db = new())
                         {
                             var teachers = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
 
@@ -416,10 +408,10 @@ namespace ElectroJournal.Pages
 
                                 if (!String.IsNullOrWhiteSpace(t.TeachersImage))
                                 {
-                                    var myImage = new System.Windows.Controls.Image();
+                                    var myImage = new Image();
                                     var stringPath = $@"{t.TeachersImage}";
 
-                                    BitmapImage bitmapImage = new BitmapImage();
+                                    BitmapImage bitmapImage = new();
                                     bitmapImage.BeginInit();
                                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                                     bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
@@ -433,7 +425,7 @@ namespace ElectroJournal.Pages
                                     PersonPictureUser.ProfilePicture = null;
                                     PersonPictureUser.DisplayName = $"{t.TeachersName} {t.TeachersSurname}";
                                 }
-                                
+
                                 timer2.Tick += new EventHandler(ListBoxMessageRefresh);
                                 timer2.Interval = new TimeSpan(0, 0, 0, 1);
                                 timer2.Start();
@@ -455,7 +447,7 @@ namespace ElectroJournal.Pages
             {
                 timer2.Stop();
                 MessageBox.Show(ex.Message, "ListViewTeachers_SelectionChanged");
-            }            
+            }
         }
         private async void ButtonSend_Click(object sender, RoutedEventArgs e)
         {
@@ -463,28 +455,26 @@ namespace ElectroJournal.Pages
             {
                 if (!String.IsNullOrWhiteSpace(TextBoxMessage.Text))
                 {
-                    using (zhirovContext db = new())
+                    using zhirovContext db = new();
+                    Chat chat = new()
                     {
-                        Chat chat = new Chat
-                        {
-                            TeachersFrom = (uint)Properties.Settings.Default.UserID,
-                            TeachersTo = (uint)idTeachers[ListViewTeachers.SelectedIndex - 1],
-                            ChatText = TextBoxMessage.Text
-                        };
-                        
-                        await db.Chats.AddAsync(chat);
-                        await db.SaveChangesAsync();                        
+                        TeachersFrom = (uint)Properties.Settings.Default.UserID,
+                        TeachersTo = (uint)idTeachers[ListViewTeachers.SelectedIndex - 1],
+                        ChatText = TextBoxMessage.Text
+                    };
 
-                        TextBoxMessage.Clear();
-                        checkLastM = true;
-                        ListBoxMessageRefresh2();
-                    }                    
+                    await db.Chats.AddAsync(chat);
+                    await db.SaveChangesAsync();
+
+                    TextBoxMessage.Clear();
+                    checkLastM = true;
+                    ListBoxMessageRefresh2();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }            
+            }
         }
         private async void CheckNewMess(int index)
         {
@@ -493,31 +483,38 @@ namespace ElectroJournal.Pages
                 string lmess = "";
                 string status = "Hidden";
 
-                using (zhirovContext db = new())
+                using zhirovContext db = new();
+                Teacher? t2 = await db.Teachers.Where(t => t.Idteachers == index).FirstOrDefaultAsync();
+                Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index) ||
+                (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
+
+                if (t2.TeachersStatus == 1)
                 {
-                    Teacher? t2 = await db.Teachers.Where(t => t.Idteachers == index).FirstOrDefaultAsync();
-                    Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index) ||
-                    (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
-
-                    if (t2.TeachersStatus == 1) status = "Visible";
-                    else status = "Hidden";
-
-                    if (chat != null)
-                    {
-                        if (chat.TeachersTo == Properties.Settings.Default.UserID && chat.TeachersFrom == index)
-                        {
-                            lmess = chat.ChatText;
-                        }
-                        else if (chat.TeachersFrom == Properties.Settings.Default.UserID && chat.TeachersTo == index)
-                        {
-                            lmess = $"Вы: {chat.ChatText}";
-                        }
-                    }
-                    else lmess = "";
-
-                    SelectedData.lastMessage = lmess;
-                    SelectedData.online = status;
+                    status = "Visible";
                 }
+                else
+                {
+                    status = "Hidden";
+                }
+
+                if (chat != null)
+                {
+                    if (chat.TeachersTo == Properties.Settings.Default.UserID && chat.TeachersFrom == index)
+                    {
+                        lmess = chat.ChatText;
+                    }
+                    else if (chat.TeachersFrom == Properties.Settings.Default.UserID && chat.TeachersTo == index)
+                    {
+                        lmess = $"Вы: {chat.ChatText}";
+                    }
+                }
+                else
+                {
+                    lmess = "";
+                }
+
+                SelectedData.lastMessage = lmess;
+                SelectedData.online = status;
             }
             catch (Exception ex)
             {
@@ -529,50 +526,48 @@ namespace ElectroJournal.Pages
             try
             {
                 int index = idTeachers[ListViewTeachers.SelectedIndex - 1];
-                ObservableCollection<MessageListBox> co1 = new ObservableCollection<MessageListBox>();
-                using (zhirovContext db = new zhirovContext())
+                ObservableCollection<MessageListBox> co1 = new();
+                using zhirovContext db = new();
+                if (ListViewTeachers.SelectedIndex != 0)
                 {
-                    if (ListViewTeachers.SelectedIndex != 0)
+                    var a2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index) ||
+                        (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)).ToListAsync();
+
+                    foreach (var c in a2)
                     {
-                        var a2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index) ||
-                            (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)).ToListAsync();
-
-                        foreach (var c in a2)
+                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)
                         {
-                            if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)
+                            co1.Add(new MessageListBox
                             {
-                                co1.Add(new MessageListBox
-                                {
-                                    name = firstname,
-                                    text = c.ChatText,
-                                    margin = "15,0,300,0",
-                                    time = Convert.ToString(c.ChatDate)
-                                });
+                                name = firstname,
+                                text = c.ChatText,
+                                margin = "15,0,300,0",
+                                time = Convert.ToString(c.ChatDate)
+                            });
 
-                            }
-                            else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)
-                            {
-                                co1.Add(new MessageListBox
-                                {
-                                    name = Properties.Settings.Default.FirstName,
-                                    text = c.ChatText,
-                                    time = Convert.ToString(c.ChatDate),
-                                    margin = "300,0,0,0",
-                                    hAligment = "Right",
-                                    flowStack = "RightToLeft"
-                                });
-                            }
                         }
-
-                        ListBoxMessage.ItemsSource = co1;
-
-                        if (checkLastM)
+                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)
                         {
-                            ListBoxMessage.Items.MoveCurrentToLast();
-                            ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                            co1.Add(new MessageListBox
+                            {
+                                name = Properties.Settings.Default.FirstName,
+                                text = c.ChatText,
+                                time = Convert.ToString(c.ChatDate),
+                                margin = "300,0,0,0",
+                                hAligment = "Right",
+                                flowStack = "RightToLeft"
+                            });
                         }
-                        CheckNewMess(index);
                     }
+
+                    ListBoxMessage.ItemsSource = co1;
+
+                    if (checkLastM)
+                    {
+                        ListBoxMessage.Items.MoveCurrentToLast();
+                        ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                    }
+                    CheckNewMess(index);
                 }
             }
             catch (Exception ex)
@@ -586,48 +581,46 @@ namespace ElectroJournal.Pages
             try
             {
                 int index = idTeachers[ListViewTeachers.SelectedIndex - 1];
-                ObservableCollection<MessageListBox> co1 = new ObservableCollection<MessageListBox>();
-                using (zhirovContext db = new zhirovContext())
+                ObservableCollection<MessageListBox> co1 = new();
+                using zhirovContext db = new();
+                if (ListViewTeachers.SelectedIndex != 0)
                 {
-                    if (ListViewTeachers.SelectedIndex != 0)
+                    var c2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index) ||
+                    (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)).ToListAsync();
+
+                    foreach (var c in c2)
                     {
-                        var c2 = await db.Chats.Where(c => (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index) ||
-                        (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)).ToListAsync();
-
-                        foreach (var c in c2)
+                        if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)
                         {
-                            if (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == index)
+                            co1.Add(new MessageListBox
                             {
-                                co1.Add(new MessageListBox
-                                {
-                                    name = firstname,
-                                    text = c.ChatText,
-                                    margin = "15,0,300,0",
-                                    time = Convert.ToString(c.ChatDate)
-                                });
-                            }
-                            else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)
-                            {
-                                co1.Add(new MessageListBox
-                                {
-                                    name = Properties.Settings.Default.FirstName,
-                                    text = c.ChatText,
-                                    time = Convert.ToString(c.ChatDate),
-                                    hAligment = "Right",
-                                    margin = "300,0,0,0",
-                                    flowStack = "RightToLeft"
-                                });
-                            }
+                                name = firstname,
+                                text = c.ChatText,
+                                margin = "15,0,300,0",
+                                time = Convert.ToString(c.ChatDate)
+                            });
                         }
-
-                        ListBoxMessage.ItemsSource = co1;
-
-                        if (checkLastM)
+                        else if (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == index)
                         {
-                            ListBoxMessage.Items.MoveCurrentToLast();
-                            ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                            co1.Add(new MessageListBox
+                            {
+                                name = Properties.Settings.Default.FirstName,
+                                text = c.ChatText,
+                                time = Convert.ToString(c.ChatDate),
+                                hAligment = "Right",
+                                margin = "300,0,0,0",
+                                flowStack = "RightToLeft"
+                            });
                         }
-                    }                    
+                    }
+
+                    ListBoxMessage.ItemsSource = co1;
+
+                    if (checkLastM)
+                    {
+                        ListBoxMessage.Items.MoveCurrentToLast();
+                        ListBoxMessage.ScrollIntoView(ListBoxMessage.Items.CurrentItem);
+                    }
                 }
             }
             catch (Exception ex)
@@ -644,7 +637,7 @@ namespace ElectroJournal.Pages
                 SelectedData.lastMessage = "";
                 CardUser.Visibility = Visibility.Hidden;
                 grid.Visibility = Visibility.Visible;
-            }            
+            }
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -665,19 +658,29 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                using (zhirovContext db = new zhirovContext())
+                using zhirovContext db = new();
+                var setting = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
+
+                foreach (var s in setting)
                 {
-                    var setting = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
+                    Teacher? teacher = await db.Teachers.Where(t => t.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
 
-                    foreach (var s in setting)
+                    if (s.SettingsPhone == 1)
                     {
-                        Teacher? teacher = await db.Teachers.Where(t => t.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
+                        labelPhoneUser.Content = teacher.TeachersPhone;
+                    }
+                    else
+                    {
+                        labelPhoneUser.Content = "Скрыт";
+                    }
 
-                        if (s.SettingsPhone == 1) labelPhoneUser.Content = teacher.TeachersPhone;
-                        else labelPhoneUser.Content = "Скрыт";
-
-                        if (s.SettingsEmail == 1) LabelMailUser.Content = teacher.TeachersMail;
-                        else LabelMailUser.Content = "Скрыт";
+                    if (s.SettingsEmail == 1)
+                    {
+                        LabelMailUser.Content = teacher.TeachersMail;
+                    }
+                    else
+                    {
+                        LabelMailUser.Content = "Скрыт";
                     }
                 }
             }
@@ -699,7 +702,7 @@ namespace ElectroJournal.Pages
                 var anim = (Storyboard)FindResource("AnimCloseUserInformation");
                 anim.Begin();
                 checkBorder = true;
-            }            
+            }
         }
         private void ApplyBackgroundEffect()
         {
@@ -736,17 +739,17 @@ namespace ElectroJournal.Pages
             set
             {
                 cOnline = value;
-                RaisePropertyChanged("online");
+                RaisePropertyChanged(nameof(online));
             }
         }
         public string? lastMessage
-        { 
-            get => lMessage; 
+        {
+            get => lMessage;
 
             set
             {
                 lMessage = value;
-                RaisePropertyChanged("lastMessage");
+                RaisePropertyChanged(nameof(lastMessage));
             }
 
         }

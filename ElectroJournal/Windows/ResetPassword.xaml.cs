@@ -34,7 +34,7 @@ namespace ElectroJournal.Windows
             TitleBar.CloseActionOverride = CloseActionOverride;
         }
 
-        DataBaseControls DbControls = new DataBaseControls();
+        DataBaseControls DbControls = new();
         private bool _isDarkTheme = false;
         private int tbc = 1;
 
@@ -48,21 +48,19 @@ namespace ElectroJournal.Windows
 
             if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
             {
-                using (zhirovContext db = new())
+                using zhirovContext db = new();
+                Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                if (teacher != null)
                 {
-                    Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
-                    if (teacher != null)
-                    {
-                        TextBoxCode1.Clear();
-                        TextBoxCode2.Clear();
-                        TextBoxCode3.Clear();
-                        TextBoxCode4.Clear();
-                        TextBoxCode5.Clear();
-                        TextBoxCode6.Clear();
-                        secretCode = await SendMail(TextBoxGridMailMail.Text);
-                    }
-                    else Notifications("Логин или почта введены неверно", "Уведомление");
+                    TextBoxCode1.Clear();
+                    TextBoxCode2.Clear();
+                    TextBoxCode3.Clear();
+                    TextBoxCode4.Clear();
+                    TextBoxCode5.Clear();
+                    TextBoxCode6.Clear();
+                    secretCode = await SendMail(TextBoxGridMailMail.Text);
                 }
+                else Notifications("Логин или почта введены неверно", "Уведомление");
             }
 
             ButtonGridMailRepeatCode.IsEnabled = true;
@@ -74,21 +72,19 @@ namespace ElectroJournal.Windows
             {
                 if (TextBoxVerifyNewPassword.Text == TextBoxNewPassword.Text)
                 {
-                    using (zhirovContext db = new())
+                    using zhirovContext db = new();
+                    var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                    if (teacher != null)
                     {
-                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+                        teacher.TeachersPassword = DbControls.Hash(TextBoxVerifyNewPassword.Text);
+                        await db.SaveChangesAsync();
 
-                        if (teacher != null)
-                        {
-                            teacher.TeachersPassword = DbControls.Hash(TextBoxVerifyNewPassword.Text);
-                            await db.SaveChangesAsync();
-
-                            ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
-                            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
-                            this.Close();
-                        }
-                        else Notifications("Логин или пароль введены неверно", "Уведомление");
+                        ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
+                        ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+                        this.Close();
                     }
+                    else Notifications("Логин или пароль введены неверно", "Уведомление");
                 }
                 else
                 {
@@ -112,17 +108,15 @@ namespace ElectroJournal.Windows
                 {
                     if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
                     {
-                        using (zhirovContext db = new())
+                        using zhirovContext db = new();
+                        Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                        if (teacher != null)
                         {
-                            Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
-                            if (teacher != null)
-                            {
-                                Properties.Settings.Default.UserID = (int)teacher.Idteachers;
-                                Properties.Settings.Default.Save();
-                                secretCode = await SendMail(TextBoxGridMailMail.Text);
-                            }
-                            else Notifications("Логин или почта введены неверно", "Уведомление");
+                            Properties.Settings.Default.UserID = (int)teacher.Idteachers;
+                            Properties.Settings.Default.Save();
+                            secretCode = await SendMail(TextBoxGridMailMail.Text);
                         }
+                        else Notifications("Логин или почта введены неверно", "Уведомление");
                     }
                     else Notifications("Заполните поля", "Уведомление");
                 }
@@ -190,15 +184,15 @@ namespace ElectroJournal.Windows
         }
         private async Task<int> SendMail(string mail)
         {
-            Random random = new Random();
+            Random random = new();
             int secretCode = random.Next(100000, 999999);
 
-            MailAddress from = new MailAddress("mail@techno-review.ru", "Восстановление пароля");
-            MailAddress to = new MailAddress(mail);
-            MailMessage m = new MailMessage(from, to);
+            MailAddress from = new("mail@techno-review.ru", "Восстановление пароля");
+            MailAddress to = new(mail);
+            MailMessage m = new(from, to);
             m.Subject = Title;
             m.Body = $"Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: {secretCode} ";
-            SmtpClient smtp = new SmtpClient("connect.smtp.bz", 25);
+            SmtpClient smtp = new("connect.smtp.bz", 25);
             smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
             smtp.EnableSsl = true;
 
