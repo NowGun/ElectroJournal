@@ -218,8 +218,7 @@
             <Grid
                 x:Name="GridNLogin"
                 Margin="0,48,0,0"
-                VerticalAlignment="Top"
-                d:IsHidden="True">
+                VerticalAlignment="Top" d:IsHidden="True">
                 <wpfui:Icon
                     x:Name="IconSetting2"
                     Margin="0,0,17,0"
@@ -478,10 +477,9 @@
                     MinWidth="100"
                     Margin="48,42,0,0"
                     VerticalAlignment="Top"
-                    d:IsHidden="True"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
-                    PaneDisplayMode="Top">
+                    PaneDisplayMode="Top" d:IsHidden="True">
                     <ui:NavigationView.MenuItems>
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemJournal"

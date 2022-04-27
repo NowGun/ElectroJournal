@@ -33,12 +33,6 @@
             ShowMaximize="False"
             ShowMinimize="False" />
 
-        <wpfui:Snackbar
-            x:Name="RootSnackbar"
-            Margin="339,0,235,19"
-            FontSize="16"
-            Timeout="3000" />
-
         <Grid Margin="305,48,40,19">
             <RichTextBox
                 x:Name="RRTBname"
@@ -130,7 +124,7 @@
         <ListBox
             x:Name="ListBoxBugs"
             Width="280"
-            Margin="20,53,700,19"
+            Margin="20,53,700,69"
             Padding="0,0,0,0"
             ItemsSource="{Binding datA}"
             SelectedValue="{Binding SelectedData, Mode=TwoWay}"
@@ -167,6 +161,22 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button
+                x:Name="ButtonAdd"
+                Width="280"
+                Height="35"
+                Margin="0,0,700,29"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="ButtonAdd_Click"
+                Content="Добавить"
+                FontSize="14"
+                Style="{DynamicResource WPFUIButtonStandard}" />
+        <wpfui:Snackbar
+            x:Name="RootSnackbar"
+            Margin="339,0,235,19"
+            FontSize="16"
+            Timeout="3000" />
 
     </Grid>
 </Window>

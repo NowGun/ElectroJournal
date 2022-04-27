@@ -34,8 +34,6 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             if (!string.IsNullOrWhiteSpace(TextBoxFullName.Text))
             {
-
-
                 if (ListBoxDiscipline.SelectedItem != null)
                 {
                     using (zhirovContext db = new zhirovContext())
@@ -67,23 +65,16 @@ namespace ElectroJournal.Pages.AdminPanel
                             DisciplinesIndex = TextBoxIndex.Text
                         };
 
-
-
-
                         await db.Disciplines.AddAsync(disp);
                         await db.SaveChangesAsync();
-
-
 
                         TextBoxFullName.Clear();
                         TextBoxName.Clear();
                         TextBoxIndex.Clear();
                         FillListBoxDisciplines();
                         ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
-
                     }
                 }
-
             }
             else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
         }

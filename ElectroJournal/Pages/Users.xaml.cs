@@ -316,7 +316,13 @@ namespace ElectroJournal.Pages
 
                     foreach (var t in t2)
                     {
-                        Chat? chat = await db.Chats.Where(c => (c.TeachersTo == Properties.Settings.Default.UserID && c.TeachersFrom == t.Idteachers) || (c.TeachersFrom == Properties.Settings.Default.UserID && c.TeachersTo == t.Idteachers)).OrderByDescending(c => c.Idchat).FirstOrDefaultAsync();
+                        Chat? chat = await db.Chats
+                            .Where(c => (c.TeachersTo == Properties.Settings.Default.UserID
+                                  && c.TeachersFrom == t.Idteachers) || 
+                                  (c.TeachersFrom == Properties.Settings.Default.UserID && 
+                                   c.TeachersTo == t.Idteachers))
+                            .OrderByDescending(c => c.Idchat)
+                            .FirstOrDefaultAsync();
 
                         if (t.TeachersStatus == 1) status = "Visible"; 
                         else status = "Hidden";
@@ -354,6 +360,7 @@ namespace ElectroJournal.Pages
                                 image = bitmapImage,
                                 textFIO = $"{t.TeachersSurname} {t.TeachersName}"
                             });
+
                         }
                         else
                         {
@@ -366,6 +373,7 @@ namespace ElectroJournal.Pages
                             });
                         }
                         idTeachers.Add((int)t.Idteachers);
+
                     }
                 }
                 anim2.Begin();
@@ -710,7 +718,7 @@ namespace ElectroJournal.Pages
 
         public void Dispose()
         {
-           // throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 

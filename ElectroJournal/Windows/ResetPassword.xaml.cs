@@ -36,16 +36,70 @@ namespace ElectroJournal.Windows
 
         DataBaseControls DbControls = new DataBaseControls();
         private bool _isDarkTheme = false;
+        private int tbc = 1;
 
         bool a = true;
         int secretCode = 0;
 
-        private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        private async void ButtonGridMailRepeatCode_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
-            this.Close();
-        }
+            ButtonGridMailRepeatCode.IsEnabled = false;
+            ButtonGridMailRepeatCode.Content = "Отправка";
 
+            if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
+            {
+                using (zhirovContext db = new())
+                {
+                    Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                    if (teacher != null)
+                    {
+                        TextBoxCode1.Clear();
+                        TextBoxCode2.Clear();
+                        TextBoxCode3.Clear();
+                        TextBoxCode4.Clear();
+                        TextBoxCode5.Clear();
+                        TextBoxCode6.Clear();
+                        secretCode = await SendMail(TextBoxGridMailMail.Text);
+                    }
+                    else Notifications("Логин или почта введены неверно", "Уведомление");
+                }
+            }
+
+            ButtonGridMailRepeatCode.IsEnabled = true;
+            ButtonGridMailRepeatCode.Content = "Отправить заново";
+        }
+        private async void ButtonSaveNewPassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (TextBoxVerifyNewPassword.Text != string.Empty && TextBoxNewPassword.Text != string.Empty)
+            {
+                if (TextBoxVerifyNewPassword.Text == TextBoxNewPassword.Text)
+                {
+                    using (zhirovContext db = new())
+                    {
+                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                        if (teacher != null)
+                        {
+                            teacher.TeachersPassword = DbControls.Hash(TextBoxVerifyNewPassword.Text);
+                            await db.SaveChangesAsync();
+
+                            ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
+                            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+                            this.Close();
+                        }
+                        else Notifications("Логин или пароль введены неверно", "Уведомление");
+                    }
+                }
+                else
+                {
+                    Notifications("Пароли не совпадают", "Ошибка");
+                }
+            }
+            else
+            {
+                Notifications("Заполните все поля", "Ошибка");
+            }
+        }
         private async void ButtonGridmailContinue_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -82,145 +136,6 @@ namespace ElectroJournal.Windows
                 MessageBox.Show(ex.Message);
             }            
         }
-
-        private async Task<int> SendMail(string mail)
-        {
-            Random random = new Random();
-            int secretCode = random.Next(100000, 999999);
-
-            MailAddress from = new MailAddress("mail@techno-review.ru", "Восстановление пароля");
-            MailAddress to = new MailAddress(mail);
-            MailMessage m = new MailMessage(from, to);
-            m.Subject = Title;
-            m.Body = $"Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: {secretCode} ";
-            SmtpClient smtp = new SmtpClient("connect.smtp.bz", 25);
-            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
-            smtp.EnableSsl = true;
-
-            try
-            {
-                await smtp.SendMailAsync(m);
-                GridLoginMail.Visibility = Visibility.Hidden;
-                GridVerifySecretCode.Visibility = Visibility.Visible;
-                ButtonGridmailContinue.Visibility = Visibility.Hidden;
-                TextBoxCode1.Focus();
-                a = false;
-            }
-            catch (SmtpException)
-            {
-                Notifications("Почтовый сервис недоступен", "Ошибка");
-            }
-
-            return secretCode;
-        }
-
-        private async void ButtonGridMailRepeatCode_Click(object sender, RoutedEventArgs e)
-        {
-            ButtonGridMailRepeatCode.IsEnabled = false;
-            ButtonGridMailRepeatCode.Content = "Отправка";
-
-            if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
-            {
-                using (zhirovContext db = new())
-                {
-                    Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
-                    if (teacher != null)
-                    {
-                        TextBoxCode1.Clear();
-                        TextBoxCode2.Clear();
-                        TextBoxCode3.Clear();
-                        TextBoxCode4.Clear();
-                        TextBoxCode5.Clear();
-                        TextBoxCode6.Clear();
-                        secretCode = await SendMail(TextBoxGridMailMail.Text);
-                    }
-                    else Notifications("Логин или почта введены неверно", "Уведомление");
-                }
-            }
-
-            ButtonGridMailRepeatCode.IsEnabled = true;
-            ButtonGridMailRepeatCode.Content = "Отправить заново";
-        }
-
-        private async void ButtonSaveNewPassword_Click(object sender, RoutedEventArgs e)
-        {
-            if (TextBoxVerifyNewPassword.Text != string.Empty && TextBoxNewPassword.Text != string.Empty)
-            {
-                if (TextBoxVerifyNewPassword.Text == TextBoxNewPassword.Text)
-                {
-                    using (zhirovContext db = new())
-                    {
-                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
-
-                        if (teacher != null)
-                        {
-                            teacher.TeachersPassword = DbControls.Hash(TextBoxVerifyNewPassword.Text);
-                            await db.SaveChangesAsync();
-
-                            ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
-                            this.Close();
-                        }
-                        else Notifications("Логин или пароль введены неверно", "Уведомление");
-                    }
-                }
-                else
-                {
-                    Notifications("Пароли не совпадают", "Ошибка");
-                }
-            }
-            else
-            {
-                Notifications("Заполните все поля", "Ошибка");
-            }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ThemeCheck();
-        }
-
-        public void ThemeCheck()
-        {
-            int theme = Properties.Settings.Default.Theme;
-
-            _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
-
-            ApplyBackgroundEffect();
-        }
-
-        private void ApplyBackgroundEffect()
-        {
-            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
-            WPFUI.Background.Manager.Remove(windowHandle);
-
-            if (_isDarkTheme)
-            {
-                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
-            }
-            else
-            {
-                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
-            }
-
-            if (Environment.OSVersion.Version.Build >= 22000)
-            {
-                this.Background = System.Windows.Media.Brushes.Transparent;
-                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
-            }
-        }
-
-        private void Notifications(string message, string title)
-        {
-            RootSnackbar.Title = title;
-            RootSnackbar.Content = message;
-            //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
-            RootSnackbar.Expand();
-        }
-
-        private int tbc = 1;
-
         private void TextBoxCode1_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             if (TextBoxCode1.Text != String.Empty &&
@@ -263,6 +178,82 @@ namespace ElectroJournal.Windows
 
                 tbc++;
             }            
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ThemeCheck();
+        }
+        private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
+        {
+            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+            this.Close();
+        }
+        private async Task<int> SendMail(string mail)
+        {
+            Random random = new Random();
+            int secretCode = random.Next(100000, 999999);
+
+            MailAddress from = new MailAddress("mail@techno-review.ru", "Восстановление пароля");
+            MailAddress to = new MailAddress(mail);
+            MailMessage m = new MailMessage(from, to);
+            m.Subject = Title;
+            m.Body = $"Смена пароля в системе ElectroJournal\n Никому не сообщайте данный код: {secretCode} ";
+            SmtpClient smtp = new SmtpClient("connect.smtp.bz", 25);
+            smtp.Credentials = new NetworkCredential("zhirowdaniil@gmail.com", "CB1W3lAeBwQ6");
+            smtp.EnableSsl = true;
+
+            try
+            {
+                await smtp.SendMailAsync(m);
+                GridLoginMail.Visibility = Visibility.Hidden;
+                GridVerifySecretCode.Visibility = Visibility.Visible;
+                ButtonGridmailContinue.Visibility = Visibility.Hidden;
+                TextBoxCode1.Focus();
+                a = false;
+            }
+            catch (SmtpException)
+            {
+                Notifications("Почтовый сервис недоступен", "Ошибка");
+            }
+
+            return secretCode;
+        }
+        public void ThemeCheck()
+        {
+            int theme = Properties.Settings.Default.Theme;
+
+            _isDarkTheme = theme == 1;
+            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
+
+            ApplyBackgroundEffect();
+        }
+        private void ApplyBackgroundEffect()
+        {
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+
+            WPFUI.Background.Manager.Remove(windowHandle);
+
+            if (_isDarkTheme)
+            {
+                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
+            }
+            else
+            {
+                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
+            }
+
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                this.Background = System.Windows.Media.Brushes.Transparent;
+                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+            }
+        }
+        private void Notifications(string message, string title)
+        {
+            RootSnackbar.Title = title;
+            RootSnackbar.Content = message;
+            //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
+            RootSnackbar.Expand();
         }
     }
 }

@@ -54,9 +54,9 @@ namespace ElectroJournal.DataBase
                 string password = ElectroJournal.Properties.Settings.Default.Password;
                 string database = ElectroJournal.Properties.Settings.Default.DataBase;
                 // Connection String.
-                String connString = "Server=" + server + ";Database=" + database + ";User Id=" + username + ";password=" + password;
+                String connString = $"Server={server};Database={database};User Id={username};password={password};SslMode=none";
 
-                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"));
+                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), options => options.EnableRetryOnFailure());
 
             }
         }
@@ -408,11 +408,16 @@ namespace ElectroJournal.DataBase
 
                 entity.Property(e => e.DisciplinesIddisciplines).HasColumnName("disciplines_iddisciplines");
 
-                entity.Property(e => e.JournalDate)
-                    .HasColumnType("date")
-                    .HasColumnName("journal_date");
+                entity.Property(e => e.JournalDay).HasColumnName("journal_day");
 
-                entity.Property(e => e.JournalScore).HasColumnName("journal_score");
+                entity.Property(e => e.JournalMonth).HasColumnName("journal_month");
+
+                entity.Property(e => e.JournalScore)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("journal_score");
+
+                entity.Property(e => e.JournalYear).HasColumnName("journal_year");
 
                 entity.Property(e => e.StudentsIdstudents).HasColumnName("students_idstudents");
 

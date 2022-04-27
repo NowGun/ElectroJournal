@@ -692,7 +692,8 @@ namespace ElectroJournal
             }
             catch (Exception ex)
             {
-                settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
+                //settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
+                System.Windows.MessageBox.Show(ex.Message);
                 Notifications("Уведомление", "Проверка обновления неудачная");
             }
 

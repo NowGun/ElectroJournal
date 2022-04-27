@@ -110,6 +110,7 @@ namespace ElectroJournal.Windows
                             ((MainWindow)Application.Current.MainWindow).timer2.Stop();
                             ((MainWindow)Application.Current.MainWindow).animLabel = true;
                             ((MainWindow)Application.Current.MainWindow).AnimLog(true);
+                            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
                             ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
                             ProgressBar.Visibility = Visibility.Hidden;
                             this.Close();

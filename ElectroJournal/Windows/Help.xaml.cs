@@ -41,7 +41,7 @@ namespace ElectroJournal.Windows
             ComboBoxRefresh();
         }
 
-        private string path;
+        private string? path;
         List<int> idBugs = new List<int>();
         private bool _isDarkTheme = false;
 
@@ -61,13 +61,10 @@ namespace ElectroJournal.Windows
             string text = new TextRange(RRTBname.Document.ContentStart, RRTBname.Document.ContentEnd).Text;
             int chapter = 24;
 
-            if (ComboBoxChapter.SelectedItem != null)
-            {
-                chapter = ComboBoxChapter.SelectedIndex + 1;
-            }
+            if (ComboBoxChapter.SelectedItem != null) chapter = ComboBoxChapter.SelectedIndex + 1;
             else chapter = 24;
 
-            if (!string.IsNullOrWhiteSpace(text) || !string.IsNullOrWhiteSpace(TextBoxTitle.Text))
+            if (!string.IsNullOrWhiteSpace(text) && !string.IsNullOrWhiteSpace(TextBoxTitle.Text))
             {
                 ButtonSend.IsEnabled = false;
 
@@ -87,12 +84,13 @@ namespace ElectroJournal.Windows
                 ListBoxBugsRefresh();
                 SendMessage(text, path, TextBoxTitle.Text);
 
-                TextBoxPath.Text = "";
-                TextBoxTitle.Text = "";
+                TextBoxPath.Clear();
+                TextBoxTitle.Clear();
                 RRTBname.Document.Blocks.Clear();
             }
             else
             {
+                ProgressBarSend.Visibility = Visibility.Hidden;
                 Notifications("Ошибка", "Заполните поле");
             }
         }
@@ -130,18 +128,11 @@ namespace ElectroJournal.Windows
                 }
             });
 
-            if (!a)
-            {
-                Notifications("Успешно", "Сообщение отправлено");
-                ButtonSend.IsEnabled = true;
-                ProgressBarSend.Visibility = Visibility.Hidden;
-            }
-            else if (a)
-            {
-                Notifications("Ошибка", "Отсутствует подключение к интернету");
-                ButtonSend.IsEnabled = true;
-                ProgressBarSend.Visibility = Visibility.Hidden;
-            }
+            if (!a) Notifications("Успешно", "Сообщение отправлено");
+            else if (a) Notifications("Ошибка", "Отсутствует подключение к интернету");
+
+            ButtonSend.IsEnabled = true;
+            ProgressBarSend.Visibility = Visibility.Hidden;
         }
         private void Notifications (string message, string title)
         {
@@ -239,6 +230,8 @@ namespace ElectroJournal.Windows
         {
             if (ListBoxBugs.SelectedItem != null)
             {
+                ButtonSend.IsEnabled = false;
+
                 using (ejContext db = new())
                 {
                     var bu = await db.Bugreporters.Where(b => b.Idbugreporter == idBugs[ListBoxBugs.SelectedIndex]).Include(c => c.ChapterIdchapterNavigation).FirstOrDefaultAsync();
@@ -261,6 +254,16 @@ namespace ElectroJournal.Windows
                     ComboBoxChapter.Items.Add(c.ChapterName);
                 });
             }
+        }
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonSend.IsEnabled = true;
+            TextBoxTitle.Clear();
+            RRTBname.Document.Blocks.Clear();
+            ComboBoxChapter.SelectedIndex = -1;
+            ListBoxBugs.SelectedIndex = -1;
+            TextBoxPath.Clear();
+            path = null;
         }
     }
 

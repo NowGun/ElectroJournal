@@ -10,7 +10,7 @@
     <Page.Resources>
         <Storyboard x:Key="AnimOpenLoad">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="10">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="20">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <ExponentialEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -27,10 +27,17 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.KernelType)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static KernelType.Gaussian}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False"/>
+            </BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimCloseLoad">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="10">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <ExponentialEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -57,11 +64,15 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="True"/>
+            </BooleanAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
 
     <Grid>
-        <rg:ReoGridControl x:Name="ReoGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" Margin="10,70,10,10" WorkbookLoaded="ReoGrid_WorkbookLoaded">
+        <rg:ReoGridControl x:Name="ReoGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" Margin="10,50,10,10" WorkbookLoaded="ReoGrid_WorkbookLoaded">
             <rg:ReoGridControl.Effect>
                 <BlurEffect Radius="0"/>
             </rg:ReoGridControl.Effect>
@@ -76,8 +87,8 @@
         <ComboBox x:Name="ComboBoxDisp" HorizontalAlignment="Left" Height="35" Margin="345,5,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="ComboBoxDisp_SelectionChanged"/>
         <Label Content="Месяц" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="565,12,0,0"/>
         <ComboBox x:Name="ComboBoxMonth" HorizontalAlignment="Left" Height="35" Margin="612,5,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="ComboBoxMonth_SelectionChanged"/>
-        <Button x:Name="ButtonExcel" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="940,6,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click"/>
-        <Label x:Name="LabelTest" Content="Label" HorizontalAlignment="Left" Margin="767,13,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="ButtonExcel" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="940,6,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click" Visibility="Hidden" Cursor="Hand"/>
+        <Label x:Name="LabelTest" Content="Label" HorizontalAlignment="Left" Margin="767,13,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <Label Content="Учебный год" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,12,0,0"/>
         <ComboBox x:Name="ComboBoxYears" HorizontalAlignment="Left" Height="35" Margin="92,5,0,0" VerticalAlignment="Top" Width="150"/>
     </Grid>

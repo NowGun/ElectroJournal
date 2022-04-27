@@ -48,7 +48,7 @@ namespace ElectroJournal.Pages
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
             CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;           
             LabelIpAddress.Content = Properties.Settings.Default.Server;
-            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 20.04.2022";
+            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 25.04.2022";
         }
         private async void LoadSettingDB()
         {
@@ -125,10 +125,10 @@ namespace ElectroJournal.Pages
 
                     if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
                     {
-                        anim2.Begin();
                         LabelNewVersion.Content = $"Доступно новое обновление {Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
                         ButtonOpenUpdater.Content = "Скачать";
                         ButtonOpenUpdater.IsEnabled = true;
+                        anim2.Begin();
                     }
                     else
                     {
