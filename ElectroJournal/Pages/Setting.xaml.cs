@@ -30,11 +30,12 @@ namespace ElectroJournal.Pages
         public Setting()
         {
             InitializeComponent();
-            LoadApp();            
+            LoadApp();
         }
 
         private bool isLoaded = false;
         SettingsControl settingsControl = new();
+
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {          
             
@@ -42,13 +43,13 @@ namespace ElectroJournal.Pages
         }
         private void LoadApp()
         {
-            //CheckBoxAnim.IsChecked = Properties.Settings.Default.Animation;
             ComboBoxTheme.SelectedIndex = Properties.Settings.Default.Theme;
             CheckBoxRememberData.IsChecked = Properties.Settings.Default.RememberData;
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
-            CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;           
-            LabelIpAddress.Content = Properties.Settings.Default.Server;
+            CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;
             LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 25.04.2022";
+            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server)) LabelIpAddress.Content = Properties.Settings.Default.Server;
+            else LabelIpAddress.Content = "отсутствует";
         }
         private async void LoadSettingDB()
         {
@@ -87,7 +88,6 @@ namespace ElectroJournal.Pages
         private void SaveApp()
         {
             Properties.Settings.Default.Theme = ComboBoxTheme.SelectedIndex;
-            //Properties.Settings.Default.Animation = CheckBoxAnim.IsChecked ?? false;
             Properties.Settings.Default.AutoRun = CheckBoxAutoRun.IsChecked ?? false;
             Properties.Settings.Default.Tray = CheckBoxCollapseToTray.IsChecked ?? false;
             Properties.Settings.Default.RememberData = CheckBoxRememberData.IsChecked ?? false;
@@ -100,7 +100,6 @@ namespace ElectroJournal.Pages
             settingsControl.CheckAutoRun();
             //settingsControl.CompletionLogin();
             ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные успешно сохранены");
         }
         private void ButtonChangeBD_Click(object sender, RoutedEventArgs e)
         {

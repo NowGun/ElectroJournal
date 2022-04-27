@@ -365,9 +365,7 @@ namespace ElectroJournal
         }
         private void ApplyBackgroundEffect()
         {
-
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
             WPFUI.Background.Manager.Remove(windowHandle);
 
             if (_isDarkTheme)

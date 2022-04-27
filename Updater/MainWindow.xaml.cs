@@ -19,6 +19,7 @@ using System.Diagnostics;
 using Microsoft.VisualBasic.FileIO;
 using System.Windows.Interop;
 using System.ComponentModel;
+using WPFUI.Taskbar;
 
 namespace Updater
 {
@@ -30,25 +31,15 @@ namespace Updater
         public MainWindow()
         {
             InitializeComponent();
-            
         }
+
+        private bool _isDarkTheme = false;
+        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ThemeCheck();
-            /*try
-            {
-                WebBrowserUpdate.Refresh();
-                //WebBrowserUpdate.Navigate("javascript:void((function(){var a,b,c,e,f;f=0;a=document.cookie.split('; ');for(e=0;e<    a.length&&a[e];e++){f++;for(b='.'+location.host;b;b=b.replace(/^(?:%5C.|[^%5C.]+)/,'')){for(    c=location.pathname;c;c=c.replace(/.$/,'')){document.cookie=(a[e]+'; domain='+b+'; path='+c+'; expires='+new Date((    new Date()).getTime()-1e11).toGMTString());}}}})())");
-            }
-            catch (Exception ex)
-            {
-                //WebBrowserUpdate.GoBack();
-            }*/
         }
-
-        private bool _isDarkTheme = false;
-
         public void ThemeCheck()
         {
             int theme = 0;
@@ -58,7 +49,6 @@ namespace Updater
 
             ApplyBackgroundEffect();
         }
-
         private void ApplyBackgroundEffect()
         {
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
@@ -80,9 +70,9 @@ namespace Updater
             }
 
         }
-
         private void ButtonDownloadUpdate_Click(object sender, RoutedEventArgs e)
         {
+            Progress.SetState(ProgressState.None, false);
             foreach (var process in Process.GetProcessesByName("ElectroJournal"))
             {
                 process.Kill();
@@ -91,9 +81,6 @@ namespace Updater
             LabelInformation.Visibility = Visibility.Visible;
             DownloadFiles();
         }
-
-        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-
         private void DownloadFiles()
         {
             try
@@ -105,6 +92,7 @@ namespace Updater
 
                 //wc.DownloadFile(url, name);
 
+                Progress.SetState(ProgressState.Indeterminate, false);
                 wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
                 wc.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
                 stopwatch.Start();
@@ -112,13 +100,13 @@ namespace Updater
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
-
         void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            //ЗАПУСК КОНСОЛЬНОГО ПРИЛОЖЕНИЯ ДЛЯ РАСПАКОВКИ
+            // запуск приложения для распаковки
+
             ButtonDownloadUpdate.IsEnabled = true;
             LabelInformation.Visibility= Visibility.Hidden;
             ProgressBarLoad.Value = 0;
@@ -129,11 +117,12 @@ namespace Updater
             }
             catch (System.ComponentModel.Win32Exception)
             {
-                MessageBox.Show("Программа для распаковки не найдена, переустановите приложение.", "Ошибка");                
+                Progress.SetValue(100, 100, false);
+                Progress.SetState(ProgressState.Error, false);
+                MessageBox.Show("Программа для распаковки не найдена, переустановите приложение.", "Ошибка");
+                Progress.SetState(ProgressState.Normal, false);
             }
-            
         }
-
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             string downloadedMBs = Math.Round(e.BytesReceived / 1024.0 / 1024.0) + " MB";
@@ -141,7 +130,7 @@ namespace Updater
 
             LabelInformation.Content ="Загружено: " + downloadedMBs + "/" + totalMBs + "\tСкорость: " + string.Format("{0} MB/s", (e.BytesReceived / 1024.0 / 1024.0 / stopwatch.Elapsed.TotalSeconds).ToString("0.00"));
             ProgressBarLoad.Maximum = (int)e.TotalBytesToReceive / 100;
-            ProgressBarLoad.Value = (int)e.BytesReceived / 100;
+            ProgressBarLoad.Value = (int)e.BytesReceived / 100;            
         }
     }
 }
