@@ -3,13 +3,9 @@ using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml;
 
 namespace ElectroJournal.Classes
 {
@@ -45,7 +41,10 @@ namespace ElectroJournal.Classes
             {
                 SetAutorunValue(true);
             }
-            else SetAutorunValue(false);
+            else
+            {
+                SetAutorunValue(false);
+            }
         }
         private bool SetAutorunValue(bool autorun)
         {
@@ -55,9 +54,13 @@ namespace ElectroJournal.Classes
             try
             {
                 if (autorun)
+                {
                     reg.SetValue(name, ExePath);
+                }
                 else
+                {
                     reg.DeleteValue(name);
+                }
 
                 reg.Close();
             }
@@ -98,8 +101,8 @@ namespace ElectroJournal.Classes
 
                     return true;
                 }
-                return false;              
-            }           
+                return false;
+            }
         }
         public void LogFileCreate()
         {
@@ -114,7 +117,10 @@ namespace ElectroJournal.Classes
         public void CreateDirLogs()
         {
             string path = $@"{currentPath}/logs";
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);  
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
         public async void InputLog(string text)
         {

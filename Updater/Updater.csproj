@@ -2,11 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <PlatformTarget>x86</PlatformTarget>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logo300.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Renci.SshNet.Async" Version="1.4.0" />
@@ -15,6 +19,22 @@
 
   <ItemGroup>
     <ProjectReference Include="..\wpfui-main\WPFUI\WPFUI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Windows.SDK.NET">
+      <HintPath>..\ElectroJournal\dll\Microsoft.Windows.SDK.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernWpf">
+      <HintPath>..\ElectroJournal\dll\ModernWpf.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernWpf.Controls">
+      <HintPath>..\ElectroJournal\dll\ModernWpf.Controls.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo300.png" />
   </ItemGroup>
 
 </Project>

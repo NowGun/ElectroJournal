@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace ElectroJournal.Classes
 {
     internal class SettingMigration
     {
-        
+
 
         public void SettingLoad()
         {
@@ -33,11 +29,13 @@ namespace ElectroJournal.Classes
 
                     FileInfo fi = new FileInfo("setting.xml");
 
-                    if (fi.Exists) fi.Delete();
-
+                    if (fi.Exists)
+                    {
+                        fi.Delete();
+                    }
                 }
                 catch (System.FormatException) { }
-            } 
+            }
             catch (System.IO.FileNotFoundException)
             {
 
@@ -69,7 +67,10 @@ namespace ElectroJournal.Classes
 
 
             }
-            else SettingLoad();
+            else
+            {
+                SettingLoad();
+            }
         }
     }
 }

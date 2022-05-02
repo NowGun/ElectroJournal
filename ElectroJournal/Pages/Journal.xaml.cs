@@ -1,48 +1,36 @@
-﻿using ElectroJournal.Classes;
-using ElectroJournal.DataBase;
+﻿using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Actions;
 using unvell.ReoGrid.Events;
-using unvell.ReoGrid.Graphics;
-using System.Text.RegularExpressions;
-using System.Windows.Media.Animation;
-using System.Data.Entity.Core.Objects;
 
 namespace ElectroJournal.Pages
 {
     /// <summary>
     /// Логика взаимодействия для Journal.xaml
     /// </summary>
-    public partial class Journal : Page
+    public partial class Journal
     {
         public Journal()
         {
             InitializeComponent();
 
             FillComoBoxMonth();
-            ComboBoxMonth.SelectedIndex = DateTime.Now.Month-1;
+            ComboBoxMonth.SelectedIndex = DateTime.Now.Month - 1;
             //FillTable();
             FillComboBoxDisp();
             FillComboBoxYears();
-           // FillScore();
+            // FillScore();
             var ws = ReoGrid.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
         }
@@ -96,7 +84,7 @@ namespace ElectroJournal.Pages
                                         worksheet[i, j] = scoreList.JournalScore;
                                     }
                                 }
-                                
+
                             }
                         }
                     }
@@ -146,7 +134,7 @@ namespace ElectroJournal.Pages
                     for (int i = 2; i - 2 < stuud; i++)
                     {
                         worksheet.SetRows(i);
-                        worksheet["A" + i] = students[i-2].StudentsSurname + " " + students[i-2].StudentsName;
+                        worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
                         worksheet.AutoFitColumnWidth(0, false);
 
                         unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
@@ -168,14 +156,14 @@ namespace ElectroJournal.Pages
         private async void FillDates()
         {
             var worksheet = ReoGrid.CurrentWorksheet;
-            
+
             using (zhirovContext db = new zhirovContext())
-            {                
+            {
                 var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
-                daysTable = days.Count+1;
+                daysTable = days.Count + 1;
                 for (int i = 1; i < daysTable; i++)
                 {
-                    worksheet.SetCols(days.Count+1);
+                    worksheet.SetCols(days.Count + 1);
                     worksheet[0, i] = days[i - 1];
                     ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
@@ -209,13 +197,18 @@ namespace ElectroJournal.Pages
         }
         private void SettingSheet()
         {
-            
+
             var worksheet = ReoGrid.Worksheets[0];
             ReoGrid.SetSettings(WorkbookSettings.View_ShowSheetTabControl, false);
             worksheet.SetSettings(WorksheetSettings.View_ShowHeaders, false);
-            if (Properties.Settings.Default.Theme == 1) ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
-            else ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
-
+            if (Properties.Settings.Default.Theme == 1)
+            {
+                ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
+            }
+            else
+            {
+                ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
+            }
         }
         private void ButtonExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -229,7 +222,7 @@ namespace ElectroJournal.Pages
             if (!((e.Text == "н") || (e.Text == "Н") || (e.Text == "а") || (e.Text == "2") || (e.Text == "3") || (e.Text == "4") || (e.Text == "5") || (e.Text == "/") || (e.Text == "А")))
             {
                 e.Handled = true;
-            }            
+            }
         }
         private async void FillComboBoxDisp()
         {
@@ -311,7 +304,7 @@ namespace ElectroJournal.Pages
         {
             string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
             string score = poz[0];
-           
+
             char poz3 = score[1];
 
             string poz4 = score.Last().ToString();
@@ -325,21 +318,28 @@ namespace ElectroJournal.Pages
                 SaveJournal(ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText, ComboBoxDisp.SelectedItem.ToString(), Properties.Settings.Default.UserID, ComboBoxYears.SelectedItem.ToString(), ReoGrid.CurrentWorksheet.Cells[score].DisplayText, $"{CheckYear()}.{ComboBoxMonth.SelectedIndex + 1}.{ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText}");
             }
 
-            LabelTest.Content = $"оценка {ReoGrid.CurrentWorksheet.Cells[score].DisplayText} фио {ReoGrid.CurrentWorksheet.Cells[stud-1, 0].DisplayText} дата {ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText} позиция {score}";
+            LabelTest.Content = $"оценка {ReoGrid.CurrentWorksheet.Cells[score].DisplayText} фио {ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText} дата {ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText} позиция {score}";
         }
         private string CheckYear()
         {
             string[] year = ComboBoxYears.SelectedItem.ToString().Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (ComboBoxMonth.SelectedIndex <= 6) return year[1];
-            else if (ComboBoxMonth.SelectedIndex >= 8) return year[0];
+            if (ComboBoxMonth.SelectedIndex <= 6)
+            {
+                return year[1];
+            }
+            else if (ComboBoxMonth.SelectedIndex >= 8)
+            {
+                return year[0];
+            }
+
             return null;
         }
         private void ComboBoxDisp_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboBoxDisp.SelectedItem != null)
             {
-                FillTable();                
+                FillTable();
             }
         }
     }

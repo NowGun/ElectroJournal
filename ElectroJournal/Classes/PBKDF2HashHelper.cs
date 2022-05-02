@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ElectroJournal.Classes
 {
@@ -14,7 +10,10 @@ namespace ElectroJournal.Classes
 
         public static string CreatePasswordHash(string password, int iterationCount = 15013)
         {
-            if (password == null) throw new ArgumentNullException(nameof(password));
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
 
             byte[] salt = GenerateRandomSalt(SALT_LENGTH);
             byte[] hashValue = GenerateHashValue(password, salt, iterationCount);

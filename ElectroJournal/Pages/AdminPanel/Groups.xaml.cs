@@ -1,27 +1,12 @@
-﻿using System;
+﻿using ElectroJournal.DataBase;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using MySql.Data.MySqlClient;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using NickBuhro.Translit;
-using System.Net.Mail;
-using System.Net;
-using ElectroJournal.Classes;
 using System.Windows.Forms;
-using SmsRu;
-using System.Drawing;
-using ElectroJournal.DataBase;
-using Microsoft.EntityFrameworkCore;
+using System.Windows.Input;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -116,7 +101,10 @@ namespace ElectroJournal.Pages.AdminPanel
                     }
                 }
             }
-            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+            else
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+            }
 
             ProgressBar.Visibility = Visibility.Hidden;
         }
@@ -155,7 +143,7 @@ namespace ElectroJournal.Pages.AdminPanel
                         });
                         break;
                     case 1:
-                        
+
                         break;
                 }
             }
@@ -167,7 +155,7 @@ namespace ElectroJournal.Pages.AdminPanel
             else if (ComboBoxGroupsSorting.SelectedIndex == 3) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 3 ORDER BY `groups_name`";
             else if (ComboBoxGroupsSorting.SelectedIndex == 4) command.CommandText = "SELECT `idgroups`, `groups_name_abbreviated` FROM `groups` WHERE `groups_course` = 4 ORDER BY `groups_name`";
         */
-            }
+        }
         private async void FillComboBoxClassTeacher()
         {
             ComboBoxClassTeacher.Items.Clear();
@@ -221,7 +209,7 @@ namespace ElectroJournal.Pages.AdminPanel
                     ComboBoxCourse.SelectedItem = t.CourseIdcourseNavigation.CourseName;
                     ComboBoxClassTeacher.SelectedItem = fio;
                 }
-            }           
+            }
         }
         private void ListBoxGroups_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {

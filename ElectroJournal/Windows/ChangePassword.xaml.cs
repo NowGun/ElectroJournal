@@ -3,19 +3,9 @@ using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ElectroJournal.Windows
 {
@@ -115,12 +105,22 @@ namespace ElectroJournal.Windows
                             ProgressBar.Visibility = Visibility.Hidden;
                             this.Close();
                         }
-                        else Notifications("Логин или пароль введены неверно", "Уведомление");
+                        else
+                        {
+                            Notifications("Логин или пароль введены неверно", "Уведомление");
+                        }
                     }
                 }
-                else Notifications("Пароли не совпадают", "Ошибка");
+                else
+                {
+                    Notifications("Пароли не совпадают", "Ошибка");
+                }
             }
-            else Notifications("Заполните все поля", "Ошибка");
+            else
+            {
+                Notifications("Заполните все поля", "Ошибка");
+            }
+
             ProgressBar.Visibility = Visibility.Hidden;
         }
     }

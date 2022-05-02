@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace ElectroJournal.Classes
 {
@@ -67,7 +63,10 @@ namespace ElectroJournal.Classes
             {
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
 
         public bool IsCabinetExists(string cabinet)
@@ -86,7 +85,10 @@ namespace ElectroJournal.Classes
             {
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
 
         public void DeleteTeachers(int id)
@@ -153,9 +155,15 @@ namespace ElectroJournal.Classes
                 {
                     return true;
                 }
-                else return false;
+                else
+                {
+                    return false;
+                }
             }
-            else return true;
+            else
+            {
+                return true;
+            }
         }
 
         public bool IsUserExists(string login)
@@ -177,9 +185,15 @@ namespace ElectroJournal.Classes
                 {
                     return true;
                 }
-                else return false;
+                else
+                {
+                    return false;
+                }
             }
-            else return true;
+            else
+            {
+                return true;
+            }
         }
     }
 }

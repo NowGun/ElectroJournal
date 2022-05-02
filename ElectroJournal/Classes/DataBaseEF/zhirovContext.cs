@@ -1,7 +1,6 @@
-﻿using System;
-using ElectroJournal.Classes.DataBaseEF;
+﻿using ElectroJournal.Classes.DataBaseEF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 
 #nullable disable
 
@@ -56,7 +55,7 @@ namespace ElectroJournal.DataBase
                 // Connection String.
                 String connString = $"Server={server};Database={database};User Id={username};password={password};SslMode=none";
 
-                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"), options => options.EnableRetryOnFailure());
+                optionsBuilder.UseMySql(connString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"));
 
             }
         }

@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ElectroJournal.Classes;
-using ElectroJournal.Pages;
-using System.Net;
-using System.Windows.Interop;
-using System.Windows.Media.Animation;
+﻿using ElectroJournal.Classes;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media.Animation;
 
 namespace ElectroJournal.Windows
 {
@@ -60,7 +50,10 @@ namespace ElectroJournal.Windows
                     TextBoxCode6.Clear();
                     secretCode = await SendMail(TextBoxGridMailMail.Text);
                 }
-                else Notifications("Логин или почта введены неверно", "Уведомление");
+                else
+                {
+                    Notifications("Логин или почта введены неверно", "Уведомление");
+                }
             }
 
             ButtonGridMailRepeatCode.IsEnabled = true;
@@ -84,7 +77,10 @@ namespace ElectroJournal.Windows
                         ((MainWindow)Application.Current.MainWindow).ThemeCheck();
                         this.Close();
                     }
-                    else Notifications("Логин или пароль введены неверно", "Уведомление");
+                    else
+                    {
+                        Notifications("Логин или пароль введены неверно", "Уведомление");
+                    }
                 }
                 else
                 {
@@ -116,9 +112,15 @@ namespace ElectroJournal.Windows
                             Properties.Settings.Default.Save();
                             secretCode = await SendMail(TextBoxGridMailMail.Text);
                         }
-                        else Notifications("Логин или почта введены неверно", "Уведомление");
+                        else
+                        {
+                            Notifications("Логин или почта введены неверно", "Уведомление");
+                        }
                     }
-                    else Notifications("Заполните поля", "Уведомление");
+                    else
+                    {
+                        Notifications("Заполните поля", "Уведомление");
+                    }
                 }
                 TextBoxGridMailMail.IsEnabled = true;
                 TextBoxGridMailLogin.IsEnabled = true;
@@ -128,7 +130,7 @@ namespace ElectroJournal.Windows
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }            
+            }
         }
         private void TextBoxCode1_PreviewKeyUp(object sender, KeyEventArgs e)
         {
@@ -162,16 +164,34 @@ namespace ElectroJournal.Windows
             }
             else
             {
-                if (tbc == 6) tbc = 1;
+                if (tbc == 6)
+                {
+                    tbc = 1;
+                }
 
-                if (tbc == 1) TextBoxCode2.Focus();
-                else if (tbc == 2) TextBoxCode3.Focus();
-                else if (tbc == 3) TextBoxCode4.Focus();
-                else if (tbc == 4) TextBoxCode5.Focus();
-                else if (tbc == 5) TextBoxCode6.Focus();
+                if (tbc == 1)
+                {
+                    TextBoxCode2.Focus();
+                }
+                else if (tbc == 2)
+                {
+                    TextBoxCode3.Focus();
+                }
+                else if (tbc == 3)
+                {
+                    TextBoxCode4.Focus();
+                }
+                else if (tbc == 4)
+                {
+                    TextBoxCode5.Focus();
+                }
+                else if (tbc == 5)
+                {
+                    TextBoxCode6.Focus();
+                }
 
                 tbc++;
-            }            
+            }
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

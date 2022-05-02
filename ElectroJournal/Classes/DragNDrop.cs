@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ElectroJournal.Classes
 {
@@ -100,7 +95,11 @@ namespace ElectroJournal.Classes
             if (e.Source is UIElement element)
             {
                 var property = DragNDrop.GetDragSource(element);
-                if (property == null) return;
+                if (property == null)
+                {
+                    return;
+                }
+
                 var data = element.GetValue(property);
                 DragDrop.DoDragDrop(element, data, DragDropEffects.Copy);
             }
@@ -111,9 +110,17 @@ namespace ElectroJournal.Classes
             if (e.Source is UIElement element)
             {
                 var property = DragNDrop.GetDropTarget(element);
-                if (property == null) return;
+                if (property == null)
+                {
+                    return;
+                }
+
                 var format = GetDropDataFormat(element);
-                if (format == null) return;
+                if (format == null)
+                {
+                    return;
+                }
+
                 if (e.Data.GetDataPresent(format))
                 {
                     element.SetValue(property, e.Data.GetData(format));

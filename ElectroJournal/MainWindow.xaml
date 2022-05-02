@@ -52,6 +52,32 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="17.611">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimOpenMenuAdmin">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleBackToMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
                         <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
@@ -61,9 +87,100 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenuAdmin" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleBackToMenu" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-6.67">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenuAdmin" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-6.67">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimOpenMenuAdmin" />
-        <Storyboard x:Key="AnimOpenMenu" />
+        <Storyboard x:Key="AnimOpenMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleBackToMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenuAdmin" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenu" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-33.018">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="-27.639">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
         <Storyboard x:Key="AnimOpenMenuStart">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
@@ -76,6 +193,18 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimToBlackTheme" />
@@ -104,8 +233,16 @@
         </Storyboard>
         <Storyboard x:Key="AnimCloseFrame">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" >
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" >
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimLabelScheduleCall">
@@ -178,6 +315,25 @@
                 <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimChangeTheme">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridDefault" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0.5">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
 
@@ -407,7 +563,19 @@
                     HorizontalContentAlignment="Center"
                     FontSize="20"
                     Glyph="ArrowLeft12"
-                    MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp" />
+                    MouseLeave="RectangleUser_MouseLeave"
+                    MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp"
+                    MouseMove="RectangleUser_MouseMove"
+                    RenderTransformOrigin="0.5,0.5">
+                    <wpfui:Icon.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </wpfui:Icon.RenderTransform>
+                </wpfui:Icon>
                 <Path
                     x:Name="PathMenu"
                     Height="1"
@@ -431,45 +599,55 @@
                     MinWidth="100"
                     Margin="48,42,0,0"
                     VerticalAlignment="Top"
+                    d:IsHidden="True"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
-                    PaneDisplayMode="Top">
+                    PaneDisplayMode="Top"
+                    RenderTransformOrigin="0.5,0.5">
+                    <ui:NavigationView.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:NavigationView.RenderTransform>
                     <ui:NavigationView.MenuItems>
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemTeachers"
                             Content="Преподаватели"
                             MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" />
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemDisciplines"
                             Content="Предметы"
                             MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                            />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemStudents"
                             Content="Студенты"
                             MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemGroups"
                             Content="Группы"
                             MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemCabinets"
                             Content="Кабинеты"
                             MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemScheduleAdmin"
                             Content="Расписание"
                             MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemAcademicYears"
                             Content="Учебные года"
                             MouseLeftButtonUp="NavigationViewItemAcademicYears_MouseLeftButtonUp"
-                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                             />
                     </ui:NavigationView.MenuItems>
                 </ui:NavigationView>
                 <ui:NavigationView
@@ -478,31 +656,49 @@
                     MinWidth="100"
                     Margin="48,42,0,0"
                     VerticalAlignment="Top"
-                    d:IsHidden="True"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
-                    PaneDisplayMode="Top">
+                    PaneDisplayMode="Top"
+                    RenderTransformOrigin="0.5,0.5">
+                    <ui:NavigationView.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:NavigationView.RenderTransform>
                     <ui:NavigationView.MenuItems>
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemJournal"
                             Content="Журнал"
-                            PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp" />
+                            Tag="Journal" PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp"
+                            
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemSchedule"
                             Content="Расписание"
-                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                            Tag="Schedule"
+                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" 
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemBoard"
                             Content="Доска"
-                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
-                        <ui:NavigationViewItem
+                            Tag="Board"
+                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp"
+                            />
+                        <ui:NavigationViewItem                            
                             x:Name="NavigationViewItemWord"
                             Content="Текстовый редактор"
-                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
+                            Tag="Word"
+                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp"
+                             />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemAdminPanel"
                             Content="Панель администратора"
-                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp" />
+                            Tag="Setting"
+                            PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp"
+                             />
                     </ui:NavigationView.MenuItems>
                 </ui:NavigationView>
                 <Grid
@@ -612,7 +808,7 @@
                         Padding="0,5,5,5"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="Введите логин"
+                        Content="Логин"
                         FontSize="14"
                         RenderTransformOrigin="0.517,0.558" />
                     <Button

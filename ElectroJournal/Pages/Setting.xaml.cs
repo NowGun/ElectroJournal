@@ -3,22 +3,10 @@ using ElectroJournal.DataBase;
 using ElectroJournal.Windows;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml;
 
 namespace ElectroJournal.Pages
 {
@@ -37,9 +25,9 @@ namespace ElectroJournal.Pages
         SettingsControl settingsControl = new();
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {          
-            
-            
+        {
+
+
         }
         private void LoadApp()
         {
@@ -48,8 +36,14 @@ namespace ElectroJournal.Pages
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
             CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;
             LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 25.04.2022";
-            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server)) LabelIpAddress.Content = Properties.Settings.Default.Server;
-            else LabelIpAddress.Content = "отсутствует";
+            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server))
+            {
+                LabelIpAddress.Content = Properties.Settings.Default.Server;
+            }
+            else
+            {
+                LabelIpAddress.Content = "отсутствует";
+            }
         }
         private async void LoadSettingDB()
         {
@@ -62,11 +56,23 @@ namespace ElectroJournal.Pages
 
                     if (s != null)
                     {
-                        if (s.SettingsPhone == 1) Properties.Settings.Default.ShowPhone = false;
-                        else Properties.Settings.Default.ShowPhone = true;
-                        
-                        if (s.SettingsEmail == 1) Properties.Settings.Default.ShowEmail = false;
-                        else Properties.Settings.Default.ShowEmail = true;
+                        if (s.SettingsPhone == 1)
+                        {
+                            Properties.Settings.Default.ShowPhone = false;
+                        }
+                        else
+                        {
+                            Properties.Settings.Default.ShowPhone = true;
+                        }
+
+                        if (s.SettingsEmail == 1)
+                        {
+                            Properties.Settings.Default.ShowEmail = false;
+                        }
+                        else
+                        {
+                            Properties.Settings.Default.ShowEmail = true;
+                        }
 
                         Properties.Settings.Default.Save();
                     }
@@ -161,7 +167,10 @@ namespace ElectroJournal.Pages
                 SaveApp();
                 ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
             }
-            else isLoaded = true;            
+            else
+            {
+                isLoaded = true;
+            }
         }
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
@@ -177,7 +186,10 @@ namespace ElectroJournal.Pages
             {
                 CardExpanderPrivate.Visibility = Visibility.Visible;
             }
-            else CardExpanderPrivate.Visibility = Visibility.Hidden;
+            else
+            {
+                CardExpanderPrivate.Visibility = Visibility.Hidden;
+            }
         }
         private void CheckBoxDB_Click(object sender, RoutedEventArgs e)
         {
@@ -195,7 +207,7 @@ namespace ElectroJournal.Pages
 
             using (zhirovContext db = new zhirovContext())
             {
-                Classes.DataBaseEF.Setting? setting = await db.Settings.FirstOrDefaultAsync(s => s.TeachersIdteachers == Properties.Settings.Default.UserID);                
+                Classes.DataBaseEF.Setting? setting = await db.Settings.FirstOrDefaultAsync(s => s.TeachersIdteachers == Properties.Settings.Default.UserID);
 
                 if (setting != null)
                 {
@@ -211,7 +223,7 @@ namespace ElectroJournal.Pages
         }
         private void CardExpanderPrivate_Expanded(object sender, RoutedEventArgs e)
         {
-            var anim = (Storyboard)FindResource("AnimOpenSyncPrivate");            
+            var anim = (Storyboard)FindResource("AnimOpenSyncPrivate");
             anim.Begin();
             LoadSettingDB();
         }

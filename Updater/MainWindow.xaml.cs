@@ -20,6 +20,8 @@ using Microsoft.VisualBasic.FileIO;
 using System.Windows.Interop;
 using System.ComponentModel;
 using WPFUI.Taskbar;
+using System.Net.Http;
+using System.Windows.Media.Animation;
 
 namespace Updater
 {
@@ -31,47 +33,19 @@ namespace Updater
         public MainWindow()
         {
             InitializeComponent();
+            LoadChange();
         }
 
-        private bool _isDarkTheme = false;
-        private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        private readonly Stopwatch stopwatch = new();
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void LoadChange()
         {
-            ThemeCheck();
-        }
-        public void ThemeCheck()
-        {
-            int theme = 0;
-
-            _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
-
-            ApplyBackgroundEffect();
-        }
-        private void ApplyBackgroundEffect()
-        {
-            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
-            WPFUI.Background.Manager.Remove(windowHandle);
-
-            if (_isDarkTheme)
-            {
-                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
-            }
-            else
-            {
-                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
-            }
-            if (Environment.OSVersion.Version.Build >= 22000)
-            {
-                this.Background = System.Windows.Media.Brushes.Transparent;
-                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
-            }
-
+            HttpClient hc = new();
+            RichTextBoxUpdate.Document.Blocks.Add(new Paragraph(new Run(await hc.GetStringAsync(new Uri("http://193.33.230.80/public_html/pages/ChangeLog.txt")))));
         }
         private void ButtonDownloadUpdate_Click(object sender, RoutedEventArgs e)
         {
+            var anim2 = (Storyboard)FindResource("AnimOpenLoad");
             Progress.SetState(ProgressState.None, false);
             foreach (var process in Process.GetProcessesByName("ElectroJournal"))
             {
@@ -79,18 +53,17 @@ namespace Updater
             }
             ButtonDownloadUpdate.IsEnabled = false;
             LabelInformation.Visibility = Visibility.Visible;
+            anim2.Begin();
             DownloadFiles();
         }
         private void DownloadFiles()
         {
             try
             {
-                WebClient wc = new WebClient();
+                WebClient wc = new();
 
                 string url = "http://193.33.230.80/public_html/download/net5.0-windows.zip";
                 string name = "ElectroJournal.zip";
-
-                //wc.DownloadFile(url, name);
 
                 Progress.SetState(ProgressState.Indeterminate, false);
                 wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
@@ -103,24 +76,27 @@ namespace Updater
                 MessageBox.Show(ex.Message);
             }
         }
-        void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e) // запуск приложения для распаковки
         {
-            // запуск приложения для распаковки
-
+            var anim2 = (Storyboard)FindResource("AnimCloseLoad");
             ButtonDownloadUpdate.IsEnabled = true;
-            LabelInformation.Visibility= Visibility.Hidden;
-            ProgressBarLoad.Value = 0;
             try
             {
                 Process.Start("UpdaterUnZip.exe");
                 this.Close();
             }
-            catch (System.ComponentModel.Win32Exception)
+            catch (Win32Exception)
             {
                 Progress.SetValue(100, 100, false);
                 Progress.SetState(ProgressState.Error, false);
+                ProgressBarLoad.ShowError = true;
                 MessageBox.Show("Программа для распаковки не найдена, переустановите приложение.", "Ошибка");
+                ProgressBarLoad.Value = 0;
                 Progress.SetState(ProgressState.Normal, false);
+            }
+            finally
+            {
+                anim2.Begin();
             }
         }
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -130,7 +106,7 @@ namespace Updater
 
             LabelInformation.Content ="Загружено: " + downloadedMBs + "/" + totalMBs + "\tСкорость: " + string.Format("{0} MB/s", (e.BytesReceived / 1024.0 / 1024.0 / stopwatch.Elapsed.TotalSeconds).ToString("0.00"));
             ProgressBarLoad.Maximum = (int)e.TotalBytesToReceive / 100;
-            ProgressBarLoad.Value = (int)e.BytesReceived / 100;            
+            ProgressBarLoad.Value = (int)e.BytesReceived / 100;
         }
     }
 }

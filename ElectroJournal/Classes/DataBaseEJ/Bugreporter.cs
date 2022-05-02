@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ElectroJournal.Classes.DataBaseEJ
+﻿namespace ElectroJournal.Classes.DataBaseEJ
 {
     public partial class Bugreporter
     {

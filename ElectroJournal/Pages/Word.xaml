@@ -130,7 +130,7 @@
             BorderThickness="0"
             GotFocus="RootTextBox_GotFocus"
             PreviewKeyDown="RootTextBox_PreviewKeyDown"
-            PreviewKeyUp="RootTextBox_PreviewKeyUp" KeyDown="RootTextBox_KeyDown" TextInput="RootTextBox_TextInput" />
+            PreviewKeyUp="RootTextBox_PreviewKeyUp" KeyDown="RootTextBox_KeyDown" TextInput="RootTextBox_TextInput"/>
 
         <StatusBar
             x:Name="RootStatusBar"

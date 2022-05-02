@@ -1,6 +1,4 @@
 ﻿using ElectroJournal.DataBase;
-using System;
-using System.Collections.Generic;
 
 namespace ElectroJournal.Classes.DataBaseEF
 {

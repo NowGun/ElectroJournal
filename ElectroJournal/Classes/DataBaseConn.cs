@@ -1,29 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ElectroJournal.Classes;
-using ElectroJournal.Windows;
-using ElectroJournal.Pages;
-using MySql.Data.MySqlClient;
-using System.Data;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using System.Threading;
-using Notifications.Wpf;
-using System.Configuration;
-using System.Xml;
+﻿using MySql.Data.MySqlClient;
+using System;
 
 namespace ElectroJournal.Classes
 {
@@ -52,8 +28,8 @@ namespace ElectroJournal.Classes
 
             return conn;
         }
-        
-          
+
+
         //MySqlConnection DBConnection = new MySqlConnection("server=localhost;  username=root; password=admin; database=journal_db");//локальная бд mysql
         //MySqlConnection DBConnection = new MySqlConnection("server=80.240.250.128; username=Zhirov; password=64580082; database=zhirov_cw");//база КТС
         //MySqlConnection DBConnection = new MySqlConnection("server=nowgun.beget.tech; username=nowgun_project; password=64580082Now; database=nowgun_project");//бд бегета

@@ -1,26 +1,202 @@
-﻿<Window x:Class="Updater.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Updater" xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Style="{DynamicResource UiWindowRounded}" Loaded="Window_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" WindowState="Normal" Background="White">
-    <Grid Background="White">
-        <wpfui:TitleBar x:Name="TitleBar" Grid.Row="0" ApplicationNavigation="True"  Height="48" Title="Обновление ElectroJournal"/>
-        <ProgressBar x:Name="ProgressBarLoad" Margin="40,362,40,60" Value="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" >
-            <ProgressBar.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </ProgressBar.RenderTransform>
-        </ProgressBar>
-        <Button Style="{DynamicResource WPFUIButtonAccent}" Content="Скачать" Name="ButtonDownloadUpdate" Margin="560,379,40,20" Height="35" Width="200" Click="ButtonDownloadUpdate_Click" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        <Button Style="{DynamicResource WPFUIButtonStandard}" Content="Проверить обновления" Name="ButtonSearchUpdate" Margin="340,379,260,20" Height="35" Width="200" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Hidden"/>
-        <WebBrowser x:Name="WebBrowserUpdate" Margin="40,48,40,82" Source="http://193.33.230.80/public_html/pages/ChangeLog.html"/>
-        <Label x:Name="LabelInformation" Content="Скорость загрузки: " HorizontalAlignment="Left" Height="35" Margin="40,0,0,20" VerticalAlignment="Bottom" Width="285" FontSize="12" VerticalContentAlignment="Center" Padding="10,0,0,4" Visibility="Hidden"/>
+﻿<Window
+    x:Class="Updater.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Updater"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    Title="MainWindow"
+    Width="700"
+    Height="400"
+    ResizeMode="CanMinimize"
+    Style="{DynamicResource UiWindowRounded}"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Normal"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Storyboard x:Key="AnimOpenLoad">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelInformation" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarLoad" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarLoad" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.043">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarLoad" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-320.75">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimCloseLoad">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelInformation" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarLoad" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarLoad" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.093">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarLoad" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-304">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuarticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.Effect>
+                <BlurEffect Radius="68" />
+            </Grid.Effect>
+            <Image
+                Margin="328,-5,-80,-56"
+                RenderTransformOrigin="0.5,0.5"
+                Source="/logo300.png">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform Angle="5.647" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Grid>
+        <wpfui:TitleBar
+            x:Name="TitleBar"
+            Title="Обновление ElectroJournal"
+            Grid.Row="0"
+            Height="48"
+            ApplicationNavigation="True" />
+        <wpfui:Card
+            Height="72"
+            Margin="0,322,0,-10"
+            VerticalAlignment="Bottom">
+            <Grid Margin="-8,-4,-8,0">
+                <ui:ProgressBar
+                    x:Name="ProgressBarLoad"
+                    Height="8"
+                    Margin="10,37,10,0"
+                    VerticalAlignment="Top"
+                    Foreground="#FF0063B1"
+                    IsIndeterminate="false"
+                    RenderTransformOrigin="0.5,0.5" Opacity="0">
+                    <ui:ProgressBar.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:ProgressBar.RenderTransform>
+                </ui:ProgressBar>
+                <Button
+                    x:Name="ButtonDownloadUpdate"
+                    Width="200"
+                    Height="30"
+                    Margin="0,0,10,18"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Click="ButtonDownloadUpdate_Click"
+                    Content="Скачать"
+                    FontSize="16"
+                    Style="{DynamicResource WPFUIButtonStandard}" />
+                <Label
+                    x:Name="LabelInformation"
+                    Margin="10,12,0,0"
+                    Padding="0,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center"
+                    Content="Скорость загрузки: "
+                    FontSize="12"
+                    Foreground="Black"
+                    Opacity="0"
+                    Visibility="Visible" />
+
+            </Grid>
+        </wpfui:Card>
+        <Button
+            x:Name="ButtonSearchUpdate"
+            Width="200"
+            Height="35"
+            Margin="340,379,260,20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="Проверить обновления"
+            FontSize="16"
+            Style="{DynamicResource WPFUIButtonStandard}"
+            Visibility="Hidden" />
+        <RichTextBox
+            x:Name="RichTextBoxUpdate"
+            Margin="10,53,10,77"
+            Padding="6,5,6,4"
+            IsReadOnly="True"
+            ScrollViewer.CanContentScroll="True"
+            VerticalScrollBarVisibility="Visible" />
     </Grid>
 </Window>

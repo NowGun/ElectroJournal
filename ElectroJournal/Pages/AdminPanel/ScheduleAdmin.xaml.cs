@@ -1,27 +1,11 @@
-﻿using ElectroJournal.Windows;
-using ElectroJournal.Pages.AdminPanel.Schedule;
+﻿using ElectroJournal.Pages.AdminPanel.Schedule;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using unvell.ReoGrid;
-using unvell.ReoGrid.Actions;
 using unvell.ReoGrid.Events;
-using unvell.ReoGrid.Graphics;
-using System.Text.RegularExpressions;
-using unvell.ReoGrid.CellTypes;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -41,7 +25,7 @@ namespace ElectroJournal.Pages.AdminPanel
             ws.CellDataChanged += rgrid_AfterCellEdit;
         }
 
-       // DataBaseConn DbUser = new DataBaseConn();
+        // DataBaseConn DbUser = new DataBaseConn();
         //DataBaseControls DbControls = new DataBaseControls();
         //MySqlConnection conn = DataBaseConn.GetDBConnection();
 
@@ -49,7 +33,7 @@ namespace ElectroJournal.Pages.AdminPanel
 
         private void IconAddScheduleCall_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-          new ScheduleCall().ShowDialog();
+            new ScheduleCall().ShowDialog();
         }
 
         private void IconDeleteScheduleCall_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -92,15 +76,20 @@ namespace ElectroJournal.Pages.AdminPanel
             var worksheet = ReoGridSchedule.Worksheets[0];
             ReoGridSchedule.SetSettings(WorkbookSettings.View_ShowSheetTabControl, false);
             worksheet.SetSettings(WorksheetSettings.View_ShowHeaders, false);
-            if (Properties.Settings.Default.Theme == 1) ReoGridSchedule.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
-            else ReoGridSchedule.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
-
+            if (Properties.Settings.Default.Theme == 1)
+            {
+                ReoGridSchedule.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
+            }
+            else
+            {
+                ReoGridSchedule.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
+            }
         }
 
         private void ReoGridSchedule_WorkbookLoaded(object sender, EventArgs e)
         {
             //SettingSheet();
-            
+
         }
 
         void rgrid_AfterCellEdit(object sender, CellEventArgs e)
@@ -111,12 +100,12 @@ namespace ElectroJournal.Pages.AdminPanel
             int poz5 = int.Parse(Regex.Match(poz[0], @"\d+").Value);
 
             var worksheet = ReoGridSchedule.CurrentWorksheet;
-            if (ReoGridSchedule.CurrentWorksheet.Cells[poz5-1, 0].DisplayText == ReoGridSchedule.CurrentWorksheet.Cells[poz[0]].DisplayText)
+            if (ReoGridSchedule.CurrentWorksheet.Cells[poz5 - 1, 0].DisplayText == ReoGridSchedule.CurrentWorksheet.Cells[poz[0]].DisplayText)
             {
                 worksheet.SetRangeStyles(poz[0], new WorksheetRangeStyle
                 {
                     Flag = PlainStyleFlag.BackColor,
-                   BackColor = Colors.IndianRed
+                    BackColor = Colors.IndianRed
                 });
             }
             Test.Content = $"{poz[0]}";

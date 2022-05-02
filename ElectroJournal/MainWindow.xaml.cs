@@ -46,8 +46,6 @@ namespace ElectroJournal
             GridNLogin.Visibility = Visibility.Visible;
             TitleBar.CloseActionOverride = CloseActionOverride;
             MenuBoard.Visibility = Visibility.Hidden;
-
-            //labvel.Content = new System.Net.WebClient().DownloadString("https://api.ipify.org"); ip-адрес 
         }
 
         SettingsControl settingsControl = new();
@@ -325,11 +323,11 @@ namespace ElectroJournal
         }
         private void RectangleBackToMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            NavViewMenu.Visibility = Visibility.Visible;
             var anim = (Storyboard)FindResource("AnimOpenMenu");
             anim.Begin();
 
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
-            NavViewMenu.Visibility = Visibility.Visible;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
 
             NavigationViewItemJournal.IsSelected = true;
@@ -553,6 +551,8 @@ namespace ElectroJournal
         }
         private void NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            var anim = (Storyboard)FindResource("AnimOpenMenuAdmin");
+            anim.Begin();
             NavViewMenu.Visibility = Visibility.Hidden;
             NavViewMenuAdmin.Visibility = Visibility.Visible;
             NavigationViewItemTeachers.IsSelected = true;
@@ -649,6 +649,9 @@ namespace ElectroJournal
         }
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
+            var anim2 = (Storyboard)FindResource("AnimCloseFrame");
+            anim2.Begin();
+
             if (!loginbool)
             {
                 GridLogin.Visibility = Visibility.Hidden;
@@ -658,8 +661,7 @@ namespace ElectroJournal
             Frame.Visibility = Visibility.Visible;
 
             var anim = (Storyboard)FindResource("AnimOpenFrame");
-            var anim2 = (Storyboard)FindResource("AnimCloseFrame");
-            //anim2.Begin();
+
             anim.Begin();
         }
         private async void Window_ContentRendered(object sender, EventArgs e)
@@ -715,7 +717,7 @@ namespace ElectroJournal
                 PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
             }
         }
-        public ImageSource GetImageUser(string path)
+        public ImageSource? GetImageUser(string path)
         {
             if (!string.IsNullOrWhiteSpace(path))
             {
@@ -736,6 +738,14 @@ namespace ElectroJournal
         {
             Frame.Navigate(new Pages.AdminPanel.AcademicYears());
         }
+
+        /*        private void NavViewMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+                {
+                    var selectedItem = (ModernWpf.Controls.NavigationViewItem)args.SelectedItem;
+                    string pageName = "ElectroJournal.Pages." + (string)selectedItem.Tag;
+                    Type pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
+                    Frame.Navigate(pageType);
+                }*/
     }
 
     public class BackgroundGrid

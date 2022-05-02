@@ -1,29 +1,18 @@
-﻿using System;
+﻿using ElectroJournal.Classes.DataBaseEJ;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
-using System.Text;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Net.Mail;
-using System.Net;
-using MySql.Data.MySqlClient;
-using System.Data;
-using ElectroJournal.Classes;
-using System.Windows.Media.Animation;
 using System.Windows.Interop;
-using Microsoft.Win32;
-using ElectroJournal.DataBase;
-using System.Collections.ObjectModel;
-using ElectroJournal.Classes.DataBaseEJ;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 
 namespace ElectroJournal.Windows
 {
@@ -59,10 +48,15 @@ namespace ElectroJournal.Windows
             ListBoxBugs.SelectedItem = null;
 
             string text = new TextRange(RRTBname.Document.ContentStart, RRTBname.Document.ContentEnd).Text;
-            int chapter = 24;
-
-            if (ComboBoxChapter.SelectedItem != null) chapter = ComboBoxChapter.SelectedIndex + 1;
-            else chapter = 24;
+            int chapter;
+            if (ComboBoxChapter.SelectedItem != null)
+            {
+                chapter = ComboBoxChapter.SelectedIndex + 1;
+            }
+            else
+            {
+                chapter = 24;
+            }
 
             if (!string.IsNullOrWhiteSpace(text) && !string.IsNullOrWhiteSpace(TextBoxTitle.Text))
             {
@@ -94,7 +88,7 @@ namespace ElectroJournal.Windows
                 Notifications("Ошибка", "Заполните поле");
             }
         }
-        async private void SendMessage (string text, string path, string title)
+        async private void SendMessage(string text, string path, string title)
         {
             bool a = false;
 
@@ -128,13 +122,19 @@ namespace ElectroJournal.Windows
                 }
             });
 
-            if (!a) Notifications("Успешно", "Сообщение отправлено");
-            else if (a) Notifications("Ошибка", "Отсутствует подключение к интернету");
+            if (!a)
+            {
+                Notifications("Успешно", "Сообщение отправлено");
+            }
+            else if (a)
+            {
+                Notifications("Ошибка", "Отсутствует подключение к интернету");
+            }
 
             ButtonSend.IsEnabled = true;
             ProgressBarSend.Visibility = Visibility.Hidden;
         }
-        private void Notifications (string message, string title)
+        private void Notifications(string message, string title)
         {
             RootSnackbar.Title = message;
             RootSnackbar.Content = title;
@@ -210,7 +210,8 @@ namespace ElectroJournal.Windows
 
                     foreach (var bu in bugs)
                     {
-                        list.Add( new BugsListBox {
+                        list.Add(new BugsListBox
+                        {
                             btitle = bu.BugreporterTitle,
                             btext = bu.BugreporterMessage,
                             bstatus = bu.StatusIdstatusNavigation?.StatusName,

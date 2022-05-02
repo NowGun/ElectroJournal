@@ -1,27 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using MySql.Data.MySqlClient;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using NickBuhro.Translit;
-using System.Net.Mail;
-using System.Net;
-using ElectroJournal.Classes;
-using System.Windows.Forms;
-using SmsRu;
-using System.Drawing;
+﻿using ElectroJournal.Classes;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -112,11 +98,17 @@ namespace ElectroJournal.Pages.AdminPanel
                         }
                     }
                 }
-                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
+                else
+                {
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
+                }
             }
-            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+            else
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+            }
 
-            ProgressBar.Visibility = Visibility.Hidden;                       
+            ProgressBar.Visibility = Visibility.Hidden;
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -163,7 +155,10 @@ namespace ElectroJournal.Pages.AdminPanel
         }
         private void TextBoxStudentsPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
+            if (!Char.IsDigit(e.Text, 0))
+            {
+                e.Handled = true;
+            }
         }
         private void ListBoxStudents_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
@@ -180,7 +175,7 @@ namespace ElectroJournal.Pages.AdminPanel
             {
                 using (zhirovContext db = new zhirovContext())
                 {
-                    var students = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).ToListAsync();                    
+                    var students = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).ToListAsync();
 
                     foreach (var t in students)
                     {
@@ -244,7 +239,7 @@ namespace ElectroJournal.Pages.AdminPanel
                     ComboBoxGroups.Items.Add(t.CourseName);
                 });
             }
-        }           
+        }
         private async void FillListBox()
         {
             ListBoxGroups.Items.Clear();

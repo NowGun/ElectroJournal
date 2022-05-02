@@ -1,19 +1,9 @@
 ﻿using ElectroJournal.Classes;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ElectroJournal.Pages.AdminPanel
 {
@@ -72,7 +62,10 @@ namespace ElectroJournal.Pages.AdminPanel
                     ListBoxCabinetRefresh();
                     Not.Notifications("Уведомление", "Сохранено");
                 }
-                else Not.Notifications("Ошибка", "Произошла ошибка");
+                else
+                {
+                    Not.Notifications("Ошибка", "Произошла ошибка");
+                }
             }
             else
             {
@@ -99,9 +92,15 @@ namespace ElectroJournal.Pages.AdminPanel
                         ListBoxCabinetRefresh();
                         Not.Notifications("Уведомление", "Сохранено");
                     }
-                    else Not.Notifications("Ошибка", "Произошла ошибка");
+                    else
+                    {
+                        Not.Notifications("Ошибка", "Произошла ошибка");
+                    }
                 }
-                else Not.Notifications("Ошибка", "Произошла ошибка");
+                else
+                {
+                    Not.Notifications("Ошибка", "Произошла ошибка");
+                }
             }
 
         }
@@ -130,7 +129,10 @@ namespace ElectroJournal.Pages.AdminPanel
                     ComboBoxSelectHousingRefresh();
                     Not.Notifications("Уведомление", "Сохранено");
                 }
-                else Not.Notifications("Ошибка", "Произошла ошибка");
+                else
+                {
+                    Not.Notifications("Ошибка", "Произошла ошибка");
+                }
             }
             else
             {
@@ -153,7 +155,10 @@ namespace ElectroJournal.Pages.AdminPanel
                         ComboBoxSelectHousingRefresh();
                         Not.Notifications("Уведомление", "Сохранено");
                     }
-                    else Not.Notifications("Ошибка", "Произошла ошибка");
+                    else
+                    {
+                        Not.Notifications("Ошибка", "Произошла ошибка");
+                    }
                 }
                 //ButtonDeleteTest.IsEnabled = true;
                 //GridNotificationsAnim("Сохранение успешно завершено");
@@ -214,7 +219,7 @@ namespace ElectroJournal.Pages.AdminPanel
 
                 while (read.Read()) //Читаем пока есть данные
                 {
-                    if (Properties.Settings.Default.IdCabinet ==  read.GetInt32(1))
+                    if (Properties.Settings.Default.IdCabinet == read.GetInt32(1))
                     {
                         TextBoxCabinet.Text = read.GetString(1);
                         TextBoxEntryFloor.Text = read.GetString(2);
@@ -302,14 +307,16 @@ namespace ElectroJournal.Pages.AdminPanel
             MySqlCommand command = new MySqlCommand("SELECT `cabinet_number` , `cabinet_name` FROM `cabinet`", conn); //Команда выбора данных
             conn.Open(); //Открываем соединение
 
-            
+
             MySqlDataReader read = (MySqlDataReader)await command.ExecuteReaderAsync(); //Считываем и извлекаем данные
             while (await read.ReadAsync()) //Читаем пока есть данные
             {
                 if (read.GetValue(0).ToString() != "")
-                    ListBoxCabinet.Items.Add(read.GetString(0) + " - " +  read.GetString(1)); //Добавляем данные в лист итем
-            }                     
-                        
+                {
+                    ListBoxCabinet.Items.Add(read.GetString(0) + " - " + read.GetString(1)); //Добавляем данные в лист итем
+                }
+            }
+
             conn.Close(); //Закрываем соединение
         }
 
@@ -324,7 +331,9 @@ namespace ElectroJournal.Pages.AdminPanel
             while (await read.ReadAsync()) //Читаем пока есть данные
             {
                 if (read.GetValue(0).ToString() != "")
+                {
                     ListBoxHousing.Items.Add(read.GetValue(0).ToString()); //Добавляем данные в лист итем
+                }
             }
             conn.Close(); //Закрываем соединение
         }
