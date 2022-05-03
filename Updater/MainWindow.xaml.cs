@@ -91,6 +91,7 @@ namespace Updater
                 Progress.SetState(ProgressState.Error, false);
                 ProgressBarLoad.ShowError = true;
                 MessageBox.Show("Программа для распаковки не найдена, переустановите приложение.", "Ошибка");
+                ProgressBarLoad.ShowError = false;
                 ProgressBarLoad.Value = 0;
                 Progress.SetState(ProgressState.Normal, false);
             }

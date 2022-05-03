@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,16 +28,15 @@ namespace ElectroJournal.Pages
 
             FillComoBoxMonth();
             ComboBoxMonth.SelectedIndex = DateTime.Now.Month - 1;
-            //FillTable();
             FillComboBoxDisp();
             FillComboBoxYears();
-            // FillScore();
             var ws = ReoGrid.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
         }
 
         private int stuud;
         private int daysTable;
+        List<int> idStud = new();
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
 
         private void FillTable()
@@ -47,82 +47,69 @@ namespace ElectroJournal.Pages
             FillText();
             FillStudents();
             FillDates();
-            FillScore();
+            
             SettingSheet();
         }
         private async void FillScore()
         {
-            if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1 && ComboBoxDisp.SelectedIndex != -1)
+            try
             {
-                var worksheet = ReoGrid.CurrentWorksheet;
-                using (zhirovContext db = new())
+                if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1 && ComboBoxDisp.SelectedIndex != -1)
                 {
+                    var worksheet = ReoGrid.CurrentWorksheet;
+                    using zhirovContext db = new();
                     if (ComboBoxYears.SelectedItem != null)
                     {
-                        for (int i = 1; i <= stuud; i++)
+                        var scoreList = await db.Journals
+                            .Where(s => s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString() &&
+                            s.TeachersIdteachersNavigation.Idteachers == Properties.Settings.Default.UserID &&
+                            s.StudyperiodIdstudyperiodNavigation.StudyperiodStart == ComboBoxYears.SelectedItem.ToString() &&
+                            s.JournalMonth == Convert.ToString(ComboBoxMonth.SelectedIndex + 1))
+                            .ToListAsync();
+                        foreach (var score in scoreList)
                         {
-                            for (int j = 1; j < daysTable; j++)
+                            await Task.Run(() =>
                             {
-                                if (!String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText))
+                                for (int i = 1; i <= stuud; i++)
                                 {
-                                    var period = await db.Studyperiods.Where(t => t.StudyperiodStart == ComboBoxYears.SelectedItem.ToString()).FirstOrDefaultAsync();
-
-                                    var disp = await db.Disciplines.Where(d => d.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString()).FirstOrDefaultAsync();
-                                    string[] student2 = ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                    var student = await db.Students.Where(s => s.StudentsName == student2[1] && s.StudentsSurname == student2[0]).FirstOrDefaultAsync();
-
-                                    var scoreList = await db.Journals
-                                        .Where(s => s.StudyperiodIdstudyperiod == period.Idstudyperiod &&
-                                        s.JournalMonth == Convert.ToString(ComboBoxMonth.SelectedIndex + 1) &&
-                                        s.DisciplinesIddisciplines == disp.Iddisciplines &&
-                                        s.StudentsIdstudents == student.Idstudents &&
-                                        s.JournalDay == ReoGrid.CurrentWorksheet.Cells[0, j].DisplayText)
-                                        .FirstOrDefaultAsync();
-
-                                    if (scoreList != null)
+                                    for (int j = 1; j < daysTable; j++)
                                     {
-                                        worksheet[i, j] = scoreList.JournalScore;
+                                        if (!String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText))
+                                        {
+                                            string[] student2 = ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                                            if (score != null)
+                                            {
+                                                if (score.JournalDay == ReoGrid.CurrentWorksheet.Cells[0, j].DisplayText && score.StudentsIdstudents == idStud[i - 1])
+                                                {
+                                                    Dispatcher.Invoke(() =>
+                                                    {
+                                                        worksheet[i, j] = score.JournalScore;
+                                                    });
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-
-                            }
+                            });
                         }
                     }
-
-                    /*if (ComboBoxYears.SelectedItem != null)
-                    {
-                        var period = await db.Studyperiods.Where(t => t.StudyperiodStart == ComboBoxYears.SelectedItem.ToString()).FirstOrDefaultAsync();
-                        var disp = await db.Disciplines.Where(d => d.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString()).FirstOrDefaultAsync();
-                        var scoreList = await db.Journals
-                            .Where(s => s.StudyperiodIdstudyperiod == period.Idstudyperiod && 
-                            s.JournalMonth == Convert.ToString(ComboBoxMonth.SelectedIndex + 1) &&
-                            s.DisciplinesIddisciplines == disp.Iddisciplines)
-                            .ToListAsync();
-                        foreach (var t in scoreList)
-                        {
-                            for (int i = 1; i < stuud; i++)
-                            {
-                                for (int j = 1; j < daysTable; j++)
-                                {
-
-                                    string[] student2 = ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                    var student = await db.Students.Where(s => s.StudentsName == student2[1] && s.StudentsSurname == student2[0]).FirstOrDefaultAsync();                                    
-
-                                    if (t.StudentsIdstudents == student.Idstudents && t.JournalDay == ReoGrid.CurrentWorksheet.Cells[0, j].DisplayText)
-                                    {
-                                        worksheet[i, j] = t.JournalScore;
-                                    }
-                                }
-                            }
-                        }
-                    }*/
                 }
             }
-            var anim = (Storyboard)FindResource("AnimCloseLoad");
-            anim.Begin();
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                var anim = (Storyboard)FindResource("AnimCloseLoad");
+                anim.Begin();
+            }
         }
         private async void FillStudents()
         {
+            idStud.Clear();
+
             if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
             {
                 var worksheet = ReoGrid.CurrentWorksheet;
@@ -136,6 +123,8 @@ namespace ElectroJournal.Pages
                         worksheet.SetRows(i);
                         worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
                         worksheet.AutoFitColumnWidth(0, false);
+
+                        idStud.Add((int)students[i - 2].Idstudents);
 
                         unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
                         cell.IsReadOnly = true;
@@ -151,35 +140,36 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
-
+            FillScore();
         }
         private async void FillDates()
         {
             var worksheet = ReoGrid.CurrentWorksheet;
 
-            using (zhirovContext db = new zhirovContext())
+            using (zhirovContext db = new())
             {
                 var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
                 daysTable = days.Count + 1;
                 for (int i = 1; i < daysTable; i++)
                 {
-                    worksheet.SetCols(days.Count + 1);
+                    worksheet.SetCols(daysTable);
                     worksheet[0, i] = days[i - 1];
+                    worksheet[1, i] = "";
                     ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
                     unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
                     cell.IsReadOnly = true;
-
                 }
             }
-            /*worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
             {
-                Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
+                //Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
+                Flag = PlainStyleFlag.HorizontalAlign,
                 HAlign = ReoGridHorAlign.Center,
-                FontName = "Segoe UI",
-                FontSize = 13,
-                TextColor = Colors.Black
-            });*/
+                //FontName = "Segoe UI",
+               // FontSize = 13,
+               // TextColor = Colors.Black
+            });
         }
         private void FillText()
         {
@@ -261,12 +251,7 @@ namespace ElectroJournal.Pages
         {
             FillTable();
         }
-        private async void SaveJournal(string students,
-            string disciplines,
-            int teachers,
-            string studyPeriod,
-            string score,
-            string time)
+        private async void SaveJournal(string students, string disciplines, int teachers, string studyPeriod, string score, string time)
         {
             using (zhirovContext db = new())
             {
@@ -339,6 +324,7 @@ namespace ElectroJournal.Pages
         {
             if (ComboBoxDisp.SelectedItem != null)
             {
+                //FillScore();
                 FillTable();
             }
         }
