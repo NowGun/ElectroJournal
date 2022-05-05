@@ -17,65 +17,30 @@ namespace ElectroJournal.Windows
         public ChangePassword()
         {
             InitializeComponent();
-            TitleBar.CloseActionOverride = CloseActionOverride;
             TextBoxLogin.Text = Properties.Settings.Default.Login;
         }
 
         private bool _isDarkTheme = false;
 
-        DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
+        DataBaseControls DbControls = new();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ThemeCheck();
+            Classes.SettingsControl s = new();
+            s.ChangeTheme();
         }
-
-        public void ThemeCheck()
-        {
-            int theme = Properties.Settings.Default.Theme;
-
-            _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
-
-            ApplyBackgroundEffect();
-        }
-
-        private void ApplyBackgroundEffect()
-        {
-            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
-            WPFUI.Background.Manager.Remove(windowHandle);
-
-            if (_isDarkTheme)
-            {
-                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
-            }
-            else
-            {
-                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
-            }
-
-            if (Environment.OSVersion.Version.Build >= 22000)
-            {
-                this.Background = System.Windows.Media.Brushes.Transparent;
-                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
-            }
-        }
-
         private void Notifications(string message, string title)
         {
             RootSnackbar.Title = title;
             RootSnackbar.Content = message;
-            //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
-            RootSnackbar.Expand();
+            RootSnackbar.Icon = WPFUI.Common.SymbolRegular.MailError16;
+            RootSnackbar.Show();
         }
         private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
         {
             ((MainWindow)Application.Current.MainWindow).ThemeCheck();
             this.Close();
         }
-
         private async void ButtonSaveGridReset_Click(object sender, RoutedEventArgs e)
         {
             ProgressBar.Visibility = Visibility.Visible;

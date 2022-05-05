@@ -28,8 +28,6 @@
             Title="Отчет о баге"
             Grid.Row="0"
             Height="48"
-            ApplicationNavigation="True"
-            Icon="/Images/Logo/logo75.png"
             ShowMaximize="False"
             ShowMinimize="False" />
 
@@ -119,7 +117,13 @@
                 Content="Раздел"
                 FontSize="18"
                 FontWeight="Normal" />
-            <ComboBox x:Name="ComboBoxChapter" HorizontalAlignment="Left" Margin="80,277,0,0" VerticalAlignment="Top" Width="300" Height="35"/>
+            <ComboBox
+                x:Name="ComboBoxChapter"
+                Width="300"
+                Height="35"
+                Margin="80,277,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" />
         </Grid>
         <ListBox
             x:Name="ListBoxBugs"
@@ -128,7 +132,8 @@
             Padding="0,0,0,0"
             ItemsSource="{Binding datA}"
             SelectedValue="{Binding SelectedData, Mode=TwoWay}"
-            VirtualizingPanel.ScrollUnit="Pixel" SelectionChanged="ListBoxBugs_SelectionChanged">
+            SelectionChanged="ListBoxBugs_SelectionChanged"
+            VirtualizingPanel.ScrollUnit="Pixel">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -162,16 +167,16 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button
-                x:Name="ButtonAdd"
-                Width="280"
-                Height="35"
-                Margin="0,0,700,29"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Click="ButtonAdd_Click"
-                Content="Добавить"
-                FontSize="14"
-                Style="{DynamicResource WPFUIButtonStandard}" />
+            x:Name="ButtonAdd"
+            Width="280"
+            Height="35"
+            Margin="0,0,700,29"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Click="ButtonAdd_Click"
+            Content="Добавить"
+            FontSize="14"
+            Style="{DynamicResource WPFUIButtonStandard}" />
         <wpfui:Snackbar
             x:Name="RootSnackbar"
             Margin="339,0,235,19"

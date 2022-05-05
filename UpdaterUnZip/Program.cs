@@ -22,7 +22,6 @@ namespace UpdaterUnZip
             Process.Start("ElectroJournal.exe");
             Environment.Exit(0);
         }
-        
         static void CreateDir()
         {
             string root = @"newVersion";
@@ -37,7 +36,6 @@ namespace UpdaterUnZip
             }
             
         }
-
         static void UnPackNewVersion()
         {
             // путь к архиву
@@ -58,12 +56,10 @@ namespace UpdaterUnZip
             }
             
         }
-
         static void MoveFiles()
         {
             FileSystem.MoveDirectory(@"newVersion", Directory.GetCurrentDirectory(), true);
         }
-
         static void DeleteDir()
         {
             string root = @"newVersion";

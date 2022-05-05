@@ -25,7 +25,6 @@ namespace ElectroJournal.Windows
         {
             InitializeComponent();
             //RectangleLoad.Visibility = Visibility.Hidden;
-            TitleBar.CloseActionOverride = CloseActionOverride;
             ListBoxBugsRefresh();
             ComboBoxRefresh();
         }
@@ -138,42 +137,13 @@ namespace ElectroJournal.Windows
         {
             RootSnackbar.Title = message;
             RootSnackbar.Content = title;
-            //RootSnackbar.Icon = WPFUI.Common.Icon.MailError16;
-            RootSnackbar.Expand();
+            RootSnackbar.Icon = WPFUI.Common.SymbolRegular.MailError16;
+            RootSnackbar.Show();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ThemeCheck();
-        }
-        public void ThemeCheck()
-        {
-            int theme = Properties.Settings.Default.Theme;
-
-            _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
-
-            ApplyBackgroundEffect();
-        }
-        private void ApplyBackgroundEffect()
-        {
-            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
-            WPFUI.Background.Manager.Remove(windowHandle);
-
-            if (_isDarkTheme)
-            {
-                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
-            }
-            else
-            {
-                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
-            }
-
-            if (Environment.OSVersion.Version.Build >= 22000)
-            {
-                this.Background = System.Windows.Media.Brushes.Transparent;
-                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
-            }
+            Classes.SettingsControl s = new();
+            s.ChangeTheme();
         }
         private void ButtonBrowser_Click(object sender, RoutedEventArgs e)
         {

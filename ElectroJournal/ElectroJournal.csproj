@@ -14,6 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+    <Page Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Images\34px-Vector_Loading.svg.png" />
     <None Remove="Images\AdminIcons\Cabinet\icons8-адрес-96.png" />
     <None Remove="Images\AdminIcons\Cabinet\icons8-дверь-закрыта-96.png" />
@@ -78,7 +85,6 @@
     <None Remove="Images\Startup\startupImage 2.png" />
     <None Remove="Images\Startup\startupImage.png" />
     <None Remove="logo75.ico" />
-    <None Remove="Settings\Settings.xml" />
     <None Remove="Windows\asdf.jpg" />
     <None Remove="Windows\JW4T3_Ooy7s.jpg" />
     <None Remove="Windows\l10WkKcEKo0.jpg" />
@@ -109,15 +115,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="bin\Debug\net5.0-windows\" />
-    <Folder Include="Language\en-us\" />
-    <Folder Include="Language\ru-ru\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MahApps.Metro-2.4.9\src\MahApps.Metro\MahApps.Metro.csproj" />
     <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj" />
-    <ProjectReference Include="..\wpfui-main\WPFUI\WPFUI.csproj" />
+    <ProjectReference Include="..\Updater\Updater.csproj" />
+    <ProjectReference Include="..\wpfui-main\src\WPFUI\WPFUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -210,9 +211,6 @@
     <Resource Include="Images\qr40184535.png" />
     <Resource Include="Images\Startup\startupImage 2.png" />
     <Resource Include="Images\Startup\startupImage.png" />
-    <Resource Include="Settings\Settings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -244,15 +242,8 @@
     <Page Update="Pages\Word.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Windows\ContentDialogTeachers.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Windows\ContentDialogExample.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Windows\Messagetray.xaml">
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

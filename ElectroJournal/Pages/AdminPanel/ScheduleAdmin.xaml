@@ -14,7 +14,7 @@
     MinWidth="1280"
     MinHeight="605.04"
     mc:Ignorable="d">
-    <Grid local:DragNDrop.DragAndDropEnabled="True" AllowDrop="True">
+    <Grid AllowDrop="True">
         <ListBox
             MinHeight="177.8"
             Margin="20,0,0,10"
@@ -23,10 +23,9 @@
             HorizontalContentAlignment="Stretch"
             d:ItemsSource="{d:SampleData ItemCount=5}" />
 
-        <ScrollViewer d:IsHidden="True">
+        <ScrollViewer>
 
             <StackPanel Margin="1015,0,0,0">
-
                 <wpfui:CardExpander
                     Width="245"
                     Margin="0,20,20,0"
@@ -61,283 +60,34 @@
                                 </LinearGradientBrush>
                             </ListBox.BorderBrush>
                         </ListBox>
-                        <Controls:Icon
+                        <wpfui:SymbolIcon
                             x:Name="IconAddScheduleCall"
                             Width="14"
                             Height="15"
                             Margin="20,10,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Glyph="Add20"
-                            PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
+                            PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp"
+                            Symbol="Add20" />
+                        <wpfui:SymbolIcon
                             x:Name="IconDeleteScheduleCall"
                             Width="14"
                             Height="15"
                             Margin="60,10,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Glyph="Delete20"
-                            PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
+                            PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp"
+                            Symbol="Delete20" />
+                        <wpfui:SymbolIcon
                             x:Name="IconChangeScheduleCall"
                             Width="14"
                             Height="15"
                             Margin="40,10,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Glyph="Edit20" />
+                            Symbol="Edit20" />
                     </Grid>
                 </wpfui:CardExpander>
-                <wpfui:CardExpander
-                    Width="245"
-                    Margin="0,10,20,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Right"
-                    Header="Расписание звонков"
-                    Icon="PanelLeftExpand20">
-
-                    <Grid
-                        Width="253"
-                        Height="260"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <ListBox
-                            x:Name="ListBoxSchedule2"
-                            Width="224"
-                            Height="260"
-                            Padding="2,22,2,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            FontSize="14"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            <ListBox.BorderBrush>
-                                <LinearGradientBrush MappingMode="Absolute" EndPoint="0,3">
-                                    <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform ScaleY="-1" />
-                                    </LinearGradientBrush.RelativeTransform>
-
-                                </LinearGradientBrush>
-                            </ListBox.BorderBrush>
-                        </ListBox>
-                        <Controls:Icon
-                            x:Name="IconAddScheduleCall2"
-                            Width="14"
-                            Height="15"
-                            Margin="20,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Add20"
-                            PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconDeleteScheduleCall2"
-                            Width="14"
-                            Height="15"
-                            Margin="60,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Delete20"
-                            PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconChangeScheduleCall2"
-                            Width="14"
-                            Height="15"
-                            Margin="40,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Edit20" />
-                    </Grid>
-                </wpfui:CardExpander>
-                <wpfui:CardExpander
-                    Width="245"
-                    Margin="0,10,20,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Right"
-                    Header="Расписание звонков"
-                    Icon="PanelLeftExpand20">
-
-                    <Grid
-                        Width="253"
-                        Height="260"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <ListBox
-                            x:Name="ListBoxSchedule23"
-                            Width="224"
-                            Height="260"
-                            Padding="2,22,2,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            FontSize="14"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            <ListBox.BorderBrush>
-                                <LinearGradientBrush MappingMode="Absolute" EndPoint="0,3">
-                                    <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform ScaleY="-1" />
-                                    </LinearGradientBrush.RelativeTransform>
-
-                                </LinearGradientBrush>
-                            </ListBox.BorderBrush>
-                        </ListBox>
-                        <Controls:Icon
-                            x:Name="IconAddScheduleCall23"
-                            Width="14"
-                            Height="15"
-                            Margin="20,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Add20"
-                            PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconDeleteScheduleCall23"
-                            Width="14"
-                            Height="15"
-                            Margin="60,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Delete20"
-                            PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconChangeScheduleCall23"
-                            Width="14"
-                            Height="15"
-                            Margin="40,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Edit20" />
-                    </Grid>
-                </wpfui:CardExpander>
-                <wpfui:CardExpander
-                    Width="245"
-                    Margin="0,10,20,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Right"
-                    Header="Расписание звонков"
-                    Icon="PanelLeftExpand20">
-
-                    <Grid
-                        Width="253"
-                        Height="260"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <ListBox
-                            x:Name="ListBoxSchedule32"
-                            Width="224"
-                            Height="260"
-                            Padding="2,22,2,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            FontSize="14"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            <ListBox.BorderBrush>
-                                <LinearGradientBrush MappingMode="Absolute" EndPoint="0,3">
-                                    <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform ScaleY="-1" />
-                                    </LinearGradientBrush.RelativeTransform>
-
-                                </LinearGradientBrush>
-                            </ListBox.BorderBrush>
-                        </ListBox>
-                        <Controls:Icon
-                            x:Name="IconAddScheduleCall32"
-                            Width="14"
-                            Height="15"
-                            Margin="20,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Add20"
-                            PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconDeleteScheduleCall32"
-                            Width="14"
-                            Height="15"
-                            Margin="60,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Delete20"
-                            PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconChangeScheduleCall32"
-                            Width="14"
-                            Height="15"
-                            Margin="40,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Edit20" />
-                    </Grid>
-                </wpfui:CardExpander>
-                <wpfui:CardExpander
-                    Width="245"
-                    Margin="0,10,20,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Right"
-                    Header="Расписание звонков"
-                    Icon="PanelLeftExpand20">
-
-                    <Grid
-                        Width="253"
-                        Height="260"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <ListBox
-                            x:Name="ListBoxSchedule42"
-                            Width="224"
-                            Height="260"
-                            Padding="2,22,2,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            FontSize="14"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            <ListBox.BorderBrush>
-                                <LinearGradientBrush MappingMode="Absolute" EndPoint="0,3">
-                                    <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform ScaleY="-1" />
-                                    </LinearGradientBrush.RelativeTransform>
-
-                                </LinearGradientBrush>
-                            </ListBox.BorderBrush>
-                        </ListBox>
-                        <Controls:Icon
-                            x:Name="IconAddScheduleCall42"
-                            Width="14"
-                            Height="15"
-                            Margin="20,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Add20"
-                            PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconDeleteScheduleCall42"
-                            Width="14"
-                            Height="15"
-                            Margin="60,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Delete20"
-                            PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp" />
-                        <Controls:Icon
-                            x:Name="IconChangeScheduleCall42"
-                            Width="14"
-                            Height="15"
-                            Margin="40,10,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Glyph="Edit20" />
-                    </Grid>
-                </wpfui:CardExpander>
-
             </StackPanel>
         </ScrollViewer>
         <rg:ReoGridControl
@@ -349,8 +99,7 @@
             Margin="20,20,270,195"
             HorizontalContentAlignment="Stretch"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            local:DragNDrop.DropDataFormat="{x:Static DataFormats.Text}"
-            local:DragNDrop.DropTarget="Button.Content"
+            
             AllowDrop="True"
             SelectionMode="Single"
             Visibility="Hidden" />
@@ -360,8 +109,7 @@
             Margin="1040,333,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            local:DragNDrop.DragSource="Button.Content"
-            local:DragNDrop.DropDataFormat="{x:Static DataFormats.Text}"
+            
             AllowDrop="True"
             Content="Button22"
             Visibility="Hidden" />
@@ -371,17 +119,17 @@
             Margin="1091,161,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            local:DragNDrop.DropDataFormat="{x:Static DataFormats.Text}"
-            local:DragNDrop.DropTarget="Button.Content"
             AllowDrop="True"
             Content="Button"
             Visibility="Hidden" />
         <Label
             x:Name="Test"
+            Width="455"
+            Height="35"
             Margin="455,530,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="Label" Height="35" Width="455" />
+            Content="Label" />
 
     </Grid>
 </Page>

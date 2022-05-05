@@ -39,13 +39,12 @@ namespace ElectroJournal
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
+            GridComboGroups.Visibility = Visibility.Hidden;
 
             settingsControl.CheckAutoRun();
             settingsControl.CheckTray();
 
             GridNLogin.Visibility = Visibility.Visible;
-            TitleBar.CloseActionOverride = CloseActionOverride;
-            MenuBoard.Visibility = Visibility.Hidden;
         }
 
         SettingsControl settingsControl = new();
@@ -64,54 +63,6 @@ namespace ElectroJournal
         List<string> ScheduleEnd = new();
         List<int> ScheduleNumber = new();
 
-        private async void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
-        {
-
-            bool a;
-            a = settingsControl.CheckTray();
-            SettingsControl sc = new();
-            var anim = (Storyboard)FindResource("AnimExitProgram");
-
-            if (a)
-            {
-                var content = new NotificationContent
-                {
-                    Title = "Программа была свернута",
-                    Message = "Программа продолжит своё выполнение в фоне.",
-                    Type = NotificationType.Information
-
-                };
-                _notificationManager.Show(content);
-
-                this.Hide();
-            }
-            else if (!a)
-            {
-                ContentDialogExample dialog = new();
-                var result = await dialog.ShowAsync();
-
-                if (result == ContentDialogResult.Primary)
-                {
-                    anim.Begin();
-                    bool b = await sc.ExitUser();
-                    if (b || !b)
-                    {
-                        foreach (var process in Process.GetProcessesByName("ElectroJournal"))
-                        {
-                            process.Kill();
-                        }
-                    }
-                }
-                else { }
-            }
-        }
-        private void CheckVersionWindows()
-        {
-            if (Environment.OSVersion.Version.Major >= 10)
-            {
-                WPFUI.Background.Manager.Apply(this);
-            }
-        }
         private void RectangleUser_MouseMove(object sender, MouseEventArgs e)
         {
             this.Cursor = Cursors.Hand;
@@ -256,6 +207,7 @@ namespace ElectroJournal
                                 await db.SaveChangesAsync();
 
                                 NavViewMenu.Visibility = Visibility.Visible;
+                                GridComboGroups.Visibility = Visibility.Visible;
                                 NavViewMenuAdmin.Visibility = Visibility.Hidden;
                                 RectangleBackToMenu.Visibility = Visibility.Hidden;
 
@@ -348,18 +300,13 @@ namespace ElectroJournal
             int theme = Properties.Settings.Default.Theme;
 
             _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
 
-            ApplyBackgroundEffect();
-        }
-        private void ApplyBackgroundEffect()
-        {
-            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-            WPFUI.Background.Manager.Remove(windowHandle);
+            var newTheme = theme == 0
+            ? WPFUI.Appearance.ThemeType.Light
+            : WPFUI.Appearance.ThemeType.Dark;
 
             if (_isDarkTheme)
             {
-                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 PathMenu.Stroke = (SolidColorBrush)new BrushConverter().ConvertFromString("#222222");
                 GridWhiteTheme.Visibility = Visibility.Hidden;
@@ -367,7 +314,6 @@ namespace ElectroJournal
             }
             else
             {
-                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                 PathMenu.Stroke = (SolidColorBrush)new BrushConverter().ConvertFromString("#EDEDED");
                 GridBlackTheme.Visibility = Visibility.Hidden;
@@ -379,7 +325,12 @@ namespace ElectroJournal
                 GridBlackTheme.Visibility = Visibility.Hidden;
                 GridWhiteTheme.Visibility = Visibility.Hidden;
                 this.Background = System.Windows.Media.Brushes.Transparent;
-                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
+
+                WPFUI.Appearance.Theme.Apply(
+           themeType: newTheme,
+           backgroundEffect: WPFUI.Appearance.BackgroundType.Mica,
+           updateAccent: true,
+           forceBackground: false);
             }
         }
         public void AnimLog(bool a)
@@ -392,9 +343,11 @@ namespace ElectroJournal
         }
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            e.Cancel = true;
             bool a;
             a = settingsControl.CheckTray();
-            e.Cancel = true;
+            SettingsControl sc = new();
+            var anim = (Storyboard)FindResource("AnimExitProgram");
 
             if (a)
             {
@@ -416,9 +369,14 @@ namespace ElectroJournal
 
                 if (result == ContentDialogResult.Primary)
                 {
-                    foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                    anim.Begin();
+                    bool b = await sc.ExitUser();
+                    if (b || !b)
                     {
-                        process.Kill();
+                        foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                        {
+                            process.Kill();
+                        }
                     }
                 }
                 else
@@ -426,32 +384,6 @@ namespace ElectroJournal
                     e.Cancel = true;
                 }
 
-                /*
-                WPFUI.Controls.MessageBox messageBox2 = new WPFUI.Controls.MessageBox();
-                messageBox2.LeftButtonName = "Да";
-                messageBox2.RightButtonName = "Нет";
-                messageBox2.LeftButtonClick += MessageBox_LeftButtonClick;
-                messageBox2.RightButtonClick += MessageBox_RightButtonClick;
-                messageBox2.Show("Уведомление", "Вы точно хотите выйти из программы ElectroJournal?");
-                */
-
-                /*
-                MessageBoxResult result;
-                result = System.Windows.MessageBox.Show("Вы точно хотите выйти из программы?", "Выход из ElectroJournal", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-
-                if (result == MessageBoxResult.No)
-                {
-                    e.Cancel = true;
-                }
-                else
-                {
-                    foreach (var process in Process.GetProcessesByName("ElectroJournal"))
-                    {
-                        process.Kill();
-                    }
-                }
-
-                   */
             }
         }
         private void MessageBox_LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
@@ -684,8 +616,8 @@ namespace ElectroJournal
             }
             catch (Exception ex)
             {
-                //settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
-                System.Windows.MessageBox.Show(ex.Message);
+                settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
+                //System.Windows.MessageBox.Show(ex.Message);
                 Notifications("Уведомление", "Проверка обновления неудачная");
             }
 

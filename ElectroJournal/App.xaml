@@ -10,15 +10,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/WindowStyle.xaml" />
-                <ResourceDictionary Source="/Styles/Button.xaml" />
-                <ResourceDictionary Source="/Styles/ComboBox.xaml" />
-                <ResourceDictionary Source="/Styles/DataGrid.xaml" />
-                <ResourceDictionary Source="/Styles/Listbox.xaml" />
-                <ResourceDictionary Source="/Styles/TextBox.xaml" />
-                <ResourceDictionary Source="/Styles/RadioButton.xaml" />
-                <ResourceDictionary Source="/Styles/Label.xaml" />
-
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
@@ -31,7 +22,7 @@
                 <ui:ThemeResources />
                 <ui:XamlControlsResources />
 
-                <ResourceDictionary Source="pack://application:,,,/WPFUI;component/Styles/Theme/Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WPFUI;component/Styles/Theme/Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/WPFUI;component/Styles/WPFUI.xaml" />
 
             </ResourceDictionary.MergedDictionaries>

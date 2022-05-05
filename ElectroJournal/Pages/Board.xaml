@@ -10,7 +10,8 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Board"
     Foreground="Black"
-    mc:Ignorable="d" Loaded="Page_Loaded">
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
 
     <Grid>
         <Grid
@@ -25,32 +26,32 @@
                 MouseEnter="InkCanvas_MouseEnter"
                 StylusMove="InkCanvas_StylusMove" />
         </Grid>
-        <wpfui:Card VerticalAlignment="Top" Padding="0,0,0,6">
+        <wpfui:Card Padding="0,0,0,6" VerticalAlignment="Top">
             <Grid
                 x:Name="GridMenuBoard"
                 Height="84"
                 VerticalAlignment="Top">
-                <Menu Height="40" VerticalAlignment="Top" Margin="0,-2,0,0">
+                <Menu
+                    Height="40"
+                    Margin="0,-2,0,0"
+                    VerticalAlignment="Top">
                     <MenuItem Header="File">
                         <MenuItem Header="New" InputGestureText="Ctrl+N" />
                         <MenuItem Header="Open" InputGestureText="Ctrl+O" />
                         <MenuItem Header="Disabled" IsEnabled="False" />
-                        <MenuItem
-                        Header="Save"
-                        
-                        InputGestureText="Ctrl+S" />
+                        <MenuItem Header="Save" InputGestureText="Ctrl+S" />
                         <Separator />
                         <MenuItem Header="Exit" InputGestureText="Ctrl+Q" />
                     </MenuItem>
-                    
+
                     <MenuItem Header="With submenu">
                         <MenuItem
-                        Header="Show status bar"
-                        IsCheckable="True"
-                        IsChecked="True" />
+                            Header="Show status bar"
+                            IsCheckable="True"
+                            IsChecked="True" />
                         <MenuItem Header="Word wrap" IsCheckable="True" />
                         <MenuItem Header="NormalItem" />
-                        
+
                     </MenuItem>
                     <MenuItem Header="Disabled" IsEnabled="False" />
                     <Separator />
@@ -79,36 +80,37 @@
                     Click="ButtonClear_Click"
                     Content="Очистить"
                     Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
-                <wpfui:Icon
+                <wpfui:SymbolIcon
                     x:Name="ImagePencil"
                     Margin="117,44,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontSize="22"
-                    Glyph="Edit20"
-                    PreviewMouseLeftButtonUp="ImagePencil_PreviewMouseLeftButtonUp" />
-                <wpfui:Icon
+                    PreviewMouseLeftButtonUp="ImagePencil_PreviewMouseLeftButtonUp"
+                    Symbol="Edit20" />
+                <wpfui:SymbolIcon
                     x:Name="ImageEraser"
                     Margin="144,44,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontSize="22"
-                    Glyph="Eraser20"
-                    PreviewMouseLeftButtonUp="ImageEraser_PreviewMouseLeftButtonUp" />
+                    PreviewMouseLeftButtonUp="ImageEraser_PreviewMouseLeftButtonUp"
+                    Symbol="Eraser20" />
                 <Slider
-                        x:Name="SliderBoardThikness"
-                        Maximum="50"
-                        Minimum="1"
-                        Value="1" Margin="264,42,711,20" />
+                    x:Name="SliderBoardThikness"
+                    Margin="264,42,711,20"
+                    Maximum="50"
+                    Minimum="1"
+                    Value="1" />
 
-                <wpfui:Icon
+                <wpfui:SymbolIcon
                     x:Name="ImagePrint"
                     Margin="19,43,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontSize="24"
-                    Glyph="Print20"
-                    PreviewMouseLeftButtonUp="ImagePrint_PreviewMouseLeftButtonUp" />
+                    PreviewMouseLeftButtonUp="ImagePrint_PreviewMouseLeftButtonUp"
+                    Symbol="Print20" />
             </Grid>
 
         </wpfui:Card>

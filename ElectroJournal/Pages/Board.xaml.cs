@@ -33,7 +33,7 @@ namespace ElectroJournal.Pages
         }
         private void InkCanvas_MouseEnter(object sender, MouseEventArgs e)
         {
-            //InkCanvas.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(ColorPicker.SelectedColor.ToString());
+            InkCanvas.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(ColorPicker.SelectedColor.ToString());
             InkCanvas.UseCustomCursor = true;
 
             inkAttributes.Width = SliderBoardThikness.Value;

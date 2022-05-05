@@ -19,8 +19,7 @@
             x:Name="TitleBar"
             Title="Первоначальная настройка ElectroJournal"
             Grid.Row="0"
-            Height="48"
-            ApplicationNavigation="True" />
+            Height="48" />
 
         <wpfui:Card
             Width="700"

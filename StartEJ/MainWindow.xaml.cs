@@ -33,46 +33,26 @@ namespace StartEJ
 
         public int theme = 0;
         private bool _isDarkTheme = false;
-
         private readonly NotificationManager _notificationManager = new NotificationManager();
 
         public void ThemeCheck()
         {
-            //int theme = Properties.Settings.Default.Theme;
-
             _isDarkTheme = theme == 1;
-            WPFUI.Theme.Manager.Switch(theme == 1 ? WPFUI.Theme.Style.Dark : WPFUI.Theme.Style.Light);
 
-            ApplyBackgroundEffect();
+            var newTheme = theme == 0
+            ? WPFUI.Appearance.ThemeType.Light
+            : WPFUI.Appearance.ThemeType.Dark;
+
+            WPFUI.Appearance.Theme.Apply(
+           themeType: newTheme,
+           backgroundEffect: WPFUI.Appearance.BackgroundType.Mica,
+           updateAccent: true,
+           forceBackground: false);
         }
-
-        private void ApplyBackgroundEffect()
-        {
-            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-
-            WPFUI.Background.Manager.Remove(windowHandle);
-
-            if (_isDarkTheme)
-            {
-                WPFUI.Background.Manager.ApplyDarkMode(windowHandle);
-            }
-            else
-            {
-                WPFUI.Background.Manager.RemoveDarkMode(windowHandle);
-            }
-
-            if (Environment.OSVersion.Version.Build >= 22000)
-            {
-                this.Background = System.Windows.Media.Brushes.Transparent;
-                WPFUI.Background.Manager.Apply(WPFUI.Background.BackgroundType.Mica, windowHandle);
-            }
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ThemeCheck();
         }
-
         private void CreateFile()
         {
             using (XmlWriter writer = XmlWriter.Create("setting.xml")) 
@@ -84,9 +64,8 @@ namespace StartEJ
                 writer.WriteElementString("theme", "");
                 writer.WriteEndElement();
                 writer.Flush();
-            };            
+            };
         }
-
         public void Notifications(string title, string text)
         {
             _notificationManager.Show(

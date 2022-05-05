@@ -1,58 +1,144 @@
 ﻿<Page
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ElectroJournal.Pages.AdminPanel"
-      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" xmlns:ui="http://schemas.modernwpf.com/2019" x:Class="ElectroJournal.Pages.AdminPanel.Cabinet"
-      mc:Ignorable="d"
-      Title="Cabinet">
+    x:Class="ElectroJournal.Pages.AdminPanel.Cabinet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ElectroJournal.Pages.AdminPanel"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
+    Title="Cabinet"
+    Width="1280"
+    Height="605"
+    mc:Ignorable="d">
 
     <Grid>
-        <Button x:Name="ButtonCreateCabinet" Style="{StaticResource WPFUIButtonAccent}" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="40,0,0,61" VerticalAlignment="Bottom" Width="280" FontSize="14" Click="ButtonCreateCabinet_Click"/>
-        <Button x:Name="ButtonDeleteCabinet" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Content="Удалить" HorizontalAlignment="Left" Height="30" Margin="40,0,0,26" VerticalAlignment="Bottom" Width="125" Click="ButtonDeleteCabinet_Click" FontSize="14"/>
-        <Button x:Name="ButtonSaveCabinet" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Content="Сохранить" HorizontalAlignment="Left" Height="30" Margin="195,0,0,26" VerticalAlignment="Bottom" Width="125" Click="ButtonSaveCabinet_Click" RenderTransformOrigin="0.5,0.5" FontSize="14"/>
-        <Button x:Name="ButtonCreateHousing" Style="{StaticResource ResourceKey=WPFUIButtonAccent}" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="720,0,0,61" VerticalAlignment="Bottom" Width="240" FontSize="14" Click="ButtonCreateHousing_Click"/>
-        <Button x:Name="ButtonDeleteHousing" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Content="Удалить" HorizontalAlignment="Left" Height="30" Margin="720,0,0,26" VerticalAlignment="Bottom" Width="110" Click="ButtonDeleteHousing_Click" FontSize="14"/>
-        <Button x:Name="ButtonSaveHousing" Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Content="Сохранить" HorizontalAlignment="Left" Height="30" Margin="850,0,0,26" VerticalAlignment="Bottom" Width="110" Click="ButtonSaveHousing_Click" FontSize="14"/>
-        <TextBox x:Name="TextBoxCabinet" HorizontalAlignment="Left" Height="35" Margin="444,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
-        <Label Content="Кабинет" HorizontalAlignment="Left" Height="35" Margin="340,135,0,0" VerticalAlignment="Top" Width="100" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxEntryFloor" HorizontalAlignment="Left" Height="35" Margin="444,245,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
-        <Label Content="Этаж" HorizontalAlignment="Left" Height="35" Margin="340,245,0,0" VerticalAlignment="Top" Width="104" FontSize="14" VerticalContentAlignment="Center"/>
-        <Label Content="Корпус" HorizontalAlignment="Left" Height="35" Margin="344,300,0,0" VerticalAlignment="Top" Width="100" FontSize="14" VerticalContentAlignment="Center"/>
-        <ComboBox x:Name="ComboBoxSelectHousing" HorizontalAlignment="Left" Height="35" Margin="444,300,0,0" Width="181" VerticalAlignment="Top"/>
-        <Label Content="Название корпуса" HorizontalAlignment="Left" Height="30" Margin="980,96,0,0" VerticalAlignment="Top" Width="230" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxNameHousing" HorizontalAlignment="Left" Height="114" Margin="980,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="280" VerticalContentAlignment="Top"/>
-        <Label Content="Адрес" HorizontalAlignment="Left" Height="30" Margin="980,260,0,0" VerticalAlignment="Top" Width="230" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxAddressHousing" HorizontalAlignment="Left" Height="80" Margin="980,290,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="280" VerticalContentAlignment="Top"/>
-        <Label Content="Кол-во аудиторий" HorizontalAlignment="Left" Height="30" Margin="980,390,0,0" VerticalAlignment="Top" Width="150" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxQuantityHousing" HorizontalAlignment="Left" Height="30" Margin="1130,390,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="99" VerticalContentAlignment="Top"/>
-        <Label Content="Кабинеты" HorizontalAlignment="Left" Height="40" Margin="20,20,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Padding="5,0" VerticalContentAlignment="Center" FontWeight="Bold"/>
-        <Label Content="Корпуса" HorizontalAlignment="Left" Height="30" Margin="700,25,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Padding="5,0" VerticalContentAlignment="Center" FontWeight="Bold"/>
-        <ListBox x:Name="ListBoxCabinet" HorizontalAlignment="Left" Margin="40,135,0,96" Width="280" SelectionChanged="ListBoxCabinet_SelectionChanged"/>
-        <ListBox x:Name="ListBoxHousing" HorizontalAlignment="Left" Margin="720,96,0,96" Width="240" SelectionChanged="ListBoxHousing_SelectionChanged"/>
-        <ComboBox x:Name="ComboBoxSelectClassCabinet" HorizontalAlignment="Left" Height="30" Margin="40,60,0,0" VerticalAlignment="Top" Width="280" VerticalContentAlignment="Top"/>
-
-        <ui:AutoSuggestBox
-            x:Name="SearchBox"
+        <wpfui:Card Margin="345,60,25,50">
+            <Grid>
+                <Label
+                    Margin="10,33,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Кабинет"
+                    FontSize="14" />
+                <TextBox
+                    x:Name="TextBoxCabinet"
+                    Width="150"
+                    Height="35"
+                    Margin="92,27,642,407" />
+                <Label
+                    Margin="10,87,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Количество мест"
+                    FontSize="14" />
+                <TextBox
+                    x:Name="TextBoxNumSeats"
+                    Height="35"
+                    Margin="123,81,642,353" />
+                <Label
+                    Margin="262,33,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Этаж"
+                    FontSize="14" />
+                <TextBox
+                    x:Name="TextBoxFloor"
+                    Height="35"
+                    Margin="302,27,492,407" />
+                <Label
+                    Margin="10,144,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Название"
+                    FontSize="14" />
+                <TextBox
+                    x:Name="TextBoxName"
+                    Height="35"
+                    Margin="76,138,642,296" />
+                <Grid x:Name="GridHousing" Margin="10,215,642,22">
+                    <ListBox x:Name="ListBoxHousing" Padding="2,30,2,0" />
+                    <StackPanel
+                        Margin="10,10,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                        <wpfui:SymbolIcon
+                            x:Name="IconAddHousing"
+                            Width="15"
+                            Height="15"
+                            Margin="0,0,5,0"
+                            Symbol="Add20" />
+                        <wpfui:SymbolIcon
+                            x:Name="IconDeleteHousing"
+                            Width="15"
+                            Height="15"
+                            Margin="0,0,5,0"
+                            Symbol="Delete20" />
+                        <wpfui:SymbolIcon
+                            x:Name="IconChangeHousing"
+                            Width="15"
+                            Height="15"
+                            Symbol="Edit20" />
+                    </StackPanel>
+                </Grid>
+                <Label
+                    Margin="10,187,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Корпус"
+                    FontSize="14" />
+                <Button
+                    x:Name="ButtonSaveCabinet"
+                    Width="150"
+                    Height="35"
+                    Margin="724,424,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Сохранить"
+                    FontSize="14"
+                    Style="{DynamicResource WPFUIButtonStandard}" />
+            </Grid>
+        </wpfui:Card>
+        <ListBox
+            x:Name="ListBoxCabinet"
             Width="280"
-            Margin="40,95,0,0"
+            Margin="20,60,0,50"
             HorizontalAlignment="Left"
-            PlaceholderText="Поиск"
-            QueryIcon="Find" VerticalContentAlignment="Top" />
-        <TextBox x:Name="TextBoxFeatures" HorizontalAlignment="Left" Height="70" Margin="444,410,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
-        <Label Content="Особенности &#xD;&#xA;кабинета" HorizontalAlignment="Left" Height="40" Margin="344,410,0,0" VerticalAlignment="Top" Width="100" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxName" HorizontalAlignment="Left" Height="35" Margin="444,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
-        <Label Content="Название" HorizontalAlignment="Left" Height="35" Margin="340,190,0,0" VerticalAlignment="Top" Width="104" FontSize="14" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="TextBoxNumberSeats" HorizontalAlignment="Left" Height="35" Margin="444,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181"/>
-        <Label Content="Кол-во мест" HorizontalAlignment="Left" Height="35" Margin="344,355,0,0" VerticalAlignment="Top" Width="96" FontSize="14" VerticalContentAlignment="Center"/>
-        <ui:AutoSuggestBox
-            x:Name="SearchBox_Copy"
-            Width="240"
-            Margin="720,59,0,0"
+            FontSize="14"
+            SelectionChanged="ListBoxCabinet_SelectionChanged" />
+        <Button
+            x:Name="ButonCabinetAdd"
+            Width="130"
+            Height="35"
+            Margin="20,0,0,10"
             HorizontalAlignment="Left"
-            PlaceholderText="Поиск"
-            QueryIcon="Find" VerticalContentAlignment="Top" />
-
+            VerticalAlignment="Bottom"
+            Click="ButonCabinetAdd_Click"
+            Content="Добавить"
+            FontSize="14"
+            Style="{DynamicResource WPFUIButtonStandard}" />
+        <Button
+            x:Name="ButtonCabinetDelete"
+            Width="130"
+            Height="35"
+            Margin="170,0,0,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Click="ButtonCabinetDelete_Click"
+            Content="Удалить"
+            FontSize="14"
+            Style="{DynamicResource WPFUIButtonStandard}" />
+        <wpfui:SearchBox
+            x:Name="SearchBoxCabinet"
+            Width="280"
+            Height="35"
+            Margin="20,20,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Placeholder="Поиск" />
     </Grid>
 </Page>

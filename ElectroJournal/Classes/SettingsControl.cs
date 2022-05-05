@@ -13,6 +13,7 @@ namespace ElectroJournal.Classes
     {
         public string? Theme { get; set; }
         private const string name = "ElectroJournal";
+        private bool _isDarkTheme = false;
         string? currentPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         public async Task<bool> CheckVersionAsync(string version)
@@ -126,6 +127,22 @@ namespace ElectroJournal.Classes
         {
             DateTime now = DateTime.Now;
             await File.AppendAllTextAsync($@"{currentPath}/logs/{now:d}.txt", $"{text} | {now:T}\n");
+        }
+        public void ChangeTheme()
+        {
+            int theme = Properties.Settings.Default.Theme;
+
+            _isDarkTheme = theme == 1;
+
+            var newTheme = theme == 0
+            ? WPFUI.Appearance.ThemeType.Light
+            : WPFUI.Appearance.ThemeType.Dark;
+
+            WPFUI.Appearance.Theme.Apply(
+           themeType: newTheme,
+           backgroundEffect: WPFUI.Appearance.BackgroundType.Mica,
+           updateAccent: true,
+           forceBackground: false);
         }
     }
 }

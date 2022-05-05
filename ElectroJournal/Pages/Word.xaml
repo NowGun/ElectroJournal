@@ -24,7 +24,8 @@
                     Margin="10,7,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    ItemsSource="{x:Static Fonts.SystemFontFamilies}" SelectionChanged="ComboBoxFont_SelectionChanged" />
+                    ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+                    SelectionChanged="ComboBoxFont_SelectionChanged" />
                 <ComboBox
                     x:Name="ComboBoxSize"
                     Width="80"
@@ -32,8 +33,7 @@
                     Margin="215,7,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    SelectionChanged="ComboBoxSize_SelectionChanged">                    
-                </ComboBox>
+                    SelectionChanged="ComboBoxSize_SelectionChanged" />
                 <ToolBarTray
                     Height="35"
                     Margin="309,7,0,43"
@@ -46,13 +46,13 @@
                             Command="EditingCommands.ToggleBold"
                             FontWeight="Bold"
                             ToolTip="Bold">
-                            <wpfui:Icon Glyph="TextBold20" />
+                            <wpfui:SymbolIcon Symbol="TextBold20" />
                         </ToggleButton>
                         <ToggleButton Command="EditingCommands.ToggleItalic" ToolTip="Italic">
-                            <wpfui:Icon Glyph="TextItalic20" />
+                            <wpfui:SymbolIcon Symbol="TextItalic20" />
                         </ToggleButton>
                         <ToggleButton Command="EditingCommands.ToggleUnderline" ToolTip="Underline">
-                            <wpfui:Icon Glyph="TextUnderline20" />
+                            <wpfui:SymbolIcon Symbol="TextUnderline20" />
                         </ToggleButton>
                     </ToolBar>
                     <ToolBar
@@ -61,19 +61,19 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top">
                         <ToggleButton x:Name="ToggleButtonTextAlignLeft" Command="EditingCommands.AlignLeft">
-                            <wpfui:Icon Glyph="TextAlignLeft20" />
+                            <wpfui:SymbolIcon Symbol="TextAlignLeft20" />
                         </ToggleButton>
                         <ToggleButton
                             x:Name="ToggleButtonTextAlignCenter"
                             Click="ToggleButtonTextAlignCenter_Click"
                             Command="EditingCommands.AlignCenter">
-                            <wpfui:Icon Glyph="TextAlignCenter20" />
+                            <wpfui:SymbolIcon Symbol="TextAlignCenter20" />
                         </ToggleButton>
                         <ToggleButton x:Name="ToggleButtonTextAlignRight" Command="EditingCommands.AlignRight">
-                            <wpfui:Icon Glyph="TextAlignRight20" />
+                            <wpfui:SymbolIcon Symbol="TextAlignRight20" />
                         </ToggleButton>
                         <ToggleButton x:Name="ToggleButtonTextAlignJustify" Command="EditingCommands.AlignJustify">
-                            <wpfui:Icon Glyph="TextAlignJustify24" />
+                            <wpfui:SymbolIcon Symbol="TextAlignJustify24" />
                         </ToggleButton>
                     </ToolBar>
                 </ToolBarTray>
@@ -99,10 +99,10 @@
                             Command="ApplicationCommands.Undo"
                             FontWeight="Bold"
                             ToolTip="Bold">
-                            <wpfui:Icon Glyph="ArrowUndo20" />
+                            <wpfui:SymbolIcon Symbol="ArrowUndo20" />
                         </ToggleButton>
                         <ToggleButton Command="ApplicationCommands.Redo" ToolTip="Italic">
-                            <wpfui:Icon Glyph="ArrowRedo20" />
+                            <wpfui:SymbolIcon Symbol="ArrowRedo20" />
                         </ToggleButton>
                     </ToolBar>
                     <ToolBar
@@ -111,11 +111,10 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top">
                         <ToggleButton Command="EditingCommands.IncreaseFontSize">
-                            <wpfui:Icon Glyph="FontIncrease20" />
+                            <wpfui:SymbolIcon Symbol="FontIncrease20" />
                         </ToggleButton>
-                        <ToggleButton
-                            Command="EditingCommands.DecreaseFontSize">
-                            <wpfui:Icon Glyph="FontDecrease20" />
+                        <ToggleButton Command="EditingCommands.DecreaseFontSize">
+                            <wpfui:SymbolIcon Symbol="FontDecrease20" />
                         </ToggleButton>
                     </ToolBar>
                 </ToolBarTray>
@@ -129,8 +128,10 @@
             Background="Transparent"
             BorderThickness="0"
             GotFocus="RootTextBox_GotFocus"
+            KeyDown="RootTextBox_KeyDown"
             PreviewKeyDown="RootTextBox_PreviewKeyDown"
-            PreviewKeyUp="RootTextBox_PreviewKeyUp" KeyDown="RootTextBox_KeyDown" TextInput="RootTextBox_TextInput"/>
+            PreviewKeyUp="RootTextBox_PreviewKeyUp"
+            TextInput="RootTextBox_TextInput" />
 
         <StatusBar
             x:Name="RootStatusBar"

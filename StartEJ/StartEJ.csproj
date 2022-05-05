@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <PlatformTarget>x86</PlatformTarget>
@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj" />
-    <ProjectReference Include="..\wpfui-main\WPFUI\WPFUI.csproj" />
+    <ProjectReference Include="..\wpfui-main\src\WPFUI\WPFUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

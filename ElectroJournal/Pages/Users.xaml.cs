@@ -143,6 +143,7 @@ namespace ElectroJournal.Pages
             ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
             sc.CompletionLogin();
             ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
+            ((MainWindow)Application.Current.MainWindow).GridComboGroups.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
             ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
