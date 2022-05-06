@@ -332,6 +332,13 @@ namespace ElectroJournal
            updateAccent: true,
            forceBackground: false);
             }
+            else
+            {
+                WPFUI.Appearance.Theme.Apply(
+           themeType: newTheme,
+           updateAccent: true,
+           forceBackground: false);
+            }
         }
         public void AnimLog(bool a)
         {

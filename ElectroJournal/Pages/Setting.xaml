@@ -315,7 +315,6 @@
     </Page.Resources>
 
     <Grid>
-
         <wpfui:Card Margin="20,20,20,15">
             <Grid>
                 <wpfui:DynamicScrollViewer
@@ -396,7 +395,8 @@
                                         HorizontalContentAlignment="Stretch"
                                         VerticalContentAlignment="Center"
                                         Click="CheckBox_Click"
-                                        Content="" Cursor="Hand" />
+                                        Content=""
+                                        Cursor="Hand" />
                                 </StackPanel>
                                 <!--<StackPanel Margin="0,20,0,0" Orientation="Horizontal" Visibility="Hidden">
                                     <Label
@@ -549,25 +549,32 @@
                 </wpfui:DynamicScrollViewer>
                 <StackPanel
                     x:Name="StackPanelSave"
+                    Width="316"
+                    Height="20"
                     Margin="0,0,10,10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Orientation="Horizontal" Height="20" Width="316" Opacity="0">
+                    Opacity="0"
+                    Orientation="Horizontal">
                     <ProgressBar
                         x:Name="ProgressBarTeachers"
                         Foreground="#FF3567BC"
                         IsIndeterminate="True"
                         Style="{StaticResource MaterialDesignCircularProgressBar}" />
                     <Label
+                        Margin="10,0,0,0"
+                        Padding="0,0,0,0"
+                        VerticalAlignment="Center"
                         Content="Сохранение данных, пожалуйста подождите"
-                        FontSize="14" VerticalAlignment="Center" Padding="0,0,0,0" Margin="10,0,0,0" />
+                        FontSize="14" />
                 </StackPanel>
                 <Grid
                     x:Name="GridCheckUpdate"
                     Margin="462,0,0,11"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    RenderTransformOrigin="0.5,0.5" Opacity="0.005">
+                    Opacity="0.005"
+                    RenderTransformOrigin="0.5,0.5">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -632,7 +639,8 @@
                     FontSize="14"
                     Style="{StaticResource WPFUIButtonAccent}"
                     Visibility="Hidden" />
-                <Label x:Name="LabelVersion"
+                <Label
+                    x:Name="LabelVersion"
                     Width="195"
                     Height="35"
                     Margin="7,0,0,12"
@@ -662,8 +670,9 @@
                     VerticalContentAlignment="Center"
                     Click="ButtonChangeBD_Click"
                     Content="Изменить"
+                    Cursor="Hand"
                     FontSize="14"
-                    Style="{DynamicResource WPFUIButtonStandard}" Cursor="Hand" />
+                    Style="{DynamicResource WPFUIButtonStandard}" />
                 <Label
                     Height="35"
                     Margin="7,0,0,56"

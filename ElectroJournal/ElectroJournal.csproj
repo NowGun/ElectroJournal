@@ -117,7 +117,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MahApps.Metro-2.4.9\src\MahApps.Metro\MahApps.Metro.csproj" />
     <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj" />
-    <ProjectReference Include="..\Updater\Updater.csproj" />
     <ProjectReference Include="..\wpfui-main\src\WPFUI\WPFUI.csproj" />
   </ItemGroup>
 

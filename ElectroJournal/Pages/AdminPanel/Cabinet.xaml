@@ -11,36 +11,33 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
     Title="Cabinet"
-    Width="1280"
-    Height="605"
     mc:Ignorable="d">
 
     <Grid>
-        <wpfui:Card Margin="345,60,25,50">
+        <wpfui:Card Margin="330,60,25,50" Padding="0,0,0,0">
             <Grid>
                 <Label
-                    Margin="10,33,0,0"
+                    Margin="29,94,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Кабинет"
                     FontSize="14" />
                 <TextBox
                     x:Name="TextBoxCabinet"
-                    Width="150"
                     Height="35"
-                    Margin="92,27,642,407" />
+                    Margin="114,88,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" />
                 <Label
-                    Margin="10,87,0,0"
+                    Margin="29,205,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Content="Количество мест"
+                    Content="Кол-во мест"
                     FontSize="14" />
                 <TextBox
                     x:Name="TextBoxNumSeats"
                     Height="35"
-                    Margin="123,81,642,353" />
+                    Margin="114,199,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <Label
-                    Margin="262,33,0,0"
+                    Margin="29,150,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Этаж"
@@ -48,9 +45,9 @@
                 <TextBox
                     x:Name="TextBoxFloor"
                     Height="35"
-                    Margin="302,27,492,407" />
+                    Margin="114,144,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" />
                 <Label
-                    Margin="10,144,0,0"
+                    Margin="29,39,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Название"
@@ -58,9 +55,9 @@
                 <TextBox
                     x:Name="TextBoxName"
                     Height="35"
-                    Margin="76,138,642,296" />
-                <Grid x:Name="GridHousing" Margin="10,215,642,22">
-                    <ListBox x:Name="ListBoxHousing" Padding="2,30,2,0" />
+                    Margin="114,33,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" />
+                <Grid x:Name="GridHousing" Margin="475,33,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <ListBox x:Name="ListBoxHousing" Padding="2,30,2,0" Width="250" />
                     <StackPanel
                         Margin="10,10,0,0"
                         HorizontalAlignment="Left"
@@ -71,22 +68,22 @@
                             Width="15"
                             Height="15"
                             Margin="0,0,5,0"
-                            Symbol="Add20" />
+                            Symbol="Add20" PreviewMouseLeftButtonUp="IconAddHousing_PreviewMouseLeftButtonUp" />
                         <wpfui:SymbolIcon
                             x:Name="IconDeleteHousing"
                             Width="15"
                             Height="15"
                             Margin="0,0,5,0"
-                            Symbol="Delete20" />
+                            Symbol="Delete20" PreviewMouseLeftButtonUp="IconDeleteHousing_PreviewMouseLeftButtonUp" />
                         <wpfui:SymbolIcon
                             x:Name="IconChangeHousing"
                             Width="15"
                             Height="15"
-                            Symbol="Edit20" />
+                            Symbol="Edit20" PreviewMouseLeftButtonUp="IconChangeHousing_PreviewMouseLeftButtonUp" />
                     </StackPanel>
                 </Grid>
                 <Label
-                    Margin="10,187,0,0"
+                    Margin="414,40,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Корпус"
@@ -95,12 +92,11 @@
                     x:Name="ButtonSaveCabinet"
                     Width="150"
                     Height="35"
-                    Margin="724,424,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     Content="Сохранить"
                     FontSize="14"
-                    Style="{DynamicResource WPFUIButtonStandard}" />
+                    Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonSaveCabinet_Click" Margin="0,0,15,15" />
             </Grid>
         </wpfui:Card>
         <ListBox
@@ -139,6 +135,23 @@
             Margin="20,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Placeholder="Поиск" />
+            Placeholder="Поиск" PreviewKeyUp="SearchBoxCabinet_PreviewKeyUp" />
+        <wpfui:Dialog
+            x:Name="RootDialog"
+            ButtonLeftName="Сохранить"
+            ButtonRightName="Закрыть"
+            DialogHeight="330"
+            IsShown="False" ButtonRightClick="RootDialog_ButtonRightClick" d:IsHidden="True" ButtonLeftClick="RootDialog_ButtonLeftClick">
+            <Grid>
+                <StackPanel>
+                    <Label Content="Название корпуса" Margin="0,0,0,3"/>
+                    <TextBox x:Name="TextBoxHousingName" Margin="0,0,0,15"/>
+                    <Label Content="Адрес" Margin="0,0,0,3"/>
+                    <TextBox x:Name="TextBoxHousingAddress" Margin="0,0,0,15"/>
+                    <Label Content="Кол-во аудиторий" Margin="0,0,0,3"/>
+                    <wpfui:NumberBox x:Name="NumberBoxCountCabinet"/>
+                </StackPanel>
+            </Grid>
+        </wpfui:Dialog>
     </Grid>
 </Page>

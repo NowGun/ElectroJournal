@@ -22,7 +22,7 @@ namespace ElectroJournal.Pages
     /// <summary>
     /// Логика взаимодействия для Users.xaml
     /// </summary>
-    public partial class Users : IDisposable
+    public partial class Users : Page
     {
         public Users()
         {
@@ -39,7 +39,6 @@ namespace ElectroJournal.Pages
         public System.Windows.Threading.DispatcherTimer timer2 = new();
         List<int> idTeachers = new();
 
-
         private static string? path;
         private string? firstname;
         private bool checkLastM = true;
@@ -49,127 +48,7 @@ namespace ElectroJournal.Pages
         public ObservableCollection<UsersListBox> datA { get; set; }
         public UsersListBox SelectedData { get; set; }
 
-        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {
-            ProgressBar.Visibility = Visibility.Visible;
-            ButtonSave.IsEnabled = false;
-
-            using (zhirovContext db = new())
-            {
-                Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
-
-                if (teacher != null)
-                {
-                    teacher.TeachersPhone = TextBoxPhone.Text;
-                    teacher.TeachersMail = TextBoxMail.Text;
-                    teacher.TeachersImage = $@"http://193.33.230.80/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}";
-                    await db.SaveChangesAsync();
-
-                    try
-                    {
-                        using SftpClient client = new(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password));
-                        client.Connect();
-                        if (client.IsConnected)
-                        {
-                            var fileStream = new FileStream($@"{path}", FileMode.Open);
-
-                            if (path != null)
-                            {
-                                await client.UploadAsync(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
-                                client.Disconnect();
-                                client.Dispose();
-                                isPressed = true;
-                                LoadData();
-                                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
-                            }
-                            fileStream.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-            }
-            ButtonSave.IsEnabled = true;
-            ProgressBar.Visibility = Visibility.Hidden;
-        }
-        private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
-        {
-            new Windows.ChangePassword().ShowDialog();
-        }
-        private void LabelChangePhoto_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Arrow;
-        }
-        private void LabelChangePhoto_MouseMove(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Hand;
-        }
-        private void LabelChangePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog myDialog = new();
-            myDialog.Filter = "Изображения(*.jpg;*.png)|*.JPG;*.PNG" + "|Все файлы (*.*)|*.* ";
-            myDialog.CheckFileExists = true;
-            myDialog.Multiselect = true;
-            if (myDialog.ShowDialog() == true)
-            {
-                LabelDeletePhoto.Visibility = Visibility.Visible;
-                ButtonSave.IsEnabled = true;
-                path = myDialog.FileName;
-
-                BitmapImage bitmap = new();
-
-                //var stream = File.OpenRead(path);
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                //bitmap.StreamSource = stream;
-                bitmap.UriSource = new Uri(path, UriKind.Absolute);
-                bitmap.EndInit();
-                /*                stream.Close();
-                                stream.Dispose();*/
-
-                PersonPicture.ProfilePicture = bitmap;
-            }
-        }
-        public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsControl sc = new();
-
-            sc.ExitUser();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).isEntry = false;
-            ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
-            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
-            sc.CompletionLogin();
-            ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
-            ((MainWindow)Application.Current.MainWindow).GridComboGroups.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
-            ((MainWindow)Application.Current.MainWindow).LabelScheduleCall.Content = "";
-            ((MainWindow)Application.Current.MainWindow).timer2.Stop();
-            ((MainWindow)Application.Current.MainWindow).ButtonShowLogin.IsEnabled = false;
-            ((MainWindow)Application.Current.MainWindow).animLabel = true;
-            ((MainWindow)Application.Current.MainWindow).AnimLog(true);
-        }
-        public ImageSource GetImageUser(string path)
-        {
-            if (!string.IsNullOrWhiteSpace(path))
-            {
-                var stringPath = $@"{path}";
-
-                BitmapImage bitmapImage = new();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                bitmapImage.EndInit();
-
-                return bitmapImage;
-            }
-            return null;
-        }
+        #region Личный кабинет
         private async void LoadData()
         {
             try
@@ -226,6 +105,75 @@ namespace ElectroJournal.Pages
                 MessageBox.Show(ex.Message, "LoadData");
             }
         }
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
+        {
+            ProgressBar.Visibility = Visibility.Visible;
+            ButtonSave.IsEnabled = false;
+
+            using (zhirovContext db = new())
+            {
+                Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                if (teacher != null)
+                {
+                    teacher.TeachersPhone = TextBoxPhone.Text;
+                    teacher.TeachersMail = TextBoxMail.Text;
+                    teacher.TeachersImage = $@"http://193.33.230.80/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}";
+                    await db.SaveChangesAsync();
+
+                    try
+                    {
+                        using SftpClient client = new(new PasswordConnectionInfo(Properties.Settings.Default.Server, Properties.Settings.Default.UserName, Properties.Settings.Default.Password));
+                        client.Connect();
+                        if (client.IsConnected)
+                        {
+                            var fileStream = new FileStream($@"{path}", FileMode.Open);
+
+                            if (path != null)
+                            {
+                                await client.UploadAsync(fileStream, $@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
+                                client.Disconnect();
+                                client.Dispose();
+                                isPressed = true;
+                                LoadData();
+                                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данные обновлены");
+                            }
+                            fileStream.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            ButtonSave.IsEnabled = true;
+            ProgressBar.Visibility = Visibility.Hidden;
+        }
+        private void ButtonResetPassword_Click(object sender, RoutedEventArgs e)
+        {
+            new Windows.ChangePassword().ShowDialog();
+        }
+        public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsControl sc = new();
+
+            sc.ExitUser();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).isEntry = false;
+            ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
+            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
+            sc.CompletionLogin();
+            ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
+            ((MainWindow)Application.Current.MainWindow).GridComboGroups.Visibility = Visibility.Hidden;
+            ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
+            ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
+            ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
+            ((MainWindow)Application.Current.MainWindow).LabelScheduleCall.Content = "";
+            ((MainWindow)Application.Current.MainWindow).timer2.Stop();
+            ((MainWindow)Application.Current.MainWindow).ButtonShowLogin.IsEnabled = false;
+            ((MainWindow)Application.Current.MainWindow).animLabel = true;
+            ((MainWindow)Application.Current.MainWindow).AnimLog(true);
+        }
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             ButtonSave.IsEnabled = true;
@@ -233,6 +181,43 @@ namespace ElectroJournal.Pages
         private void TextBoxMail_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             ButtonSave.IsEnabled = true;
+        }
+
+        #region Смена фото
+        private void LabelChangePhoto_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
+        }
+        private void LabelChangePhoto_MouseMove(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+        private void LabelChangePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog myDialog = new();
+            myDialog.Filter = "Изображения(*.jpg;*.png)|*.JPG;*.PNG" + "|Все файлы (*.*)|*.* ";
+            myDialog.CheckFileExists = true;
+            myDialog.Multiselect = true;
+            if (myDialog.ShowDialog() == true)
+            {
+                LabelDeletePhoto.Visibility = Visibility.Visible;
+                ButtonSave.IsEnabled = true;
+                path = myDialog.FileName;
+
+                BitmapImage bitmap = new();
+
+                //var stream = File.OpenRead(path);
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                //bitmap.StreamSource = stream;
+                bitmap.UriSource = new Uri(path, UriKind.Absolute);
+                bitmap.EndInit();
+                /*                stream.Close();
+                                stream.Dispose();*/
+
+                PersonPicture.ProfilePicture = bitmap;
+            }
         }
         private async void LabelDeletePhoto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -273,6 +258,28 @@ namespace ElectroJournal.Pages
             }
             LabelDeletePhoto.Visibility = Visibility.Hidden;
         }
+        public ImageSource GetImageUser(string path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                var stringPath = $@"{path}";
+
+                BitmapImage bitmapImage = new();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                bitmapImage.EndInit();
+
+                return bitmapImage;
+            }
+            return null;
+        }
+        #endregion
+
+        #endregion
+
+        #region Чат
         private async void ListViewTeachersRefresh()
         {
             try
@@ -294,9 +301,92 @@ namespace ElectroJournal.Pages
                 string status = "Hidden";
                 string lmess = "";
 
-                using (zhirovContext db = new())
+                using zhirovContext db = new();
+
+                if (string.IsNullOrWhiteSpace(SearchBoxUsers.Text))
                 {
                     var t2 = await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ToListAsync();
+
+                    foreach (var t in t2)
+                    {
+                        Chat? chat = await db.Chats
+                            .Where(c => (c.TeachersTo == Properties.Settings.Default.UserID
+                                  && c.TeachersFrom == t.Idteachers) ||
+                                  (c.TeachersFrom == Properties.Settings.Default.UserID &&
+                                   c.TeachersTo == t.Idteachers))
+                            .OrderByDescending(c => c.Idchat)
+                            .FirstOrDefaultAsync();
+
+                        if (t.TeachersStatus == 1)
+                        {
+                            status = "Visible";
+                        }
+                        else
+                        {
+                            status = "Hidden";
+                        }
+
+                        if (chat != null)
+                        {
+                            if (chat.TeachersTo == Properties.Settings.Default.UserID && chat.TeachersFrom == t.Idteachers)
+                            {
+                                lmess = chat.ChatText;
+                            }
+                            else if (chat.TeachersFrom == Properties.Settings.Default.UserID && chat.TeachersTo == t.Idteachers)
+                            {
+                                lmess = $"Вы: {chat.ChatText}";
+                            }
+                        }
+                        else
+                        {
+                            lmess = "";
+                        }
+
+                        if (!String.IsNullOrWhiteSpace(t.TeachersImage))
+                        {
+                            var myImage = new Image();
+                            var stringPath = $@"{t.TeachersImage}";
+
+                            BitmapImage bitmapImage = new();
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                            bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
+                            bitmapImage.DecodePixelHeight = 100;
+                            bitmapImage.EndInit();
+
+                            datA.Add(new UsersListBox
+                            {
+                                online = status,
+                                lastMessage = lmess,
+                                image = bitmapImage,
+                                textFIO = $"{t.TeachersSurname} {t.TeachersName}"
+                            });
+
+                        }
+                        else
+                        {
+                            datA.Add(new UsersListBox
+                            {
+                                online = status,
+                                lastMessage = lmess,
+                                imageDN = $"{t.TeachersSurname} {t.TeachersName}",
+                                textFIO = $"{t.TeachersSurname} {t.TeachersName}"
+                            });
+                        }
+                        idTeachers.Add((int)t.Idteachers);
+
+                    }
+                }
+                else
+                {
+                    var t2 = await db.Teachers
+                        .Where(t => t.Idteachers != Properties.Settings.Default.UserID && 
+                    (EF.Functions.Like(t.TeachersName, $"%{SearchBoxUsers.Text}%") ||
+                    EF.Functions.Like(t.TeachersSurname, $"%{SearchBoxUsers.Text}%") ||
+                    EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBoxUsers.Text}%")))
+                        .OrderBy(t => t.TeachersSurname)
+                        .ToListAsync();
 
                     foreach (var t in t2)
                     {
@@ -577,6 +667,41 @@ namespace ElectroJournal.Pages
                 MessageBox.Show(ex.Message, "ListBoxMessageRefresh");
             }
         }
+        private async void LoadUserInfo()
+        {
+            try
+            {
+                using zhirovContext db = new();
+                var setting = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
+
+                foreach (var s in setting)
+                {
+                    Teacher? teacher = await db.Teachers.Where(t => t.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
+
+                    if (s.SettingsPhone == 1)
+                    {
+                        labelPhoneUser.Content = teacher.TeachersPhone;
+                    }
+                    else
+                    {
+                        labelPhoneUser.Content = "Скрыт";
+                    }
+
+                    if (s.SettingsEmail == 1)
+                    {
+                        LabelMailUser.Content = teacher.TeachersMail;
+                    }
+                    else
+                    {
+                        LabelMailUser.Content = "Скрыт";
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message, "LoadUserInfo");
+            }
+        }
         private async void ListBoxMessageRefresh2()
         {
             try
@@ -655,41 +780,6 @@ namespace ElectroJournal.Pages
                 checkLastM = false;
             }
         }
-        private async void LoadUserInfo()
-        {
-            try
-            {
-                using zhirovContext db = new();
-                var setting = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
-
-                foreach (var s in setting)
-                {
-                    Teacher? teacher = await db.Teachers.Where(t => t.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
-
-                    if (s.SettingsPhone == 1)
-                    {
-                        labelPhoneUser.Content = teacher.TeachersPhone;
-                    }
-                    else
-                    {
-                        labelPhoneUser.Content = "Скрыт";
-                    }
-
-                    if (s.SettingsEmail == 1)
-                    {
-                        LabelMailUser.Content = teacher.TeachersMail;
-                    }
-                    else
-                    {
-                        LabelMailUser.Content = "Скрыт";
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(ex.Message, "LoadUserInfo");
-            }
-        }
         private void PersonPictureUser_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (checkBorder)
@@ -719,11 +809,12 @@ namespace ElectroJournal.Pages
                 BorderUserInfo.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FBFBFB");
             }
         }
-
-        public void Dispose()
+        private void SearchBoxUsers_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            //throw new NotImplementedException();
+            ListViewTeachersRefresh();
         }
+        #endregion
+
     }
 
     public class UsersListBox : NotifyPropertyChanged

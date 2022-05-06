@@ -138,11 +138,21 @@ namespace ElectroJournal.Classes
             ? WPFUI.Appearance.ThemeType.Light
             : WPFUI.Appearance.ThemeType.Dark;
 
-            WPFUI.Appearance.Theme.Apply(
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                WPFUI.Appearance.Theme.Apply(
            themeType: newTheme,
            backgroundEffect: WPFUI.Appearance.BackgroundType.Mica,
            updateAccent: true,
            forceBackground: false);
+            }
+            else
+            {
+                WPFUI.Appearance.Theme.Apply(
+           themeType: newTheme,
+           updateAccent: true,
+           forceBackground: false);
+            }
         }
     }
 }

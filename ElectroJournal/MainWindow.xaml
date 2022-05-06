@@ -470,7 +470,6 @@
                                 Content="Группа:" />
                             <ComboBox
                                 x:Name="ComboBoxGroup"
-                                
                                 Width="200"
                                 Height="35"
                                 Margin="0,0,0,0"
@@ -558,6 +557,7 @@
                     </TransformGroup>
                 </Frame.RenderTransform>
             </Frame>
+
             <controls1:NotificationArea
                 x:Name="WindowArea"
                 Margin="0,99,8,8"

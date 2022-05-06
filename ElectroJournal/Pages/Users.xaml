@@ -406,13 +406,13 @@
             Width="275"
             Margin="20,15,0,30"
             HorizontalAlignment="Left">
-
+            <wpfui:SearchBox x:Name="SearchBoxUsers" Margin="0,0,0,351" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="35" PreviewKeyUp="SearchBoxUsers_PreviewKeyUp"/>
             <ListBox
                 x:Name="ListViewTeachers"
                 ItemsSource="{Binding datA}"
                 SelectedValue="{Binding SelectedData, Mode=TwoWay}"
                 SelectionChanged="ListViewTeachers_SelectionChanged"
-                VirtualizingPanel.ScrollUnit="Pixel">
+                VirtualizingPanel.ScrollUnit="Pixel" Margin="0,40,0,0">
                 <ListBox.Effect>
                     <BlurEffect Radius="0" />
                 </ListBox.Effect>
