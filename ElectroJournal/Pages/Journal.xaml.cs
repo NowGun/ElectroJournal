@@ -33,12 +33,14 @@ namespace ElectroJournal.Pages
             FillComboBoxYears();
             var ws = ReoGrid.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
+            ws.BeforeCellEdit += rgrid_BeforeCellEdit; 
         }
 
         private int stuud;
         private int daysTable;
         List<int> idStud = new();
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+        private bool isChange = false;
         SettingsControl sControl = new();
 
         private void FillTable()
@@ -272,15 +274,17 @@ namespace ElectroJournal.Pages
         }
         private async void SaveJournal(string students, string disciplines, int teachers, string studyPeriod, string score, string time)
         {
-            using (zhirovContext db = new())
+            using zhirovContext db = new();
+
+            string[] FIO = students.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] time2 = time.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var student = await db.Students.Where(t => t.StudentsName == FIO[1] && t.StudentsSurname == FIO[0]).FirstOrDefaultAsync();
+            var disp = await db.Disciplines.Where(t => t.DisciplinesNameAbbreviated == disciplines).FirstOrDefaultAsync();
+            var period = await db.Studyperiods.Where(t => t.StudyperiodStart == studyPeriod).FirstOrDefaultAsync();
+
+            if (!isChange)
             {
-                string[] FIO = students.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                string[] time2 = time.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-
-                var student = await db.Students.Where(t => t.StudentsName == FIO[1] && t.StudentsSurname == FIO[0]).FirstOrDefaultAsync();
-                var disp = await db.Disciplines.Where(t => t.DisciplinesNameAbbreviated == disciplines).FirstOrDefaultAsync();
-                var period = await db.Studyperiods.Where(t => t.StudyperiodStart == studyPeriod).FirstOrDefaultAsync();
-
                 if (student != null && disp != null & period != null && !String.IsNullOrWhiteSpace(score))
                 {
                     DataBase.Journal journal = new DataBase.Journal
@@ -299,12 +303,29 @@ namespace ElectroJournal.Pages
                     await db.SaveChangesAsync();
                 }
             }
+            else
+            {
+                if (student != null && disp != null & period != null)
+                {
+                    DataBase.Journal? j = await db.Journals.FirstOrDefaultAsync(t => t.StudentsIdstudents == student.Idstudents && t.DisciplinesIddisciplines == disp.Iddisciplines && t.StudyperiodIdstudyperiod == period.Idstudyperiod && t.JournalDay == time2[2]);
+
+                    if (j != null)
+                    {
+                        j.JournalScore = score;
+
+                        await db.SaveChangesAsync();
+                    }
+                }
+            }
+
+
+
         }
         private void ReoGrid_WorkbookLoaded(object sender, EventArgs e)
         {
             FillTable();
         }
-        void rgrid_AfterCellEdit(object sender, CellEventArgs e)
+        private void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
             string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
             string score = poz[0];
@@ -323,6 +344,14 @@ namespace ElectroJournal.Pages
             }
 
             LabelTest.Content = $"оценка {ReoGrid.CurrentWorksheet.Cells[score].DisplayText} фио {ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText} дата {ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText} позиция {score}";
+        }
+        private void rgrid_BeforeCellEdit(object sender, CellEventArgs e)
+        {            
+            string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
+            string score = poz[0];
+
+            if (String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[score].DisplayText)) isChange = false;
+            else isChange = true;
         }
         private string CheckYear()
         {
