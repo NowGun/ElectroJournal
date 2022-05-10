@@ -20,6 +20,7 @@ namespace ElectroJournal.Pages.AdminPanel
             InitializeComponent();
             FillListBoxCabinet();
             FillListBoxHousing();
+            FillComboBoxHousing();
         }
 
         List<int> idCab = new();
@@ -72,24 +73,35 @@ namespace ElectroJournal.Pages.AdminPanel
 
             using zhirovContext db = new();
 
-            if (String.IsNullOrWhiteSpace(SearchBoxCabinet.Text))
+            if (ComboBoxSortingCabinet.SelectedItem != null)
             {
-                await db.Cabinets.OrderBy(c => c.CabinetNumber).ForEachAsync(c =>
+                if (String.IsNullOrWhiteSpace(SearchBoxCabinet.Text))
                 {
-                    ListBoxCabinet.Items.Add(c.CabinetNumber);
-                    idCab.Add((int)c.Idcabinet);
-                });
-            }
-            else
-            {
-                await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => EF.Functions.Like(c.CabinetNumber, $"%{SearchBoxCabinet.Text}%")).ForEachAsync(c =>
+                    await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => c.HousingIdhousingNavigation.HousingName == ComboBoxSortingCabinet.SelectedItem.ToString()).ForEachAsync(c =>
+                    {
+                        ListBoxCabinet.Items.Add(c.CabinetNumber);
+                        idCab.Add((int)c.Idcabinet);
+                    });
+                }
+                else
                 {
-                    ListBoxCabinet.Items.Add(c.CabinetNumber);
-                    idCab.Add((int)c.Idcabinet);
-                });
+                    await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => EF.Functions.Like(c.CabinetNumber, $"%{SearchBoxCabinet.Text}%") && c.HousingIdhousingNavigation.HousingName == ComboBoxSortingCabinet.SelectedItem.ToString()).ForEachAsync(c =>
+                    {
+                        ListBoxCabinet.Items.Add(c.CabinetNumber);
+                        idCab.Add((int)c.Idcabinet);
+                    });
+                }
             }
+        }
+        private async void FillComboBoxHousing()
+        {
+            ComboBoxSortingCabinet.Items.Clear();
 
-            
+            using zhirovContext db = new();
+            await db.Housings.OrderBy(t => t.HousingName).ForEachAsync(t =>
+            {
+                ComboBoxSortingCabinet.Items.Add(t.HousingName);
+            });
         }
         private async void ListBoxCabinet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -161,6 +173,10 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             FillListBoxCabinet();
         }
+        private void ComboBoxSortingCabinet_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillListBoxCabinet();
+        }
         #endregion
 
         #region Корпуса
@@ -202,6 +218,7 @@ namespace ElectroJournal.Pages.AdminPanel
                 }
             }
             FillListBoxHousing();
+            FillComboBoxHousing();
             RootDialog.Hide();
         }
         private async void IconDeleteHousing_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -254,6 +271,7 @@ namespace ElectroJournal.Pages.AdminPanel
                 idHousing.Add((int)h.Idhousing);
             });
         }
-        #endregion 
+        #endregion
+
     }
 }
