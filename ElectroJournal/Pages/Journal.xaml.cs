@@ -1,4 +1,5 @@
-﻿using ElectroJournal.DataBase;
+﻿using ElectroJournal.Classes;
+using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace ElectroJournal.Pages
         private int daysTable;
         List<int> idStud = new();
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+        SettingsControl sControl = new();
 
         private void FillTable()
         {
@@ -60,16 +62,17 @@ namespace ElectroJournal.Pages
                     using zhirovContext db = new();
                     if (ComboBoxYears.SelectedItem != null)
                     {
-                        var scoreList = await db.Journals
+                        var scoreList =  await db.Journals
                             .Where(s => s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString() &&
                             s.TeachersIdteachersNavigation.Idteachers == Properties.Settings.Default.UserID &&
                             s.StudyperiodIdstudyperiodNavigation.StudyperiodStart == ComboBoxYears.SelectedItem.ToString() &&
                             s.JournalMonth == Convert.ToString(ComboBoxMonth.SelectedIndex + 1))
                             .ToListAsync();
+                        await Task.Run(() =>
+                        {
                         foreach (var score in scoreList)
                         {
-                            await Task.Run(() =>
-                            {
+                            
                                 for (int i = 1; i <= stuud; i++)
                                 {
                                     for (int j = 1; j < daysTable; j++)
@@ -84,21 +87,22 @@ namespace ElectroJournal.Pages
                                                 {
                                                     Dispatcher.Invoke(() =>
                                                     {
-                                                        worksheet[i, j] = score.JournalScore;
+                                                        ReoGrid.CurrentWorksheet[i, j] = score.JournalScore;
                                                     });
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            });
+                            
                         }
+                        });
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                sControl.InputLog($"FillScore | {ex.Message}");
             }
             finally
             {
@@ -108,68 +112,83 @@ namespace ElectroJournal.Pages
         }
         private async void FillStudents()
         {
-            idStud.Clear();
-
-            if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
+            try
             {
-                var worksheet = ReoGrid.CurrentWorksheet;
-                using (zhirovContext db = new zhirovContext())
+                idStud.Clear();
+
+                if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
                 {
-                    var days = await db.Groups.Where(p => p.GroupsNameAbbreviated == ((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()).Select(p => p.Idgroups).ToListAsync();
-                    var students = await db.Students.Where(p => p.GroupsIdgroups == days[0]).OrderBy(p => p.StudentsSurname).ToListAsync();
-                    stuud = students.Count;
-                    for (int i = 2; i - 2 < stuud; i++)
+                    var worksheet = ReoGrid.CurrentWorksheet;
+                    using (zhirovContext db = new zhirovContext())
                     {
-                        worksheet.SetRows(i);
-                        worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
-                        worksheet.AutoFitColumnWidth(0, false);
-
-                        idStud.Add((int)students[i - 2].Idstudents);
-
-                        unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
-                        cell.IsReadOnly = true;
-
-                        /*worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                        var days = await db.Groups.Where(p => p.GroupsNameAbbreviated == ((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()).Select(p => p.Idgroups).ToListAsync();
+                        var students = await db.Students.Where(p => p.GroupsIdgroups == days[0]).OrderBy(p => p.StudentsSurname).ToListAsync();
+                        stuud = students.Count;
+                        for (int i = 2; i - 2 < stuud; i++)
                         {
-                            Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor | PlainStyleFlag.LineColor | PlainStyleFlag.Padding,
-                            FontName = "Segoe UI",
-                            FontSize = 13,
-                            TextColor = Colors.Black,
-                            Padding = new PaddingValue(10),
-                        });*/
+                            worksheet.SetRows(i);
+                            worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
+                            worksheet.AutoFitColumnWidth(0, false);
+
+                            idStud.Add((int)students[i - 2].Idstudents);
+
+                            unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
+                            cell.IsReadOnly = true;
+
+                            /*worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
+                            {
+                                Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor | PlainStyleFlag.LineColor | PlainStyleFlag.Padding,
+                                FontName = "Segoe UI",
+                                FontSize = 13,
+                                TextColor = Colors.Black,
+                                Padding = new PaddingValue(10),
+                            });*/
+                        }
                     }
                 }
+                FillScore();
             }
-            FillScore();
+            catch (Exception ex) 
+            {
+                sControl.InputLog($"FillStudents | {ex.Message}");
+            }            
         }
         private async void FillDates()
         {
-            var worksheet = ReoGrid.CurrentWorksheet;
-
-            using (zhirovContext db = new())
+            try
             {
-                var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
-                daysTable = days.Count + 1;
-                for (int i = 1; i < daysTable; i++)
+                var worksheet = ReoGrid.CurrentWorksheet;
+
+                using (zhirovContext db = new())
                 {
-                    worksheet.SetCols(daysTable);
-                    worksheet[0, i] = days[i - 1];
-                    worksheet[1, i] = "";
-                    ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+                    var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
+                    daysTable = days.Count + 1;
+                    for (int i = 1; i < daysTable; i++)
+                    {
+                        worksheet.SetCols(daysTable);
+                        worksheet[0, i] = days[i - 1];
+                        worksheet[1, i] = "";
+                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
-                    unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
-                    cell.IsReadOnly = true;
+                        unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
+                        cell.IsReadOnly = true;
+                    }
                 }
+                worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+                {
+                    //Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
+                    Flag = PlainStyleFlag.HorizontalAlign,
+                    HAlign = ReoGridHorAlign.Center,
+                    //FontName = "Segoe UI",
+                    // FontSize = 13,
+                    // TextColor = Colors.Black
+                });
             }
-            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+            catch (Exception ex)
             {
-                //Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
-                Flag = PlainStyleFlag.HorizontalAlign,
-                HAlign = ReoGridHorAlign.Center,
-                //FontName = "Segoe UI",
-               // FontSize = 13,
-               // TextColor = Colors.Black
-            });
+                sControl.InputLog($"FillDates | {ex.Message}");
+            }
+            
         }
         private void FillText()
         {
