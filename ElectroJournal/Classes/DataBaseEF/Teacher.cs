@@ -15,6 +15,7 @@ namespace ElectroJournal.DataBase
             Journals = new HashSet<Journal>();
             Schedules = new HashSet<Schedule>();
             Settings = new HashSet<Setting>();
+            TeachersHasDisciplines = new HashSet<TeachersHasDiscipline>();
             TeachersHasGroups = new HashSet<TeachersHasGroup>();
         }
 
@@ -36,6 +37,7 @@ namespace ElectroJournal.DataBase
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<Setting> Settings { get; set; }
+        public virtual ICollection<TeachersHasDiscipline> TeachersHasDisciplines { get; set; }
         public virtual ICollection<TeachersHasGroup> TeachersHasGroups { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace ElectroJournal.DataBase
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Studyperiod> Studyperiods { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
+        public virtual DbSet<TeachersHasDiscipline> TeachersHasDisciplines { get; set; }
         public virtual DbSet<TeachersHasGroup> TeachersHasGroups { get; set; }
         public virtual DbSet<Typeclass> Typeclasses { get; set; }
         public virtual DbSet<Typelearning> Typelearnings { get; set; }
@@ -407,16 +408,25 @@ namespace ElectroJournal.DataBase
 
                 entity.Property(e => e.DisciplinesIddisciplines).HasColumnName("disciplines_iddisciplines");
 
-                entity.Property(e => e.JournalDay).HasColumnName("journal_day");
+                entity.Property(e => e.JournalDay)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("journal_day");
 
-                entity.Property(e => e.JournalMonth).HasColumnName("journal_month");
+                entity.Property(e => e.JournalMonth)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("journal_month");
 
                 entity.Property(e => e.JournalScore)
                     .IsRequired()
                     .HasColumnType("text")
                     .HasColumnName("journal_score");
 
-                entity.Property(e => e.JournalYear).HasColumnName("journal_year");
+                entity.Property(e => e.JournalYear)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("journal_year");
 
                 entity.Property(e => e.StudentsIdstudents).HasColumnName("students_idstudents");
 
@@ -720,6 +730,12 @@ namespace ElectroJournal.DataBase
                     .IsRequired()
                     .HasColumnType("text")
                     .HasColumnName("students_surname");
+
+                entity.HasOne(d => d.GroupsIdgroupsNavigation)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.GroupsIdgroups)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_students_groups1");
             });
 
             modelBuilder.Entity<Studyperiod>(entity =>
@@ -795,6 +811,35 @@ namespace ElectroJournal.DataBase
                 entity.Property(e => e.TeachersSurname)
                     .HasMaxLength(45)
                     .HasColumnName("teachers_surname");
+            });
+
+            modelBuilder.Entity<TeachersHasDiscipline>(entity =>
+            {
+                entity.HasKey(e => new { e.TeachersIdteachers, e.DisciplinesIddisciplines })
+                    .HasName("PRIMARY")
+                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+
+                entity.ToTable("teachers_has_disciplines");
+
+                entity.HasIndex(e => e.DisciplinesIddisciplines, "fk_teachers_has_disciplines_disciplines1_idx");
+
+                entity.HasIndex(e => e.TeachersIdteachers, "fk_teachers_has_disciplines_teachers1_idx");
+
+                entity.Property(e => e.TeachersIdteachers).HasColumnName("teachers_idteachers");
+
+                entity.Property(e => e.DisciplinesIddisciplines).HasColumnName("disciplines_iddisciplines");
+
+                entity.HasOne(d => d.DisciplinesIddisciplinesNavigation)
+                    .WithMany(p => p.TeachersHasDisciplines)
+                    .HasForeignKey(d => d.DisciplinesIddisciplines)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_teachers_has_disciplines_disciplines1");
+
+                entity.HasOne(d => d.TeachersIdteachersNavigation)
+                    .WithMany(p => p.TeachersHasDisciplines)
+                    .HasForeignKey(d => d.TeachersIdteachers)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_teachers_has_disciplines_teachers1");
             });
 
             modelBuilder.Entity<TeachersHasGroup>(entity =>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ElectroJournal.Classes.DataBaseEF;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -11,6 +12,7 @@ namespace ElectroJournal.DataBase
             Disciplinehours = new HashSet<Disciplinehour>();
             Journals = new HashSet<Journal>();
             Journalthemes = new HashSet<Journaltheme>();
+            TeachersHasDisciplines = new HashSet<TeachersHasDiscipline>();
         }
 
         public uint Iddisciplines { get; set; }
@@ -21,5 +23,6 @@ namespace ElectroJournal.DataBase
         public virtual ICollection<Disciplinehour> Disciplinehours { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual ICollection<Journaltheme> Journalthemes { get; set; }
+        public virtual ICollection<TeachersHasDiscipline> TeachersHasDisciplines { get; set; }
     }
 }

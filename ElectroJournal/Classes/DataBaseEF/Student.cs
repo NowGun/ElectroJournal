@@ -16,7 +16,7 @@ namespace ElectroJournal.DataBase
         public string StudentsName { get; set; }
         public string StudentsSurname { get; set; }
         public string StudentsPatronymic { get; set; }
-        public DateTime StudentsBirthday { get; set; }
+        public DateTime? StudentsBirthday { get; set; }
         public string StudentsResidence { get; set; }
         public string StudentsDormitory { get; set; }
         public string StudentsParent { get; set; }
@@ -24,6 +24,7 @@ namespace ElectroJournal.DataBase
         public string StudentsParentPhone { get; set; }
         public uint GroupsIdgroups { get; set; }
 
+        public virtual Group GroupsIdgroupsNavigation { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
     }
 }

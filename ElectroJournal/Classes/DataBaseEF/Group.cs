@@ -11,6 +11,7 @@ namespace ElectroJournal.DataBase
             Disciplinehours = new HashSet<Disciplinehour>();
             Journalthemes = new HashSet<Journaltheme>();
             Schedules = new HashSet<Schedule>();
+            Students = new HashSet<Student>();
             TeachersHasGroups = new HashSet<TeachersHasGroup>();
         }
 
@@ -28,6 +29,7 @@ namespace ElectroJournal.DataBase
         public virtual ICollection<Disciplinehour> Disciplinehours { get; set; }
         public virtual ICollection<Journaltheme> Journalthemes { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
         public virtual ICollection<TeachersHasGroup> TeachersHasGroups { get; set; }
     }
 }
