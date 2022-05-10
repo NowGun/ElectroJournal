@@ -21,6 +21,7 @@ using System.Windows.Interop;
 using System.ComponentModel;
 using WPFUI.Taskbar;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Windows.Media.Animation;
 
 namespace Updater
@@ -40,8 +41,26 @@ namespace Updater
 
         private async void LoadChange()
         {
-            HttpClient hc = new();
-            RichTextBoxUpdate.Document.Blocks.Add(new Paragraph(new Run(await hc.GetStringAsync(new Uri("http://193.33.230.80/public_html/pages/ChangeLog.txt")))));
+            Ping ping = new();
+
+            try
+            {
+                PingReply reply = ping.Send("193.33.230.80", 2000);
+                if (reply.Status == IPStatus.Success)
+                {
+                    HttpClient hc = new();
+                    RichTextBoxUpdate.Document.Blocks.Add(new Paragraph(new Run(await hc.GetStringAsync(new Uri("http://193.33.230.80/public_html/pages/ChangeLog.txt")))));
+                }
+                else
+                {
+                    RichTextBoxUpdate.Document.Blocks.Add(new Paragraph(new Run("Обновление программы в данный момент недоступно.")));
+                    ButtonDownloadUpdate.IsEnabled = false;
+                }
+            }
+            catch (PingException ex)
+            {
+
+            }            
         }
         private void ButtonDownloadUpdate_Click(object sender, RoutedEventArgs e)
         {

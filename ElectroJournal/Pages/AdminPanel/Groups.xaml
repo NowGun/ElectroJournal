@@ -186,7 +186,7 @@
             Margin="20,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Placeholder="Поиск" />
+            Placeholder="Поиск" PreviewKeyUp="SearchBox_PreviewKeyUp" />
         <ComboBox
             x:Name="ComboBoxGroupsSorting"
             Width="280"

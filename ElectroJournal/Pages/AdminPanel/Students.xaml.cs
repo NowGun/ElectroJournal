@@ -133,22 +133,38 @@ namespace ElectroJournal.Pages.AdminPanel
 
             using (zhirovContext db = new zhirovContext())
             {
-                switch (ComboBoxSorting.SelectedIndex)
+                if (String.IsNullOrWhiteSpace(SearchBox.Text))
                 {
-                    case 0:
-                        await db.Students.OrderBy(t => t.StudentsSurname).ForEachAsync(t =>
-                        {
-                            ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
-                            idStudents.Add((int)t.Idstudents);
-                        });
-                        break;
-                    case 1:
-                        await db.Students.OrderByDescending(t => t.StudentsSurname).ForEachAsync(t =>
-                        {
-                            ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
-                            idStudents.Add((int)t.Idstudents);
-                        });
-                        break;
+                    switch (ComboBoxSorting.SelectedIndex)
+                    {
+                        case 0:
+                            await db.Students.OrderBy(t => t.StudentsSurname).ForEachAsync(t =>
+                            {
+                                ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                                idStudents.Add((int)t.Idstudents);
+                            });
+                            break;
+                        case 1:
+                            await db.Students.OrderByDescending(t => t.StudentsSurname).ForEachAsync(t =>
+                            {
+                                ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                                idStudents.Add((int)t.Idstudents);
+                            });
+                            break;
+                    }
+                }
+                else
+                {
+                    await db.Students
+                        .OrderBy(t => t.StudentsSurname)
+                        .Where(t => EF.Functions.Like(t.StudentsSurname, $"%{SearchBox.Text}%") ||
+                    EF.Functions.Like(t.StudentsName, $"%{SearchBox.Text}%") ||
+                    EF.Functions.Like(t.StudentsPatronymic, $"%{SearchBox.Text}%"))
+                        .ForEachAsync(t =>
+                    {
+                        ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                        idStudents.Add((int)t.Idstudents);
+                    });
                 }
             }
             ProgressBarListBox.Visibility = Visibility.Hidden;
@@ -258,6 +274,10 @@ namespace ElectroJournal.Pages.AdminPanel
         {
             FillListBox();
             ListBoxGroups.Visibility = Visibility.Visible;
+        }
+        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            ListBoxStudentsRefresh();
         }
     }
 }

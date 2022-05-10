@@ -78,7 +78,9 @@ namespace ElectroJournal.Pages.AdminPanel
             ListBoxDiscipline.Items.Clear();
             idDisp.Clear();
 
-            using (zhirovContext db = new zhirovContext())
+            using zhirovContext db = new();
+
+            if (String.IsNullOrWhiteSpace(SearchBox.Text))
             {
                 switch (ComboBoxSorting.SelectedIndex)
                 {
@@ -97,6 +99,14 @@ namespace ElectroJournal.Pages.AdminPanel
                         });
                         break;
                 }
+            }
+            else
+            {
+                await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")).ForEachAsync(t =>
+                {
+                    ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                    idDisp.Add((int)t.Iddisciplines);
+                });
             }
         }
         private async void ListBoxDiscipline_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -161,6 +171,10 @@ namespace ElectroJournal.Pages.AdminPanel
             DeleteDisp();
         }
         private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillListBoxDisciplines();
+        }
+        private void SearchBox_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             FillListBoxDisciplines();
         }

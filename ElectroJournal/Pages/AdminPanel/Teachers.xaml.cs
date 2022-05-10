@@ -125,22 +125,39 @@ namespace ElectroJournal.Pages.AdminPanel
             idTeachers.Clear();
 
             using zhirovContext db = new();
-            switch (ComboBoxSortingTeacher.SelectedIndex)
+
+            if (String.IsNullOrWhiteSpace(SearchBox.Text))
             {
-                case 0:
-                    await db.Teachers.OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
-                    {
-                        ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
-                        idTeachers.Add((int)t.Idteachers);
-                    });
-                    break;
-                case 1:
-                    await db.Teachers.OrderByDescending(t => t.TeachersSurname).ForEachAsync(t =>
-                    {
-                        ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
-                        idTeachers.Add((int)t.Idteachers);
-                    });
-                    break;
+                switch (ComboBoxSortingTeacher.SelectedIndex)
+                {
+                    case 0:
+                        await db.Teachers.OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
+                        {
+                            ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                            idTeachers.Add((int)t.Idteachers);
+                        });
+                        break;
+                    case 1:
+                        await db.Teachers.OrderByDescending(t => t.TeachersSurname).ForEachAsync(t =>
+                        {
+                            ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                            idTeachers.Add((int)t.Idteachers);
+                        });
+                        break;
+                }
+            }
+            else
+            {
+                await db.Teachers
+                    .OrderBy(t => t.TeachersSurname)
+                    .Where(t => EF.Functions.Like(t.TeachersName, $"%{SearchBox.Text}%") ||
+                    EF.Functions.Like(t.TeachersSurname, $"%{SearchBox.Text}%") ||
+                    EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBox.Text}%"))
+                    .ForEachAsync(t =>
+                {
+                    ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                    idTeachers.Add((int)t.Idteachers);
+                });
             }
         }
         private void TextBoxTeachersPhone2_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -299,30 +316,7 @@ namespace ElectroJournal.Pages.AdminPanel
         }
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            int i;
-            for (i = lastFoundIndex + 1; i < ListViewTeachers.Items.Count; i++)
-            {
-                var currVal = ListViewTeachers.Items[i].ToString();
-                if (currVal.ToLower().Contains(SearchBox.Text.ToLower()))
-                {
-                    ListViewTeachers.SelectedIndex = i;
-                    lastFoundIndex = i;
-                    break;//прерываем цикл
-                }
-            }
-            if (lastFoundIndex > -1 && i == ListViewTeachers.Items.Count)
-            {
-                for (int s = 0; s <= lastFoundIndex; s++)
-                {
-                    var currVal = ListViewTeachers.Items[s].ToString();
-                    if (currVal.ToLower().Contains(SearchBox.Text.ToLower()))
-                    {
-                        ListViewTeachers.SelectedIndex = s;
-                        lastFoundIndex = s;
-                        break;//прерываем цикл
-                    }
-                }
-            }
+            ListViewTeachersRefresh();
         }
         private void PersonPicture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {

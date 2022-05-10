@@ -133,18 +133,29 @@ namespace ElectroJournal.Pages.AdminPanel
 
             using (zhirovContext db = new zhirovContext())
             {
-                switch (ComboBoxGroupsSorting.SelectedIndex)
+                if (String.IsNullOrWhiteSpace(SearchBox.Text))
                 {
-                    case 0:
-                        await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).ForEachAsync(t =>
-                        {
-                            ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}");
-                            idGroups.Add((int)t.Idgroups);
-                        });
-                        break;
-                    case 1:
+                    switch (ComboBoxGroupsSorting.SelectedIndex)
+                    {
+                        case 0:
+                            await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).ForEachAsync(t =>
+                            {
+                                ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}");
+                                idGroups.Add((int)t.Idgroups);
+                            });
+                            break;
+                        case 1:
 
-                        break;
+                            break;
+                    }
+                }
+                else
+                {
+                    await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).Where(t => EF.Functions.Like(t.GroupsNameAbbreviated, $"%{SearchBox.Text}%") || EF.Functions.Like(t.GroupsName, $"%{SearchBox.Text}%")).ForEachAsync(t =>
+                    {
+                        ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}");
+                        idGroups.Add((int)t.Idgroups);
+                    });
                 }
             }
 
@@ -262,6 +273,10 @@ namespace ElectroJournal.Pages.AdminPanel
                     ComboBoxCourse.Items.Add(t.CourseName);
                 });
             }
+        }
+        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            FillListBoxGroups();
         }
     }
 }

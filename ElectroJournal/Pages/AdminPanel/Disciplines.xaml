@@ -114,9 +114,10 @@
             Margin="20,0,0,16"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
+            Click="ButtonAdd_Click"
             Content="Добавить"
             FontSize="14"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Click="ButtonAdd_Click" />
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
         <Button
             x:Name="ButtonDelete"
             Width="115"
@@ -124,16 +125,20 @@
             Margin="155,0,0,16"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
+            Click="ButtonDelete_Click"
             Content="Удалить"
             FontSize="14"
             IsEnabled="False"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Click="ButtonDelete_Click" />
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
         <ListBox
             x:Name="ListBoxDiscipline"
             Width="250"
             Margin="20,100,0,56"
             HorizontalAlignment="Left"
-            d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListBoxDiscipline_SelectionChanged" PreviewKeyUp="ListBoxDiscipline_PreviewKeyUp" FontSize="14" />
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            FontSize="14"
+            PreviewKeyUp="ListBoxDiscipline_PreviewKeyUp"
+            SelectionChanged="ListBoxDiscipline_SelectionChanged" />
         <wpfui:SearchBox
             x:Name="SearchBox"
             Width="250"
@@ -141,7 +146,8 @@
             Margin="20,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Placeholder="Поиск" />
+            Placeholder="Поиск"
+            PreviewKeyUp="SearchBox_PreviewKeyUp" />
         <ComboBox
             x:Name="ComboBoxSorting"
             Width="250"
@@ -149,7 +155,8 @@
             Margin="20,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            SelectedIndex="0" SelectionChanged="ComboBoxSorting_SelectionChanged">
+            SelectedIndex="0"
+            SelectionChanged="ComboBoxSorting_SelectionChanged">
             <ComboBoxItem Content="А-Я" />
             <ComboBoxItem Content="Я-А" />
         </ComboBox>
