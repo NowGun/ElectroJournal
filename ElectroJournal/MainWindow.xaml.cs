@@ -31,248 +31,33 @@ namespace ElectroJournal
     {
         public MainWindow()
         {
-            //CheckVersionWindows();
             InitializeComponent();
 
             GridMenu.Visibility = Visibility.Hidden;
-            Frame.Visibility = Visibility.Hidden;
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
-            RectangleLoadLogin.Visibility = Visibility.Hidden;
             GridComboGroups.Visibility = Visibility.Hidden;
 
             settingsControl.CheckAutoRun();
             settingsControl.CheckTray();
-
             GridNLogin.Visibility = Visibility.Visible;
+            Frame.Navigate(new Authorization());
         }
 
         SettingsControl settingsControl = new();
         SettingMigration SettingMig = new();
 
         private readonly NotificationManager _notificationManager = new();
-        public System.Windows.Threading.DispatcherTimer timer2 = new();
         public bool isEntry = false;
-
-        bool checkFiilScheduleDB = true;
-        public bool animLabel = true;
+        
         private bool _isDarkTheme = false;
-        private bool loginbool = true;
+        public bool loginbool = true;
 
-        List<string> ScheduleStart = new();
-        List<string> ScheduleEnd = new();
-        List<int> ScheduleNumber = new();
-
-        private void RectangleUser_MouseMove(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Hand;
-        }
-        private void RectangleUser_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Arrow;
-        }
-        private void MainWindow_Completed(object sender, EventArgs e)
-        {
-            (Resources["AnimLoadLogin"] as Storyboard).Begin();
-        }
-        private void ButtonLogin_Click(object sender, RoutedEventArgs e)
-        {
-            RectangleLoadLogin.Visibility = Visibility.Visible;
-            (Resources["AnimLoadLogin"] as Storyboard).Completed += new EventHandler(MainWindow_Completed);
-
-            var anim = (Storyboard)FindResource("AnimLoadLogin");
-            anim.Begin();
-
-            var anim2 = (Storyboard)FindResource("AnimShowLoading");
-            anim2.Begin();
-
-            Login();
-        }
-        private async void SheduleCall(object sender, EventArgs e)
-        {
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-            {
-                LabelScheduleCall.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                if (checkFiilScheduleDB)
-                {
-                    using zhirovContext db = new();
-                    var time = await db.Periodclasses.ToListAsync();
-
-                    foreach (var t in time)
-                    {
-                        ScheduleStart.Add(t.PeriodclassesStart.ToString("hh':'mm"));
-                        ScheduleEnd.Add(t.PeriodclassesEnd.ToString("hh':'mm"));
-                        ScheduleNumber.Add(t.PeriodclassesNumber);
-                        checkFiilScheduleDB = false;
-                    }
-                }
-
-                var anim = (Storyboard)FindResource("AnimLabelScheduleCall");
-
-                for (int i = 0; i <= ScheduleStart.Count; i++)
-                {
-                    if (i != ScheduleStart.Count)
-                    {
-                        if (DateTime.Parse(ScheduleStart[i]) < DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
-                        {
-                            if (animLabel)
-                            {
-                                anim.Begin();
-                            }
-
-                            animLabel = false;
-
-                            LabelScheduleCall.Content = $"Урок: {ScheduleNumber[i]}    Период занятий: {ScheduleStart[i]} - {ScheduleEnd[i]}    До конца занятий: " +
-                               (DateTime.Parse(ScheduleEnd[i]) - DateTime.Now).ToString("mm':'ss");
-                            break;
-                        }
-                        else if (i != ScheduleStart.Count - 1 && DateTime.Parse(ScheduleStart[0]) < DateTime.Now && DateTime.Parse(ScheduleStart[i + 1]) > DateTime.Now && DateTime.Now < DateTime.Parse(ScheduleEnd[i]))
-                        {
-                            if (animLabel == false)
-                            {
-                                anim.Begin();
-                            }
-
-                            animLabel = true;
-
-                            LabelScheduleCall.Content = "До конца перемены: " + (DateTime.Parse(ScheduleStart[i]) - DateTime.Now).ToString("mm':'ss");
-                            break;
-                        }
-                    }
-                    else if (i == ScheduleEnd.Count)
-                    {
-                        LabelScheduleCall.Content = "";
-                        //break;
-                    }
-                }
-            }
-        }
-        private async void Login()
-        {
-            try
-            {
-                ButtonLogin.IsEnabled = false;
-                TextBoxLogin.IsEnabled = false;
-                TextBoxPassword.IsEnabled = false;
-                DataBaseControls DbControls = new();
-                string pass = DbControls.Hash(TextBoxPassword.Password);
-
-                var anim = (Storyboard)FindResource("AnimLoadLogin");
-                var anim3 = (Storyboard)FindResource("AnimOpenMenuStart");
-
-                using zhirovContext db = new();
-                bool isAvalaible = await db.Database.CanConnectAsync();
-                if (isAvalaible)
-                {
-                    if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
-                    {
-                        var login = await db.Teachers.Where(p => p.TeachersLogin == TextBoxLogin.Text.Trim() && p.TeachersPassword == pass).ToListAsync();
-
-                        if (login.Count != 0)
-                        {
-                            foreach (var l in login)
-                            {
-                                TextBlockTeacher.Content = $"{l.TeachersName} {l.TeachersSurname}";
-
-                                RefreshImage(l.TeachersImage);
-
-                                switch (l.TeachersAccesAdminPanel)
-                                {
-                                    case "True":
-                                        NavigationViewItemAdminPanel.Visibility = Visibility.Visible;
-                                        break;
-
-                                    case "False":
-                                        NavigationViewItemAdminPanel.Visibility = Visibility.Hidden;
-                                        break;
-                                }
-
-                                Properties.Settings.Default.UserID = (int)l.Idteachers;
-                                Properties.Settings.Default.Login = TextBoxLogin.Text;
-                                Properties.Settings.Default.PassProfile = TextBoxPassword.Password;
-                                Properties.Settings.Default.FirstName = l.TeachersName;
-
-                                Properties.Settings.Default.Save();
-
-                                Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
-
-                                if (teacher != null)
-                                {
-                                    teacher.TeachersStatus = 1;
-                                }
-
-                                await db.SaveChangesAsync();
-
-                                NavViewMenu.Visibility = Visibility.Visible;
-                                GridComboGroups.Visibility = Visibility.Visible;
-                                NavViewMenuAdmin.Visibility = Visibility.Hidden;
-                                RectangleBackToMenu.Visibility = Visibility.Hidden;
-
-                                isEntry = true;
-                                FillComboBoxGroups();
-                                //ComboBoxGroup.SelectedIndex = 0;
-                                Frame.Navigate(new Pages.Journal());
-                                //Notifications("Оповещение", "Авторизация прошла успешно");
-
-                                timer2.Tick += new EventHandler(SheduleCall);
-                                timer2.Interval = new TimeSpan(0, 0, 1);
-                                timer2.Start();
-
-                                GridNLogin.Visibility = Visibility.Hidden;
-                                GridLogin.Visibility = Visibility.Hidden;
-                                anim3.Begin();
-                                GridMenu.Visibility = Visibility.Visible;
-                                Frame.Visibility = Visibility.Visible;
-                                NavigationViewItemJournal.IsSelected = true;
-
-                                anim.Stop();
-                                RectangleLoadLogin.Visibility = Visibility.Hidden;
-                                TextBoxLogin.IsEnabled = true;
-                                TextBoxPassword.IsEnabled = true;
-                                ButtonLogin.IsEnabled = true;
-                            }
-                        }
-                        else
-                        {
-                            Notifications("Ошибка", "Логин или пароль введен неверно");
-                            anim.Stop();
-                            RectangleLoadLogin.Visibility = Visibility.Hidden;
-                            TextBoxLogin.IsEnabled = true;
-                            TextBoxPassword.IsEnabled = true;
-                            ButtonLogin.IsEnabled = true;
-                        }
-                    }
-                    else
-                    {
-                        Notifications("Ошибка", "Заполните поле");
-                        anim.Stop();
-                        RectangleLoadLogin.Visibility = Visibility.Hidden;
-                        TextBoxLogin.IsEnabled = true;
-                        TextBoxPassword.IsEnabled = true;
-                        ButtonLogin.IsEnabled = true;
-                    }
-                }
-                else
-                {
-                    anim.Stop();
-                    RectangleLoadLogin.Visibility = Visibility.Hidden;
-                    TextBoxLogin.IsEnabled = true;
-                    TextBoxPassword.IsEnabled = true;
-                    ButtonLogin.IsEnabled = true;
-                    Notifications("Ошибка", "База данных недоступна");
-                }
-            }
-
-            catch (Exception ex)
-            {
-                settingsControl.InputLog($"Login | {ex.Message}");
-                System.Windows.MessageBox.Show(ex.Message);
-            }
-            //command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = PBKDF2HashHelper.VerifyPassword(TextBoxPassword.Password, (string)command.ExecuteScalar());
-        }
+        public void StartCalls() => Calls.StartTimer();
+        public void StopCalls() => Calls.StopTimer();
+        public void OpenMenu() => (Resources["AnimOpenMenuStart"] as Storyboard).Begin();
+        private void RectangleUser_MouseMove(object sender, MouseEventArgs e) => this.Cursor = Cursors.Hand;
+        private void RectangleUser_MouseLeave(object sender, MouseEventArgs e) => this.Cursor = Cursors.Arrow;               
         private void RectangleBackToMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             NavViewMenu.Visibility = Visibility.Visible;
@@ -284,10 +69,6 @@ namespace ElectroJournal
 
             NavigationViewItemJournal.IsSelected = true;
             Frame.Navigate(new Pages.Journal());
-        }
-        private void Frame_ContentRendered(object sender, EventArgs e)
-        {
-
         }
         public void Notifications(string title, string text)
         {
@@ -340,19 +121,33 @@ namespace ElectroJournal
            forceBackground: false);
             }
         }
-        public void AnimLog(bool a)
+        public void AnimLogout(bool a)
         {
             if (a)
             {
+                settingsControl.ExitUser();
+                StopCalls();
+                Calls.checkFillScheduleDB = true;
+                Calls.startAnim = true;
+                Calls.LabelScheduleCall.Content = "";
+                isEntry = false;
+                Calls.Visibility = Visibility.Hidden;
+                GridComboGroups.Visibility = Visibility.Hidden;
+                GridMenu.Visibility = Visibility.Hidden;
+                GridNLogin.Visibility = Visibility.Visible;
+                loginbool = true;
+                ButtonShowLogin.IsEnabled = false;
+
                 var anim = (Storyboard)FindResource("AnimLogoutUser");
                 anim.Begin();
+
+                Frame.Navigate(new Authorization());
             }
         }
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            bool a;
-            a = settingsControl.CheckTray();
+            bool a = settingsControl.CheckTray();
             SettingsControl sc = new();
             var anim = (Storyboard)FindResource("AnimExitProgram");
 
@@ -363,7 +158,6 @@ namespace ElectroJournal
                     Title = "Программа была свернута",
                     Message = "Программа продолжит своё выполнение в фоне.",
                     Type = NotificationType.Information
-
                 };
                 _notificationManager.Show(content);
                 e.Cancel = true;
@@ -386,11 +180,7 @@ namespace ElectroJournal
                         }
                     }
                 }
-                else
-                {
-                    e.Cancel = true;
-                }
-
+                else e.Cancel = true;
             }
         }
         private void MessageBox_LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
@@ -410,66 +200,12 @@ namespace ElectroJournal
             //(sender as WPFUI.Controls.MessageBox)?.Close();
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
-        private void ImageForgotPassword_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Arrow;
-        }
-        private void ImageForgotPassword_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Properties.Settings.Default.Login = TextBoxLogin.Text;
-            Properties.Settings.Default.Save();
-
-            new Windows.ResetPassword().ShowDialog();
-        }
-        private void ImageForgotPassword_MouseMove(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Hand;
-        }
-        private void ImageChangeDB_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            new DBUser().ShowDialog();
-        }
-        private void MenuItemBoardPrint_Click(object sender, RoutedEventArgs e)
-        {
-            Board board = new();
-            PrintDialog printDialog = new();
-            if (printDialog.ShowDialog() == true)
-            {
-                printDialog.PrintVisual(board.InkCanvas, "Печать изображения");
-            }
-
-            ((Board)Frame.Content).GridInkCanvas.Visibility = Visibility.Visible;
-        }
-        private void MenuItemBoardFullScreen_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void MenuItemEJSettings_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(new Pages.Setting());
-        }
-        private void MenuItemEJUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("Updater.exe"); //Запуск программы обновления
-        }
         private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e)
         {
 
         }
-        private void MenuItemEJProgInfo_Click(object sender, RoutedEventArgs e)
-        {
-            new ProgramInformation().ShowDialog();
-        }
-        private void MenuItemEJBug_Click(object sender, RoutedEventArgs e)
-        {
-            new Help().ShowDialog();
-        }
-        private void ButtonOpenNotLogin_Click(object sender, RoutedEventArgs e)
-        {
-            GridLogin.Visibility = Visibility.Hidden;
-            GridMenu.Visibility = Visibility.Visible;
-            Frame.Visibility = Visibility.Visible;
-        }
+        private void MenuItemEJProgInfo_Click(object sender, RoutedEventArgs e) => new ProgramInformation().ShowDialog();
+        private void MenuItemEJBug_Click(object sender, RoutedEventArgs e) => new Help().ShowDialog();
 
         #region События меню
         private void NavigationViewItemBoard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -527,17 +263,11 @@ namespace ElectroJournal
             Users? user;
             Frame.Navigate(user = new());
             GC.SuppressFinalize(this);
-            //GC.Collect();
-            //user = null;
-            //Frame.Navigate(new Pages.Users());
             NavigationViewItemJournal.IsSelected = false;
         }
         #endregion
 
-        private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
-        {
-            Show();
-        }
+        private void MenuItemOpen_Click(object sender, RoutedEventArgs e) => Show();
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
             foreach (var process in Process.GetProcessesByName("ElectroJournal"))
@@ -545,28 +275,20 @@ namespace ElectroJournal
                 process.Kill();
             }
         }
-        private void TitleBar_NotifyIconDoubleClick(object sender, RoutedEventArgs e)
-        {
-            Show();
-        }
+        private void TitleBar_NotifyIconDoubleClick(object sender, RoutedEventArgs e) => Show();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SettingMig.CheckStart();
-            settingsControl.CompletionLogin();
             settingsControl.CreateDirLogs();
             settingsControl.LogFileCreate();
-            ThemeCheck();
+            ThemeCheck();           
         }
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
         {
-            var anim = (Storyboard)FindResource("AnimOpenLogin");
-            anim.Begin();
-
+            Frame.Navigate(new Authorization());
             ButtonShowLogin.IsEnabled = false;
-            Frame.Visibility = Visibility.Hidden;
-            GridLogin.Visibility = Visibility.Visible;
         }
-        private async void FillComboBoxGroups()
+        public async void FillComboBoxGroups()
         {
             ComboBoxGroup.Items.Clear();
 
@@ -578,31 +300,21 @@ namespace ElectroJournal
 
             ComboBoxGroup.SelectedItem = "ПКС-4"; // удалить
         }
-        private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e) => Frame.Navigate(new Pages.Journal());
+        public void UpdateUserInfo(string path, string fio)
         {
-            Frame.Navigate(new Pages.Journal());
+            UserInfo.RefreshImage(path);
+            UserInfo.TextBlockTeacher.Content = fio;
         }
-        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.Setting());
-        }
+        public void UpdateUserInfo(string path) => UserInfo.RefreshImage(path);
+        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => Frame.Navigate(new Pages.Setting());
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
-            var anim2 = (Storyboard)FindResource("AnimCloseFrame");
-            anim2.Begin();
-
-            if (!loginbool)
-            {
-                GridLogin.Visibility = Visibility.Hidden;
-                ButtonShowLogin.IsEnabled = true;
-            }
+           //(Resources["AnimCloseFrame"] as Storyboard).Begin();
+            if (!loginbool) ButtonShowLogin.IsEnabled = true;
             loginbool = false;
-            Frame.Visibility = Visibility.Visible;
-
-            var anim = (Storyboard)FindResource("AnimOpenFrame");
-
-            anim.Begin();
-        }
+            (Resources["AnimOpenFrame"] as Storyboard).Begin();
+        }  
         private async void Window_ContentRendered(object sender, EventArgs e)
         {
             SettingsControl sControl = new();
@@ -624,59 +336,14 @@ namespace ElectroJournal
             catch (Exception ex)
             {
                 settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
-                //System.Windows.MessageBox.Show(ex.Message);
                 Notifications("Уведомление", "Проверка обновления неудачная");
             }
-
-        }
+        } // Проверка обновления
         private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-            if (e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.Back)
-            {
-                e.Cancel = true;
-            }
+            if (e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.Back) e.Cancel = true;
         }
-        public void RefreshImage(string path)
-        {
-            if (!String.IsNullOrWhiteSpace(path))
-            {
-                var stringPath = $@"{path}";
-
-                BitmapImage bitmapImage = new();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.Default;
-                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                bitmapImage.DecodePixelHeight = 100;
-                bitmapImage.EndInit();
-                PersonPicture.ProfilePicture = bitmapImage;
-            }
-            else
-            {
-                PersonPicture.ProfilePicture = null;
-                PersonPicture.DisplayName = (string)TextBlockTeacher.Content;
-            }
-        }
-        public ImageSource? GetImageUser(string path)
-        {
-            if (!string.IsNullOrWhiteSpace(path))
-            {
-                var stringPath = $@"{path}";
-
-                BitmapImage bitmapImage = new();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                bitmapImage.EndInit();
-
-                return bitmapImage;
-            }
-            return null;
-        }
-        private void NavigationViewItemAcademicYears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.AcademicYears());
-        }
+        private void NavigationViewItemAcademicYears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => Frame.Navigate(new Pages.AdminPanel.AcademicYears());
 
         /*        private void NavViewMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
                 {
@@ -685,14 +352,5 @@ namespace ElectroJournal
                     Type pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
                     Frame.Navigate(pageType);
                 }*/
-    }
-
-    public class BackgroundGrid
-    {
-        public string? color1 { get; set; }
-        public string? color2 { get; set; }
-        public string? color3 { get; set; }
-        public string? color4 { get; set; }
-        public string? color5 { get; set; }
     }
 }

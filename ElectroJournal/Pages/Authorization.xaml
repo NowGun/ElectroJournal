@@ -1,0 +1,142 @@
+﻿<Page
+    x:Class="ElectroJournal.Pages.Authorization"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ElectroJournal.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    Title="Authorization"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Storyboard x:Key="AnimShowLoading">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimLoadLogin">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="360">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+
+    <wpfui:Card
+        x:Name="GridLogin"
+        Width="340"
+        Height="260"
+        Margin="0,-100,0,0"
+        Padding="0,0,0,0"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+        <Grid>
+            <Label
+                Margin="-172,-12,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Пароль"
+                FontSize="14" />
+            <Label
+                Margin="-180.8,-154.7,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Логин"
+                FontSize="14" />
+            <Button
+                x:Name="ButtonLogin"
+                Width="102"
+                Height="25"
+                Margin="118,131,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Click="ButtonLogin_Click"
+                Content="Войти"
+                Cursor="Hand"
+                FontSize="14"
+                IsDefault="True"
+                Style="{DynamicResource WPFUIButtonAccent}" />
+            <PasswordBox
+                x:Name="TextBoxPassword"
+                Width="220"
+                Height="35"
+                Margin="52,46,52,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSize="16" />
+            <wpfui:TextBox
+                x:Name="TextBoxLogin"
+                Width="220"
+                Height="35"
+                Margin="52,-97,52,0"
+                Padding="6,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                HorizontalScrollBarVisibility="Auto"
+                MaxLength="20"
+                TextWrapping="Wrap" />
+            <Rectangle
+                x:Name="RectangleLoadLogin"
+                Width="25"
+                Height="25"
+                Margin="255,131,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                RenderTransformOrigin="0.5,0.5"
+                Visibility="Visible">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="../Images/34px-Vector_Loading.svg.png" />
+                </Rectangle.Fill>
+            </Rectangle>
+            <wpfui:SymbolIcon
+                x:Name="IconChengeDB"
+                Margin="-136,131,0,0"
+                FontSize="24"
+                MouseLeave="IconChengeDB_MouseLeave"
+                MouseLeftButtonUp="IconChangeDB_MouseLeftButtonUp"
+                MouseMove="IconChengeDB_MouseMove"
+                Symbol="DatabasePlugConnected20"
+                ToolTip="Изменение данных БД" />
+            <wpfui:SymbolIcon
+                x:Name="IconForgotPassword"
+                Margin="-196,131,0,0"
+                FontSize="24"
+                MouseLeave="IconForgotPassword_MouseLeave"
+                MouseLeftButtonUp="IconForgotPassword_MouseLeftButtonUp"
+                MouseMove="IconForgotPassword_MouseMove"
+                Symbol="KeyReset24"
+                ToolTip="Сменить пароль" />
+        </Grid>
+    </wpfui:Card>
+</Page>

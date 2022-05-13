@@ -57,15 +57,7 @@ namespace ElectroJournal.Windows
                             teacher.TeachersPassword = DbControls.Hash(PasswordBoxNewPass.Password);
                             await db.SaveChangesAsync();
 
-                            ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
-                            ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
-                            ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
-                            ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
-                            ((MainWindow)Application.Current.MainWindow).LabelScheduleCall.Content = "";
-                            ((MainWindow)Application.Current.MainWindow).timer2.Stop();
-                            ((MainWindow)Application.Current.MainWindow).animLabel = true;
-                            ((MainWindow)Application.Current.MainWindow).AnimLog(true);
-                            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
+                            ((MainWindow)Application.Current.MainWindow).AnimLogout(true);
                             ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");
                             ProgressBar.Visibility = Visibility.Hidden;
                             this.Close();

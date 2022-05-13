@@ -17,7 +17,45 @@
     <Grid>
         <wpfui:Card Margin="362,60,20,60">
             <Grid>
-
+                <wpfui:DynamicScrollViewer
+                    Width="302"
+                    Height="265"
+                    Margin="520,140,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Expander
+                        Margin="0,0,13,0"
+                        VerticalAlignment="Top"
+                        FontSize="14"
+                        Header="Предметы"
+                        IsExpanded="True">
+                        <StackPanel>
+                            <wpfui:SearchBox
+                                x:Name="SearchBoxDiscipline"
+                                Margin="0,0,0,5"
+                                Placeholder="Поиск"
+                                PreviewKeyUp="SearchBoxDiscipline_PreviewKeyUp" />
+                            <ListBox
+                                x:Name="ListBoxDiscipline"
+                                Padding="0,2,0,0"
+                                Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                SelectionChanged="ListBoxDiscipline_SelectionChanged"
+                                VirtualizingPanel.ScrollUnit="Pixel">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox Margin="0,0,1,0" IsChecked="{Binding DisciplineIsChecked}" />
+                                            <Label Padding="0,0,0,0" Content="{Binding DisciplineName}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Expander>
+                </wpfui:DynamicScrollViewer>
                 <ui:PersonPicture
                     x:Name="PersonPicture"
                     Width="150"

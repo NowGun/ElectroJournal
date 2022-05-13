@@ -76,34 +76,30 @@ namespace ElectroJournal.Classes
             bool tray = Properties.Settings.Default.Tray;
             return tray;
         }
-        public void CompletionLogin()
+        public (string login, string pass) CompletionLogin()
         {
-            if (Properties.Settings.Default.RememberData)
-            {
-                ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = Properties.Settings.Default.Login;
-                ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = Properties.Settings.Default.PassProfile;
-            }
+            if (Properties.Settings.Default.RememberData) return (Properties.Settings.Default.Login, Properties.Settings.Default.PassProfile);
+            else return ("", "");
         }
         public async Task<bool> ExitUser()
         {
-            using (zhirovContext db = new())
+            using zhirovContext db = new();
+
+            bool isAvalaible = await db.Database.CanConnectAsync();
+            if (isAvalaible)
             {
-                bool isAvalaible = await db.Database.CanConnectAsync();
-                if (isAvalaible)
+                Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
+
+                if (teacher != null)
                 {
-                    Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == Properties.Settings.Default.UserID);
-
-                    if (teacher != null)
-                    {
-                        teacher.TeachersStatus = 0;
-                    }
-
-                    await db.SaveChangesAsync();
-
-                    return true;
+                    teacher.TeachersStatus = 0;
                 }
-                return false;
+
+                await db.SaveChangesAsync();
+
+                return true;
             }
+            return false;
         }
         public void LogFileCreate()
         {

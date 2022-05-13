@@ -406,13 +406,21 @@
             Width="275"
             Margin="20,15,0,30"
             HorizontalAlignment="Left">
-            <wpfui:SearchBox x:Name="SearchBoxUsers" Margin="0,0,0,351" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="35" PreviewKeyUp="SearchBoxUsers_PreviewKeyUp"/>
+            <wpfui:SearchBox
+                x:Name="SearchBoxUsers"
+                Height="35"
+                Margin="0,0,0,351"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Placeholder="Поиск"
+                PreviewKeyUp="SearchBoxUsers_PreviewKeyUp" />
             <ListBox
                 x:Name="ListViewTeachers"
+                Margin="0,40,0,0"
                 ItemsSource="{Binding datA}"
                 SelectedValue="{Binding SelectedData, Mode=TwoWay}"
                 SelectionChanged="ListViewTeachers_SelectionChanged"
-                VirtualizingPanel.ScrollUnit="Pixel" Margin="0,40,0,0">
+                VirtualizingPanel.ScrollUnit="Pixel">
                 <ListBox.Effect>
                     <BlurEffect Radius="0" />
                 </ListBox.Effect>
@@ -496,7 +504,8 @@
         <wpfui:Card
             x:Name="CardUser"
             Margin="320,15,15,30"
-            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
+            d:IsHidden="True"
+            RenderTransformOrigin="0.5,0.5">
             <wpfui:Card.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -609,19 +618,26 @@
                                 Margin="10,10,297,214"
                                 Content="Номер телефона"
                                 FontSize="16" />
-                            <Label x:Name="labelPhoneUser"
+                            <Label
+                                x:Name="labelPhoneUser"
+                                Margin="21,41,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
                                 Content="8-999-606-19-94"
-                                FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="21,41,0,0" />
+                                FontSize="16" />
                             <Label
                                 Width="Auto"
                                 Margin="10,77,297,147"
                                 Content="Почта"
                                 FontSize="16" />
-                            <Label x:Name="LabelMailUser"
+                            <Label
+                                x:Name="LabelMailUser"
                                 Width="Auto"
                                 Margin="21,108,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
                                 Content="zhirowdaniil@gmail.com"
-                                FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                FontSize="16" />
                         </Grid>
                     </Border>
                     <ui:PersonPicture
@@ -716,7 +732,8 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="id: 0"
-                        FontSize="14" Visibility="Hidden" />
+                        FontSize="14"
+                        Visibility="Hidden" />
                     <TextBlock
                         x:Name="TextBlockFIO1"
                         Width="270"

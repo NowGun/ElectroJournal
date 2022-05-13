@@ -79,7 +79,7 @@ namespace ElectroJournal.Pages
 
                         if (isPressed)
                         {
-                            ((MainWindow)Application.Current.MainWindow).RefreshImage(teachers.TeachersImage);
+                            ((MainWindow)Application.Current.MainWindow).UpdateUserInfo(teachers.TeachersImage);
                             isPressed = false;
                         }
                     }
@@ -154,26 +154,7 @@ namespace ElectroJournal.Pages
         {
             new Windows.ChangePassword().ShowDialog();
         }
-        public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsControl sc = new();
-
-            sc.ExitUser();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).isEntry = false;
-            ((MainWindow)Application.Current.MainWindow).TextBoxLogin.Text = "";
-            ((MainWindow)Application.Current.MainWindow).TextBoxPassword.Password = "";
-            sc.CompletionLogin();
-            ((MainWindow)Application.Current.MainWindow).GridLogin.Visibility = Visibility.Visible;
-            ((MainWindow)Application.Current.MainWindow).GridComboGroups.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).GridMenu.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).Frame.Visibility = Visibility.Hidden;
-            ((MainWindow)Application.Current.MainWindow).GridNLogin.Visibility = Visibility.Visible;
-            ((MainWindow)Application.Current.MainWindow).LabelScheduleCall.Content = "";
-            ((MainWindow)Application.Current.MainWindow).timer2.Stop();
-            ((MainWindow)Application.Current.MainWindow).ButtonShowLogin.IsEnabled = false;
-            ((MainWindow)Application.Current.MainWindow).animLabel = true;
-            ((MainWindow)Application.Current.MainWindow).AnimLog(true);
-        }
+        public void ButtonLogoutUser_Click(object sender, RoutedEventArgs e) => ((MainWindow)Application.Current.MainWindow).AnimLogout(true);
         private void TextBoxPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             ButtonSave.IsEnabled = true;
@@ -243,7 +224,7 @@ namespace ElectroJournal.Pages
                                 client.DeleteFile($@"/var/www/daniil-server/public_html/imagesEJ/{Properties.Settings.Default.UserID}Photo{System.IO.Path.GetExtension(path)}");
                                 client.Disconnect();
                                 client.Dispose();
-                                ((MainWindow)Application.Current.MainWindow).RefreshImage(teacher.TeachersImage);
+                                ((MainWindow)Application.Current.MainWindow).UpdateUserInfo(teacher.TeachersImage);
                             }
                             fileStream.Close();
                         }

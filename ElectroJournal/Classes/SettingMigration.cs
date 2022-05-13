@@ -7,8 +7,6 @@ namespace ElectroJournal.Classes
 {
     internal class SettingMigration
     {
-
-
         public void SettingLoad()
         {
             try
@@ -41,7 +39,6 @@ namespace ElectroJournal.Classes
 
             }
         }
-
         public void CheckStart()
         {
             if (Properties.Settings.Default.StartEJ == 0)
@@ -51,7 +48,6 @@ namespace ElectroJournal.Classes
                     Process.Start("StartEJ.exe");
 
                     Properties.Settings.Default.StartEJ = 1;
-
                     Properties.Settings.Default.Save();
 
                     foreach (var process in Process.GetProcessesByName("ElectroJournal"))
@@ -64,8 +60,6 @@ namespace ElectroJournal.Classes
                 {
 
                 }
-
-
             }
             else
             {

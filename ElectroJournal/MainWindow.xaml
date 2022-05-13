@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="http://schemas.modernwpf.com/2019"
     xmlns:tb="http://www.hardcodet.net/taskbar"
+    xmlns:ucontrol="clr-namespace:ElectroJournal.UControl"
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
@@ -19,6 +20,7 @@
     Height="720"
     MinWidth="1280"
     MinHeight="720"
+    Background="{x:Null}"
     Closing="Window_Closing"
     ContentRendered="Window_ContentRendered"
     Icon="/Images/Logo/logo75.png"
@@ -28,48 +30,17 @@
     WindowState="Normal"
     mc:Ignorable="d">
     <Window.Resources>
-        <Storyboard x:Key="AnimLoadLogin">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <PowerEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="360">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <PowerEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="AnimShowLoading">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RectangleLoadLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
         <Storyboard x:Key="AnimOpenFrame">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut" />
+                        <CircleEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="17.611">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut" />
+                        <CircleEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -190,10 +161,6 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
-            </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NavViewMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -207,7 +174,6 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimToBlackTheme" />
         <Storyboard x:Key="AnimLogoutUser">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
@@ -219,14 +185,7 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridNLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
             </DoubleAnimationUsingKeyFrames>
@@ -241,53 +200,6 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CubicEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="AnimLabelScheduleCall">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-13.026">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduleCall" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="AnimOpenLogin">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -316,30 +228,7 @@
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="AnimChangeTheme">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridDefault" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0.5">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-
-
     </Window.Resources>
-
-
 
     <Grid x:Name="GridDefault" x:FieldModifier="public">
         <Grid
@@ -356,7 +245,10 @@
                 </LinearGradientBrush>
             </Grid.Background>
         </Grid>
-        <Grid x:Name="GridWhiteTheme" Visibility="Hidden">
+        <Grid
+            x:Name="GridWhiteTheme"
+            d:IsHidden="True"
+            Visibility="Hidden">
             <Grid.Background>
                 <LinearGradientBrush MappingMode="RelativeToBoundingBox" SpreadMethod="Pad" StartPoint="-0.5,1.2" EndPoint="1.4,3.7">
                     <GradientStop Color="#FFECF5FA" />
@@ -437,24 +329,10 @@
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
-                        <Label
-                            x:Name="LabelScheduleCall"
-                            Height="36"
-                            Padding="0,0,10,4"
+                        <ucontrol:Calls
+                            x:Name="Calls"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            RenderTransformOrigin="0.5,0.5">
-                            <Label.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </Label.RenderTransform>
-                        </Label>
+                            VerticalAlignment="Center" />
                         <StackPanel
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
@@ -534,10 +412,6 @@
                         x:Name="MenuItemEJBug"
                         Click="MenuItemEJBug_Click"
                         Header="Баг-репортер" />
-                    <!-- <MenuItem
-                    x:Name="MenuItemEJSettings"
-                    Click="MenuItemEJSettings_Click"
-                    Header="Настройки" />-->
                 </MenuItem>
             </Menu>
             <Frame
@@ -709,183 +583,14 @@
                             Tag="Setting" />
                     </ui:NavigationView.MenuItems>
                 </ui:NavigationView>
-                <Grid
-                    x:Name="GridUser"
+                <ucontrol:UserInfo
+                    x:Name="UserInfo"
                     Margin="0,42,17,0"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            x:Name="TextBlockTeacher"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Content="Фамиля И.О."
-                            FontSize="14"
-                            MouseLeave="RectangleUser_MouseLeave"
-                            MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                            MouseMove="RectangleUser_MouseMove" />
-                        <ui:PersonPicture
-                            x:Name="PersonPicture"
-                            Width="40"
-                            Height="40"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            MouseLeave="RectangleUser_MouseLeave"
-                            MouseLeftButtonUp="RectangleUser_MouseLeftButtonUp"
-                            MouseMove="RectangleUser_MouseMove" />
-                        <wpfui:SymbolIcon
-                            x:Name="IconSetting"
-                            HorizontalAlignment="Right"
-                            FontSize="20"
-                            MouseLeave="RectangleUser_MouseLeave"
-                            MouseMove="RectangleUser_MouseMove"
-                            PreviewMouseLeftButtonUp="IconSetting_PreviewMouseLeftButtonUp"
-                            Symbol="Settings20" />
-                    </StackPanel>
-                </Grid>
-
+                    VerticalAlignment="Top" />
             </Grid>
-            <wpfui:Card
-                x:Name="GridLogin"
-                Height="254"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <Grid
-                    x:Name="GridLogin2"
-                    Width="322"
-                    Height="254"
-                    Margin="-12,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    RenderTransformOrigin="0.5,0.5">
-                    <Grid.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </Grid.RenderTransform>
-
-
-                    <Label
-                        x:Name="LabelPasswordGridLogin"
-                        Width="116"
-                        Height="30"
-                        Margin="60,0,0,0"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Content="Пароль"
-                        FontSize="14" />
-                    <Label
-                        x:Name="LabelLoginGridLogin"
-                        Width="176"
-                        Height="30"
-                        Margin="60,32,0,0"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="Логин"
-                        FontSize="14"
-                        RenderTransformOrigin="0.517,0.558" />
-                    <Button
-                        x:Name="ButtonLogin"
-                        Width="102"
-                        Height="25"
-                        Margin="176,192,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="ButtonLogin_Click"
-                        Content="Войти"
-                        Cursor="Hand"
-                        IsDefault="True"
-                        Style="{DynamicResource WPFUIButtonAccent}" />
-                    <PasswordBox
-                        x:Name="TextBoxPassword"
-                        Width="220"
-                        Height="36"
-                        Margin="58,142,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        VerticalContentAlignment="Center"
-                        FontSize="16" />
-                    <wpfui:TextBox
-                        x:Name="TextBoxLogin"
-                        Width="220"
-                        Height="36"
-                        Margin="58,62,0,0"
-                        Padding="6,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        VerticalContentAlignment="Center"
-                        FontSize="16"
-                        HorizontalScrollBarVisibility="Auto"
-                        MaxLength="20"
-                        TextWrapping="Wrap" />
-                    <Rectangle
-                        x:Name="RectangleLoadLogin"
-                        Width="25"
-                        Height="25"
-                        Margin="283,192,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        RenderTransformOrigin="0.5,0.5">
-                        <Rectangle.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Rectangle.RenderTransform>
-                        <Rectangle.Fill>
-                            <ImageBrush ImageSource="Images/34px-Vector_Loading.svg.png" />
-                        </Rectangle.Fill>
-                    </Rectangle>
-                    <Image
-                        x:Name="ImageForgotPassword"
-                        Width="27"
-                        Height="25"
-                        Margin="58,192,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        MouseLeave="ImageForgotPassword_MouseLeave"
-                        MouseLeftButtonUp="ImageForgotPassword_MouseLeftButtonUp"
-                        MouseMove="ImageForgotPassword_MouseMove"
-                        Source="/Images/icons8-password-reset-48.png"
-                        ToolTip="Сменить пароль" />
-                    <Image
-                        x:Name="ImageChangeDB"
-                        Width="27"
-                        Height="25"
-                        Margin="92,192,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        MouseLeave="ImageForgotPassword_MouseLeave"
-                        MouseLeftButtonUp="ImageChangeDB_MouseLeftButtonUp"
-                        MouseMove="ImageForgotPassword_MouseMove"
-                        Source="/Images/icons8-database-administrator-48.png"
-                        ToolTip="Сменить соединение базы данных" />
-                    <Button
-                        x:Name="ButtonOpenNotLogin"
-                        Margin="173,26,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Background="#FFF3F3F3"
-                        Click="ButtonOpenNotLogin_Click"
-                        Content="NLogin"
-                        Cursor="Hand"
-                        Visibility="Hidden" />
-
-                </Grid>
-
-            </wpfui:Card>
-
         </Grid>
+        <ucontrol:StartProgram d:IsHidden="True" Visibility="Collapsed" />
         <StackPanel
             x:Name="stackPanel"
             HorizontalAlignment="Center"
