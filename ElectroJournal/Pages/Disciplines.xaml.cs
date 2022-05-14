@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ElectroJournal.Pages.AdminPanel
+namespace ElectroJournal.Pages
 {
     /// <summary>
     /// Логика взаимодействия для Disciplines.xaml

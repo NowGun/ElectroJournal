@@ -4,13 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls1="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
-    xmlns:local="clr-namespace:ElectroJournal"
-    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="http://schemas.modernwpf.com/2019"
-    xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:ucontrol="clr-namespace:ElectroJournal.UControl"
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
@@ -18,8 +12,6 @@
     Title="ElectroJournal"
     Width="1280"
     Height="720"
-    MinWidth="1280"
-    MinHeight="720"
     Background="{x:Null}"
     Closing="Window_Closing"
     ContentRendered="Window_ContentRendered"
@@ -32,15 +24,15 @@
     <Window.Resources>
         <Storyboard x:Key="AnimOpenFrame">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
+                        <CircleEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
+                        <CircleEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -175,33 +167,12 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimLogoutUser">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <SineEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridNLogin" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="AnimCloseFrame">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Frame" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimExitProgram">
@@ -285,20 +256,21 @@
                     VerticalAlignment="Top"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
-                    PaneDisplayMode="Top">
+                    PaneDisplayMode="Top"
+                    SelectionChanged="NavViewMenu_SelectionChanged">
                     <ui:NavigationView.MenuItems>
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemSchedule1"
                             Content="Расписание"
-                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp" />
+                            Tag="Schedule" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemBoard1"
                             Content="Доска"
-                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp" />
+                            Tag="Board" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemWord1"
                             Content="Текстовый редактор"
-                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp" />
+                            Tag="Word" />
                     </ui:NavigationView.MenuItems>
                 </ui:NavigationView>
                 <Button
@@ -414,7 +386,7 @@
                         Header="Баг-репортер" />
                 </MenuItem>
             </Menu>
-            <Frame
+            <ui:Frame
                 x:Name="Frame"
                 Margin="0,99,0,0"
                 Content=""
@@ -430,7 +402,7 @@
                         <TranslateTransform />
                     </TransformGroup>
                 </Frame.RenderTransform>
-            </Frame>
+            </ui:Frame>
 
             <controls1:NotificationArea
                 x:Name="WindowArea"
@@ -496,7 +468,8 @@
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
                     PaneDisplayMode="Top"
-                    RenderTransformOrigin="0.5,0.5">
+                    RenderTransformOrigin="0.5,0.5"
+                    SelectionChanged="NavViewMenu_SelectionChanged">
                     <ui:NavigationView.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -510,31 +483,31 @@
                             x:Name="NavigationViewItemTeachers"
                             Padding="0,0,0,5"
                             Content="Преподаватели"
-                            MouseLeftButtonUp="NavigationViewItemTeachers_MouseLeftButtonUp" />
+                            Tag="Teachers" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemDisciplines"
                             Content="Предметы"
-                            MouseLeftButtonUp="NavigationViewItemDisciplines_MouseLeftButtonUp" />
+                            Tag="Disciplines" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemStudents"
                             Content="Студенты"
-                            MouseLeftButtonUp="NavigationViewItemStudents_MouseLeftButtonUp" />
+                            Tag="Students" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemGroups"
                             Content="Группы"
-                            MouseLeftButtonUp="NavigationViewItemGroups_MouseLeftButtonUp" />
+                            Tag="Groups" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemCabinets"
                             Content="Кабинеты"
-                            MouseLeftButtonUp="NavigationViewItemCabinets_MouseLeftButtonUp" />
+                            Tag="Cabinet" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemScheduleAdmin"
                             Content="Расписание"
-                            MouseLeftButtonUp="NavigationViewItemScheduleAdmin_MouseLeftButtonUp" />
+                            Tag="ScheduleAdmin" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemAcademicYears"
                             Content="Учебные года"
-                            MouseLeftButtonUp="NavigationViewItemAcademicYears_MouseLeftButtonUp" />
+                            Tag="AcademicYears" />
                     </ui:NavigationView.MenuItems>
                 </ui:NavigationView>
                 <ui:NavigationView
@@ -546,7 +519,8 @@
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
                     PaneDisplayMode="Top"
-                    RenderTransformOrigin="0.5,0.5">
+                    RenderTransformOrigin="0.5,0.5"
+                    SelectionChanged="NavViewMenu_SelectionChanged">
                     <ui:NavigationView.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -559,28 +533,24 @@
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemJournal"
                             Content="Журнал"
-                            PreviewMouseLeftButtonUp="NavigationViewItemJournal_PreviewMouseLeftButtonUp"
                             Tag="Journal" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemSchedule"
                             Content="Расписание"
-                            PreviewMouseLeftButtonUp="NavigationViewItemSchedule_PreviewMouseLeftButtonUp"
                             Tag="Schedule" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemBoard"
                             Content="Доска"
-                            PreviewMouseLeftButtonUp="NavigationViewItemBoard_PreviewMouseLeftButtonUp"
                             Tag="Board" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemWord"
                             Content="Текстовый редактор"
-                            PreviewMouseLeftButtonUp="NavigationViewItemWord_PreviewMouseLeftButtonUp"
                             Tag="Word" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemAdminPanel"
                             Content="Панель администратора"
                             PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp"
-                            Tag="Setting" />
+                            Tag="Teachers" />
                     </ui:NavigationView.MenuItems>
                 </ui:NavigationView>
                 <ucontrol:UserInfo

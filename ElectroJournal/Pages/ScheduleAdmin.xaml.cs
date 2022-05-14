@@ -7,7 +7,7 @@ using System.Windows.Media;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Events;
 
-namespace ElectroJournal.Pages.AdminPanel
+namespace ElectroJournal.Pages
 {
     /// <summary>
     /// Логика взаимодействия для ScheduleAdmin.xaml

@@ -15,7 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace ElectroJournal.Pages.AdminPanel
+namespace ElectroJournal.Pages
 {
     /// <summary>
     /// Логика взаимодействия для Teachers.xaml

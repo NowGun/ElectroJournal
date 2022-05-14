@@ -5,6 +5,7 @@ using ElectroJournal.Windows;
 using Microsoft.EntityFrameworkCore;
 using ModernWpf;
 using ModernWpf.Controls;
+using ModernWpf.Media.Animation;
 using ModernWpf.SampleApp.ControlPages;
 using Notifications.Wpf;
 using System;
@@ -41,11 +42,13 @@ namespace ElectroJournal
             settingsControl.CheckAutoRun();
             settingsControl.CheckTray();
             GridNLogin.Visibility = Visibility.Visible;
-            Frame.Navigate(new Authorization());
+
+            nav.NavigationPage("Authorization");
         }
 
         SettingsControl settingsControl = new();
         SettingMigration SettingMig = new();
+        Classes.Navigation nav = new();
 
         private readonly NotificationManager _notificationManager = new();
         public bool isEntry = false;
@@ -66,9 +69,8 @@ namespace ElectroJournal
 
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
-
             NavigationViewItemJournal.IsSelected = true;
-            Frame.Navigate(new Pages.Journal());
+            nav.NavigationPage("Journal");
         }
         public void Notifications(string title, string text)
         {
@@ -141,7 +143,7 @@ namespace ElectroJournal
                 var anim = (Storyboard)FindResource("AnimLogoutUser");
                 anim.Begin();
 
-                Frame.Navigate(new Authorization());
+                nav.NavigationPage("Authorization");
             }
         }
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -195,35 +197,13 @@ namespace ElectroJournal
             }
             (sender as WPFUI.Controls.MessageBox)?.Close();
         }
-        private void MessageBox_RightButtonClick(object sender, System.Windows.RoutedEventArgs e)
-        {
-            //(sender as WPFUI.Controls.MessageBox)?.Close();
-            (sender as WPFUI.Controls.MessageBox)?.Close();
-        }
+        private void MessageBox_RightButtonClick(object sender, System.Windows.RoutedEventArgs e) => (sender as WPFUI.Controls.MessageBox)?.Close();
         private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e)
         {
 
         }
         private void MenuItemEJProgInfo_Click(object sender, RoutedEventArgs e) => new ProgramInformation().ShowDialog();
-        private void MenuItemEJBug_Click(object sender, RoutedEventArgs e) => new Help().ShowDialog();
-
-        #region События меню
-        private void NavigationViewItemBoard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Board());
-        }
-        private void NavigationViewItemJournal_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.Journal());
-        }
-        private void NavigationViewItemSchedule_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.Schedule());
-        }
-        private void NavigationViewItemWord_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.Word());
-        }
+        private void MenuItemEJBug_Click(object sender, RoutedEventArgs e) => new Help().ShowDialog(); 
         private void NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var anim = (Storyboard)FindResource("AnimOpenMenuAdmin");
@@ -232,41 +212,7 @@ namespace ElectroJournal
             NavViewMenuAdmin.Visibility = Visibility.Visible;
             NavigationViewItemTeachers.IsSelected = true;
             RectangleBackToMenu.Visibility = Visibility.Visible;
-            Frame.Navigate(new Pages.AdminPanel.Teachers());
         }
-        private void NavigationViewItemDisciplines_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.Disciplines());
-        }
-        private void NavigationViewItemTeachers_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.Teachers());
-        }
-        private void NavigationViewItemStudents_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.Students());
-        }
-        private void NavigationViewItemGroups_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.Groups());
-        }
-        private void NavigationViewItemCabinets_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.Cabinet());
-        }
-        private void NavigationViewItemScheduleAdmin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Frame.Navigate(new Pages.AdminPanel.ScheduleAdmin());
-        }
-        private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Users? user;
-            Frame.Navigate(user = new());
-            GC.SuppressFinalize(this);
-            NavigationViewItemJournal.IsSelected = false;
-        }
-        #endregion
-
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e) => Show();
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
@@ -285,7 +231,7 @@ namespace ElectroJournal
         }
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(new Authorization());
+            nav.NavigationPage("Authorization");
             ButtonShowLogin.IsEnabled = false;
         }
         public async void FillComboBoxGroups()
@@ -300,21 +246,21 @@ namespace ElectroJournal
 
             ComboBoxGroup.SelectedItem = "ПКС-4"; // удалить
         }
-        private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e) => Frame.Navigate(new Pages.Journal());
+        private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e) => nav.NavigationPage("Journal");
         public void UpdateUserInfo(string path, string fio)
         {
             UserInfo.RefreshImage(path);
             UserInfo.TextBlockTeacher.Content = fio;
         }
         public void UpdateUserInfo(string path) => UserInfo.RefreshImage(path);
-        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => Frame.Navigate(new Pages.Setting());
+        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => nav.NavigationPage("Setting");
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
-           //(Resources["AnimCloseFrame"] as Storyboard).Begin();
             if (!loginbool) ButtonShowLogin.IsEnabled = true;
             loginbool = false;
-            (Resources["AnimOpenFrame"] as Storyboard).Begin();
-        }  
+            
+            if (Environment.OSVersion.Version.Build < 1903) ((Storyboard)Resources["AnimOpenFrame"]).Begin();
+        }
         private async void Window_ContentRendered(object sender, EventArgs e)
         {
             SettingsControl sControl = new();
@@ -343,14 +289,6 @@ namespace ElectroJournal
         {
             if (e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.Back) e.Cancel = true;
         }
-        private void NavigationViewItemAcademicYears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => Frame.Navigate(new Pages.AdminPanel.AcademicYears());
-
-        /*        private void NavViewMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-                {
-                    var selectedItem = (ModernWpf.Controls.NavigationViewItem)args.SelectedItem;
-                    string pageName = "ElectroJournal.Pages." + (string)selectedItem.Tag;
-                    Type pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
-                    Frame.Navigate(pageType);
-                }*/
+        private void NavViewMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args) => nav.NavigationPage((string)((NavigationViewItem)args.SelectedItem).Tag);
     }
 }

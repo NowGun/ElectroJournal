@@ -55,7 +55,7 @@ namespace ElectroJournal.Pages
                 TextBoxPassword.IsEnabled = false;
                 DataBaseControls DbControls = new();
                 string pass = DbControls.Hash(TextBoxPassword.Password);
-
+                Navigation nav = new();
                 var anim = (Storyboard)FindResource("AnimLoadLogin");
 
                 using zhirovContext db = new();
@@ -95,18 +95,12 @@ namespace ElectroJournal.Pages
                             (Application.Current.MainWindow as MainWindow).GridComboGroups.Visibility = Visibility.Visible;
                             (Application.Current.MainWindow as MainWindow).NavViewMenuAdmin.Visibility = Visibility.Hidden;
                             (Application.Current.MainWindow as MainWindow).RectangleBackToMenu.Visibility = Visibility.Hidden;
-
                             (Application.Current.MainWindow as MainWindow).isEntry = true;
                             (Application.Current.MainWindow as MainWindow).FillComboBoxGroups();
-                            (Application.Current.MainWindow as MainWindow).Frame.Navigate(new Pages.Journal());
-
-
                             (Application.Current.MainWindow as MainWindow).StartCalls();
-
+                            (Application.Current.MainWindow as MainWindow).OpenMenu();
                             (Application.Current.MainWindow as MainWindow).Calls.Visibility = Visibility.Visible;
                             (Application.Current.MainWindow as MainWindow).GridNLogin.Visibility = Visibility.Hidden;
-
-                            (Application.Current.MainWindow as MainWindow).OpenMenu();
                             (Application.Current.MainWindow as MainWindow).GridMenu.Visibility = Visibility.Visible;
                             (Application.Current.MainWindow as MainWindow).NavigationViewItemJournal.IsSelected = true;
 
@@ -115,6 +109,8 @@ namespace ElectroJournal.Pages
                             TextBoxLogin.IsEnabled = true;
                             TextBoxPassword.IsEnabled = true;
                             ButtonLogin.IsEnabled = true;
+
+                            nav.NavigationPage("Journal");
                         }
                         else
                         {

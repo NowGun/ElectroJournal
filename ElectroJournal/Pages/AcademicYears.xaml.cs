@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ElectroJournal.Pages.AdminPanel
+namespace ElectroJournal.Pages
 {
     /// <summary>
     /// Логика взаимодействия для AcademicYears.xaml
