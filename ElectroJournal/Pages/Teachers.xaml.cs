@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -233,12 +234,13 @@ namespace ElectroJournal.Pages
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e) // Подгрузка данных определенного преподавателя
         {
             ButtonDelete.IsEnabled = true;
+            TextBoxTeachersLogin.IsEnabled = false;
+            PasswordBoxTeachers.IsEnabled = false;
 
             if (ListViewTeachers.SelectedItem != null)
             {
                 using zhirovContext db = new();
                 var t = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]).FirstOrDefaultAsync();
-
 
                 string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
 
@@ -246,8 +248,8 @@ namespace ElectroJournal.Pages
                 TextBoxTeachersLogin.Text = t.TeachersLogin;
                 PasswordBoxTeachers.Password = t.TeachersPassword;
                 CheckBoxAdminAccess.IsChecked = bool.Parse(t.TeachersAccesAdminPanel);
-                TextBoxTeachersMail1.Text = t.TeachersMail;
-                TextBoxTeachersPhone1.Text = t.TeachersPhone;
+                TextBoxTeachersMail.Text = t.TeachersMail;
+                TextBoxTeachersPhone.Text = t.TeachersPhone;
 
                 FillListBoxDiscipline();
                 FillListBoxGroups();
@@ -278,96 +280,107 @@ namespace ElectroJournal.Pages
             DataBaseControls DbControls = new();
             ProgressBarTeachers.Visibility = Visibility.Visible;
 
-            if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail1.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
+            if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
             {
-                if (TextBoxTeachersFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
+                string cond = @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)";
+
+                if (Regex.IsMatch(TextBoxTeachersMail.Text, cond))
                 {
-                    string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (ListViewTeachers.SelectedItem != null)
+                    if (TextBoxTeachersFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
                     {
                         using zhirovContext db = new();
 
-                        Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
+                        string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var mail = await db.Teachers.Where(p => p.TeachersMail == TextBoxTeachersMail.Text).ToListAsync();
+                        var mail2 = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID && p.TeachersMail == TextBoxTeachersMail.Text).FirstOrDefaultAsync();
 
-                        if (teacher != null)
+                        if (ListViewTeachers.SelectedItem != null)
                         {
-                            teacher.TeachersName = FIO[1];
-                            teacher.TeachersSurname = FIO[0];
-                            teacher.TeachersPatronymic = FIO[2];
-                            teacher.TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString();
-                            teacher.TeachersPhone = TextBoxTeachersPhone1.Text;
-                            teacher.TeachersMail = TextBoxTeachersMail1.Text;
+                            Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
 
-                            await db.SaveChangesAsync();
-
-                            FillListBoxTeachers();
-                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
-                        }
-                    }
-                    else
-                    {
-                        using zhirovContext db = new();
-                        var teac = await db.Teachers.Where(p => p.TeachersLogin == TextBoxTeachersLogin.Text).ToListAsync();
-                        var mail = await db.Teachers.Where(p => p.TeachersMail == TextBoxTeachersMail1.Text).ToListAsync();
-
-                        Teacher teacher = new()
-                        {
-                            TeachersName = FIO[1],
-                            TeachersSurname = FIO[0],
-                            TeachersPatronymic = FIO[2],
-                            TeachersLogin = TextBoxTeachersLogin.Text,
-                            TeachersPassword = DbControls.Hash(PasswordBoxTeachers.Password),
-                            TeachersMail = TextBoxTeachersMail1.Text,
-                            TeachersPhone = TextBoxTeachersPhone1.Text,
-                            TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
-                        };
-
-                        if (teac.Count == 0)
-                        {
-                            if (mail.Count == 0)
+                            if (teacher != null)
                             {
-                                await db.Teachers.AddAsync(teacher);
-                                await db.SaveChangesAsync();
+                                if (mail.Count == 0 || mail2 != null)
+                                {
+                                    teacher.TeachersName = FIO[1];
+                                    teacher.TeachersSurname = FIO[0];
+                                    teacher.TeachersPatronymic = FIO[2];
+                                    teacher.TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString();
+                                    teacher.TeachersPhone = TextBoxTeachersPhone.Text;
+                                    teacher.TeachersMail = TextBoxTeachersMail.Text;
 
-                                SendPasswordToUser();
-                                //SendSMSToUser();
-
-                                TextBoxTeachersFIO.Clear();
-                                TextBoxTeachersPhone1.Clear();
-                                TextBoxTeachersMail1.Clear();
-                                TextBoxTeachersLogin.Clear();
-                                PasswordBoxTeachers.Clear();
-                                CheckBoxAdminAccess.IsChecked = false;
-                                FillListBoxTeachers();
-                                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
+                                    await db.SaveChangesAsync();
+                                    ClearValue();
+                                    FillListBoxTeachers();
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                                }
+                                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта занята");
                             }
-                            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта занята");
                         }
-                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данный логин уже занят");
+                        else
+                        {
+                            var teac = await db.Teachers.Where(p => p.TeachersLogin == TextBoxTeachersLogin.Text).ToListAsync();
+
+                            Teacher teacher = new()
+                            {
+                                TeachersName = FIO[1],
+                                TeachersSurname = FIO[0],
+                                TeachersPatronymic = FIO[2],
+                                TeachersLogin = TextBoxTeachersLogin.Text,
+                                TeachersPassword = DbControls.Hash(PasswordBoxTeachers.Password),
+                                TeachersMail = TextBoxTeachersMail.Text,
+                                TeachersPhone = TextBoxTeachersPhone.Text,
+                                TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
+                            };
+
+                            if (teac.Count == 0)
+                            {
+                                if (mail.Count == 0)
+                                {
+                                    await db.Teachers.AddAsync(teacher);
+                                    await db.SaveChangesAsync();
+
+                                    SendPasswordToUser();
+                                    //SendSMSToUser();
+
+                                    TextBoxTeachersFIO.Clear();
+                                    TextBoxTeachersPhone.Clear();
+                                    TextBoxTeachersMail.Clear();
+                                    TextBoxTeachersLogin.Clear();
+                                    PasswordBoxTeachers.Clear();
+                                    CheckBoxAdminAccess.IsChecked = false;
+                                    FillListBoxTeachers();
+                                    ClearValue();
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
+                                }
+                                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта занята");
+                            }
+                            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данный логин уже занят");
+                        }
                     }
+                    else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
                 }
-                else
-                {
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
-                }
+                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта в неверном формате");
             }
-            else
-            {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
-            }
+            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
 
             ProgressBarTeachers.Visibility = Visibility.Hidden;
         }
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e) // Добавление преподавателя
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e) => ClearValue(); // Добавление преподавателя
+        private void ClearValue()
         {
             ListViewTeachers.SelectedItem = null;
             TextBoxTeachersFIO.Clear();
-            TextBoxTeachersPhone1.Clear();
-            TextBoxTeachersMail1.Clear();
+            TextBoxTeachersPhone.Clear();
+            TextBoxTeachersMail.Clear();
             TextBoxTeachersLogin.Clear();
             PasswordBoxTeachers.Clear();
             CheckBoxAdminAccess.IsChecked = false;
+            ObservableCollection<DisciplineList> co1 = new();
+            ObservableCollection<GroupsList> co2 = new();
+            ListBoxDiscipline.ItemsSource = co1;
+            ListBoxGroups.ItemsSource = co2;
+
         }
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) // Удаление преподавателя
         {
@@ -392,8 +405,8 @@ namespace ElectroJournal.Pages
                     ListViewTeachers.Items.Clear();
                     FillListBoxTeachers();
                     TextBoxTeachersFIO.Clear();
-                    TextBoxTeachersPhone1.Clear();
-                    TextBoxTeachersMail1.Clear();
+                    TextBoxTeachersPhone.Clear();
+                    TextBoxTeachersMail.Clear();
                     TextBoxTeachersLogin.Clear();
                     PasswordBoxTeachers.Clear();
                     CheckBoxAdminAccess.IsChecked = false;
@@ -480,7 +493,7 @@ namespace ElectroJournal.Pages
                 bool a = true;
 
                 MailAddress from = new("mail@techno-review.ru", user);
-                MailAddress to = new(TextBoxTeachersMail1.Text);
+                MailAddress to = new(TextBoxTeachersMail.Text);
                 MailMessage m = new(from, to);
 
                 m.Subject = Title;
@@ -528,11 +541,10 @@ namespace ElectroJournal.Pages
         {
             string myApiKey = "B0361252-C8BA-5438-E643-4651FCC4E55B"; //Ваш API ключ
             SmsRu.SmsRu sms = new(myApiKey);
-            sms.Send(TextBoxTeachersPhone1.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password);
+            sms.Send(TextBoxTeachersPhone.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password);
         }
         #endregion
     }
-        
 
     public class DisciplineList
     {

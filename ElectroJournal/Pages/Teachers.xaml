@@ -133,7 +133,6 @@
                     VerticalAlignment="Top"
                     FontSize="14"
                     MaxLength="20"
-                    Text="admin"
                     TextWrapping="Wrap" />
                 <Label
                     Height="35"
@@ -155,7 +154,7 @@
                 <CheckBox
                     x:Name="CheckBoxAdminAccess"
                     Width="245"
-                    Height="30"
+                    Height="20"
                     Margin="25,337,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -181,25 +180,25 @@
                     Placeholder="Иванов Иван Иванович"
                     PreviewKeyUp="TextBoxTeachersFIO_PreviewKeyUp"
                     TextWrapping="Wrap" />
-                <TextBox
-                    x:Name="TextBoxTeachersPhone1"
+                <wpfui:TextBox
+                    x:Name="TextBoxTeachersPhone"
+                    Placeholder="89999999999"
                     Width="217"
                     Height="35"
                     Margin="325,137,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     MaxLength="12"
-                    Text="89996061994"
                     TextWrapping="Wrap"
                     UndoLimit="12" />
-                <TextBox
-                    x:Name="TextBoxTeachersMail1"
+                <wpfui:TextBox
+                    x:Name="TextBoxTeachersMail"
+                    Placeholder="example@mail.com"
                     Width="300"
                     Height="35"
                     Margin="242,87,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="zhirowdaniil@gmail.com"
                     TextWrapping="Wrap" />
                 <Label
                     Height="35"
