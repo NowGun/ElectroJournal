@@ -496,9 +496,9 @@ namespace ElectroJournal.Pages
                 MailAddress to = new(TextBoxTeachersMail.Text);
                 MailMessage m = new(from, to);
 
-                m.Subject = Title;
+                m.Subject = "ElectroJournal";
                 m.Body = "Добро пожаловать в систему Электронный журнал\n\nАдминистратор зарегистрировал Вас в системе электронного журнала, ниже написаны данные для входа в вашу учетную запись.\nМы рекомендуем при первой возможности поменять пароль на более удобный Вам, так как нынешний пароль является временным." +
-                    "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password;
+                    "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password + "        \n\n\n";
 
                 SmtpClient smtp = new("connect.smtp.bz", 2525);
 

@@ -293,7 +293,7 @@
                 Grid.Row="0"
                 Height="47"
                 Icon="/Images/Logo/logo75.png"
-                MinimizeToTray="True">
+                MinimizeToTray="False">
                 <wpfui:TitleBar.Header>
                     <Grid
                         x:Name="GridComboGroups"
@@ -426,12 +426,13 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Center"
+                    d:IsHidden="True"
                     FontSize="20"
                     MouseLeave="RectangleUser_MouseLeave"
                     MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp"
                     MouseMove="RectangleUser_MouseMove"
                     RenderTransformOrigin="0.5,0.5"
-                    Symbol="ArrowLeft12" d:IsHidden="True">
+                    Symbol="ArrowLeft12">
                     <wpfui:SymbolIcon.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -560,7 +561,10 @@
                     VerticalAlignment="Top" />
             </Grid>
         </Grid>
-        <ucontrol:StartProgram x:Name="StartProgram" d:IsHidden="True" Visibility="Collapsed" />
+        <ucontrol:StartProgram
+            x:Name="StartProgram"
+            d:IsHidden="True"
+            Visibility="Collapsed" />
         <StackPanel
             x:Name="stackPanel"
             HorizontalAlignment="Center"
