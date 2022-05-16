@@ -10,22 +10,29 @@ namespace ElectroJournal.Classes
 {
     public class Navigation
     {
-        private NavigationTransitionInfo _transitionInfo = new DrillInNavigationTransitionInfo();
         public void NavigationPage(string page)
         {
-            if (Environment.OSVersion.Version.Build < 1903)
+            NavigationTransitionInfo _transitionInfo = new DrillInNavigationTransitionInfo();
+            
+            if (!(page == "Setting" && (Application.Current.MainWindow as MainWindow).IsOpenSetting) && !(page == "Users" && (Application.Current.MainWindow as MainWindow).IsOpenUsers))
             {
-                string pageName = $"ElectroJournal.Pages.{page}";
-                Type? pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
-                (Application.Current.MainWindow as MainWindow)?.Frame.Navigate(pageType);
-            }
-            else
-            {
-                string pageName = $"ElectroJournal.Pages.{page}";
-                Type? pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
-                (Application.Current.MainWindow as MainWindow)?.Frame.Navigate(pageType, null, _transitionInfo);
+                (Application.Current.MainWindow as MainWindow).IsOpenSetting = false;
+                (Application.Current.MainWindow as MainWindow).IsOpenUsers = false;
+                if (Environment.OSVersion.Version.Build < 1903)
+                {
+                    string pageName = $"ElectroJournal.Pages.{page}";
+                    Type? pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
+                    (Application.Current.MainWindow as MainWindow)?.Frame.Navigate(pageType);
+                }
+                else
+                {
+                    string pageName = $"ElectroJournal.Pages.{page}";
+                    Type? pageType = typeof(Pages.Journal).Assembly.GetType(pageName);
+                    (Application.Current.MainWindow as MainWindow)?.Frame.Navigate(pageType, null, _transitionInfo);
+                }
+                if (page == "Setting") (Application.Current.MainWindow as MainWindow).IsOpenSetting = true;
+                else if (page == "Users") (Application.Current.MainWindow as MainWindow).IsOpenUsers = true;
             }
         }
-        
     }
 }

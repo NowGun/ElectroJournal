@@ -96,7 +96,7 @@
                 VerticalContentAlignment="Center"
                 FontSize="16"
                 HorizontalScrollBarVisibility="Auto"
-                MaxLength="20"
+                
                 TextWrapping="Wrap" />
             <Rectangle
                 x:Name="RectangleLoadLogin"

@@ -212,7 +212,7 @@
     <Resource Include="Images\pepe.jpg" />
     <Resource Include="Images\qr-code.gif" />
     <Resource Include="Images\qr40184535.png" />
-    <Resource Include="Images\Startup\startUP3.png" />
+    <SplashScreen Include="Images\Startup\startUP3.png" />
     <Resource Include="Images\Startup\startupImage 2.png" />
     <Resource Include="Images\Startup\startupImage.png" />
   </ItemGroup>

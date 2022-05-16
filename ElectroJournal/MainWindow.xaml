@@ -132,12 +132,12 @@
                         <PowerEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-33.018">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="-9.972">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <PowerEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="-27.639">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0.01">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <PowerEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -176,7 +176,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimExitProgram">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMain" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="20">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <QuadraticEase EasingMode="EaseInOut" />
@@ -191,7 +191,7 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="GridMain" Storyboard.TargetProperty="(UIElement.IsEnabled)">
                 <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False" />
             </BooleanAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="stackPanel" Storyboard.TargetProperty="(UIElement.Visibility)">
@@ -230,7 +230,7 @@
                 </LinearGradientBrush>
             </Grid.Background>
         </Grid>
-        <Grid x:Name="grid">
+        <Grid x:Name="GridMain">
             <Grid.Effect>
                 <BlurEffect KernelType="Gaussian" Radius="0" />
             </Grid.Effect>
@@ -431,7 +431,7 @@
                     MouseLeftButtonUp="RectangleBackToMenu_MouseLeftButtonUp"
                     MouseMove="RectangleUser_MouseMove"
                     RenderTransformOrigin="0.5,0.5"
-                    Symbol="ArrowLeft12">
+                    Symbol="ArrowLeft12" d:IsHidden="True">
                     <wpfui:SymbolIcon.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -514,7 +514,7 @@
                     x:Name="NavViewMenu"
                     Height="40"
                     MinWidth="100"
-                    Margin="48,42,0,0"
+                    Margin="20,42,28,0"
                     VerticalAlignment="Top"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
@@ -560,7 +560,7 @@
                     VerticalAlignment="Top" />
             </Grid>
         </Grid>
-        <ucontrol:StartProgram d:IsHidden="True" Visibility="Collapsed" />
+        <ucontrol:StartProgram x:Name="StartProgram" d:IsHidden="True" Visibility="Collapsed" />
         <StackPanel
             x:Name="stackPanel"
             HorizontalAlignment="Center"

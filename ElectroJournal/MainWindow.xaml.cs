@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,17 +34,7 @@ namespace ElectroJournal
         public MainWindow()
         {
             InitializeComponent();
-
-            GridMenu.Visibility = Visibility.Hidden;
-            NavViewMenuAdmin.Visibility = Visibility.Hidden;
-            RectangleBackToMenu.Visibility = Visibility.Hidden;
-            GridComboGroups.Visibility = Visibility.Hidden;
-
-            settingsControl.CheckAutoRun();
-            settingsControl.CheckTray();
-            GridNLogin.Visibility = Visibility.Visible;
-
-            nav.NavigationPage("Authorization");
+            InvokeSplashScreen();
         }
 
         SettingsControl settingsControl = new();
@@ -55,12 +46,14 @@ namespace ElectroJournal
         
         private bool _isDarkTheme = false;
         public bool loginbool = true;
+        public bool IsOpenSetting = false;
+        public bool IsOpenUsers = false;
 
         public void StartCalls() => Calls.StartTimer();
         public void StopCalls() => Calls.StopTimer();
-        public void OpenMenu() => (Resources["AnimOpenMenuStart"] as Storyboard).Begin();
+        public void OpenMenu() => ((Storyboard)Resources["AnimOpenMenuStart"]).Begin();
         private void RectangleUser_MouseMove(object sender, MouseEventArgs e) => this.Cursor = Cursors.Hand;
-        private void RectangleUser_MouseLeave(object sender, MouseEventArgs e) => this.Cursor = Cursors.Arrow;               
+        private void RectangleUser_MouseLeave(object sender, MouseEventArgs e) => this.Cursor = Cursors.Arrow;
         private void RectangleBackToMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             NavViewMenu.Visibility = Visibility.Visible;
@@ -233,15 +226,16 @@ namespace ElectroJournal
         {
             nav.NavigationPage("Authorization");
             ButtonShowLogin.IsEnabled = false;
+            NavDeselect();
         }
         public async void FillComboBoxGroups()
         {
             ComboBoxGroup.Items.Clear();
 
             using zhirovContext db = new();
-            await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).ForEachAsync(t =>
+            await db.TeachersHasGroups.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).Include(g => g.GroupsIdgroupsNavigation).ForEachAsync(g =>
             {
-                ComboBoxGroup.Items.Add(t.GroupsNameAbbreviated);
+               ComboBoxGroup.Items.Add(g.GroupsIdgroupsNavigation.GroupsNameAbbreviated);
             });
 
             ComboBoxGroup.SelectedItem = "ПКС-4"; // удалить
@@ -253,7 +247,11 @@ namespace ElectroJournal
             UserInfo.TextBlockTeacher.Content = fio;
         }
         public void UpdateUserInfo(string path) => UserInfo.RefreshImage(path);
-        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => nav.NavigationPage("Setting");
+        private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            nav.NavigationPage("Setting");
+            NavDeselect();
+        }
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             if (!loginbool) ButtonShowLogin.IsEnabled = true;
@@ -289,6 +287,44 @@ namespace ElectroJournal
         {
             if (e.NavigationMode == NavigationMode.Forward || e.NavigationMode == NavigationMode.Back) e.Cancel = true;
         }
-        private void NavViewMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args) => nav.NavigationPage((string)((NavigationViewItem)args.SelectedItem).Tag);
+        private void NavViewMenu_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.SelectedItem != null)
+                nav.NavigationPage((string)((NavigationViewItem)args.SelectedItem).Tag);
+        }
+        private void InvokeSplashScreen()
+        {
+            StartProgram.Visibility = Visibility.Collapsed;
+            GridMain.Visibility = Visibility.Visible;
+
+            GridMenu.Visibility = Visibility.Hidden;
+            NavViewMenuAdmin.Visibility = Visibility.Hidden;
+            RectangleBackToMenu.Visibility = Visibility.Hidden;
+            GridComboGroups.Visibility = Visibility.Hidden;
+
+            settingsControl.CheckAutoRun();
+            settingsControl.CheckTray();
+            GridNLogin.Visibility = Visibility.Visible;
+
+            nav.NavigationPage("Authorization");
+        }
+        public void NavDeselect()
+        {
+            NavigationViewItemJournal.IsSelected = false;
+            NavigationViewItemSchedule.IsSelected = false;
+            NavigationViewItemAcademicYears.IsSelected = false;
+            NavigationViewItemAdminPanel.IsSelected = false;
+            NavigationViewItemBoard.IsSelected = false;
+            NavigationViewItemBoard1.IsSelected = false;
+            NavigationViewItemCabinets.IsSelected = false;
+            NavigationViewItemDisciplines.IsSelected = false;
+            NavigationViewItemGroups.IsSelected = false;
+            NavigationViewItemSchedule1.IsSelected = false;
+            NavigationViewItemScheduleAdmin.IsSelected = false;
+            NavigationViewItemStudents.IsSelected = false;
+            NavigationViewItemTeachers.IsSelected = false;
+            NavigationViewItemWord.IsSelected = false;
+            NavigationViewItemWord1.IsSelected = false;
+        }
     }
 }

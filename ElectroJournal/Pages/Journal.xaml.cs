@@ -241,9 +241,9 @@ namespace ElectroJournal.Pages
 
             using (zhirovContext db = new zhirovContext())
             {
-                await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
+                await db.TeachersHasDisciplines.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).Include(g => g.DisciplinesIddisciplinesNavigation).ForEachAsync(g =>
                 {
-                    ComboBoxDisp.Items.Add(t.DisciplinesNameAbbreviated);
+                    ComboBoxDisp.Items.Add(g.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated);
                 });
             }
             //ComboBoxDisp.SelectedIndex = 1;

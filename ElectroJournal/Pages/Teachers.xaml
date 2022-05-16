@@ -19,42 +19,73 @@
             <Grid>
                 <wpfui:DynamicScrollViewer
                     Width="302"
-                    Height="265"
-                    Margin="520,140,0,0"
+                    Margin="560,37,0,60"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-                    <Expander
+                    VerticalAlignment="Stretch">
+                    <StackPanel>
+                        <Expander
                         Margin="0,0,13,0"
                         VerticalAlignment="Top"
                         FontSize="14"
                         Header="Предметы"
                         IsExpanded="True">
-                        <StackPanel>
-                            <wpfui:SearchBox
+                            <StackPanel>
+                                <wpfui:SearchBox
                                 x:Name="SearchBoxDiscipline"
                                 Margin="0,0,0,5"
                                 Placeholder="Поиск"
                                 PreviewKeyUp="SearchBoxDiscipline_PreviewKeyUp" />
-                            <ListBox
+                                <ListBox
                                 x:Name="ListBoxDiscipline"
                                 Padding="0,2,0,0"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}"
                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SelectionChanged="ListBoxDiscipline_SelectionChanged"
                                 VirtualizingPanel.ScrollUnit="Pixel">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox Margin="0,0,1,0" IsChecked="{Binding DisciplineIsChecked}" />
-                                            <Label Padding="0,0,0,0" Content="{Binding DisciplineName}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </StackPanel>
-                    </Expander>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox x:Name="CheckBoxDiscipline"
+                                            Margin="0,0,1,0"
+                                            Content="{Binding DisciplineName}"
+                                            IsChecked="{Binding DisciplineIsChecked}" Click="CheckBoxDiscipline_Click" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Expander>
+                        <Expander
+                        Margin="0,10,13,0"
+                        VerticalAlignment="Top"
+                        FontSize="14"
+                        Header="Группы"
+                        IsExpanded="False">
+                            <StackPanel>
+                                <wpfui:SearchBox
+                                x:Name="SearchBoxGroups"
+                                Margin="0,0,0,5"
+                                Placeholder="Поиск"
+                                PreviewKeyUp="SearchBoxGroups_PreviewKeyUp" />
+                                <ListBox
+                                x:Name="ListBoxGroups"
+                                Padding="0,2,0,0"
+                                Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                VirtualizingPanel.ScrollUnit="Pixel">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox x:Name="CheckBoxGroups"
+                                            Margin="0,0,1,0"
+                                            Content="{Binding GroupsName}"
+                                            IsChecked="{Binding GroupsIsChecked}" Click="CheckBoxGroups_Click" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
                 </wpfui:DynamicScrollViewer>
                 <ui:PersonPicture
                     x:Name="PersonPicture"
@@ -141,7 +172,7 @@
                     FontSize="16" />
                 <wpfui:TextBox
                     x:Name="TextBoxTeachersFIO"
-                    Width="576"
+                    Width="300"
                     Height="35"
                     Margin="242,37,0,0"
                     HorizontalAlignment="Left"
@@ -152,9 +183,9 @@
                     TextWrapping="Wrap" />
                 <TextBox
                     x:Name="TextBoxTeachersPhone1"
-                    Width="153"
+                    Width="217"
                     Height="35"
-                    Margin="665,97,0,0"
+                    Margin="325,137,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     MaxLength="12"
@@ -163,16 +194,16 @@
                     UndoLimit="12" />
                 <TextBox
                     x:Name="TextBoxTeachersMail1"
-                    Width="263"
+                    Width="300"
                     Height="35"
-                    Margin="242,97,0,0"
+                    Margin="242,87,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Text="zhirowdaniil@gmail.com"
                     TextWrapping="Wrap" />
                 <Label
                     Height="35"
-                    Margin="185,97,0,0"
+                    Margin="185,87,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
@@ -181,7 +212,7 @@
                     FontSize="16" />
                 <Label
                     Height="35"
-                    Margin="521,97,0,0"
+                    Margin="185,137,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"

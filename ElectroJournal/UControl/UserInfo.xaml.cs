@@ -28,10 +28,12 @@ namespace ElectroJournal.UControl
         private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             nav.NavigationPage("Setting");
+            (Application.Current.MainWindow as MainWindow).NavDeselect();
         }
         private void RectangleUser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             nav.NavigationPage("Users");
+            (Application.Current.MainWindow as MainWindow).NavDeselect();
         }
         private void RectangleUser_MouseLeave(object sender, MouseEventArgs e) => this.Cursor = Cursors.Arrow;
         private void RectangleUser_MouseMove(object sender, MouseEventArgs e) => this.Cursor = Cursors.Hand;
