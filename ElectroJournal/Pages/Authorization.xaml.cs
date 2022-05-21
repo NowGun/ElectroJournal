@@ -54,8 +54,7 @@ namespace ElectroJournal.Pages
                 ButtonLogin.IsEnabled = false;
                 TextBoxLogin.IsEnabled = false;
                 TextBoxPassword.IsEnabled = false;
-                DataBaseControls DbControls = new();
-                string pass = DbControls.Hash(TextBoxPassword.Password);
+                string pass = SettingsControl.Hash(TextBoxPassword.Password);
                 Navigation nav = new();
                 var anim = (Storyboard)FindResource("AnimLoadLogin");
 

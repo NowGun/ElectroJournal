@@ -277,7 +277,6 @@ namespace ElectroJournal.Pages
         }
         private async void ButtonSave_Click(object sender, RoutedEventArgs e) // Редактирование/добавление преподавателя
         {
-            DataBaseControls DbControls = new();
             ProgressBarTeachers.Visibility = Visibility.Visible;
 
             if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
@@ -327,7 +326,7 @@ namespace ElectroJournal.Pages
                                 TeachersSurname = FIO[0],
                                 TeachersPatronymic = FIO[2],
                                 TeachersLogin = TextBoxTeachersLogin.Text,
-                                TeachersPassword = DbControls.Hash(PasswordBoxTeachers.Password),
+                                TeachersPassword = SettingsControl.Hash(PasswordBoxTeachers.Password),
                                 TeachersMail = TextBoxTeachersMail.Text,
                                 TeachersPhone = TextBoxTeachersPhone.Text,
                                 TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
@@ -421,7 +420,7 @@ namespace ElectroJournal.Pages
 
             if ((bool)cb.IsChecked)
             {
-                var disp = await db.Disciplines.Where(d => d.DisciplinesNameAbbreviated == cb.Content).FirstOrDefaultAsync();
+                var disp = await db.Disciplines.Where(d => d.DisciplinesNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
 
                 TeachersHasDiscipline teachersHasDiscipline = new()
                 {
@@ -437,7 +436,7 @@ namespace ElectroJournal.Pages
             }
             else
             {
-                TeachersHasDiscipline td = await db.TeachersHasDisciplines.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == cb.Content).FirstOrDefaultAsync();
+                TeachersHasDiscipline td = await db.TeachersHasDisciplines.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
 
                 if (td != null)
                 {
@@ -457,7 +456,7 @@ namespace ElectroJournal.Pages
 
             if ((bool)cb.IsChecked)
             {
-                var disp = await db.Groups.Where(d => d.GroupsNameAbbreviated == cb.Content).FirstOrDefaultAsync();
+                var disp = await db.Groups.Where(d => d.GroupsNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
 
                 TeachersHasGroup teachersHasGroup = new()
                 {
@@ -473,7 +472,7 @@ namespace ElectroJournal.Pages
             }
             else
             {
-                TeachersHasGroup td = await db.TeachersHasGroups.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.GroupsIdgroupsNavigation.GroupsNameAbbreviated == cb.Content).FirstOrDefaultAsync();
+                TeachersHasGroup td = await db.TeachersHasGroups.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.GroupsIdgroupsNavigation.GroupsNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
 
                 if (td != null)
                 {

@@ -23,7 +23,6 @@ namespace ElectroJournal.Windows
             GridVerifySecretCode.Visibility = Visibility.Hidden;
         }
 
-        DataBaseControls DbControls = new();
         private bool _isDarkTheme = false;
         private int tbc = 1;
 
@@ -69,7 +68,7 @@ namespace ElectroJournal.Windows
 
                     if (teacher != null)
                     {
-                        teacher.TeachersPassword = DbControls.Hash(TextBoxVerifyNewPassword.Text);
+                        teacher.TeachersPassword = SettingsControl.Hash(TextBoxVerifyNewPassword.Text);
                         await db.SaveChangesAsync();
 
                         ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Пароль успешно изменен");

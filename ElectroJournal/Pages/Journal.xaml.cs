@@ -317,9 +317,6 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
-
-
-
         }
         private void ReoGrid_WorkbookLoaded(object sender, EventArgs e)
         {

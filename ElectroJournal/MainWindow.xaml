@@ -287,7 +287,6 @@
                     Style="{DynamicResource WPFUIButtonStandard}" />
 
             </Grid>
-
             <wpfui:TitleBar
                 x:Name="TitleBar"
                 Grid.Row="0"
@@ -295,43 +294,10 @@
                 Icon="/Images/Logo/logo75.png"
                 MinimizeToTray="False">
                 <wpfui:TitleBar.Header>
-                    <Grid
-                        x:Name="GridComboGroups"
-                        Height="35"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center">
-                        <ucontrol:Calls
+                    <ucontrol:Calls
                             x:Name="Calls"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" />
-                        <StackPanel
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-                            <Label
-                                x:Name="LabelGroup"
-                                Width="60"
-                                Height="35"
-                                Margin="0,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Группа:" />
-                            <ComboBox
-                                x:Name="ComboBoxGroup"
-                                Width="200"
-                                Height="35"
-                                Margin="0,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Grid.IsSharedSizeScope="True"
-                                RenderTransformOrigin="0.5,0.5"
-                                SelectionChanged="ComboBoxGroup_SelectionChanged">
-                                <ComboBoxItem Content="ПКС 4" />
-                            </ComboBox>
-                        </StackPanel>
-                    </Grid>
                 </wpfui:TitleBar.Header>
                 <wpfui:TitleBar.Tray>
                     <wpfui:NotifyIcon
@@ -412,7 +378,6 @@
                 Position="TopRight" />
             <Grid
                 x:Name="GridMenu"
-                Height="593"
                 MinWidth="1272"
                 Margin="0,6,0,0"
                 VerticalAlignment="Top"
@@ -560,6 +525,32 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top" />
             </Grid>
+            <StackPanel x:Name="GridComboGroups"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal" Margin="0,5,135,0">
+                <Label
+                    x:Name="LabelGroup"
+                    Width="60"
+                    Height="35"
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="Группа:" />
+                <ComboBox
+                    x:Name="ComboBoxGroup"
+                    Width="200"
+                    Height="35"
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Grid.IsSharedSizeScope="True"
+                    RenderTransformOrigin="0.5,0.5"
+                    SelectionChanged="ComboBoxGroup_SelectionChanged">
+                    <ComboBoxItem Content="ПКС 4" />
+                </ComboBox>
+            </StackPanel>
         </Grid>
         <ucontrol:StartProgram
             x:Name="StartProgram"

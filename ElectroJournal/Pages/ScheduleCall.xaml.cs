@@ -14,13 +14,9 @@ namespace ElectroJournal.Pages.AdminPanel.Schedule
             InitializeComponent();
         }
 
-        DataBaseConn DbUser = new DataBaseConn();
-        DataBaseControls DbControls = new DataBaseControls();
-        MySqlConnection conn = DataBaseConn.GetDBConnection();
-
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            MySqlCommand command = new MySqlCommand("INSERT INTO periodclasses (`periodclasses_start`, `periodclasses_end`, `periodclasses_number`) " +
+            /*MySqlCommand command = new MySqlCommand("INSERT INTO periodclasses (`periodclasses_start`, `periodclasses_end`, `periodclasses_number`) " +
                 "VALUES (@start, @end, @number)", conn);
 
             command.Parameters.Add("@start", MySqlDbType.VarChar).Value = TimePickerStart.Text;
@@ -33,7 +29,7 @@ namespace ElectroJournal.Pages.AdminPanel.Schedule
             {
                 conn.Close();
                 //MainWindow.Notifications("Сообщение", "Данные сохранены");
-            }
+            }*/
         }
     }
 }

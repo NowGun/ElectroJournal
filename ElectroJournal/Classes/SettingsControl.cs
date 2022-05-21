@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -149,6 +151,14 @@ namespace ElectroJournal.Classes
            updateAccent: true,
            forceBackground: false);
             }
+        }
+        public static string Hash(string password)
+        {
+            MD5 md5hasher = MD5.Create();
+
+            var data = md5hasher.ComputeHash(Encoding.Default.GetBytes(password));
+
+            return Convert.ToBase64String(data);
         }
     }
 }

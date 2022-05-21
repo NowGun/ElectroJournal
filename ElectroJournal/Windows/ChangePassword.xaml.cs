@@ -22,8 +22,6 @@ namespace ElectroJournal.Windows
 
         private bool _isDarkTheme = false;
 
-        DataBaseControls DbControls = new();
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Classes.SettingsControl s = new();
@@ -50,11 +48,11 @@ namespace ElectroJournal.Windows
                 {
                     using (zhirovContext db = new zhirovContext())
                     {
-                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == DbControls.Hash(PasswordBoxOldPass.Password));
+                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == SettingsControl.Hash(PasswordBoxOldPass.Password));
 
                         if (teacher != null)
                         {
-                            teacher.TeachersPassword = DbControls.Hash(PasswordBoxNewPass.Password);
+                            teacher.TeachersPassword = SettingsControl.Hash(PasswordBoxNewPass.Password);
                             await db.SaveChangesAsync();
 
                             ((MainWindow)Application.Current.MainWindow).AnimLogout(true);

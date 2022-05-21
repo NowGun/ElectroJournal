@@ -29,7 +29,6 @@ namespace ElectroJournal.Pages
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            DataBaseControls DbControls = new DataBaseControls();
             ProgressBar.Visibility = Visibility.Visible;
 
             if (!string.IsNullOrWhiteSpace(TextBoxStudentsFIO.Text))
