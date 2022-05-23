@@ -34,10 +34,10 @@ namespace ElectroJournal.Windows
             ButtonGridMailRepeatCode.IsEnabled = false;
             ButtonGridMailRepeatCode.Content = "Отправка";
 
-            if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
+            if (TextBoxGridMailMail.Text != string.Empty)
             {
                 using zhirovContext db = new();
-                Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersMail == TextBoxGridMailMail.Text);
                 if (teacher != null)
                 {
                     TextBoxCode1.Clear();
@@ -95,35 +95,28 @@ namespace ElectroJournal.Windows
             try
             {
                 TextBoxGridMailMail.IsEnabled = false;
-                TextBoxGridMailLogin.IsEnabled = false;
                 ButtonGridmailContinue.IsEnabled = false;
                 ButtonGridmailContinue.Content = "Проверка...";
                 if (a)
                 {
-                    if (TextBoxGridMailLogin.Text != string.Empty && TextBoxGridMailMail.Text != string.Empty)
+                    if (TextBoxGridMailMail.Text != string.Empty)
                     {
                         using zhirovContext db = new();
-                        Teacher teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxGridMailLogin.Text && p.TeachersMail == TextBoxGridMailMail.Text);
+                        Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersMail == TextBoxGridMailMail.Text);
                         if (teacher != null)
                         {
                             Properties.Settings.Default.UserID = (int)teacher.Idteachers;
                             Properties.Settings.Default.Save();
                             secretCode = await SendMail(TextBoxGridMailMail.Text);
                         }
-                        else
-                        {
-                            Notifications("Логин или почта введены неверно", "Уведомление");
-                        }
+                        else Notifications("Почта введена неверно", "Уведомление");
                     }
-                    else
-                    {
-                        Notifications("Заполните поля", "Уведомление");
-                    }
+                    else Notifications("Заполните поле", "Уведомление");
                 }
                 TextBoxGridMailMail.IsEnabled = true;
-                TextBoxGridMailLogin.IsEnabled = true;
                 ButtonGridmailContinue.IsEnabled = true;
                 ButtonGridmailContinue.Content = "Отправить код";
+                TextBoxGridMailMail.Focus();
             }
             catch (Exception ex)
             {
@@ -234,8 +227,7 @@ namespace ElectroJournal.Windows
         private void Notifications(string message, string title)
         {
             RootSnackbar.Title = title;
-            RootSnackbar.Content = message;
-            RootSnackbar.Icon = WPFUI.Common.SymbolRegular.MailError16;
+            RootSnackbar.Message = message;
             RootSnackbar.Show();
         }
     }

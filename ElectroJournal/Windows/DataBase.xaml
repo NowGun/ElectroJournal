@@ -44,69 +44,47 @@
     <Grid>
         <wpfui:TitleBar
             x:Name="TitleBar"
-            Title="Изменение данных для подключения"
+            Title="База данных"
             Grid.Row="0"
             Height="48"
             ShowMaximize="False"
             ShowMinimize="False" />
-
-        <TextBox
+        <RadioButton x:Name="RadioButtonRent" Content="Арендованный сервер" VerticalAlignment="Top" Margin="25,59,0,0" Click="RadioButton_Click"/>
+        <ComboBox x:Name="ComboBoxServer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,53,0,0" Width="250"/>
+        <RadioButton x:Name="RadioButtonMine" Content="Пользовательский сервер" Margin="25,109,0,0" VerticalAlignment="Top" Click="RadioButton_Click"/>
+        <wpfui:TextBox
             x:Name="TextBoxServer"
-            Width="200"
-            Height="35"
-            Margin="250,70,0,0"
+            Placeholder="IP-адрес"
+            Width="270"
+            Height="36"
+            Margin="50,143,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             MaxLength="15"
             PreviewTextInput="TextBoxServer_PreviewTextInput"
             TextWrapping="Wrap" />
-        <TextBox
+        <wpfui:TextBox
             x:Name="TextBoxUser"
-            Width="200"
+            Placeholder="Логин"
+            Width="270"
             Height="35"
-            Margin="250,124,0,0"
+            Margin="50,184,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             TextWrapping="Wrap" />
-        <PasswordBox
+        <wpfui:PasswordBox
             x:Name="TextBoxPassword"
-            Width="200"
+            Placeholder="Пароль"
+            Width="270"
             Height="35"
-            Margin="250,177,0,0"
+            Margin="50,224,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
-        <Label
-            Width="172"
-            Height="30"
-            Margin="45,72,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="IP-адрес"
-            FontSize="16" />
-        <Label
-            Width="180"
-            Height="30"
-            Margin="45,126,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="Имя пользователя"
-            FontSize="16" />
-        <Label
-            Width="172"
-            Height="30"
-            Margin="45,180,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="Пароль"
-            FontSize="16" />
         <Button
             x:Name="ButtonSave"
             Width="130"
             Height="35"
-            Margin="0,0,30,16"
+            Margin="0,0,15,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Click="ButtonSave_Click"
@@ -114,19 +92,5 @@
             FontSize="14"
             IsDefault="True"
             Style="{StaticResource WPFUIButtonStandard}" />
-        <Label
-            x:Name="LabelNotyfication"
-            Margin="0,0,165,24"
-            Padding="5,0,5,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Background="{x:Null}"
-            Content="Данные сохранены"
-            FontSize="14"
-            Foreground="#FF0AC775"
-            Opacity="0" />
-
     </Grid>
 </Window>

@@ -115,47 +115,11 @@
                     FontSize="14"
                     IsDefault="True"
                     Style="{StaticResource WPFUIButtonStandard}" />
-                <Label
-                    Height="35"
-                    Margin="25,237,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    Content="Логин*"
-                    FontSize="16" />
-                <TextBox
-                    x:Name="TextBoxTeachersLogin"
-                    Width="231"
-                    Height="35"
-                    Margin="100,237,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    FontSize="14"
-                    MaxLength="20"
-                    TextWrapping="Wrap" />
-                <Label
-                    Height="35"
-                    Margin="22,287,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    Content="Пароль"
-                    FontSize="16" />
-                <PasswordBox
-                    x:Name="PasswordBoxTeachers"
-                    Width="231"
-                    Height="35"
-                    Margin="100,287,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center" />
                 <CheckBox
                     x:Name="CheckBoxAdminAccess"
                     Width="245"
                     Height="20"
-                    Margin="25,337,0,0"
+                    Margin="25,230,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Доступ к панели администратора"

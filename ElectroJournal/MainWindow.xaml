@@ -264,10 +264,6 @@
                             Content="Расписание"
                             Tag="Schedule" />
                         <ui:NavigationViewItem
-                            x:Name="NavigationViewItemBoard1"
-                            Content="Доска"
-                            Tag="Board" />
-                        <ui:NavigationViewItem
                             x:Name="NavigationViewItemWord1"
                             Content="Текстовый редактор"
                             Tag="Word" />
@@ -325,19 +321,18 @@
             </wpfui:TitleBar>
             <Menu
                 x:Name="MenuEJ"
-                Height="50"
+                Height="49.7"
                 Margin="48,-2,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <MenuItem
-                    Height="43"
                     Padding="6,0,6,0"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     FontSize="14"
-                    Header="ElectroJournal">
+                    Header="ElectroJournal" Height="44">
                     <MenuItem
                         x:Name="MenuItemEJHelp"
                         Click="MenuItemEJHelp_Click"
@@ -349,7 +344,7 @@
                     <MenuItem
                         x:Name="MenuItemEJBug"
                         Click="MenuItemEJBug_Click"
-                        Header="Баг-репортер" />
+                        Header="Баг-трекер" />
                 </MenuItem>
             </Menu>
             <ui:Frame
@@ -504,10 +499,6 @@
                             x:Name="NavigationViewItemSchedule"
                             Content="Расписание"
                             Tag="Schedule" />
-                        <ui:NavigationViewItem
-                            x:Name="NavigationViewItemBoard"
-                            Content="Доска"
-                            Tag="Board" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemWord"
                             Content="Текстовый редактор"

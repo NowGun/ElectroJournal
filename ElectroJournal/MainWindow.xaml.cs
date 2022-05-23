@@ -261,20 +261,22 @@ namespace ElectroJournal
         }
         private async void Window_ContentRendered(object sender, EventArgs e)
         {
-            SettingsControl sControl = new();
             try
             {
-                if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                if (Properties.Settings.Default.CheckUpdate)
                 {
-                    WPFUI.Controls.MessageBox messageBox = new();
+                    if (!await SettingsControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                    {
+                        WPFUI.Controls.MessageBox messageBox = new();
 
-                    messageBox.ButtonLeftName = "Скачать";
-                    messageBox.ButtonRightName = "Закрыть";
-                    messageBox.ButtonLeftClick += MessageBox_LeftButtonClick;
-                    messageBox.ButtonRightClick += MessageBox_RightButtonClick;
-                    messageBox.Title = "Оповещение";
-                    messageBox.Content = $"Доступно новое обновление ElectroJournal\n{Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
-                    messageBox.ShowDialog();
+                        messageBox.ButtonLeftName = "Скачать";
+                        messageBox.ButtonRightName = "Закрыть";
+                        messageBox.ButtonLeftClick += MessageBox_LeftButtonClick;
+                        messageBox.ButtonRightClick += MessageBox_RightButtonClick;
+                        messageBox.Title = "Оповещение";
+                        messageBox.Content = $"Доступно новое обновление ElectroJournal\n{Properties.Settings.Default.Version} -> {await SettingsControl.VersionAsync()}";
+                        messageBox.ShowDialog();
+                    }
                 }
             }
             catch (Exception ex)
@@ -314,8 +316,6 @@ namespace ElectroJournal
             NavigationViewItemSchedule.IsSelected = false;
             NavigationViewItemAcademicYears.IsSelected = false;
             NavigationViewItemAdminPanel.IsSelected = false;
-            NavigationViewItemBoard.IsSelected = false;
-            NavigationViewItemBoard1.IsSelected = false;
             NavigationViewItemCabinets.IsSelected = false;
             NavigationViewItemDisciplines.IsSelected = false;
             NavigationViewItemGroups.IsSelected = false;

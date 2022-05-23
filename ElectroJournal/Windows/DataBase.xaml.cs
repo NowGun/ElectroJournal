@@ -22,7 +22,17 @@ namespace ElectroJournal.Windows
         {
             TextBoxServer.Text = Properties.Settings.Default.Server;
             TextBoxUser.Text = Properties.Settings.Default.UserName;
-            TextBoxPassword.Password = Properties.Settings.Default.Password;
+            TextBoxPassword.Text = Properties.Settings.Default.Password;
+
+            switch (Properties.Settings.Default.TypeServer)
+            {
+                case false:
+                    RadioButtonRent.IsChecked = true;
+                    break;
+                case true:
+                    RadioButtonMine.IsChecked= true;
+                    break;
+            }
         }
         private void SaveData()
         {
@@ -31,6 +41,9 @@ namespace ElectroJournal.Windows
                 Properties.Settings.Default.Server = TextBoxServer.Text;
                 Properties.Settings.Default.UserName = TextBoxUser.Text;
                 Properties.Settings.Default.Password = TextBoxPassword.Password;
+
+                if ((bool)RadioButtonMine.IsChecked) Properties.Settings.Default.TypeServer = true;
+                else if ((bool)RadioButtonRent.IsChecked) Properties.Settings.Default.TypeServer = false;
 
                 Properties.Settings.Default.Save();
 
@@ -49,14 +62,32 @@ namespace ElectroJournal.Windows
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Classes.SettingsControl s = new();
-            s.ChangeTheme();
         }
         private void TextBoxServer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!(Char.IsDigit(e.Text, 0) || (e.Text == ".")))
             {
                 e.Handled = true;
+            }
+        }
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            var c = sender as System.Windows.Controls.RadioButton;
+            switch (c.Content.ToString())
+            {
+                case "Пользовательский сервер":
+                    TextBoxPassword.IsEnabled = true;
+                    TextBoxServer.IsEnabled = true;
+                    TextBoxUser.IsEnabled = true;
+                    ComboBoxServer.IsEnabled = false;
+                    break;
+
+                case "Арендованный сервер":
+                    TextBoxPassword.IsEnabled = false;
+                    TextBoxServer.IsEnabled = false;
+                    TextBoxUser.IsEnabled = false;
+                    ComboBoxServer.IsEnabled = true;
+                    break;
             }
         }
     }

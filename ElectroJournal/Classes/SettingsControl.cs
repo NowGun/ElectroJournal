@@ -18,23 +18,17 @@ namespace ElectroJournal.Classes
         private bool _isDarkTheme = false;
         string? currentPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-        public async Task<bool> CheckVersionAsync(string version)
+        public static async Task<bool> CheckVersionAsync(string version)
         {
-            using (ejContext db = new ejContext())
-            {
-                var versionNew = await db.Versions.FirstOrDefaultAsync();
-
-                return versionNew.VersionName == version ? true : false;
-            }
+            using ejContext db = new();
+            var versionNew = await db.Versions.FirstOrDefaultAsync();
+            return versionNew.VersionName == version ? true : false;
         }
-        public async Task<string> VersionAsync()
+        public static async Task<string> VersionAsync()
         {
-            using (ejContext db = new ejContext())
-            {
-                var versionNew = await db.Versions.FirstOrDefaultAsync();
-
-                return versionNew.VersionName;
-            }
+            using ejContext db = new();
+            var versionNew = await db.Versions.FirstOrDefaultAsync();
+            return versionNew.VersionName;
         }
         public void CheckAutoRun()
         {

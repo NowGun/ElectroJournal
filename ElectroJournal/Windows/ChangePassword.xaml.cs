@@ -48,7 +48,7 @@ namespace ElectroJournal.Windows
                 {
                     using (zhirovContext db = new zhirovContext())
                     {
-                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersLogin == TextBoxLogin.Text && p.TeachersPassword == SettingsControl.Hash(PasswordBoxOldPass.Password));
+                        var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersMail == TextBoxLogin.Text && p.TeachersPassword == SettingsControl.Hash(PasswordBoxOldPass.Password));
 
                         if (teacher != null)
                         {

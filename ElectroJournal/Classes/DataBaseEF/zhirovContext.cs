@@ -781,11 +781,11 @@ namespace ElectroJournal.DataBase
                     .HasColumnName("teachers_image");
 
                 entity.Property(e => e.TeachersLogin)
-                    .IsRequired()
                     .HasMaxLength(45)
                     .HasColumnName("teachers_login");
 
                 entity.Property(e => e.TeachersMail)
+                    .IsRequired()
                     .HasColumnType("text")
                     .HasColumnName("teachers_mail");
 

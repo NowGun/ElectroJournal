@@ -36,6 +36,7 @@ namespace ElectroJournal.Pages
 
         List<int> idTeachers = new();
         private int lastFoundIndex = -1;
+        private string pass;
 
         private void PersonPicture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -234,8 +235,6 @@ namespace ElectroJournal.Pages
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e) // Подгрузка данных определенного преподавателя
         {
             ButtonDelete.IsEnabled = true;
-            TextBoxTeachersLogin.IsEnabled = false;
-            PasswordBoxTeachers.IsEnabled = false;
 
             if (ListViewTeachers.SelectedItem != null)
             {
@@ -245,8 +244,6 @@ namespace ElectroJournal.Pages
                 string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
 
                 TextBoxTeachersFIO.Text = FIO;
-                TextBoxTeachersLogin.Text = t.TeachersLogin;
-                PasswordBoxTeachers.Password = t.TeachersPassword;
                 CheckBoxAdminAccess.IsChecked = bool.Parse(t.TeachersAccesAdminPanel);
                 TextBoxTeachersMail.Text = t.TeachersMail;
                 TextBoxTeachersPhone.Text = t.TeachersPhone;
@@ -259,9 +256,7 @@ namespace ElectroJournal.Pages
         {
             if (ListViewTeachers.SelectedItem == null)
             {
-                PasswordBoxTeachers.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(8);
-
-                TextBoxTeachersLogin.Text = Transliteration.CyrillicToLatin(TextBoxTeachersFIO.Text.Split().First(), NickBuhro.Translit.Language.Russian);
+                pass = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(12);
             }
         }
         private void ListViewTeachers_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) // Удаление преподавателя
@@ -279,7 +274,7 @@ namespace ElectroJournal.Pages
         {
             ProgressBarTeachers.Visibility = Visibility.Visible;
 
-            if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersLogin.Text))
+            if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail.Text))
             {
                 string cond = @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)";
 
@@ -318,15 +313,14 @@ namespace ElectroJournal.Pages
                         }
                         else
                         {
-                            var teac = await db.Teachers.Where(p => p.TeachersLogin == TextBoxTeachersLogin.Text).ToListAsync();
+                            var teac = await db.Teachers.Where(p => p.TeachersMail == TextBoxTeachersMail.Text).ToListAsync();
 
                             Teacher teacher = new()
                             {
                                 TeachersName = FIO[1],
                                 TeachersSurname = FIO[0],
                                 TeachersPatronymic = FIO[2],
-                                TeachersLogin = TextBoxTeachersLogin.Text,
-                                TeachersPassword = SettingsControl.Hash(PasswordBoxTeachers.Password),
+                                TeachersPassword = SettingsControl.Hash(pass),
                                 TeachersMail = TextBoxTeachersMail.Text,
                                 TeachersPhone = TextBoxTeachersPhone.Text,
                                 TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
@@ -345,8 +339,6 @@ namespace ElectroJournal.Pages
                                     TextBoxTeachersFIO.Clear();
                                     TextBoxTeachersPhone.Clear();
                                     TextBoxTeachersMail.Clear();
-                                    TextBoxTeachersLogin.Clear();
-                                    PasswordBoxTeachers.Clear();
                                     CheckBoxAdminAccess.IsChecked = false;
                                     FillListBoxTeachers();
                                     ClearValue();
@@ -372,8 +364,6 @@ namespace ElectroJournal.Pages
             TextBoxTeachersFIO.Clear();
             TextBoxTeachersPhone.Clear();
             TextBoxTeachersMail.Clear();
-            TextBoxTeachersLogin.Clear();
-            PasswordBoxTeachers.Clear();
             CheckBoxAdminAccess.IsChecked = false;
             ObservableCollection<DisciplineList> co1 = new();
             ObservableCollection<GroupsList> co2 = new();
@@ -406,8 +396,6 @@ namespace ElectroJournal.Pages
                     TextBoxTeachersFIO.Clear();
                     TextBoxTeachersPhone.Clear();
                     TextBoxTeachersMail.Clear();
-                    TextBoxTeachersLogin.Clear();
-                    PasswordBoxTeachers.Clear();
                     CheckBoxAdminAccess.IsChecked = false;
                     ButtonDelete.IsEnabled = false;
                 }
@@ -497,7 +485,7 @@ namespace ElectroJournal.Pages
 
                 m.Subject = "ElectroJournal";
                 m.Body = "Добро пожаловать в систему Электронный журнал\n\nАдминистратор зарегистрировал Вас в системе электронного журнала, ниже написаны данные для входа в вашу учетную запись.\nМы рекомендуем при первой возможности поменять пароль на более удобный Вам, так как нынешний пароль является временным." +
-                    "\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password + "        \n\n\n";
+                    "\n\nЛогин: " + TextBoxTeachersMail.Text + "\nПароль: " + pass + "        \n\n\n";
 
                 SmtpClient smtp = new("connect.smtp.bz", 2525);
 
@@ -540,7 +528,7 @@ namespace ElectroJournal.Pages
         {
             string myApiKey = "B0361252-C8BA-5438-E643-4651FCC4E55B"; //Ваш API ключ
             SmsRu.SmsRu sms = new(myApiKey);
-            sms.Send(TextBoxTeachersPhone.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersLogin.Text + "\nПароль: " + PasswordBoxTeachers.Password);
+            sms.Send(TextBoxTeachersPhone.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersMail.Text + "\nПароль: " + pass);
         }
         #endregion
     }

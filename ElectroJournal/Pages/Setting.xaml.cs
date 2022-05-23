@@ -24,17 +24,13 @@ namespace ElectroJournal.Pages
         private bool isLoaded = false;
         SettingsControl settingsControl = new();
 
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {
-
-
-        }
         private void LoadApp()
         {
             ComboBoxTheme.SelectedIndex = Properties.Settings.Default.Theme;
             CheckBoxRememberData.IsChecked = Properties.Settings.Default.RememberData;
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
             CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;
+            CheckBoxUpdate.IsChecked = Properties.Settings.Default.CheckUpdate;
             LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 10.05.2022";
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server))
             {
@@ -99,6 +95,7 @@ namespace ElectroJournal.Pages
             Properties.Settings.Default.RememberData = CheckBoxRememberData.IsChecked ?? false;
             Properties.Settings.Default.ShowPhone = CheckBoxShowPhone.IsChecked ?? false;
             Properties.Settings.Default.ShowEmail = CheckBoxShowEmail.IsChecked ?? false;
+            Properties.Settings.Default.CheckUpdate = CheckBoxUpdate.IsChecked ?? false;
 
             Properties.Settings.Default.Save();
 
@@ -118,17 +115,15 @@ namespace ElectroJournal.Pages
             {
                 if (ButtonOpenUpdater.Content != "Скачать")
                 {
-                    SettingsControl sControl = new SettingsControl();
-
                     var anim = (Storyboard)FindResource("AnimOpenCheckUpdate");
                     var anim2 = (Storyboard)FindResource("AnimYNewUpdate");
                     var anim3 = (Storyboard)FindResource("AnimCloseCheckUpdate");
                     anim.Begin();
                     ButtonOpenUpdater.IsEnabled = false;
 
-                    if (!await sControl.CheckVersionAsync(Properties.Settings.Default.Version))
+                    if (!await SettingsControl.CheckVersionAsync(Properties.Settings.Default.Version))
                     {
-                        LabelNewVersion.Content = $"Доступно новое обновление {Properties.Settings.Default.Version} -> {await sControl.VersionAsync()}";
+                        LabelNewVersion.Content = $"Доступно новое обновление {Properties.Settings.Default.Version} -> {await SettingsControl.VersionAsync()}";
                         ButtonOpenUpdater.Content = "Скачать";
                         ButtonOpenUpdater.IsEnabled = true;
                         anim2.Begin();
@@ -170,10 +165,7 @@ namespace ElectroJournal.Pages
                 isLoaded = true;
             }
         }
-        private void CheckBox_Click(object sender, RoutedEventArgs e)
-        {
-            SaveApp();
-        }
+        private void CheckBox_Click(object sender, RoutedEventArgs e) => SaveApp();
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             isLoaded = false;

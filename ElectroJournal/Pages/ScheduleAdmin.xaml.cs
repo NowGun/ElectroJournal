@@ -1,5 +1,8 @@
-﻿using ElectroJournal.Pages.AdminPanel.Schedule;
+﻿using ElectroJournal.DataBase;
+using ElectroJournal.Pages.AdminPanel.Schedule;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -36,41 +39,39 @@ namespace ElectroJournal.Pages
             new ScheduleCall().ShowDialog();
         }
 
-        private void IconDeleteScheduleCall_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private async void IconDeleteScheduleCall_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            new ScheduleCall().ShowDialog();
+            if (ListBoxSchedule.SelectedIndex != -1)
+            {
+                using zhirovContext db = new();
+                Periodclass? s = await db.Periodclasses.Where(s => s.PeriodclassesNumber == Int32.Parse(ListBoxSchedule.SelectedItem.ToString().Split().First())).FirstOrDefaultAsync();
+
+                if (s != null)
+                {
+                    db.Periodclasses.Remove(s);
+                    await db.SaveChangesAsync();
+
+                    FillScheduleCall();
+                }
+            }
+            
         }
-        /*
-        private void ListBoxScheduleRerfresh()
+        private async void FillScheduleCall()
         {
             ListBoxSchedule.Items.Clear();
 
-            MySqlCommand command = new MySqlCommand("SELECT `idperiodclasses`, date_format(`periodclasses_start`, '%H:%i'), date_format(`periodclasses_end`, '%H:%i'), `periodclasses_number` FROM `periodclasses`", conn); //Команда выбора данных
-            conn.Open(); //Открываем соединение
-            MySqlDataReader read = command.ExecuteReader(); //Считываем и извлекаем данные
-            while (read.Read()) //Читаем пока есть данные
+            using zhirovContext db = new();
+
+            var s = await db.Periodclasses.OrderBy(s => s.PeriodclassesNumber).ToListAsync();
+
+            if (s != null)
             {
-                ListBoxSchedule.Items.Add(read.GetValue(3).ToString() + " | " + read.GetValue(1).ToString() + " - " + read.GetValue(2).ToString());
+                foreach (var t in s)
+                {
+                    ListBoxSchedule.Items.Add($"{t.PeriodclassesNumber} | {t.PeriodclassesStart} - {t.PeriodclassesEnd}");
+                }
             }
-            conn.Close(); //Закрываем соединение
-                          //ButtonSaveTeacher.IsEnabled = false;
         }
-        private async void LoadDataGridJournal()
-        {
-            MySqlCommand command = new MySqlCommand("SELECT * FROM schedule", conn);
-
-            DataTable dt = new DataTable();
-            MySqlDataAdapter da = new MySqlDataAdapter(command);
-            await Task.Run(() =>
-            {
-                da.Fill(dt);
-
-            });
-            DataGridShedule.ItemsSource = dt.AsDataView();
-        }
-
-        */
-
         private void SettingSheet()
         {
             var worksheet = ReoGridSchedule.Worksheets[0];
@@ -91,7 +92,6 @@ namespace ElectroJournal.Pages
             //SettingSheet();
 
         }
-
         void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
             WorksheetRangeStyle MyStyle = new WorksheetRangeStyle();
@@ -110,7 +110,6 @@ namespace ElectroJournal.Pages
             }
             Test.Content = $"{poz[0]}";
         }
-
         private void FillDates()
         {
             ReoGridSchedule.CurrentWorksheet.SetRangeDataFormat(RangePosition.EntireRange, unvell.ReoGrid.DataFormat.CellDataFormatFlag.Text, null);
@@ -128,5 +127,55 @@ namespace ElectroJournal.Pages
                 HAlign = ReoGridHorAlign.Center
             });
         }
+        private void ExpanderScheduleCall_Expanded(object sender, System.Windows.RoutedEventArgs e) => FillScheduleCall();
+        private void ComboBoxHousing_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxCabinets();
+        private async void FillComboBoxHousing()
+        {
+            ComboBoxHousing.Items.Clear();
+
+            using zhirovContext db = new();
+            await db.Housings.ForEachAsync(g =>
+            {
+                ComboBoxHousing.Items.Add(g.HousingName);
+            });
+        }
+        private async void FillListBoxCabinets()
+        {
+            ListBoxCabinets.Items.Clear();
+
+            using zhirovContext db = new();
+
+            if (ComboBoxHousing.SelectedItem != null)
+            {
+                await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => c.HousingIdhousingNavigation.HousingName == ComboBoxHousing.SelectedItem.ToString()).ForEachAsync(c =>
+                {
+                    ListBoxCabinets.Items.Add(c.CabinetNumber);
+                });
+            }
+        }
+        private async void FillListBoxDisciplines()
+        {
+            ListBoxDisciplines.Items.Clear();
+
+            using zhirovContext db = new();
+            await db.Disciplines.OrderBy(c => c.DisciplinesNameAbbreviated).ForEachAsync(c =>
+            {
+                ListBoxDisciplines.Items.Add(c.DisciplinesNameAbbreviated);
+            });
+        }
+        private async void FillListBoxTeachers()
+        {
+            ListBoxTeachers.Items.Clear();
+
+            using zhirovContext db = new();
+
+            await db.Teachers.OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
+            {
+                ListBoxTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName}");
+            });
+        }
+        private void ExpanderCabinets_Expanded(object sender, System.Windows.RoutedEventArgs e) => FillComboBoxHousing();
+        private void ExpanderDisciplines_Expanded(object sender, System.Windows.RoutedEventArgs e) => FillListBoxDisciplines();
+        private void ExpanderTeachers_Expanded(object sender, System.Windows.RoutedEventArgs e) => FillListBoxTeachers();
     }
 }

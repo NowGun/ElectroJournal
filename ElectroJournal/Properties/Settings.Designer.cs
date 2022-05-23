@@ -50,30 +50,6 @@ namespace ElectroJournal.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int IdCabinet {
-            get {
-                return ((int)(this["IdCabinet"]));
-            }
-            set {
-                this["IdCabinet"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int IdHousing {
-            get {
-                return ((int)(this["IdHousing"]));
-            }
-            set {
-                this["IdHousing"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int Theme {
             get {
                 return ((int)(this["Theme"]));
@@ -149,18 +125,6 @@ namespace ElectroJournal.Properties {
             }
             set {
                 this["Tray"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Animation {
-            get {
-                return ((bool)(this["Animation"]));
-            }
-            set {
-                this["Animation"] = value;
             }
         }
         
@@ -242,6 +206,30 @@ namespace ElectroJournal.Properties {
             }
             set {
                 this["ShowEmail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TypeServer {
+            get {
+                return ((bool)(this["TypeServer"]));
+            }
+            set {
+                this["TypeServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckUpdate {
+            get {
+                return ((bool)(this["CheckUpdate"]));
+            }
+            set {
+                this["CheckUpdate"] = value;
             }
         }
     }

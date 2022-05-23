@@ -66,9 +66,9 @@ namespace ElectroJournal.Pages
                 {
                     if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
                     {
-                        if ((Regex.IsMatch(TextBoxLogin.Text, cond) && TextBoxLogin.Text.Contains("@")) || !TextBoxLogin.Text.Contains("@"))
+                        if (Regex.IsMatch(TextBoxLogin.Text, cond) && TextBoxLogin.Text.Contains("@"))
                         {
-                            Teacher? l = await db.Teachers.Where(p => (p.TeachersLogin == TextBoxLogin.Text.Trim() || p.TeachersMail == TextBoxLogin.Text.Trim()) && p.TeachersPassword == pass).FirstOrDefaultAsync();
+                            Teacher? l = await db.Teachers.Where(p => p.TeachersMail == TextBoxLogin.Text.Trim() && p.TeachersPassword == pass).FirstOrDefaultAsync();
 
                             if (l != null)
                             {

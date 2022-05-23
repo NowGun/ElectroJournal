@@ -163,7 +163,7 @@ namespace ElectroJournal.Pages
 
                 using (zhirovContext db = new())
                 {
-                    var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022).Select(p => p.Day).ToListAsync();
+                    var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022 && p.DayOfWeek != 7).Select(p => p.Day).ToListAsync();
                     daysTable = days.Count + 1;
                     for (int i = 1; i < daysTable; i++)
                     {

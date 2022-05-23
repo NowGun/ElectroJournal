@@ -15,121 +15,159 @@
     MinHeight="605.04"
     mc:Ignorable="d">
     <Grid AllowDrop="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="79*"/>
+            <RowDefinition Height="33*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="49*" />
+            <ColumnDefinition Width="15*" />
+        </Grid.ColumnDefinitions>
         <ListBox
-            MinHeight="177.8"
-            Margin="20,0,0,10"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            HorizontalContentAlignment="Stretch"
-            d:ItemsSource="{d:SampleData ItemCount=5}" />
+            d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="3" Margin="10,20,10,10" />
 
-        <ScrollViewer>
+        <ScrollViewer Grid.Column="1" Margin="0,0,10,10" Grid.RowSpan="3">
 
-            <StackPanel Margin="1015,0,0,0">
-                <wpfui:CardExpander
-                    Width="245"
-                    Margin="0,20,20,0"
-                    HorizontalAlignment="Right"
+            <StackPanel HorizontalAlignment="Stretch">
+                <Expander
+                    x:Name="ExpanderScheduleCall"
+                    MaxHeight="300"
+                    Margin="0,10,20,0"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Right"
-                    Header="Расписание звонков"
-                    Icon="PanelLeftExpand20">
-
-                    <Grid
-                        Width="253"
-                        Height="260"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
+                    Expanded="ExpanderScheduleCall_Expanded"
+                    Header="Расписание звонков">
+                    <Grid MaxHeight="240">
                         <ListBox
                             x:Name="ListBoxSchedule"
-                            Width="224"
-                            Height="260"
-                            Padding="2,22,2,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            FontSize="14"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            <ListBox.BorderBrush>
-                                <LinearGradientBrush MappingMode="Absolute" EndPoint="0,3">
-                                    <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform ScaleY="-1" />
-                                    </LinearGradientBrush.RelativeTransform>
-
-                                </LinearGradientBrush>
-                            </ListBox.BorderBrush>
-                        </ListBox>
+                            Padding="2,25,2,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            FontSize="14" />
                         <wpfui:SymbolIcon
                             x:Name="IconAddScheduleCall"
                             Width="14"
                             Height="15"
-                            Margin="20,10,0,0"
+                            Margin="15,5,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
+                            Cursor="Hand"
                             PreviewMouseLeftButtonUp="IconAddScheduleCall_PreviewMouseLeftButtonUp"
                             Symbol="Add20" />
                         <wpfui:SymbolIcon
                             x:Name="IconDeleteScheduleCall"
                             Width="14"
                             Height="15"
-                            Margin="60,10,0,0"
+                            Margin="55,5,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
+                            Cursor="Hand"
                             PreviewMouseLeftButtonUp="IconDeleteScheduleCall_PreviewMouseLeftButtonUp"
                             Symbol="Delete20" />
                         <wpfui:SymbolIcon
                             x:Name="IconChangeScheduleCall"
                             Width="14"
                             Height="15"
-                            Margin="40,10,0,0"
+                            Margin="35,5,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
+                            Cursor="Hand"
                             Symbol="Edit20" />
                     </Grid>
-                </wpfui:CardExpander>
+                </Expander>
+                <Expander
+                    x:Name="ExpanderCabinets"
+                    MaxHeight="300"
+                    Margin="0,10,20,0"
+                    Expanded="ExpanderCabinets_Expanded"
+                    Header="Кабинеты">
+                    <Grid MaxHeight="250">
+                        <ComboBox
+                            x:Name="ComboBoxHousing"
+                            VerticalAlignment="Top"
+                            SelectionChanged="ComboBoxHousing_SelectionChanged" />
+                        <ListBox
+                            x:Name="ListBoxCabinets"
+                            Margin="0,40,0,0"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}" />
+                    </Grid>
+                </Expander>
+                <Expander
+                    x:Name="ExpanderDisciplines"
+                    MaxHeight="300"
+                    Margin="0,10,20,0"
+                    Expanded="ExpanderDisciplines_Expanded"
+                    Header="Предметы">
+                    <Grid MaxHeight="250">
+                        <ListBox
+                            x:Name="ListBoxDisciplines"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}" />
+                    </Grid>
+                </Expander>
+                <Expander x:Name="ExpanderTeachers" Margin="0,10,20,0" Header="Преподаватели" MaxHeight="300" Expanded="ExpanderTeachers_Expanded" >
+                    <Grid MaxHeight="250">
+                        <ListBox x:Name="ListBoxTeachers" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                    </Grid>
+                </Expander>
             </StackPanel>
         </ScrollViewer>
         <rg:ReoGridControl
+            Grid.Column="0"
             x:Name="ReoGridSchedule"
-            Margin="10,10,270,195"
-            WorkbookLoaded="ReoGridSchedule_WorkbookLoaded" />
+            WorkbookLoaded="ReoGridSchedule_WorkbookLoaded" Margin="10,10,10,0" Grid.Row="1" />
+        <ToolBarTray Grid.Column="0" Grid.Row="0" Margin="10,0,10,0">
+            <ToolBar>
+                <Button Content="Сохранить"/>
+                <Button Content="Файл Excel" ToolBar.OverflowMode="Always"/>
+            </ToolBar>
+            <ToolBar>
+                <Label Content="Учебная неделя" VerticalAlignment="Center"/>
+                <ComboBox Width="150"/>
+            </ToolBar>
+        </ToolBarTray>
         <DataGrid
             x:Name="DataGridShedule"
-            Margin="20,20,270,195"
+            Grid.ColumnSpan="2"
+            Margin="20,20,270,30"
             HorizontalContentAlignment="Stretch"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            
             AllowDrop="True"
             SelectionMode="Single"
-            Visibility="Hidden" />
+            Visibility="Hidden" Grid.RowSpan="2" />
         <Button
+            Grid.Column="1"
             Width="163"
             Height="59"
-            Margin="1040,333,0,0"
+            Margin="60,288,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            
             AllowDrop="True"
             Content="Button22"
-            Visibility="Hidden" />
+            Visibility="Hidden" Grid.Row="1" />
         <Button
+            Grid.Column="1"
             Width="146"
             Height="49"
-            Margin="1091,161,0,0"
+            Margin="111,116,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             AllowDrop="True"
             Content="Button"
-            Visibility="Hidden" />
+            Visibility="Hidden" Grid.Row="1" />
         <Label
             x:Name="Test"
             Width="455"
             Height="35"
-            Margin="455,530,0,0"
+            Margin="455,90,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="Label" />
+            Content="Label" Grid.Row="2" />
 
     </Grid>
 </Page>
