@@ -224,12 +224,14 @@
             IsIndeterminate="True"
             Style="{StaticResource MaterialDesignCircularProgressBar}"
             Visibility="Hidden" />
-        <wpfui:SearchBox x:Name="SearchBox"
+        <wpfui:SearchBox
+            x:Name="SearchBox"
             Width="300"
             Margin="20,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Placeholder="Поиск" PreviewKeyUp="SearchBox_PreviewKeyUp" />
+            Placeholder="Поиск по имени или группе"
+            PreviewKeyUp="SearchBox_PreviewKeyUp" />
 
         <ComboBox
             x:Name="ComboBoxSorting"

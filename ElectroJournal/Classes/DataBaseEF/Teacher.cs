@@ -1,9 +1,9 @@
-﻿using ElectroJournal.Classes.DataBaseEF;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
 
-namespace ElectroJournal.DataBase
+namespace ElectroJournal.Classes.DataBaseEF
 {
     public partial class Teacher
     {

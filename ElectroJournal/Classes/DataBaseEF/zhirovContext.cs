@@ -17,7 +17,6 @@ namespace ElectroJournal.DataBase
         {
         }
 
-        public virtual DbSet<Basistraining> Basistrainings { get; set; }
         public virtual DbSet<Cabinet> Cabinets { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
@@ -26,13 +25,17 @@ namespace ElectroJournal.DataBase
         public virtual DbSet<Disciplinehour> Disciplinehours { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Housing> Housings { get; set; }
+        public virtual DbSet<IdentificationType> IdentificationTypes { get; set; }
         public virtual DbSet<Journal> Journals { get; set; }
         public virtual DbSet<Journaltheme> Journalthemes { get; set; }
         public virtual DbSet<Periodclass> Periodclasses { get; set; }
-        public virtual DbSet<Requestcabinet> Requestcabinets { get; set; }
+        public virtual DbSet<Presence> Presences { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
+        public virtual DbSet<Schoolweek> Schoolweeks { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
+        public virtual DbSet<Smartcard> Smartcards { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<StudentFace> StudentFaces { get; set; }
         public virtual DbSet<Studyperiod> Studyperiods { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<TeachersHasDiscipline> TeachersHasDisciplines { get; set; }
@@ -66,25 +69,6 @@ namespace ElectroJournal.DataBase
             modelBuilder.HasCharSet("utf8mb4")
                 .UseCollation("utf8mb4_0900_ai_ci");
 
-            modelBuilder.Entity<Basistraining>(entity =>
-            {
-                entity.HasKey(e => e.Idbasistraining)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("basistraining");
-
-                entity.HasIndex(e => e.Idbasistraining, "idbasistraining_UNIQUE")
-                    .IsUnique();
-
-                entity.Property(e => e.Idbasistraining).HasColumnName("idbasistraining");
-
-                entity.Property(e => e.BasistrainingName)
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("basistraining_name")
-                    .HasComment("тип группы - бюджет или коммерция");
-            });
-
             modelBuilder.Entity<Cabinet>(entity =>
             {
                 entity.HasKey(e => e.Idcabinet)
@@ -98,11 +82,6 @@ namespace ElectroJournal.DataBase
                     .IsUnique();
 
                 entity.Property(e => e.Idcabinet).HasColumnName("idcabinet");
-
-                entity.Property(e => e.CabinetFeatures)
-                    .HasMaxLength(45)
-                    .HasColumnName("cabinet_features")
-                    .HasComment("особенности кабинета");
 
                 entity.Property(e => e.CabinetFloor)
                     .HasMaxLength(3)
@@ -386,6 +365,18 @@ namespace ElectroJournal.DataBase
                     .HasColumnName("housing_name");
             });
 
+            modelBuilder.Entity<IdentificationType>(entity =>
+            {
+                entity.ToTable("identification_type");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("type");
+            });
+
             modelBuilder.Entity<Journal>(entity =>
             {
                 entity.HasKey(e => e.Idjournal)
@@ -531,43 +522,54 @@ namespace ElectroJournal.DataBase
                     .HasColumnName("periodclasses_start");
             });
 
-            modelBuilder.Entity<Requestcabinet>(entity =>
+            modelBuilder.Entity<Presence>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("presences");
 
-                entity.ToView("requestcabinet");
+                entity.HasIndex(e => e.IdentificatedAt, "identificated_at");
 
-                entity.Property(e => e.CabinetFeatures)
-                    .HasMaxLength(45)
-                    .HasColumnName("cabinet_features")
-                    .HasComment("особенности кабинета");
+                entity.HasIndex(e => e.IdentificationTypeId, "identification_type_id");
 
-                entity.Property(e => e.CabinetFloor)
-                    .HasMaxLength(3)
-                    .HasColumnName("cabinet_floor")
-                    .HasComment("этаж кабинета");
+                entity.HasIndex(e => e.SmartcardId, "smartcard_id");
 
-                entity.Property(e => e.CabinetName)
-                    .HasMaxLength(45)
-                    .HasColumnName("cabinet_name")
-                    .HasComment("название кабинета");
+                entity.HasIndex(e => e.StudentId, "student_id");
 
-                entity.Property(e => e.CabinetNumber)
-                    .IsRequired()
-                    .HasMaxLength(15)
-                    .HasColumnName("cabinet_number")
-                    .HasComment("номер кабинета");
+                entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CabinetNumberSeats)
-                    .HasColumnName("cabinet_number_seats")
-                    .HasComment("количество мест");
+                entity.Property(e => e.IdentificatedAt).HasColumnName("identificated_at");
 
-                entity.Property(e => e.Idcabinet).HasColumnName("idcabinet");
+                entity.Property(e => e.IdentificationTypeId).HasColumnName("identification_type_id");
 
-                entity.Property(e => e.IfnullHousingName)
-                    .IsRequired()
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("IFNULL(housing_name, '')");
+                entity.Property(e => e.PresenceDatetime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("presence_datetime");
+
+                entity.Property(e => e.SmartcardId).HasColumnName("smartcard_id");
+
+                entity.Property(e => e.StudentId).HasColumnName("student_id");
+
+                entity.HasOne(d => d.IdentificatedAtNavigation)
+                    .WithMany(p => p.Presences)
+                    .HasForeignKey(d => d.IdentificatedAt)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("presences_ibfk_4");
+
+                entity.HasOne(d => d.IdentificationType)
+                    .WithMany(p => p.Presences)
+                    .HasForeignKey(d => d.IdentificationTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("presences_ibfk_2");
+
+                entity.HasOne(d => d.Smartcard)
+                    .WithMany(p => p.Presences)
+                    .HasForeignKey(d => d.SmartcardId)
+                    .HasConstraintName("presences_ibfk_3");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Presences)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("presences_ibfk_1");
             });
 
             modelBuilder.Entity<Schedule>(entity =>
@@ -579,15 +581,17 @@ namespace ElectroJournal.DataBase
 
                 entity.HasIndex(e => e.CabinetIdcabinet, "fk_schedule_cabinet1_idx");
 
+                entity.HasIndex(e => e.DisciplinesIddisciplines, "fk_schedule_disciplines1_idx");
+
                 entity.HasIndex(e => e.GroupsIdgroups, "fk_schedule_groups1_idx");
 
                 entity.HasIndex(e => e.PeriodclassesIdperiodclasses, "fk_schedule_periodclasses1_idx");
 
+                entity.HasIndex(e => e.SchoolweekIdschoolweek, "fk_schedule_schoolweek1_idx");
+
                 entity.HasIndex(e => e.TeachersIdteachers, "fk_schedule_teachers1_idx");
 
                 entity.HasIndex(e => e.TypeclassesIdtypeclasses, "fk_schedule_typeclasses1_idx");
-
-                entity.HasIndex(e => e.WeekdayIdweekday, "fk_schedule_weekday1_idx");
 
                 entity.HasIndex(e => e.Idschedule, "idschedule_UNIQUE")
                     .IsUnique();
@@ -595,6 +599,8 @@ namespace ElectroJournal.DataBase
                 entity.Property(e => e.Idschedule).HasColumnName("idschedule");
 
                 entity.Property(e => e.CabinetIdcabinet).HasColumnName("cabinet_idcabinet");
+
+                entity.Property(e => e.DisciplinesIddisciplines).HasColumnName("disciplines_iddisciplines");
 
                 entity.Property(e => e.GroupsIdgroups).HasColumnName("groups_idgroups");
 
@@ -604,17 +610,23 @@ namespace ElectroJournal.DataBase
                     .HasColumnType("date")
                     .HasColumnName("schedule_date");
 
+                entity.Property(e => e.SchoolweekIdschoolweek).HasColumnName("schoolweek_idschoolweek");
+
                 entity.Property(e => e.TeachersIdteachers).HasColumnName("teachers_idteachers");
 
                 entity.Property(e => e.TypeclassesIdtypeclasses).HasColumnName("typeclasses_idtypeclasses");
-
-                entity.Property(e => e.WeekdayIdweekday).HasColumnName("weekday_idweekday");
 
                 entity.HasOne(d => d.CabinetIdcabinetNavigation)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.CabinetIdcabinet)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_schedule_cabinet1");
+
+                entity.HasOne(d => d.DisciplinesIddisciplinesNavigation)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.DisciplinesIddisciplines)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_schedule_disciplines1");
 
                 entity.HasOne(d => d.GroupsIdgroupsNavigation)
                     .WithMany(p => p.Schedules)
@@ -628,6 +640,12 @@ namespace ElectroJournal.DataBase
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_schedule_periodclasses1");
 
+                entity.HasOne(d => d.SchoolweekIdschoolweekNavigation)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.SchoolweekIdschoolweek)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_schedule_schoolweek1");
+
                 entity.HasOne(d => d.TeachersIdteachersNavigation)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.TeachersIdteachers)
@@ -639,12 +657,37 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.TypeclassesIdtypeclasses)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_schedule_typeclasses1");
+            });
 
-                entity.HasOne(d => d.WeekdayIdweekdayNavigation)
-                    .WithMany(p => p.Schedules)
-                    .HasForeignKey(d => d.WeekdayIdweekday)
+            modelBuilder.Entity<Schoolweek>(entity =>
+            {
+                entity.HasKey(e => e.Idschoolweek)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("schoolweek");
+
+                entity.HasIndex(e => e.StudyperiodIdstudyperiod, "fk_schoolweek_studyperiod1_idx");
+
+                entity.HasIndex(e => e.Idschoolweek, "idschoolweek_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Idschoolweek).HasColumnName("idschoolweek");
+
+                entity.Property(e => e.SchoolweekEnd)
+                    .HasColumnType("date")
+                    .HasColumnName("schoolweek_end");
+
+                entity.Property(e => e.SchoolweekStart)
+                    .HasColumnType("date")
+                    .HasColumnName("schoolweek_start");
+
+                entity.Property(e => e.StudyperiodIdstudyperiod).HasColumnName("studyperiod_idstudyperiod");
+
+                entity.HasOne(d => d.StudyperiodIdstudyperiodNavigation)
+                    .WithMany(p => p.Schoolweeks)
+                    .HasForeignKey(d => d.StudyperiodIdstudyperiod)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_schedule_weekday1");
+                    .HasConstraintName("fk_schoolweek_studyperiod1");
             });
 
             modelBuilder.Entity<Setting>(entity =>
@@ -672,6 +715,27 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.TeachersIdteachers)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_settings_teachers1");
+            });
+
+            modelBuilder.Entity<Smartcard>(entity =>
+            {
+                entity.ToTable("smartcards");
+
+                entity.HasIndex(e => e.StudentId, "student_id");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.SmartcardIdentifier)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("smartcard_identifier");
+
+                entity.Property(e => e.StudentId).HasColumnName("student_id");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Smartcards)
+                    .HasForeignKey(d => d.StudentId)
+                    .HasConstraintName("smartcards_ibfk_1");
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -736,6 +800,27 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.GroupsIdgroups)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_students_groups1");
+            });
+
+            modelBuilder.Entity<StudentFace>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("student_faces");
+
+                entity.HasIndex(e => e.StudentId, "student_id");
+
+                entity.Property(e => e.Face)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("face");
+
+                entity.Property(e => e.StudentId).HasColumnName("student_id");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany()
+                    .HasForeignKey(d => d.StudentId)
+                    .HasConstraintName("student_faces_ibfk_1");
             });
 
             modelBuilder.Entity<Studyperiod>(entity =>

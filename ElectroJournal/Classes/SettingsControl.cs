@@ -1,4 +1,5 @@
-﻿using ElectroJournal.Classes.DataBaseEJ;
+﻿using ElectroJournal.Classes.DataBaseEF;
+using ElectroJournal.Classes.DataBaseEJ;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;

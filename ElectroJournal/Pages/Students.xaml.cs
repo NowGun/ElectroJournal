@@ -1,4 +1,5 @@
 ﻿using ElectroJournal.Classes;
+using ElectroJournal.Classes.DataBaseEF;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -158,7 +159,9 @@ namespace ElectroJournal.Pages
                         .OrderBy(t => t.StudentsSurname)
                         .Where(t => EF.Functions.Like(t.StudentsSurname, $"%{SearchBox.Text}%") ||
                     EF.Functions.Like(t.StudentsName, $"%{SearchBox.Text}%") ||
-                    EF.Functions.Like(t.StudentsPatronymic, $"%{SearchBox.Text}%"))
+                    EF.Functions.Like(t.StudentsPatronymic, $"%{SearchBox.Text}%") ||
+                    EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsName, $"%{SearchBox.Template}%") ||
+                    EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsNameAbbreviated, $"%{SearchBox.Text}%"))
                         .ForEachAsync(t =>
                     {
                         ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
@@ -274,9 +277,6 @@ namespace ElectroJournal.Pages
             FillListBox();
             ListBoxGroups.Visibility = Visibility.Visible;
         }
-        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            ListBoxStudentsRefresh();
-        }
+        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => ListBoxStudentsRefresh();
     }
 }

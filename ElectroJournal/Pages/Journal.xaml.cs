@@ -287,7 +287,7 @@ namespace ElectroJournal.Pages
             {
                 if (student != null && disp != null & period != null && !String.IsNullOrWhiteSpace(score))
                 {
-                    DataBase.Journal journal = new DataBase.Journal
+                    Classes.DataBaseEF.Journal journal = new Classes.DataBaseEF.Journal
                     {
                         StudentsIdstudents = student.Idstudents,
                         DisciplinesIddisciplines = disp.Iddisciplines,
@@ -307,7 +307,7 @@ namespace ElectroJournal.Pages
             {
                 if (student != null && disp != null & period != null)
                 {
-                    DataBase.Journal? j = await db.Journals.FirstOrDefaultAsync(t => t.StudentsIdstudents == student.Idstudents && t.DisciplinesIddisciplines == disp.Iddisciplines && t.StudyperiodIdstudyperiod == period.Idstudyperiod && t.JournalDay == time2[2]);
+                    Classes.DataBaseEF.Journal? j = await db.Journals.FirstOrDefaultAsync(t => t.StudentsIdstudents == student.Idstudents && t.DisciplinesIddisciplines == disp.Iddisciplines && t.StudyperiodIdstudyperiod == period.Idstudyperiod && t.JournalDay == time2[2]);
 
                     if (j != null)
                     {

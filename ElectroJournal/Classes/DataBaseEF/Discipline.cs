@@ -1,9 +1,9 @@
-﻿using ElectroJournal.Classes.DataBaseEF;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
 
-namespace ElectroJournal.DataBase
+namespace ElectroJournal.Classes.DataBaseEF
 {
     public partial class Discipline
     {
@@ -12,6 +12,7 @@ namespace ElectroJournal.DataBase
             Disciplinehours = new HashSet<Disciplinehour>();
             Journals = new HashSet<Journal>();
             Journalthemes = new HashSet<Journaltheme>();
+            Schedules = new HashSet<Schedule>();
             TeachersHasDisciplines = new HashSet<TeachersHasDiscipline>();
         }
 
@@ -23,6 +24,7 @@ namespace ElectroJournal.DataBase
         public virtual ICollection<Disciplinehour> Disciplinehours { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual ICollection<Journaltheme> Journalthemes { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<TeachersHasDiscipline> TeachersHasDisciplines { get; set; }
     }
 }

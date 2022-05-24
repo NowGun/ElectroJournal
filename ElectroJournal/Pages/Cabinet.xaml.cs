@@ -1,4 +1,5 @@
 ﻿using ElectroJournal.Classes;
+using ElectroJournal.Classes.DataBaseEF;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
@@ -50,7 +51,7 @@ namespace ElectroJournal.Pages
             {
                 using zhirovContext db = new();
 
-                DataBase.Cabinet? cab = await db.Cabinets.FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
+                Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
 
                 if (cab != null)
                 {
@@ -130,7 +131,7 @@ namespace ElectroJournal.Pages
 
                 if (ListBoxCabinet.SelectedItem != null)
                 {
-                    DataBase.Cabinet? cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
+                    Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
 
                     if (cab != null)
                     {
@@ -147,7 +148,7 @@ namespace ElectroJournal.Pages
                 }
                 else
                 {
-                    DataBase.Cabinet cab = new()
+                    Classes.DataBaseEF.Cabinet cab = new()
                     {
                         CabinetName = TextBoxName.Text,
                         CabinetNumberSeats= Int32.Parse(TextBoxNumSeats.Text),

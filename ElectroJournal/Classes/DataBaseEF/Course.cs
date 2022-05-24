@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
-namespace ElectroJournal.DataBase
+namespace ElectroJournal.Classes.DataBaseEF
 {
     public partial class Course
     {

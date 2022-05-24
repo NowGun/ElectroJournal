@@ -53,8 +53,8 @@ namespace ElectroJournal.UControl
 
                     foreach (var t in time)
                     {
-                        ScheduleStart.Add(t.PeriodclassesStart.ToString("hh':'mm"));
-                        ScheduleEnd.Add(t.PeriodclassesEnd.ToString("hh':'mm"));
+                        ScheduleStart.Add(t.PeriodclassesStart.ToString());
+                        ScheduleEnd.Add(t.PeriodclassesEnd.ToString());
                         ScheduleNumber.Add(t.PeriodclassesNumber);
                         checkFillScheduleDB = false;
                     }

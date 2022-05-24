@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ElectroJournal.DataBase
+namespace ElectroJournal.Classes.DataBaseEF
 {
     public partial class Student
     {
         public Student()
         {
             Journals = new HashSet<Journal>();
+            Presences = new HashSet<Presence>();
+            Smartcards = new HashSet<Smartcard>();
         }
 
         public uint Idstudents { get; set; }
@@ -26,5 +28,7 @@ namespace ElectroJournal.DataBase
 
         public virtual Group GroupsIdgroupsNavigation { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
+        public virtual ICollection<Presence> Presences { get; set; }
+        public virtual ICollection<Smartcard> Smartcards { get; set; }
     }
 }

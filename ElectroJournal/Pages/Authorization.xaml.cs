@@ -1,4 +1,5 @@
 ﻿using ElectroJournal.Classes;
+using ElectroJournal.Classes.DataBaseEF;
 using ElectroJournal.DataBase;
 using ElectroJournal.UControl;
 using ElectroJournal.Windows;
