@@ -13,7 +13,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public uint TeachersIdteachers { get; set; }
         public uint CabinetIdcabinet { get; set; }
         public uint TypeclassesIdtypeclasses { get; set; }
-        public DateTime ScheduleDate { get; set; }
+        public DateOnly ScheduleDate { get; set; }
         public uint DisciplinesIddisciplines { get; set; }
         public uint SchoolweekIdschoolweek { get; set; }
 

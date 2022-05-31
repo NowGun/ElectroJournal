@@ -5,18 +5,21 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:StartEJ.Pages"
       mc:Ignorable="d"
-      Title="ConnectDB" Height="474" Width="674">
+      Title="ConnectDB">
 
-    <Grid Width="674" Height="474">
-        <Label Content="Подключение к базе данных" Margin="20,0,0,0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40"/>
-        <Label Content="IP-адрес" Margin="40,80,0,0" FontSize="14" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label Content="Логин" Margin="40,136,0,0" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Label Content="Пароль" Margin="40,191,0,0" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Label Content="Введите данные для подключения к базе данных вашей учебной организации. &#xD;&#xA;Это необходимо для полноценной работы с приложением &quot;Electro Journal&quot;. &#xD;&#xA;Введенные данные будут зашифрованы и сохранены на вашем &#xD;&#xA;персональном компьютере. " HorizontalAlignment="Left" Height="101" VerticalAlignment="Top" Width="599" Margin="40,308,0,0" FontSize="16" Foreground="Gray"/>
-        <TextBox x:Name="TextBoxIP" Margin="140,74,284,365" Height="35" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewTextInput="TextBoxIP_PreviewTextInput"/>
-        <TextBox x:Name="TextBoxLogin" Margin="140,130,0,0" Width="250" Height="35" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="TextBoxPassword" Margin="140,185,0,0" Height="35" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button x:Name="ButtonNext" Content="Далее" Style="{DynamicResource WPFUIButtonAccent}" Margin="0,0,35,4" Height="34" Width="150" FontSize="14" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="ButtonNext_Click"/>
-        <Button x:Name="ButtonAdmin" Content="Я администратор" Style="{DynamicResource WPFUIButtonStandard}" Margin="334,436,190,3" FontSize="14" Height="35" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="ButtonAdmin_Click"/>
+    <Grid>
+        <Label Content="Подключение к базе данных" Margin="20,0,0,0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="IP-адрес" Margin="20,110,0,0" FontSize="14" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Логин" Margin="20,165,0,0" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="Пароль" Margin="20,220,0,0" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="Введите данные для подключения к базе данных вашей учебной организации. &#xD;&#xA;Это необходимо для полноценной работы с приложением &quot;Electro Journal&quot;. &#xD;&#xA;Введенные данные будут зашифрованы и сохранены на вашем &#xD;&#xA;персональном компьютере. " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,50" FontSize="16" Foreground="Gray"/>
+        <TextBox x:Name="TextBoxIP" Margin="100,104,0,0" Height="35" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewTextInput="TextBoxIP_PreviewTextInput"/>
+        <TextBox x:Name="TextBoxLogin" Margin="100,159,0,0" Width="300" Height="35" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="TextBoxPassword" Margin="100,214,0,0" Height="35" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="ButtonNext" Content="Далее" Style="{DynamicResource WPFUIButtonAccent}" Margin="0,0,20,0" Height="35" Width="150" FontSize="14" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="ButtonNext_Click"/>
+        <Button x:Name="ButtonAdmin" Content="Я администратор" Style="{DynamicResource WPFUIButtonStandard}" Margin="0,0,180,0" FontSize="14" Height="35" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="ButtonAdmin_Click"/>
+        <RadioButton Content="Пользовательский сервер" Margin="20,65,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
+        <RadioButton Content="Арендованный сервер" Margin="442,69,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
+        <ComboBox HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="35" Margin="442,104,20,0"/>
     </Grid>
 </Page>

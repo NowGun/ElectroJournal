@@ -6,10 +6,16 @@
     <UseWPF>true</UseWPF>
     <PlatformTarget>x86</PlatformTarget>
     <Platforms>AnyCPU;x86</Platforms>
+    <ApplicationIcon>logoEJ48.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="logo300.png" />
+    <None Remove="logoEJ48.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logoEJ48.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +41,7 @@
 
   <ItemGroup>
     <Resource Include="logo300.png" />
+    <Resource Include="logoEJ48.ico" />
   </ItemGroup>
 
 </Project>

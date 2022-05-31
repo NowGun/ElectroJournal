@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
-    <ApplicationIcon>Images\Logo\logo75.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Logo\logoEJ483.ico</ApplicationIcon>
     <PlatformTarget>x86</PlatformTarget>
     <Platforms>AnyCPU;x86;x64</Platforms>
     <AssemblyVersion></AssemblyVersion>
@@ -14,15 +14,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <Optimize>True</Optimize>
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Optimize>True</Optimize>
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,8 +37,7 @@
     <None Remove="Images\34px-Vector_Loading.svg.png" />
     <None Remove="Images\Icons\icons8-ok-144.png" />
     <None Remove="Images\Logo\logo300.png" />
-    <None Remove="Images\Logo\logo75.png" />
-    <None Remove="Images\Logo\logo80.png" />
+    <None Remove="Images\Logo\logoEJ483.png" />
     <None Remove="Images\qr40184535.png" />
     <None Remove="Images\Startup\startUP3.png" />
     <None Remove="Images\Startup\startUP4.png" />
@@ -49,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\Logo\logo75.ico" />
+    <Content Include="Images\Logo\logoEJ483.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,8 +108,7 @@
     <Resource Include="Images\34px-Vector_Loading.svg.png" />
     <Resource Include="Images\Icons\icons8-ok-144.png" />
     <Resource Include="Images\Logo\logo300.png" />
-    <Resource Include="Images\Logo\logo75.png" />
-    <Resource Include="Images\Logo\logo80.png" />
+    <Resource Include="Images\Logo\logoEJ483.png" />
     <Resource Include="Images\qr40184535.png" />
     <SplashScreen Include="Images\Startup\startUP3.png" />
   </ItemGroup>

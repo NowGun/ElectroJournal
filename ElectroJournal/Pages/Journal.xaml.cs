@@ -72,9 +72,8 @@ namespace ElectroJournal.Pages
                             .ToListAsync();
                         await Task.Run(() =>
                         {
-                        foreach (var score in scoreList)
-                        {
-                            
+                            foreach (var score in scoreList)
+                            {
                                 for (int i = 1; i <= stuud; i++)
                                 {
                                     for (int j = 1; j < daysTable; j++)
@@ -96,8 +95,7 @@ namespace ElectroJournal.Pages
                                         }
                                     }
                                 }
-                            
-                        }
+                            }
                         });
                     }
                 }

@@ -38,11 +38,6 @@ namespace ElectroJournal.Pages
         private int lastFoundIndex = -1;
         private string pass;
 
-        private void PersonPicture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new();
-            openFileDialog.ShowDialog();
-        }
         private void SearchBoxDiscipline_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (ListViewTeachers.SelectedItems != null)
@@ -66,14 +61,14 @@ namespace ElectroJournal.Pages
                 switch (ComboBoxSortingTeacher.SelectedIndex)
                 {
                     case 0:
-                        await db.Teachers.OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
+                        await db.Teachers.OrderBy(t => t.TeachersSurname).Where(t => t.Idteachers != 83).ForEachAsync(t =>
                         {
                             ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
                             idTeachers.Add((int)t.Idteachers);
                         });
                         break;
                     case 1:
-                        await db.Teachers.OrderByDescending(t => t.TeachersSurname).ForEachAsync(t =>
+                        await db.Teachers.OrderByDescending(t => t.TeachersSurname).Where(t => t.Idteachers != 83).ForEachAsync(t =>
                         {
                             ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
                             idTeachers.Add((int)t.Idteachers);
@@ -85,9 +80,9 @@ namespace ElectroJournal.Pages
             {
                 await db.Teachers
                     .OrderBy(t => t.TeachersSurname)
-                    .Where(t => EF.Functions.Like(t.TeachersName, $"%{SearchBox.Text}%") ||
+                    .Where(t => (EF.Functions.Like(t.TeachersName, $"%{SearchBox.Text}%") ||
                     EF.Functions.Like(t.TeachersSurname, $"%{SearchBox.Text}%") ||
-                    EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBox.Text}%"))
+                    EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBox.Text}%")) && t.Idteachers != 83)
                     .ForEachAsync(t =>
                     {
                         ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
@@ -313,8 +308,6 @@ namespace ElectroJournal.Pages
                         }
                         else
                         {
-                            var teac = await db.Teachers.Where(p => p.TeachersMail == TextBoxTeachersMail.Text).ToListAsync();
-
                             Teacher teacher = new()
                             {
                                 TeachersName = FIO[1],
@@ -326,27 +319,19 @@ namespace ElectroJournal.Pages
                                 TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
                             };
 
-                            if (teac.Count == 0)
+                            if (mail.Count == 0)
                             {
-                                if (mail.Count == 0)
-                                {
-                                    await db.Teachers.AddAsync(teacher);
-                                    await db.SaveChangesAsync();
+                                await db.Teachers.AddAsync(teacher);
+                                await db.SaveChangesAsync();
 
-                                    SendPasswordToUser();
-                                    //SendSMSToUser();
+                                SendPasswordToUser();
+                                //SendSMSToUser();
 
-                                    TextBoxTeachersFIO.Clear();
-                                    TextBoxTeachersPhone.Clear();
-                                    TextBoxTeachersMail.Clear();
-                                    CheckBoxAdminAccess.IsChecked = false;
-                                    FillListBoxTeachers();
-                                    ClearValue();
-                                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
-                                }
-                                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта занята");
+                                ClearValue();
+                                FillListBoxTeachers();
+                                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
                             }
-                            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данный логин уже занят");
+                            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данная почта занята");
                         }
                     }
                     else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");

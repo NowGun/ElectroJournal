@@ -25,7 +25,7 @@ namespace ElectroJournal.Pages
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(TextBoxFullName.Text))
+            if (!string.IsNullOrWhiteSpace(TextBoxName.Text))
             {
                 if (ListBoxDiscipline.SelectedItem != null)
                 {
@@ -60,14 +60,14 @@ namespace ElectroJournal.Pages
 
                         await db.Disciplines.AddAsync(disp);
                         await db.SaveChangesAsync();
-
-                        TextBoxFullName.Clear();
-                        TextBoxName.Clear();
-                        TextBoxIndex.Clear();
+                        
                         FillListBoxDisciplines();
                         ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
                     }
                 }
+                TextBoxFullName.Clear();
+                TextBoxName.Clear();
+                TextBoxIndex.Clear();
             }
             else
             {
@@ -76,39 +76,46 @@ namespace ElectroJournal.Pages
         }
         private async void FillListBoxDisciplines()
         {
-            ListBoxDiscipline.Items.Clear();
-            idDisp.Clear();
-
-            using zhirovContext db = new();
-
-            if (String.IsNullOrWhiteSpace(SearchBox.Text))
+            try
             {
-                switch (ComboBoxSorting.SelectedIndex)
+                ListBoxDiscipline.Items.Clear();
+                idDisp.Clear();
+
+                using zhirovContext db = new();
+
+                if (String.IsNullOrWhiteSpace(SearchBox.Text))
                 {
-                    case 0:
-                        await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
-                        {
-                            ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
-                            idDisp.Add((int)t.Iddisciplines);
-                        });
-                        break;
-                    case 1:
-                        await db.Disciplines.OrderByDescending(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
-                        {
-                            ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
-                            idDisp.Add((int)t.Iddisciplines);
-                        });
-                        break;
+                    switch (ComboBoxSorting.SelectedIndex)
+                    {
+                        case 0:
+                            await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
+                            {
+                                ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                                idDisp.Add((int)t.Iddisciplines);
+                            });
+                            break;
+                        case 1:
+                            await db.Disciplines.OrderByDescending(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
+                            {
+                                ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                                idDisp.Add((int)t.Iddisciplines);
+                            });
+                            break;
+                    }
+                }
+                else
+                {
+                    await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")).ForEachAsync(t =>
+                    {
+                        ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                        idDisp.Add((int)t.Iddisciplines);
+                    });
                 }
             }
-            else
+            catch 
             {
-                await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")).ForEachAsync(t =>
-                {
-                    ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
-                    idDisp.Add((int)t.Iddisciplines);
-                });
-            }
+
+            }            
         }
         private async void ListBoxDiscipline_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

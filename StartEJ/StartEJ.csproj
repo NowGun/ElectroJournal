@@ -7,7 +7,16 @@
     <UseWPF>true</UseWPF>
     <PlatformTarget>x86</PlatformTarget>
     <Platforms>AnyCPU;x86</Platforms>
+    <ApplicationIcon>logoEJ48.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logoEJ48.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logoEJ48.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj" />
@@ -16,16 +25,14 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="DataBase\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.14">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MySql.Data" Version="8.0.28" />
-    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
   </ItemGroup>
 
 </Project>

@@ -48,10 +48,6 @@ namespace ElectroJournal.Classes.DataBaseEJ
 
                 entity.Property(e => e.Idbugreporter).HasColumnName("idbugreporter");
 
-                entity.Property(e => e.BugreporterImage)
-                    .HasColumnType("text")
-                    .HasColumnName("bugreporter_image");
-
                 entity.Property(e => e.BugreporterMessage)
                     .IsRequired()
                     .HasColumnType("text")

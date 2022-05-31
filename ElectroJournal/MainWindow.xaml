@@ -15,7 +15,6 @@
     Background="{x:Null}"
     Closing="Window_Closing"
     ContentRendered="Window_ContentRendered"
-    Icon="/Images/Logo/logo75.png"
     Loaded="Window_Loaded"
     Style="{DynamicResource UiWindowRounded}"
     WindowStartupLocation="CenterScreen"
@@ -286,8 +285,7 @@
             <wpfui:TitleBar
                 x:Name="TitleBar"
                 Grid.Row="0"
-                Height="47"
-                Icon="/Images/Logo/logo75.png"
+                Icon="/Images/Logo/logoEJ483.png"
                 MinimizeToTray="False">
                 <wpfui:TitleBar.Header>
                     <ucontrol:Calls
@@ -297,7 +295,7 @@
                 </wpfui:TitleBar.Header>
                 <wpfui:TitleBar.Tray>
                     <wpfui:NotifyIcon
-                        Icon="/Images/Logo/logo75.png"
+                        Icon="/Images/Logo/logoEJ483.png"
                         LeftDoubleClick="TitleBar_NotifyIconDoubleClick"
                         TooltipText="ElectroJournal">
                         <wpfui:NotifyIcon.Menu>

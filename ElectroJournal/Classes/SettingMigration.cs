@@ -11,30 +11,20 @@ namespace ElectroJournal.Classes
         {
             try
             {
-                try
-                {
-                    XmlDocument xmlDocument = new XmlDocument();
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load("setting.xml");
 
-                    xmlDocument.Load("setting.xml");
+                Properties.Settings.Default.Server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
+                Properties.Settings.Default.UserName = xmlDocument.GetElementsByTagName("username")[0].InnerText;
+                Properties.Settings.Default.Password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
+                Properties.Settings.Default.Theme = Int32.Parse(xmlDocument.GetElementsByTagName("theme")[0].InnerText);
+                Properties.Settings.Default.StartEJ = 1;
 
-                    Properties.Settings.Default.Server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
-                    Properties.Settings.Default.UserName = xmlDocument.GetElementsByTagName("username")[0].InnerText;
-                    Properties.Settings.Default.Password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
-                    Properties.Settings.Default.Theme = Int32.Parse(xmlDocument.GetElementsByTagName("theme")[0].InnerText);
-                    Properties.Settings.Default.StartEJ = 1;
-
-                    Properties.Settings.Default.Save();
-
-                    FileInfo fi = new FileInfo("setting.xml");
-
-                    if (fi.Exists)
-                    {
-                        fi.Delete();
-                    }
-                }
-                catch (System.FormatException) { }
+                Properties.Settings.Default.Save();
+                FileInfo fi = new FileInfo("setting.xml");
+                if (fi.Exists) fi.Delete();
             }
-            catch (System.IO.FileNotFoundException)
+            catch
             {
 
             }

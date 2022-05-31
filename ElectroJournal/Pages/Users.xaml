@@ -762,7 +762,7 @@
                         Margin="178,29,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="Фамилия И. О."
+                        Content=""
                         FontSize="20" />
                     <Label
                         x:Name="LabelDeletePhoto"
@@ -803,7 +803,6 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         PreviewTextInput="TextBoxPhone_PreviewTextInput"
-                        Text="89999999999"
                         TextWrapping="Wrap" />
                     <Label
                         Width="100"
@@ -822,7 +821,6 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         PreviewTextInput="TextBoxMail_PreviewTextInput"
-                        Text="pochta@gmail.com"
                         TextWrapping="Wrap" />
                     <Label
                         Width="100"
@@ -850,7 +848,6 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         IsEnabled="False"
-                        Text="ПКС 4"
                         TextWrapping="Wrap" />
                     <TextBox
                         x:Name="TextBoxCabinet"
@@ -860,7 +857,6 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         IsReadOnly="True"
-                        Text="45"
                         TextWrapping="Wrap" />
                     <Label
                         Width="100"
@@ -879,8 +875,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         VerticalContentAlignment="Center"
-                        IsEnabled="False"
-                        Password="**************" />
+                        IsEnabled="False" />
                     <Button
                         x:Name="ButtonResetPassword"
                         Width="185"

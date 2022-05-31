@@ -13,8 +13,8 @@ namespace ElectroJournal.Classes.DataBaseEF
         }
 
         public uint Idschoolweek { get; set; }
-        public DateTime SchoolweekStart { get; set; }
-        public DateTime SchoolweekEnd { get; set; }
+        public DateOnly? SchoolweekStart { get; set; }
+        public DateOnly? SchoolweekEnd { get; set; }
         public uint StudyperiodIdstudyperiod { get; set; }
 
         public virtual Studyperiod StudyperiodIdstudyperiodNavigation { get; set; }

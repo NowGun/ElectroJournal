@@ -6,34 +6,31 @@
     xmlns:local="clr-namespace:StartEJ.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Admin"
-    Width="674"
-    Height="474"
     mc:Ignorable="d">
 
     <Grid>
         <Label
-            Height="40"
             Margin="20,0,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Подключение к базе данных (Администратор)"
             FontSize="24" />
         <Label
-            Margin="40,80,0,0"
+            Margin="20,110,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Content="IP-адрес"
             FontSize="14" />
         <Label
-            Margin="40,136,0,0"
+            Margin="20,165,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Content="Логин"
             FontSize="14" />
         <Label
-            Margin="40,191,0,0"
+            Margin="20,220,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
@@ -41,59 +38,66 @@
             FontSize="14" />
         <TextBox
             x:Name="TextBoxIP"
-            Width="250"
+            Width="300"
             Height="35"
-            Margin="140,74,284,365"
+            Margin="100,104,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            PreviewTextInput="TextBoxIP_PreviewTextInput" Text="80.240.250.128" />
-        <TextBox
-            x:Name="TextBoxPassword"
-            Width="250"
-            Height="35"
-            Margin="140,185,284,254"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" Text="64580082" />
+            PreviewTextInput="TextBoxIP_PreviewTextInput" />
         <TextBox
             x:Name="TextBoxLogin"
-            Width="250"
+            Width="300"
             Height="35"
-            Margin="140,130,284,309"
+            Margin="100,159,0,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top" Text="Zhirov" />
+            VerticalAlignment="Top" />
+        <TextBox
+            x:Name="TextBoxPassword"
+            Width="300"
+            Height="35"
+            Margin="100,214,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"  />
+        <TextBox
+            x:Name="TextBoxFIO"
+            Width="400"
+            Height="35"
+            Margin="100,304,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
+        <TextBox
+            x:Name="TextBoxMail"
+            Width="400"
+            Height="35"
+            Margin="100,354,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
+        <TextBox
+            x:Name="TextBoxPass"
+            Width="400"
+            Height="35"
+            Margin="100,404,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"  />
         <Label
-            Margin="40,246,0,0"
+            Margin="20,310,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Content="ФИО"
             FontSize="14" />
-        <TextBox
-            x:Name="TextBoxFIO"
-            Width="418"
-            Height="35"
-            Margin="140,240,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" Text="Жиров Даниил Александрович" />
         <Label
-            Margin="40,301,0,0"
+            Margin="20,360,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Content="Почта"
             FontSize="14" />
-        <TextBox
-            x:Name="TextBoxMail"
-            Width="418"
-            Height="35"
-            Margin="140,295,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" Text="nowgun98@gmail.com" />
         <Button
             x:Name="ButtonNext"
             Width="150"
-            Height="34"
-            Margin="0,0,35,4"
+            Height="35"
+            Margin="0,0,20,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Click="ButtonNext_Click"
@@ -104,11 +108,26 @@
             x:Name="ButtonBack"
             Width="150"
             Height="35"
-            Margin="334,436,190,3"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="Я администратор"
+            Content="Назад"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonBack_Click" />
+            Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonBack_Click" Cursor="Hand" Margin="0,0,180,0" />
+        <Label
+            Margin="20,410,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
+            Content="Пароль"
+            FontSize="14" />
+        <Label
+            Margin="20,263,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Создание учетной записи"
+            FontSize="20" />
+        <RadioButton Content="Пользовательский сервер" Margin="20,65,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
+        <RadioButton Content="Арендованный сервер" Margin="442,69,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
+        <ComboBox VerticalAlignment="Top" Height="35" Margin="442,104,20,0"/>
     </Grid>
 </Page>

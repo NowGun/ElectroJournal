@@ -32,6 +32,7 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             (Application.Current.MainWindow as MainWindow).loginbool = true;
+            TextBoxLogin.Focus();
         }
 
         SettingsControl settingsControl = new();

@@ -37,7 +37,7 @@
     <Color x:Key="ButtonTextStandardPressed">#626262</Color>
     <Color x:Key="ButtonTextRestStandard">#1A1A1A</Color>
 
-
+    <Color x:Key="SystemAccentColorListBox">#F1F1F1</Color>
 
 
 

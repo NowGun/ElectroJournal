@@ -53,20 +53,18 @@
                     TextWrapping="Wrap" />
                 <TextBox
                     x:Name="TextBoxName"
-                    Width="263"
                     Height="35"
                     Margin="280,88,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap" MinHeight="35" MinWidth="270" />
                 <TextBox
                     x:Name="TextBoxFullName"
-                    Width="263"
                     Height="35"
                     Margin="280,24,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap" MinWidth="270" />
                 <Label
                     Height="35"
                     Margin="25,24,0,0"

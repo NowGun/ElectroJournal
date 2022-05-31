@@ -31,7 +31,7 @@ namespace ElectroJournal.Pages
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
             CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;
             CheckBoxUpdate.IsChecked = Properties.Settings.Default.CheckUpdate;
-            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 10.05.2022";
+            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 12.05.2022";
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server))
             {
                 LabelIpAddress.Content = Properties.Settings.Default.Server;

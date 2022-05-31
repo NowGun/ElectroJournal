@@ -36,7 +36,6 @@ namespace StartEJ.Pages
                 e.Handled = true;
             }
         }
-
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(TextBoxIP.Text) && !string.IsNullOrWhiteSpace(TextBoxLogin.Text) && !string.IsNullOrWhiteSpace(TextBoxPassword.Text))
@@ -53,17 +52,13 @@ namespace StartEJ.Pages
 
                 xmlDocument.Save("setting.xml");
 
-                ((MainWindow)System.Windows.Application.Current.MainWindow).FrameEJ.Navigate(new Pages.Theme());
+                ((MainWindow)Application.Current.MainWindow).FrameEJ.Navigate(new Theme());
             }
             else
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните все поля");
+                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Заполните все поля");
             } 
         }
-
-        private void ButtonAdmin_Click(object sender, RoutedEventArgs e)
-        {
-            ((MainWindow)System.Windows.Application.Current.MainWindow).FrameEJ.Navigate(new Pages.Admin());
-        }
+        private void ButtonAdmin_Click(object sender, RoutedEventArgs e) => ((MainWindow)Application.Current.MainWindow).FrameEJ.Navigate(new Admin());
     }
 }

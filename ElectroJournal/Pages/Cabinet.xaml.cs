@@ -125,9 +125,12 @@ namespace ElectroJournal.Pages
         }
         private async void ButtonSaveCabinet_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(TextBoxName.Text) && ListBoxHousing.SelectedItem != null)
+            if (!string.IsNullOrWhiteSpace(TextBoxCabinet.Text) && ListBoxHousing.SelectedItem != null)
             {
                 using zhirovContext db = new();
+                int a;
+                if (String.IsNullOrWhiteSpace(TextBoxNumSeats.Text)) a = 0;
+                else a = Int32.Parse(TextBoxNumSeats.Text);
 
                 if (ListBoxCabinet.SelectedItem != null)
                 {
@@ -136,7 +139,7 @@ namespace ElectroJournal.Pages
                     if (cab != null)
                     {
                         cab.CabinetName = TextBoxName.Text;
-                        cab.CabinetNumberSeats = Int32.Parse(TextBoxNumSeats.Text);
+                        cab.CabinetNumberSeats = a;
                         cab.CabinetFloor = TextBoxFloor.Text;
                         cab.CabinetNumber = TextBoxCabinet.Text;
                         cab.HousingIdhousing = (uint)idHousing[ListBoxHousing.SelectedIndex];
@@ -151,7 +154,7 @@ namespace ElectroJournal.Pages
                     Classes.DataBaseEF.Cabinet cab = new()
                     {
                         CabinetName = TextBoxName.Text,
-                        CabinetNumberSeats= Int32.Parse(TextBoxNumSeats.Text),
+                        CabinetNumberSeats= a,
                         CabinetFloor= TextBoxFloor.Text,
                         CabinetNumber= TextBoxCabinet.Text,
                         HousingIdhousing = (uint)idHousing[ListBoxHousing.SelectedIndex]
@@ -162,6 +165,12 @@ namespace ElectroJournal.Pages
 
                     ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                 }
+
+                TextBoxCabinet.Clear();
+                TextBoxFloor.Clear();
+                TextBoxName.Clear();
+                TextBoxNumSeats.Clear();
+                ListBoxHousing.SelectedIndex = -1;
 
                 FillListBoxCabinet();
             }

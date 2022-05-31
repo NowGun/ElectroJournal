@@ -20,18 +20,8 @@
             Title="Первоначальная настройка ElectroJournal"
             Grid.Row="0"
             Height="48" />
-
-        <wpfui:Card
-            Width="700"
-            Height="500"
-            Margin="0,60,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top">
-            <Grid>
-                <Frame x:Name="FrameEJ" />
-
-            </Grid>
-        </wpfui:Card>
+        <Frame x:Name="FrameEJ"
+            Margin="20,60,20,20"/>
         <controls1:NotificationArea
             x:Name="WindowArea"
             Margin="0,53,10,0"

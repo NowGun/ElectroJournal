@@ -189,7 +189,7 @@ namespace ElectroJournal.Pages
 
             using (zhirovContext db = new zhirovContext())
             {
-                await db.Typelearnings.OrderBy(t => t.TypelearningName).ForEachAsync(t =>
+                await db.Typelearnings.OrderByDescending(t => t.TypelearningName).ForEachAsync(t =>
                 {
                     ComboBoxTypeLearning.Items.Add(t.TypelearningName);
                     idTypeLearning.Add((int)t.Idtypelearning);

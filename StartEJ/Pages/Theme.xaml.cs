@@ -32,35 +32,32 @@ namespace StartEJ.Pages
 
         private void ButtonEnd_Click(object sender, RoutedEventArgs e)
         {
-            xmlDocument.Load("setting.xml");
-
-            XmlNode theme = xmlDocument.GetElementsByTagName("theme")[0];
-
-            theme.InnerText = themeSelect;
-
-            xmlDocument.Save("setting.xml");
-
-            ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
-            Process.Start("ElectroJournal.exe");
+            try
+            {
+                xmlDocument.Load("setting.xml");
+                XmlNode theme = xmlDocument.GetElementsByTagName("theme")[0];
+                theme.InnerText = themeSelect;
+                xmlDocument.Save("setting.xml");
+                Process.Start("ElectroJournal.exe");
+                ((MainWindow)System.Windows.Application.Current.MainWindow).Close();
+            }
+            catch 
+            {
+                ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Приложение для запуска не найдено, переустановите приложение");
+            }            
         }
-
         private void GridBlack_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             themeSelect = "1";
             ((MainWindow)System.Windows.Application.Current.MainWindow).theme = 1;
             ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
         }
-
         private void GridLight_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             themeSelect = "0";
             ((MainWindow)System.Windows.Application.Current.MainWindow).theme = 0;
             ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
         }
-
-        private void ButtonBack_Click(object sender, RoutedEventArgs e)
-        {
-            ((MainWindow)System.Windows.Application.Current.MainWindow).FrameEJ.Navigate(new Pages.ConnectDB());
-        }
+        private void ButtonBack_Click(object sender, RoutedEventArgs e) => ((MainWindow)System.Windows.Application.Current.MainWindow).FrameEJ.Navigate(new Pages.ConnectDB());
     }
 }

@@ -33,7 +33,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">0.34</Value>
+      <Value Profile="(Default)">1.0.0</Value>
     </Setting>
     <Setting Name="RememberData" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

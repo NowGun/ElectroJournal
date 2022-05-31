@@ -76,15 +76,6 @@
                 FontSize="14"
                 IsDefault="True"
                 Style="{DynamicResource WPFUIButtonAccent}" />
-            <PasswordBox
-                x:Name="TextBoxPassword"
-                Width="220"
-                Height="35"
-                Margin="52,46,52,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                FontSize="16" />
             <wpfui:TextBox
                 x:Name="TextBoxLogin"
                 Width="220"
@@ -98,6 +89,15 @@
                 HorizontalScrollBarVisibility="Auto"
                 
                 TextWrapping="Wrap" />
+            <PasswordBox
+                x:Name="TextBoxPassword"
+                Width="220"
+                Height="35"
+                Margin="52,46,52,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSize="16" />
             <Rectangle
                 x:Name="RectangleLoadLogin"
                 Width="25"

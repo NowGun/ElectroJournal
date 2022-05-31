@@ -5,6 +5,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
     <Platforms>AnyCPU;x86</Platforms>
+    <Description>Программа для распаковки файла с обновлением электронного журнала.</Description>
+    <Copyright>Жиров Д. А.</Copyright>
+    <ApplicationIcon>logoEJ48.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logoEJ48.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logoEJ48.ico" />
+  </ItemGroup>
 
 </Project>
