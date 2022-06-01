@@ -37,7 +37,6 @@
     </UserControl.Resources>
     <Label
         x:Name="LabelScheduleCall"
-        Padding="0,0,0,0"
         HorizontalAlignment="Center"
         VerticalAlignment="Center" />
 </UserControl>

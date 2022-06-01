@@ -203,8 +203,7 @@
     <Grid x:Name="GridDefault" x:FieldModifier="public">
         <Grid
             x:Name="GridBlackTheme"
-            d:IsHidden="True"
-            Visibility="Hidden">
+            Visibility="Hidden" d:IsHidden="True">
             <Grid.Background>
                 <LinearGradientBrush MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
                     <GradientStop Color="#FF1D2029" />
@@ -517,16 +516,12 @@
             <StackPanel x:Name="GridComboGroups"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Orientation="Horizontal" Margin="0,5,135,0">
+                Orientation="Horizontal" Margin="0,6,135,0">
                 <Label
                     x:Name="LabelGroup"
-                    Width="60"
-                    Height="35"
-                    Margin="0,0,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Content="Группа:" />
+                    Content="Группа:" Margin="0,0,10,0" />
                 <ComboBox
                     x:Name="ComboBoxGroup"
                     Width="200"
