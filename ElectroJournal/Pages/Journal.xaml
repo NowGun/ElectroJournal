@@ -1,97 +1,163 @@
-﻿<ui:Page x:Class="ElectroJournal.Pages.Journal"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:ui="http://schemas.modernwpf.com/2019"
-      xmlns:local="clr-namespace:ElectroJournal.Pages"
-      xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
-      mc:Ignorable="d"
-      Title="Journal" Margin="20,20,20,20">
+﻿<ui:Page
+    x:Class="ElectroJournal.Pages.Journal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ElectroJournal.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    Title="Journal"
+    Margin="20,20,20,20"
+    mc:Ignorable="d">
     <Page.Resources>
         <Storyboard x:Key="AnimOpenLoad">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="20">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarJournal" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarJournal" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.KernelType)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static KernelType.Gaussian}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static KernelType.Gaussian}" />
             </ObjectAnimationUsingKeyFrames>
             <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False"/>
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False" />
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="False" />
             </BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimCloseLoad">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.Effect).(BlurEffect.Radius)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarJournal" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.3000000" Value="{x:Static Visibility.Hidden}" />
             </ObjectAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressBarJournal" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ExponentialEase EasingMode="EaseInOut"/>
+                        <ExponentialEase EasingMode="EaseInOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ReoGrid" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="True"/>
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False" />
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00.3000000" Value="True" />
             </BooleanAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
 
     <Grid>
-        <rg:ReoGridControl x:Name="ReoGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewTextInput="ReoGrid_PreviewTextInput" Margin="10,45,10,10" WorkbookLoaded="ReoGrid_WorkbookLoaded">
+        <rg:ReoGridControl
+            x:Name="ReoGrid"
+            Margin="10,45,10,10"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            PreviewTextInput="ReoGrid_PreviewTextInput"
+            WorkbookLoaded="ReoGrid_WorkbookLoaded">
             <rg:ReoGridControl.Effect>
-                <BlurEffect Radius="0"/>
+                <BlurEffect Radius="0" />
             </rg:ReoGridControl.Effect>
         </rg:ReoGridControl>
         <ProgressBar
-                    x:Name="ProgressBarJournal"
-                    Foreground="#FF3567BC"
-                    IsIndeterminate="True"
-                    Style="{StaticResource MaterialDesignCircularProgressBar}"
-                    Visibility="Hidden" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,70,0,0" />
-        <Label Content="Дисциплина" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="260,6,0,0"/>
-        <ComboBox x:Name="ComboBoxDisp" HorizontalAlignment="Left" Height="35" Margin="345,0,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="ComboBoxDisp_SelectionChanged"/>
-        <Label Content="Месяц" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="565,7,0,0"/>
-        <ComboBox x:Name="ComboBoxMonth" HorizontalAlignment="Left" Height="35" Margin="612,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="ComboBoxMonth_SelectionChanged"/>
-        <Button x:Name="ButtonExcel" Content="Сохранить" HorizontalAlignment="Left" Height="35" Margin="940,6,0,0" VerticalAlignment="Top" Width="150" Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonExcel_Click" Visibility="Hidden" Cursor="Hand"/>
-        <Label x:Name="LabelTest" Content="Label" HorizontalAlignment="Left" Margin="767,8,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
-        <Label Content="Учебный год" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,7,0,0"/>
-        <ComboBox x:Name="ComboBoxYears" HorizontalAlignment="Left" Height="35" Margin="92,0,0,0" VerticalAlignment="Top" Width="150"/>
+            x:Name="ProgressBarJournal"
+            Margin="0,70,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Foreground="#FF3567BC"
+            IsIndeterminate="True"
+            Style="{StaticResource MaterialDesignCircularProgressBar}"
+            Visibility="Hidden" />
+        <Label
+            Margin="260,6,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
+            Content="Дисциплина"
+            FontSize="14" />
+        <ComboBox
+            x:Name="ComboBoxDisp"
+            Width="200"
+            Height="35"
+            Margin="345,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            SelectionChanged="ComboBoxDisp_SelectionChanged" />
+        <Label
+            Margin="565,7,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
+            Content="Месяц"
+            FontSize="14" />
+        <ComboBox
+            x:Name="ComboBoxMonth"
+            Width="150"
+            Height="35"
+            Margin="612,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            SelectionChanged="ComboBoxMonth_SelectionChanged" />
+        <Button
+            x:Name="ButtonExcel"
+            Width="150"
+            Height="35"
+            Margin="940,6,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="ButtonExcel_Click"
+            Content="Сохранить"
+            Cursor="Hand"
+            Style="{DynamicResource WPFUIButtonStandard}"
+            Visibility="Hidden" />
+        <Label
+            x:Name="LabelTest"
+            Margin="767,8,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Label"
+            Visibility="Hidden" />
+        <Label
+            Margin="5,7,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
+            Content="Учебный год"
+            FontSize="14" />
+        <ComboBox
+            x:Name="ComboBoxYears"
+            Width="150"
+            Height="35"
+            Margin="92,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
     </Grid>
 
 

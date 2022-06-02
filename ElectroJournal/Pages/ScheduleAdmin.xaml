@@ -10,24 +10,10 @@
     Title="ScheduleAdmin"
     mc:Ignorable="d" Loaded="Page_Loaded">
     <Grid AllowDrop="True">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="79*" />
-            <RowDefinition Height="33*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="49*" />
-            <ColumnDefinition Width="250" />
-        </Grid.ColumnDefinitions>
-        <ListBox
-            Grid.Row="3"
-            Margin="10,20,10,10"
-            d:ItemsSource="{d:SampleData ItemCount=5}" />
-
         <ScrollViewer
             Grid.RowSpan="3"
             Grid.Column="1"
-            Margin="0,0,10,10">
+            Margin="0,0,10,10" HorizontalAlignment="Right" Width="250">
 
             <StackPanel HorizontalAlignment="Stretch">
                 <Expander
@@ -146,15 +132,15 @@
         </ScrollViewer>
         <rg:ReoGridControl
             x:Name="ReoGridSchedule"
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="10,10,10,0"
+            Margin="10,73,275,10"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
             WorkbookLoaded="ReoGridSchedule_WorkbookLoaded" />
         <wpfui:Card
             Grid.Row="0"
             Grid.Column="0"
-            Margin="10,0,10,0"
-            Padding="10,2,10,2">
+            Margin="10,0,275,0"
+            Padding="10,2,10,2" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal">
                     <Menu
@@ -183,19 +169,10 @@
                         Click="ButtonNewSchedule_Click"
                         Content="Создать расписание" />
                     <ComboBox x:Name="ComboBoxSchoolWeek" Width="200" Height="35" Margin="10,0,0,0" SelectionChanged="ComboBoxSchoolWeek_SelectionChanged"/>
+                    <ComboBox x:Name="ComboBoxCourse" Width="200" Height="35" Margin="10,0,0,0" SelectionChanged="ComboBoxCourse_SelectionChanged"/>
                 </StackPanel>
             </Grid>
         </wpfui:Card>
-        <DataGrid
-            x:Name="DataGridShedule"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
-            Margin="20,20,270,30"
-            HorizontalContentAlignment="Stretch"
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            AllowDrop="True"
-            SelectionMode="Single"
-            Visibility="Hidden" />
         <Button
             Grid.Row="1"
             Grid.Column="1"
@@ -218,13 +195,6 @@
             AllowDrop="True"
             Content="Button"
             Visibility="Hidden" />
-        <Label
-            x:Name="Test"
-            Grid.Row="2"
-            Margin="20,20,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Label" />
         <wpfui:Dialog
             x:Name="RootDialogNewSchedule"
             Grid.RowSpan="3"
@@ -256,7 +226,7 @@
             x:Name="RootDialogScheduleCall"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
-            Margin="-10,-109,10,10"
+            Margin="0,-109,0,0"
             d:IsHidden="True"
             ButtonLeftName="Сохранить"
             ButtonRightClick="RootDialogScheduleCall_ButtonRightClick"

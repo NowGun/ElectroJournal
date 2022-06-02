@@ -8,8 +8,7 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Настройка БД"
     Width="480"
-    Height="290"
-    Loaded="Window_Loaded"
+    Height="325"
     ResizeMode="NoResize"
     Style="{DynamicResource UiWindowRounded}"
     WindowStartupLocation="CenterScreen"
@@ -49,37 +48,52 @@
             Height="48"
             ShowMaximize="False"
             ShowMinimize="False" />
-        <RadioButton x:Name="RadioButtonRent" Content="Арендованный сервер" VerticalAlignment="Top" Margin="25,59,0,0" Click="RadioButton_Click"/>
-        <ComboBox x:Name="ComboBoxServer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,53,0,0" Width="250"/>
-        <RadioButton x:Name="RadioButtonMine" Content="Пользовательский сервер" Margin="25,109,0,0" VerticalAlignment="Top" Click="RadioButton_Click"/>
+        <RadioButton
+            x:Name="RadioButtonRent"
+            Margin="25,59,0,0"
+            VerticalAlignment="Top"
+            Click="RadioButton_Click"
+            Content="Арендованный сервер" />
+        <ComboBox
+            x:Name="ComboBoxServer"
+            Width="250"
+            Margin="215,53,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
+        <RadioButton
+            x:Name="RadioButtonMine"
+            Margin="25,109,0,0"
+            VerticalAlignment="Top"
+            Click="RadioButton_Click"
+            Content="Пользовательский сервер" />
         <wpfui:TextBox
             x:Name="TextBoxServer"
-            Placeholder="IP-адрес"
             Width="270"
             Height="36"
             Margin="50,143,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             MaxLength="15"
+            Placeholder="IP-адрес"
             PreviewTextInput="TextBoxServer_PreviewTextInput"
             TextWrapping="Wrap" />
         <wpfui:TextBox
             x:Name="TextBoxUser"
-            Placeholder="Логин"
             Width="270"
             Height="35"
             Margin="50,184,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Placeholder="Логин"
             TextWrapping="Wrap" />
         <wpfui:PasswordBox
             x:Name="TextBoxPassword"
-            Placeholder="Пароль"
             Width="270"
             Height="35"
             Margin="50,224,0,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Placeholder="Пароль" />
         <Button
             x:Name="ButtonSave"
             Width="130"
@@ -92,5 +106,14 @@
             FontSize="14"
             IsDefault="True"
             Style="{StaticResource WPFUIButtonStandard}" />
+        <wpfui:TextBox
+            x:Name="TextBoxSchema"
+            Width="270"
+            Height="35"
+            Margin="50,264,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Placeholder="База данных"
+            TextWrapping="Wrap" />
     </Grid>
 </Window>

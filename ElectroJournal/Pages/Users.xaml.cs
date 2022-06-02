@@ -287,7 +287,7 @@ namespace ElectroJournal.Pages
 
                 if (string.IsNullOrWhiteSpace(SearchBoxUsers.Text))
                 {
-                    var t2 = await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID).OrderBy(t => t.TeachersSurname).ToListAsync();
+                    var t2 = await db.Teachers.Where(t => t.Idteachers != Properties.Settings.Default.UserID && t.TeachersName != "CardReaderService").OrderBy(t => t.TeachersSurname).ToListAsync();
 
                     foreach (var t in t2)
                     {
@@ -363,7 +363,7 @@ namespace ElectroJournal.Pages
                 else
                 {
                     var t2 = await db.Teachers
-                        .Where(t => t.Idteachers != Properties.Settings.Default.UserID && 
+                        .Where(t => (t.Idteachers != Properties.Settings.Default.UserID && t.TeachersName != "CardReaderService") && 
                     (EF.Functions.Like(t.TeachersName, $"%{SearchBoxUsers.Text}%") ||
                     EF.Functions.Like(t.TeachersSurname, $"%{SearchBoxUsers.Text}%") ||
                     EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBoxUsers.Text}%")))

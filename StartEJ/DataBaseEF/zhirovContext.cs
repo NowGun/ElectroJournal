@@ -30,7 +30,7 @@ namespace ElectroJournal.DataBase
                 string server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
                 string username = xmlDocument.GetElementsByTagName("username")[0].InnerText;
                 string password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
-                string database = "zhirov";
+                string database = xmlDocument.GetElementsByTagName("database")[0].InnerText;
 
                 // Connection String.
                 String connString = $"Server={server};Database={database};User Id={username};password={password};SslMode=none";

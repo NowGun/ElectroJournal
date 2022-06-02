@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <wpfui:Card Margin="288,60,35,56">
+        <wpfui:Card Margin="360,60,20,60">
             <Grid>
 
                 <ProgressBar
@@ -23,7 +23,7 @@
                     Visibility="Hidden" />
                 <Button
                     x:Name="ButtonSave"
-                    Width="120"
+                    Width="150"
                     Height="35"
                     Margin="0,0,10,10"
                     HorizontalAlignment="Right"
@@ -42,6 +42,20 @@
                     VerticalContentAlignment="Center"
                     Content="Индекс "
                     FontSize="16" />
+                <TextBox
+                    x:Name="TextBoxFullName"
+                    Height="35"
+                    Margin="280,24,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap" MinWidth="270" />
+                <TextBox
+                    x:Name="TextBoxName"
+                    Height="35"
+                    Margin="280,88,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap" MinHeight="35" MinWidth="270" />
                 <wpfui:TextBox
                     x:Name="TextBoxIndex"
                     Width="160"
@@ -51,20 +65,6 @@
                     VerticalAlignment="Top"
                     FontSize="14"
                     TextWrapping="Wrap" />
-                <TextBox
-                    x:Name="TextBoxName"
-                    Height="35"
-                    Margin="280,88,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    TextWrapping="Wrap" MinHeight="35" MinWidth="270" />
-                <TextBox
-                    x:Name="TextBoxFullName"
-                    Height="35"
-                    Margin="280,24,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    TextWrapping="Wrap" MinWidth="270" />
                 <Label
                     Height="35"
                     Margin="25,24,0,0"
@@ -107,7 +107,7 @@
         </wpfui:Card>
         <Button
             x:Name="ButtonAdd"
-            Width="115"
+            Width="140"
             Height="35"
             Margin="20,0,0,16"
             HorizontalAlignment="Left"
@@ -118,9 +118,9 @@
             Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
         <Button
             x:Name="ButtonDelete"
-            Width="115"
+            Width="140"
             Height="35"
-            Margin="155,0,0,16"
+            Margin="180,0,0,16"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Click="ButtonDelete_Click"
@@ -130,7 +130,7 @@
             Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
         <ListBox
             x:Name="ListBoxDiscipline"
-            Width="250"
+            Width="300"
             Margin="20,100,0,56"
             HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -139,7 +139,7 @@
             SelectionChanged="ListBoxDiscipline_SelectionChanged" />
         <wpfui:SearchBox
             x:Name="SearchBox"
-            Width="250"
+            Width="300"
             Height="35"
             Margin="20,60,0,0"
             HorizontalAlignment="Left"
@@ -148,7 +148,7 @@
             PreviewKeyUp="SearchBox_PreviewKeyUp" />
         <ComboBox
             x:Name="ComboBoxSorting"
-            Width="250"
+            Width="300"
             Height="35"
             Margin="20,20,0,0"
             HorizontalAlignment="Left"

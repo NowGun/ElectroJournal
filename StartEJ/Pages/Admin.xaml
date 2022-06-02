@@ -58,36 +58,38 @@
             Margin="100,214,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"  />
+        <Label Content="Схема" Margin="20,275,0,0" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox x:Name="TextBoxDB" Margin="100,270,0,0" Height="35" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox
             x:Name="TextBoxFIO"
             Width="400"
             Height="35"
-            Margin="100,304,0,0"
+            Margin="100,348,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
         <TextBox
             x:Name="TextBoxMail"
             Width="400"
             Height="35"
-            Margin="100,354,0,0"
+            Margin="100,392,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
         <TextBox
             x:Name="TextBoxPass"
             Width="400"
             Height="35"
-            Margin="100,404,0,0"
+            Margin="100,438,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"  />
         <Label
-            Margin="20,310,0,0"
+            Margin="20,354,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Content="ФИО"
             FontSize="14" />
         <Label
-            Margin="20,360,0,0"
+            Margin="20,398,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
@@ -114,20 +116,20 @@
             FontSize="14"
             Style="{DynamicResource WPFUIButtonStandard}" Click="ButtonBack_Click" Cursor="Hand" Margin="0,0,180,0" />
         <Label
-            Margin="20,410,0,0"
+            Margin="20,444,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             VerticalContentAlignment="Center"
             Content="Пароль"
             FontSize="14" />
         <Label
-            Margin="20,263,0,0"
+            Margin="20,314,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Создание учетной записи"
             FontSize="20" />
-        <RadioButton Content="Пользовательский сервер" Margin="20,65,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
-        <RadioButton Content="Арендованный сервер" Margin="442,69,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
-        <ComboBox VerticalAlignment="Top" Height="35" Margin="442,104,20,0"/>
+        <RadioButton x:Name="RadioButtonMine" Content="Пользовательский сервер" Margin="20,65,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16" Click="RadioButton_Click"/>
+        <RadioButton x:Name="RadioButtonRent" Content="Арендованный сервер" Margin="442,69,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16" Click="RadioButton_Click" IsChecked="True"/>
+        <ComboBox x:Name="ComboBoxServer" VerticalAlignment="Top" Height="35" Margin="442,104,20,0"/>
     </Grid>
 </Page>

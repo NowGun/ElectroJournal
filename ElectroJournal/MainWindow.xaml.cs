@@ -243,8 +243,8 @@ namespace ElectroJournal
         private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e) => nav.NavigationPage("Journal");
         public void UpdateUserInfo(string path, string fio)
         {
-            UserInfo.RefreshImage(path);
             UserInfo.TextBlockTeacher.Content = fio;
+            UserInfo.RefreshImage(path);
         }
         public void UpdateUserInfo(string path) => UserInfo.RefreshImage(path);
         private void IconSetting_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -281,7 +281,7 @@ namespace ElectroJournal
             }
             catch (Exception ex)
             {
-                settingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
+                SettingsControl.InputLog($"Window_ContentRendered | {ex.Message}");
                 Notifications("Уведомление", "Проверка обновления неудачная");
             }
         } // Проверка обновления

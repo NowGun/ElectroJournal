@@ -9,12 +9,12 @@ namespace ElectroJournal.Classes.DataBaseEF
     {
         public uint Idschedule { get; set; }
         public uint GroupsIdgroups { get; set; }
-        public uint PeriodclassesIdperiodclasses { get; set; }
-        public uint TeachersIdteachers { get; set; }
-        public uint CabinetIdcabinet { get; set; }
-        public uint TypeclassesIdtypeclasses { get; set; }
+        public uint? PeriodclassesIdperiodclasses { get; set; }
+        public uint? TeachersIdteachers { get; set; }
+        public uint? CabinetIdcabinet { get; set; }
+        public uint? TypeclassesIdtypeclasses { get; set; }
         public DateOnly ScheduleDate { get; set; }
-        public uint DisciplinesIddisciplines { get; set; }
+        public uint? DisciplinesIddisciplines { get; set; }
         public uint SchoolweekIdschoolweek { get; set; }
 
         public virtual Cabinet CabinetIdcabinetNavigation { get; set; }

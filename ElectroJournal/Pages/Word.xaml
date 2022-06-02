@@ -131,13 +131,11 @@
             KeyDown="RootTextBox_KeyDown"
             PreviewKeyDown="RootTextBox_PreviewKeyDown"
             PreviewKeyUp="RootTextBox_PreviewKeyUp"
-            TextInput="RootTextBox_TextInput" />
+            TextInput="RootTextBox_TextInput" MouseLeftButtonDown="RootTextBox_MouseLeftButtonDown" />
 
         <StatusBar
             x:Name="RootStatusBar"
-            Height="50"
-            Margin="0,400,0,0"
-            VerticalAlignment="Bottom">
+            VerticalAlignment="Bottom" Padding="12,0,12,0" Height="51">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -163,9 +161,16 @@
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Text="{Binding File, Mode=OneWay}" />
+                <TextBlock x:Name="TextBlockNameDocument" Text="{Binding File, Mode=OneWay}" />
             </StatusBarItem>
-            <StatusBarItem Grid.Column="4" />
+            <StatusBarItem Grid.Column="4">
+                <Menu Background="{x:Null}">
+                    <MenuItem Header="Файл">
+                        <MenuItem x:Name="MenuItemSaveDocument" Header="Сохранить" Click="MenuItemSaveDocument_Click"/>
+                        <MenuItem x:Name="MenuItemOpenDocument" Header="Открыть" Click="MenuItemOpenDocument_Click"/>
+                    </MenuItem>
+                </Menu>
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Page>

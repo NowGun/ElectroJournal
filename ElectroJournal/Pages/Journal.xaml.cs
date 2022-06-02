@@ -102,7 +102,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                sControl.InputLog($"FillScore | {ex.Message}");
+                SettingsControl.InputLog($"FillScore | {ex.Message}");
             }
             finally
             {
@@ -150,7 +150,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex) 
             {
-                sControl.InputLog($"FillStudents | {ex.Message}");
+                SettingsControl.InputLog($"FillStudents | {ex.Message}");
             }            
         }
         private async void FillDates()
@@ -186,7 +186,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                sControl.InputLog($"FillDates | {ex.Message}");
+                SettingsControl.InputLog($"FillDates | {ex.Message}");
             }
             
         }

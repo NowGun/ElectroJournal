@@ -18,8 +18,10 @@
         <TextBox x:Name="TextBoxPassword" Margin="100,214,0,0" Height="35" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button x:Name="ButtonNext" Content="Далее" Style="{DynamicResource WPFUIButtonAccent}" Margin="0,0,20,0" Height="35" Width="150" FontSize="14" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="ButtonNext_Click"/>
         <Button x:Name="ButtonAdmin" Content="Я администратор" Style="{DynamicResource WPFUIButtonStandard}" Margin="0,0,180,0" FontSize="14" Height="35" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="ButtonAdmin_Click"/>
-        <RadioButton Content="Пользовательский сервер" Margin="20,65,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
-        <RadioButton Content="Арендованный сервер" Margin="442,69,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16"/>
-        <ComboBox HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="35" Margin="442,104,20,0"/>
+        <RadioButton x:Name="RadioButtonMine" Content="Пользовательский сервер" Margin="20,65,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16" Click="RadioButton_Click"/>
+        <RadioButton x:Name="RadioButtonRent" Content="Арендованный сервер" Margin="442,69,0,0" VerticalAlignment="Top" Cursor="Hand" FontSize="16" Click="RadioButton_Click" IsChecked="True"/>
+        <ComboBox x:Name="ComboBoxServer" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="35" Margin="442,104,20,0"/>
+        <Label Content="Схема" Margin="20,275,0,0" FontSize="14" VerticalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox x:Name="TextBoxDB" Margin="100,270,0,0" Height="35" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Grid>
 </Page>

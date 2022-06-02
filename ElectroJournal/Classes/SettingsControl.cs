@@ -116,8 +116,9 @@ namespace ElectroJournal.Classes
                 Directory.CreateDirectory(path);
             }
         }
-        public async void InputLog(string text)
+        public static async void InputLog(string text)
         {
+            string? currentPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             DateTime now = DateTime.Now;
             await File.AppendAllTextAsync($@"{currentPath}/logs/{now:d}.txt", $"{text} | {now:T}\n");
         }

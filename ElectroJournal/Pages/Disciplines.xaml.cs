@@ -1,4 +1,5 @@
-﻿using ElectroJournal.Classes.DataBaseEF;
+﻿using ElectroJournal.Classes;
+using ElectroJournal.Classes.DataBaseEF;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,18 +19,19 @@ namespace ElectroJournal.Pages
         public Disciplines()
         {
             InitializeComponent();
-            //FillListBoxDisciplines();
         }
 
         List<int> idDisp = new List<int>();
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(TextBoxName.Text))
+            try
             {
-                if (ListBoxDiscipline.SelectedItem != null)
+                if (!string.IsNullOrWhiteSpace(TextBoxName.Text))
                 {
-                    using (zhirovContext db = new zhirovContext())
+                    using zhirovContext db = new();
+
+                    if (ListBoxDiscipline.SelectedItem != null)
                     {
                         Discipline? disp = await db.Disciplines.FirstOrDefaultAsync(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]);
 
@@ -38,19 +40,10 @@ namespace ElectroJournal.Pages
                             disp.DisciplinesName = TextBoxFullName.Text;
                             disp.DisciplinesNameAbbreviated = TextBoxName.Text;
                             disp.DisciplinesIndex = TextBoxIndex.Text;
-
-                            await db.SaveChangesAsync();
-
-                            FillListBoxDisciplines();
-                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                         }
                     }
-                }
-                else
-                {
-                    using (zhirovContext db = new())
+                    else
                     {
-
                         Discipline disp = new Discipline
                         {
                             DisciplinesName = TextBoxFullName.Text,
@@ -60,18 +53,18 @@ namespace ElectroJournal.Pages
 
                         await db.Disciplines.AddAsync(disp);
                         await db.SaveChangesAsync();
-                        
-                        FillListBoxDisciplines();
-                        ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
                     }
+                    TextBoxFullName.Clear();
+                    TextBoxName.Clear();
+                    TextBoxIndex.Clear();
+                    TextBoxFullName.Focus();
+                    FillListBoxDisciplines();
                 }
-                TextBoxFullName.Clear();
-                TextBoxName.Clear();
-                TextBoxIndex.Clear();
+                else ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
             }
-            else
+            catch (Exception ex)
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+                SettingsControl.InputLog($"ButtonSave_Click | {ex.Message}");
             }
         }
         private async void FillListBoxDisciplines()
@@ -112,25 +105,33 @@ namespace ElectroJournal.Pages
                     });
                 }
             }
-            catch 
+            catch (Exception ex)
             {
-
-            }            
+                SettingsControl.InputLog($"FillListBoxDisciplines | {ex.Message}");
+            }
         }
         private async void ListBoxDiscipline_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ButtonDelete.IsEnabled = true;
-
-            if (ListBoxDiscipline.SelectedItem != null)
+            try
             {
-                using (zhirovContext db = new zhirovContext())
+                ButtonDelete.IsEnabled = true;
+
+                if (ListBoxDiscipline.SelectedItem != null)
                 {
+                    using zhirovContext db = new();
                     var disp = await db.Disciplines.Where(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]).FirstOrDefaultAsync();
 
-                    TextBoxFullName.Text = disp.DisciplinesName;
-                    TextBoxName.Text = disp.DisciplinesNameAbbreviated;
-                    TextBoxIndex.Text = disp.DisciplinesIndex;
+                    if (disp != null)
+                    {
+                        TextBoxFullName.Text = disp.DisciplinesName;
+                        TextBoxName.Text = disp.DisciplinesNameAbbreviated;
+                        TextBoxIndex.Text = disp.DisciplinesIndex;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ListBoxDiscipline_SelectionChanged | {ex.Message}");
             }
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
@@ -142,14 +143,15 @@ namespace ElectroJournal.Pages
         }
         private async void DeleteDisp()
         {
-            if (ListBoxDiscipline.Items.Count == 0)
+            try
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
-            }
-            else if (ListBoxDiscipline.SelectedItem != null)
-            {
-                using (zhirovContext db = new zhirovContext())
+                if (ListBoxDiscipline.Items.Count == 0)
                 {
+                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+                }
+                else if (ListBoxDiscipline.SelectedItem != null)
+                {
+                    using zhirovContext db = new();
                     Discipline? disp = await db.Disciplines.FirstOrDefaultAsync(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]);
 
                     if (disp != null)
@@ -166,6 +168,10 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"DeleteDisp | {ex.Message}");
+            }
         }
         private void ListBoxDiscipline_PreviewKeyUp(object sender, KeyEventArgs e)
         {
@@ -174,17 +180,8 @@ namespace ElectroJournal.Pages
                 DeleteDisp();
             }
         }
-        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            DeleteDisp();
-        }
-        private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FillListBoxDisciplines();
-        }
-        private void SearchBox_PreviewKeyUp(object sender, KeyEventArgs e)
-        {
-            FillListBoxDisciplines();
-        }
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteDisp();
+        private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxDisciplines();
+        private void SearchBox_PreviewKeyUp(object sender, KeyEventArgs e) => FillListBoxDisciplines();
     }
 }

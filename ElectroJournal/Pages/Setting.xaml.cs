@@ -31,15 +31,10 @@ namespace ElectroJournal.Pages
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
             CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;
             CheckBoxUpdate.IsChecked = Properties.Settings.Default.CheckUpdate;
-            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 12.05.2022";
-            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server))
-            {
-                LabelIpAddress.Content = Properties.Settings.Default.Server;
-            }
-            else
-            {
-                LabelIpAddress.Content = "отсутствует";
-            }
+            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 01.06.2022";
+
+            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server)) LabelIpAddress.Content = Properties.Settings.Default.Server; 
+            else LabelIpAddress.Content = "отсутствует";
         }
         private async void LoadSettingDB()
         {
@@ -84,6 +79,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
+                SettingsControl.InputLog($"LoadSettingDB | {ex.Message}");
                 MessageBox.Show(ex.Message, "LoadSettingDB");
             }
         }
@@ -102,7 +98,7 @@ namespace ElectroJournal.Pages
             SettingsControl settingsControl = new();
             settingsControl.CheckAutoRun();
             //settingsControl.CompletionLogin();
-            ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+            ((MainWindow)Application.Current.MainWindow).ThemeCheck();
         }
         private void ButtonChangeBD_Click(object sender, RoutedEventArgs e)
         {
@@ -149,8 +145,8 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                settingsControl.InputLog($"ButtonOpenUpdater_Click | {ex.Message}");
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Не удалось проверить");
+                SettingsControl.InputLog($"ButtonOpenUpdater_Click | {ex.Message}");
+                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Не удалось проверить");
             }
         }
         private void ComboBoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -158,7 +154,7 @@ namespace ElectroJournal.Pages
             if (IsLoaded)
             {
                 SaveApp();
-                ((MainWindow)System.Windows.Application.Current.MainWindow).ThemeCheck();
+                ((MainWindow)Application.Current.MainWindow).ThemeCheck();
             }
             else
             {
@@ -166,37 +162,25 @@ namespace ElectroJournal.Pages
             }
         }
         private void CheckBox_Click(object sender, RoutedEventArgs e) => SaveApp();
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            isLoaded = false;
-        }
+        private void Page_Unloaded(object sender, RoutedEventArgs e) => isLoaded = false;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (((MainWindow)System.Windows.Application.Current.MainWindow).isEntry)
-            {
-                CardExpanderPrivate.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                CardExpanderPrivate.Visibility = Visibility.Hidden;
-            }
+            if (((MainWindow)Application.Current.MainWindow).isEntry) CardExpanderPrivate.Visibility = Visibility.Visible;
+            else CardExpanderPrivate.Visibility = Visibility.Hidden;
         }
-        private void CheckBoxDB_Click(object sender, RoutedEventArgs e)
-        {
-            SaveDataDB();
-        }
+        private void CheckBoxDB_Click(object sender, RoutedEventArgs e) => SaveDataDB();
         private async void SaveDataDB()
         {
-            var anim = (Storyboard)FindResource("AnimOpenSave");
-            var anim2 = (Storyboard)FindResource("AnimCloseSave");
-            anim.Begin();
-            Properties.Settings.Default.ShowPhone = CheckBoxShowPhone.IsChecked ?? false;
-            Properties.Settings.Default.ShowEmail = CheckBoxShowEmail.IsChecked ?? false;
-
-            Properties.Settings.Default.Save();
-
-            using (zhirovContext db = new zhirovContext())
+            try
             {
+                var anim = (Storyboard)FindResource("AnimOpenSave");
+                var anim2 = (Storyboard)FindResource("AnimCloseSave");
+                anim.Begin();
+                Properties.Settings.Default.ShowPhone = CheckBoxShowPhone.IsChecked ?? false;
+                Properties.Settings.Default.ShowEmail = CheckBoxShowEmail.IsChecked ?? false;
+                Properties.Settings.Default.Save();
+
+                using zhirovContext db = new();
                 Classes.DataBaseEF.Setting? setting = await db.Settings.FirstOrDefaultAsync(s => s.TeachersIdteachers == Properties.Settings.Default.UserID);
 
                 if (setting != null)
@@ -205,11 +189,13 @@ namespace ElectroJournal.Pages
                     setting.SettingsPhone = (sbyte)((bool)CheckBoxShowPhone.IsChecked ? 0 : 1);
 
                     await db.SaveChangesAsync();
-
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                 }
+                anim2.Begin();
             }
-            anim2.Begin();
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"SaveDataDB | {ex.Message}");
+            }
         }
         private void CardExpanderPrivate_Expanded(object sender, RoutedEventArgs e)
         {

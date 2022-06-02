@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using ElectroJournal.Classes.DataBaseEF;
+using ElectroJournal.Classes.DataBaseEJ;
 using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,7 @@ namespace StartEJ.Pages
         public Admin()
         {
             InitializeComponent();
+            FillComboBoxUniver();
         }
 
         XmlDocument xmlDocument = new XmlDocument();
@@ -44,26 +46,61 @@ namespace StartEJ.Pages
                 e.Handled = true;
             }
         }
-        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        private async void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(TextBoxIP.Text) && !string.IsNullOrWhiteSpace(TextBoxLogin.Text) && !string.IsNullOrWhiteSpace(TextBoxPassword.Text) 
-                && !string.IsNullOrWhiteSpace(TextBoxFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxMail.Text))
+            try
             {
                 xmlDocument.Load("setting.xml");
 
                 XmlNode server = xmlDocument.GetElementsByTagName("server")[0];
                 XmlNode username = xmlDocument.GetElementsByTagName("username")[0];
                 XmlNode password = xmlDocument.GetElementsByTagName("password")[0];
+                XmlNode database = xmlDocument.GetElementsByTagName("database")[0];
+                XmlNode typeserver = xmlDocument.GetElementsByTagName("TypeServer")[0];
 
-                server.InnerText = TextBoxIP.Text;
-                username.InnerText = TextBoxLogin.Text;
-                password.InnerText = TextBoxPassword.Text;
+                if (RadioButtonRent.IsChecked == true)
+                {
+                    if (ComboBoxServer.SelectedIndex != -1)
+                    {
+                        using ejContext db = new();
+                        Educational? d = await db.Educationals.FirstOrDefaultAsync(d => d.Name == ComboBoxServer.SelectedItem.ToString());
 
-                xmlDocument.Save("setting.xml");
+                        if (d != null)
+                        {
+                            server.InnerText = "193.33.230.80";
+                            username.InnerText = "Zhirov";
+                            password.InnerText = "64580082";
+                            database.InnerText = d.NameDb;
+                            if ((bool)RadioButtonMine.IsChecked) typeserver.InnerText = "true";
+                            else if ((bool)RadioButtonRent.IsChecked) typeserver.InnerText = "false";
+                            xmlDocument.Save("setting.xml");
+                            AddUser();
+                        }
+                    }
+                    else ((MainWindow)Application.Current.MainWindow).Notifications("Уведомление", "Выберите учебное заведение");
+                }
+                else if (RadioButtonMine.IsChecked == true)
+                {
+                    if (!String.IsNullOrWhiteSpace(TextBoxDB.Text) && !string.IsNullOrWhiteSpace(TextBoxIP.Text) && !string.IsNullOrWhiteSpace(TextBoxLogin.Text) && !string.IsNullOrWhiteSpace(TextBoxPassword.Text))
+                    {
+                        server.InnerText = TextBoxIP.Text;
+                        username.InnerText = TextBoxLogin.Text;
+                        password.InnerText = TextBoxPassword.Text;
+                        database.InnerText = TextBoxDB.Text;
 
-                AddUser();
+                        if ((bool)RadioButtonMine.IsChecked) typeserver.InnerText = "true";
+                        else if ((bool)RadioButtonRent.IsChecked) typeserver.InnerText = "false";
+                        xmlDocument.Save("setting.xml");
+                        AddUser();
+                    }
+                    else ((MainWindow)Application.Current.MainWindow).Notifications("Уведомление", "Заполните все поля");
+                }
+                
             }
-            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните все поля");
+            catch
+            {
+
+            }
         }
         private void ButtonBack_Click(object sender, RoutedEventArgs e) => ((MainWindow)System.Windows.Application.Current.MainWindow).FrameEJ.Navigate(new Pages.ConnectDB());
         private async void AddUser()
@@ -162,6 +199,39 @@ namespace StartEJ.Pages
             {
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Введен некорректный Email");
             }
+        }
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            var c = sender as RadioButton;
+            switch (c.Content.ToString())
+            {
+                case "Пользовательский сервер":
+                    TextBoxPassword.IsEnabled = true;
+                    TextBoxIP.IsEnabled = true;
+                    TextBoxLogin.IsEnabled = true;
+                    TextBoxDB.IsEnabled = true;
+                    ComboBoxServer.IsEnabled = false;
+                    ComboBoxServer.SelectedIndex = -1;
+                    break;
+
+                case "Арендованный сервер":
+                    TextBoxPassword.IsEnabled = false;
+                    TextBoxDB.IsEnabled = false;
+                    TextBoxLogin.IsEnabled = false;
+                    TextBoxIP.IsEnabled = false;
+                    ComboBoxServer.IsEnabled = true;
+                    TextBoxDB.Clear();
+                    TextBoxPassword.Clear();
+                    TextBoxLogin.Clear();
+                    TextBoxIP.Clear();
+                    break;
+            }
+        }
+        private async void FillComboBoxUniver()
+        {
+            ComboBoxServer.Items.Clear();
+            using ejContext db = new();
+            await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
         }
     }
 }

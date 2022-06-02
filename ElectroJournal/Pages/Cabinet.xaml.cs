@@ -40,153 +40,175 @@ namespace ElectroJournal.Pages
             TextBoxNumSeats.Clear();
             ButtonCabinetDelete.IsEnabled = false;
         }
-        private void ButtonCabinetDelete_Click(object sender, RoutedEventArgs e)
-        {
-            DeleteCabinet();
-        }
+        private void ButtonCabinetDelete_Click(object sender, RoutedEventArgs e) => DeleteCabinet();
         private async void DeleteCabinet()
         {
-            if (ListBoxCabinet.Items.Count == 0) ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
-            else if (ListBoxCabinet.SelectedItem != null)
+            try
             {
-                using zhirovContext db = new();
-
-                Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
-
-                if (cab != null)
+                if (ListBoxCabinet.Items.Count == 0) ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+                else if (ListBoxCabinet.SelectedItem != null)
                 {
-                    db.Cabinets.Remove(cab);
-                    await db.SaveChangesAsync();
+                    using zhirovContext db = new();
 
-                    FillListBoxCabinet();
-                    TextBoxCabinet.Clear();
-                    TextBoxFloor.Clear();
-                    TextBoxName.Clear();
-                    TextBoxNumSeats.Clear();
-                    ButtonCabinetDelete.IsEnabled = false;
+                    Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
+
+                    if (cab != null)
+                    {
+                        db.Cabinets.Remove(cab);
+                        await db.SaveChangesAsync();
+
+                        FillListBoxCabinet();
+                        TextBoxCabinet.Clear();
+                        TextBoxFloor.Clear();
+                        TextBoxName.Clear();
+                        TextBoxNumSeats.Clear();
+                        ButtonCabinetDelete.IsEnabled = false;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"DeleteCabinet | {ex.Message}");
             }
         }
         private async void FillListBoxCabinet()
         {
-            ListBoxCabinet.Items.Clear();
-            idCab.Clear();
-
-            using zhirovContext db = new();
-
-            if (ComboBoxSortingCabinet.SelectedItem != null)
+            try
             {
-                if (String.IsNullOrWhiteSpace(SearchBoxCabinet.Text))
+                ListBoxCabinet.Items.Clear();
+                idCab.Clear();
+
+                using zhirovContext db = new();
+
+                if (ComboBoxSortingCabinet.SelectedItem != null)
                 {
-                    await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => c.HousingIdhousingNavigation.HousingName == ComboBoxSortingCabinet.SelectedItem.ToString()).ForEachAsync(c =>
+                    if (String.IsNullOrWhiteSpace(SearchBoxCabinet.Text))
                     {
-                        ListBoxCabinet.Items.Add(c.CabinetNumber);
-                        idCab.Add((int)c.Idcabinet);
-                    });
-                }
-                else
-                {
-                    await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => EF.Functions.Like(c.CabinetNumber, $"%{SearchBoxCabinet.Text}%") && c.HousingIdhousingNavigation.HousingName == ComboBoxSortingCabinet.SelectedItem.ToString()).ForEachAsync(c =>
+                        await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => c.HousingIdhousingNavigation.HousingName == ComboBoxSortingCabinet.SelectedItem.ToString()).ForEachAsync(c =>
+                        {
+                            ListBoxCabinet.Items.Add(c.CabinetNumber);
+                            idCab.Add((int)c.Idcabinet);
+                        });
+                    }
+                    else
                     {
-                        ListBoxCabinet.Items.Add(c.CabinetNumber);
-                        idCab.Add((int)c.Idcabinet);
-                    });
+                        await db.Cabinets.OrderBy(c => c.CabinetNumber).Where(c => EF.Functions.Like(c.CabinetNumber, $"%{SearchBoxCabinet.Text}%") && c.HousingIdhousingNavigation.HousingName == ComboBoxSortingCabinet.SelectedItem.ToString()).ForEachAsync(c =>
+                        {
+                            ListBoxCabinet.Items.Add(c.CabinetNumber);
+                            idCab.Add((int)c.Idcabinet);
+                        });
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillListBoxCabinet | {ex.Message}");
             }
         }
         private async void FillComboBoxHousing()
         {
-            ComboBoxSortingCabinet.Items.Clear();
-
-            using zhirovContext db = new();
-            await db.Housings.OrderBy(t => t.HousingName).ForEachAsync(t =>
+            try
             {
-                ComboBoxSortingCabinet.Items.Add(t.HousingName);
-            });
+                ComboBoxSortingCabinet.Items.Clear();
+
+                using zhirovContext db = new();
+                await db.Housings.OrderBy(t => t.HousingName).ForEachAsync(t =>
+                {
+                    ComboBoxSortingCabinet.Items.Add(t.HousingName);
+                });
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillComboBoxHousing | {ex.Message}");
+            }
         }
         private async void ListBoxCabinet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ButtonCabinetDelete.IsEnabled = true;
-
-            if (ListBoxCabinet.SelectedItem != null)
+            try
             {
-                FillListBoxHousing();
+                ButtonCabinetDelete.IsEnabled = true;
 
-                using zhirovContext db = new();
+                if (ListBoxCabinet.SelectedItem != null)
+                {
+                    FillListBoxHousing();
 
-                var cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
+                    using zhirovContext db = new();
 
-                TextBoxCabinet.Text = cab.CabinetNumber;
-                TextBoxFloor.Text = cab.CabinetFloor;
-                TextBoxName.Text = cab.CabinetName;
-                TextBoxNumSeats.Text = cab.CabinetNumberSeats.ToString();
-                ListBoxHousing.SelectedItem = cab.HousingIdhousingNavigation.HousingName;
+                    var cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
+
+                    TextBoxCabinet.Text = cab.CabinetNumber;
+                    TextBoxFloor.Text = cab.CabinetFloor;
+                    TextBoxName.Text = cab.CabinetName;
+                    TextBoxNumSeats.Text = cab.CabinetNumberSeats.ToString();
+                    ListBoxHousing.SelectedItem = cab.HousingIdhousingNavigation.HousingName;
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ListBoxCabinet_SelectionChanged | {ex.Message}");
             }
         }
         private async void ButtonSaveCabinet_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(TextBoxCabinet.Text) && ListBoxHousing.SelectedItem != null)
+            try
             {
-                using zhirovContext db = new();
-                int a;
-                if (String.IsNullOrWhiteSpace(TextBoxNumSeats.Text)) a = 0;
-                else a = Int32.Parse(TextBoxNumSeats.Text);
-
-                if (ListBoxCabinet.SelectedItem != null)
+                if (!string.IsNullOrWhiteSpace(TextBoxCabinet.Text) && ListBoxHousing.SelectedItem != null)
                 {
-                    Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
+                    using zhirovContext db = new();
+                    int a;
+                    if (String.IsNullOrWhiteSpace(TextBoxNumSeats.Text)) a = 0;
+                    else a = Int32.Parse(TextBoxNumSeats.Text);
 
-                    if (cab != null)
+                    if (ListBoxCabinet.SelectedItem != null)
                     {
-                        cab.CabinetName = TextBoxName.Text;
-                        cab.CabinetNumberSeats = a;
-                        cab.CabinetFloor = TextBoxFloor.Text;
-                        cab.CabinetNumber = TextBoxCabinet.Text;
-                        cab.HousingIdhousing = (uint)idHousing[ListBoxHousing.SelectedIndex];
+                        Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
 
-                        await db.SaveChangesAsync();
-                        
-                        ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                        if (cab != null)
+                        {
+                            cab.CabinetName = TextBoxName.Text;
+                            cab.CabinetNumberSeats = a;
+                            cab.CabinetFloor = TextBoxFloor.Text;
+                            cab.CabinetNumber = TextBoxCabinet.Text;
+                            cab.HousingIdhousing = (uint)idHousing[ListBoxHousing.SelectedIndex];
+
+                            await db.SaveChangesAsync();
+                        }
                     }
+                    else
+                    {
+                        Classes.DataBaseEF.Cabinet cab = new()
+                        {
+                            CabinetName = TextBoxName.Text,
+                            CabinetNumberSeats = a,
+                            CabinetFloor = TextBoxFloor.Text,
+                            CabinetNumber = TextBoxCabinet.Text,
+                            HousingIdhousing = (uint)idHousing[ListBoxHousing.SelectedIndex]
+                        };
+
+                        await db.Cabinets.AddAsync(cab);
+                        await db.SaveChangesAsync();
+                    }
+
+                    TextBoxCabinet.Clear();
+                    TextBoxFloor.Clear();
+                    TextBoxName.Clear();
+                    TextBoxNumSeats.Clear();
+                    ListBoxHousing.SelectedIndex = -1;
+
+                    FillListBoxCabinet();
                 }
                 else
                 {
-                    Classes.DataBaseEF.Cabinet cab = new()
-                    {
-                        CabinetName = TextBoxName.Text,
-                        CabinetNumberSeats= a,
-                        CabinetFloor= TextBoxFloor.Text,
-                        CabinetNumber= TextBoxCabinet.Text,
-                        HousingIdhousing = (uint)idHousing[ListBoxHousing.SelectedIndex]
-                    };
-
-                    await db.Cabinets.AddAsync(cab);
-                    await db.SaveChangesAsync();
-
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
                 }
-
-                TextBoxCabinet.Clear();
-                TextBoxFloor.Clear();
-                TextBoxName.Clear();
-                TextBoxNumSeats.Clear();
-                ListBoxHousing.SelectedIndex = -1;
-
-                FillListBoxCabinet();
             }
-            else
+            catch (Exception ex)
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+                SettingsControl.InputLog($"ButtonSaveCabinet_Click | {ex.Message}");
             }
         }
-        private void SearchBoxCabinet_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            FillListBoxCabinet();
-        }
-        private void ComboBoxSortingCabinet_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FillListBoxCabinet();
-        }
+        private void SearchBoxCabinet_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => FillListBoxCabinet();
+        private void ComboBoxSortingCabinet_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxCabinet();
         #endregion
 
         #region Корпуса
@@ -195,93 +217,114 @@ namespace ElectroJournal.Pages
             changeHousing = false;
             RootDialog.Show();
         }
-        private void RootDialog_ButtonRightClick(object sender, RoutedEventArgs e)
-        {
-            RootDialog.Hide();
-        }
+        private void RootDialog_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialog.Hide();
         private async void RootDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
         {
-            using zhirovContext db = new();
-
-            if (!changeHousing)
+            try
             {
-                Housing housing = new()
-                {
-                    HousingName = TextBoxHousingName.Text,
-                    HousingAddress = TextBoxHousingAddress.Text,
-                    HousingCountCabinet = Int32.Parse(NumberBoxCountCabinet.Text)
-                };
-                await db.Housings.AddAsync(housing);
-                await db.SaveChangesAsync();
-            }
-            else
-            {
-                Housing? housing = await db.Housings.FirstOrDefaultAsync(h => h.Idhousing == idHousing[ListBoxHousing.SelectedIndex]);
+                using zhirovContext db = new();
 
-                if (housing != null)
+                if (!changeHousing)
                 {
-                    housing.HousingName = TextBoxHousingName.Text;
-                    housing.HousingAddress = TextBoxHousingAddress.Text;
-                    housing.HousingCountCabinet = Int32.Parse(NumberBoxCountCabinet.Text);
-
+                    Housing housing = new()
+                    {
+                        HousingName = TextBoxHousingName.Text,
+                        HousingAddress = TextBoxHousingAddress.Text,
+                        HousingCountCabinet = Int32.Parse(NumberBoxCountCabinet.Text)
+                    };
+                    await db.Housings.AddAsync(housing);
                     await db.SaveChangesAsync();
                 }
+                else
+                {
+                    Housing? housing = await db.Housings.FirstOrDefaultAsync(h => h.Idhousing == idHousing[ListBoxHousing.SelectedIndex]);
+
+                    if (housing != null)
+                    {
+                        housing.HousingName = TextBoxHousingName.Text;
+                        housing.HousingAddress = TextBoxHousingAddress.Text;
+                        housing.HousingCountCabinet = Int32.Parse(NumberBoxCountCabinet.Text);
+
+                        await db.SaveChangesAsync();
+                    }
+                }
+                FillListBoxHousing();
+                FillComboBoxHousing();
+                RootDialog.Hide();
             }
-            FillListBoxHousing();
-            FillComboBoxHousing();
-            RootDialog.Hide();
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"RootDialog_ButtonLeftClick | {ex.Message}");
+            }
         }
         private async void IconDeleteHousing_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (ListBoxHousing.Items.Count == 0)
+            try
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
-            }
-            else if (ListBoxHousing.SelectedItem != null)
-            {
-                using zhirovContext db = new();
-                Housing? housing = await db.Housings.FirstOrDefaultAsync(h => h.Idhousing == idHousing[ListBoxHousing.SelectedIndex]);
-
-                if (housing == null)
+                if (ListBoxHousing.Items.Count == 0)
                 {
-                    db.Housings.Remove(housing);
-                    await db.SaveChangesAsync();
-
-                    FillListBoxHousing();
+                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
                 }
+                else if (ListBoxHousing.SelectedItem != null)
+                {
+                    using zhirovContext db = new();
+                    Housing? housing = await db.Housings.FirstOrDefaultAsync(h => h.Idhousing == idHousing[ListBoxHousing.SelectedIndex]);
+
+                    if (housing != null)
+                    {
+                        db.Housings.Remove(housing);
+                        await db.SaveChangesAsync();
+
+                        FillListBoxHousing();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"IconDeleteHousing_PreviewMouseLeftButtonUp | {ex.Message}");
             }
         }
         private async void IconChangeHousing_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (ListBoxHousing.SelectedIndex != -1)
+            try
             {
-                changeHousing = true;
+                if (ListBoxHousing.SelectedIndex != -1)
+                {
+                    changeHousing = true;
 
-                using zhirovContext db = new();
+                    using zhirovContext db = new();
+                    var h = await db.Housings.FirstOrDefaultAsync(h => h.Idhousing == idHousing[ListBoxHousing.SelectedIndex]);
 
-                var h = await db.Housings.FirstOrDefaultAsync(h => h.Idhousing == idHousing[ListBoxHousing.SelectedIndex]);
+                    TextBoxHousingName.Text = h.HousingName;
+                    TextBoxHousingAddress.Text = h.HousingAddress;
+                    NumberBoxCountCabinet.Text = h.HousingCountCabinet.ToString();
 
-                TextBoxHousingName.Text = h.HousingName;
-                TextBoxHousingAddress.Text = h.HousingAddress;
-                NumberBoxCountCabinet.Text = h.HousingCountCabinet.ToString();
-
-                RootDialog.Show();
+                    RootDialog.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"IconChangeHousing_PreviewMouseLeftButtonUp | {ex.Message}");
             }
         }
         private async void FillListBoxHousing()
         {
-            ListBoxHousing.Items.Clear();
-            idHousing.Clear();
-
-            using zhirovContext db = new();
-
-            await db.Housings.OrderBy(h => h.HousingName).ForEachAsync(h =>
+            try
             {
-                ListBoxHousing.Items.Add(h.HousingName);
-                idHousing.Add((int)h.Idhousing);
-            });
+                ListBoxHousing.Items.Clear();
+                idHousing.Clear();
+                using zhirovContext db = new();
+                await db.Housings.OrderBy(h => h.HousingName).ForEachAsync(h =>
+                {
+                    ListBoxHousing.Items.Add(h.HousingName);
+                    idHousing.Add((int)h.Idhousing);
+                });
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillListBoxHousing | {ex.Message}");
+            }
         }
         #endregion
-
     }
 }

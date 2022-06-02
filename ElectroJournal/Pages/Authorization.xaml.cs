@@ -139,7 +139,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-                settingsControl.InputLog($"Login | {ex.Message}");
+                SettingsControl.InputLog($"Login | {ex.Message}");
                 MessageBox.Show(ex.Message);
             }
         }

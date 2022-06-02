@@ -61,6 +61,8 @@ namespace StartEJ
                 writer.WriteElementString("server", "");
                 writer.WriteElementString("username", "");
                 writer.WriteElementString("password", "");
+                writer.WriteElementString("database", "");
+                writer.WriteElementString("TypeServer", "");
                 writer.WriteElementString("theme", "");
                 writer.WriteEndElement();
                 writer.Flush();

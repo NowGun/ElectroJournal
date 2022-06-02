@@ -17,7 +17,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <wpfui:Card Margin="345,60,20,65">
+        <wpfui:Card Margin="360,60,20,60">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <ComboBox
                     x:Name="ComboBoxCourse"
@@ -81,7 +81,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
-                    Content="Полное название группы*"
+                    Content="Специальность*"
                     FontSize="14" />
                 <Label
                     Width="169"
@@ -90,7 +90,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
-                    Content="Сокращенное название"
+                    Content="Группа"
                     FontSize="14" />
                 <Label
                     Width="169"
@@ -99,7 +99,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
-                    Content="Индекс группы"
+                    Content="Индекс специальности"
                     FontSize="14" />
                 <ComboBox
                     x:Name="ComboBoxTypeLearning"
@@ -119,15 +119,16 @@
                     FontSize="14" />
                 <Button
                     x:Name="ButtonGroupSave"
-                    Width="130"
+                    Width="150"
                     Height="35"
-                    Margin="0,0,23,10"
+                    Margin="0,0,10,10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Click="ButtonGroupSave_Click"
                     Content="Сохранить"
                     Cursor="Hand"
                     FontSize="14"
+                    IsDefault="True"
                     Style="{DynamicResource WPFUIButtonStandard}" />
                 <Label
                     Width="160"
@@ -151,15 +152,16 @@
         </wpfui:Card>
         <ListBox
             x:Name="ListBoxGroups"
-            Width="280"
+            Width="300"
             Margin="20,100,0,65"
             HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
+            FontSize="14"
             PreviewKeyUp="ListBoxGroups_PreviewKeyUp"
-            SelectionChanged="ListBoxGroups_SelectionChanged" FontSize="14" />
+            SelectionChanged="ListBoxGroups_SelectionChanged" />
         <Button
             x:Name="ButonGroupAdd"
-            Width="130"
+            Width="140"
             Height="35"
             Margin="20,0,0,25"
             HorizontalAlignment="Left"
@@ -170,9 +172,9 @@
             Style="{DynamicResource WPFUIButtonStandard}" />
         <Button
             x:Name="ButtonGroupDelete"
-            Width="130"
+            Width="140"
             Height="35"
-            Margin="170,0,0,25"
+            Margin="180,0,0,25"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Click="ButtonGroupDelete_Click"
@@ -181,15 +183,16 @@
             Style="{DynamicResource WPFUIButtonStandard}" />
         <wpfui:SearchBox
             x:Name="SearchBox"
-            Width="280"
+            Width="300"
             Height="35"
             Margin="20,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Placeholder="Поиск" PreviewKeyUp="SearchBox_PreviewKeyUp" />
+            Placeholder="Поиск"
+            PreviewKeyUp="SearchBox_PreviewKeyUp" />
         <ComboBox
             x:Name="ComboBoxGroupsSorting"
-            Width="280"
+            Width="300"
             Height="35"
             Margin="20,20,0,0"
             HorizontalAlignment="Left"

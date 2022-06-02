@@ -554,20 +554,17 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
-                        Content=""
                         FontSize="14" />
                     <Button
                         x:Name="ButtonChangeBD"
                         Width="150"
                         Height="35"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
                         Click="ButtonChangeBD_Click"
                         Content="Изменить"
                         Cursor="Hand"
                         FontSize="14"
-                        Style="{DynamicResource WPFUIButtonStandard}" />
+                        Style="{DynamicResource WPFUIButtonStandard}" Margin="28,0,0,0" />
 
                 </StackPanel>
                 <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
@@ -579,7 +576,6 @@
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Left"
                         VerticalContentAlignment="Center"
-                        Content=""
                         FontSize="14" />
                     <Button
                         x:Name="ButtonOpenUpdater"

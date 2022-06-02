@@ -17,6 +17,8 @@ namespace ElectroJournal.Classes
                 Properties.Settings.Default.Server = xmlDocument.GetElementsByTagName("server")[0].InnerText;
                 Properties.Settings.Default.UserName = xmlDocument.GetElementsByTagName("username")[0].InnerText;
                 Properties.Settings.Default.Password = xmlDocument.GetElementsByTagName("password")[0].InnerText;
+                Properties.Settings.Default.DataBase = xmlDocument.GetElementsByTagName("database")[0].InnerText;
+                Properties.Settings.Default.TypeServer = bool.Parse(xmlDocument.GetElementsByTagName("TypeServer")[0].InnerText);
                 Properties.Settings.Default.Theme = Int32.Parse(xmlDocument.GetElementsByTagName("theme")[0].InnerText);
                 Properties.Settings.Default.StartEJ = 1;
 
@@ -44,7 +46,6 @@ namespace ElectroJournal.Classes
                     {
                         process.Kill();
                     }
-
                 }
                 catch (System.ComponentModel.Win32Exception)
                 {

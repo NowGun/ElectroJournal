@@ -30,17 +30,20 @@ namespace ElectroJournal.Pages
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            ProgressBar.Visibility = Visibility.Visible;
-
-            if (!string.IsNullOrWhiteSpace(TextBoxStudentsFIO.Text))
+            try
             {
-                if (TextBoxStudentsFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
-                {
-                    string[] FIO = TextBoxStudentsFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                ProgressBar.Visibility = Visibility.Visible;
 
-                    if (ListBoxStudents.SelectedItem != null)
+                if (!string.IsNullOrWhiteSpace(TextBoxStudentsFIO.Text) && ListBoxGroups.SelectedIndex != -1)
+                {
+                    if (TextBoxStudentsFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
                     {
-                        using (zhirovContext db = new zhirovContext())
+                        using zhirovContext db = new();
+                        string[] FIO = TextBoxStudentsFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        DateTime? date = DatePickerDateBirthday.Text != null ? DateTime.Parse(DatePickerDateBirthday.Text) : null;
+                        DateTime dt = new(2012, 01, 01);
+
+                        if (ListBoxStudents.SelectedItem != null)
                         {
                             Student? student = await db.Students.FirstOrDefaultAsync(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]);
 
@@ -54,19 +57,13 @@ namespace ElectroJournal.Pages
                                 student.StudentsParent = TextBoxParentFIO.Text;
                                 student.StudentsDormitory = CheckBoxStudentsDormitory.IsChecked.ToString();
                                 student.StudentsResidence = TextBoxStudentsResidence.Text;
-                                student.StudentsBirthday = DatePickerDateBirthday.SelectedDate.Value;
+                                student.StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null;
                                 student.GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex];
 
                                 await db.SaveChangesAsync();
-
-                                ListBoxStudentsRefresh();
-                                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
                             }
                         }
-                    }
-                    else
-                    {
-                        using (zhirovContext db = new zhirovContext())
+                        else
                         {
                             Student students = new Student
                             {
@@ -78,37 +75,32 @@ namespace ElectroJournal.Pages
                                 StudentsParent = TextBoxParentFIO.Text,
                                 StudentsDormitory = CheckBoxStudentsDormitory.IsChecked.ToString(),
                                 StudentsResidence = TextBoxStudentsResidence.Text,
-                                StudentsBirthday = DatePickerDateBirthday.SelectedDate.Value,
+                                StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null,
                                 GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex]
                             };
 
                             await db.Students.AddAsync(students);
                             await db.SaveChangesAsync();
-
-                            ListBoxStudentsRefresh();
-                            TextBoxParentFIO.Clear();
-                            TextBoxParentPhone.Clear();
-                            TextBoxStudentsFIO.Clear();
-                            TextBoxStudentsPhone.Clear();
-                            TextBoxStudentsResidence.Clear();
-                            DatePickerDateBirthday.Text = null;
-                            CheckBoxStudentsDormitory.IsChecked = false;
-
-                            ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
                         }
+                        ListBoxStudentsRefresh();
+                        TextBoxParentFIO.Clear();
+                        TextBoxParentPhone.Clear();
+                        TextBoxStudentsFIO.Clear();
+                        TextBoxStudentsPhone.Clear();
+                        TextBoxStudentsResidence.Clear();
+                        DatePickerDateBirthday.Text = null;
+                        CheckBoxStudentsDormitory.IsChecked = false;
                     }
+                    else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
                 }
-                else
-                {
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
-                }
-            }
-            else
-            {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
-            }
+                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
 
-            ProgressBar.Visibility = Visibility.Hidden;
+                ProgressBar.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ButtonSave_Click(students) | {ex.Message}");
+            }
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -121,18 +113,17 @@ namespace ElectroJournal.Pages
             DatePickerDateBirthday.Text = null;
             CheckBoxStudentsDormitory.IsChecked = false;
         }
-        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            DeleteStudent();
-        }
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteStudent();
         private async void ListBoxStudentsRefresh()
         {
-            ListBoxStudents.Items.Clear();
-            idStudents.Clear();
-            ProgressBarListBox.Visibility = Visibility.Visible;
-
-            using (zhirovContext db = new zhirovContext())
+            try
             {
+                ListBoxStudents.Items.Clear();
+                idStudents.Clear();
+                ProgressBarListBox.Visibility = Visibility.Visible;
+
+                using zhirovContext db = new();
+
                 if (String.IsNullOrWhiteSpace(SearchBox.Text))
                 {
                     switch (ComboBoxSorting.SelectedIndex)
@@ -163,13 +154,18 @@ namespace ElectroJournal.Pages
                     EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsName, $"%{SearchBox.Template}%") ||
                     EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsNameAbbreviated, $"%{SearchBox.Text}%"))
                         .ForEachAsync(t =>
-                    {
-                        ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
-                        idStudents.Add((int)t.Idstudents);
-                    });
+                        {
+                            ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                            idStudents.Add((int)t.Idstudents);
+                        });
                 }
+
+                ProgressBarListBox.Visibility = Visibility.Hidden;
             }
-            ProgressBarListBox.Visibility = Visibility.Hidden;
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ListBoxStudentsRefresh | {ex.Message}");
+            }
         }
         private void TextBoxStudentsPhone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -187,12 +183,14 @@ namespace ElectroJournal.Pages
         }
         private async void ListBoxStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ButtonDelete.IsEnabled = true;
-
-            if (ListBoxStudents.SelectedItem != null)
+            try
             {
-                using (zhirovContext db = new zhirovContext())
+                ButtonDelete.IsEnabled = true;
+
+                if (ListBoxStudents.SelectedItem != null)
                 {
+                    using zhirovContext db = new();
+
                     var students = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).ToListAsync();
 
                     foreach (var t in students)
@@ -211,21 +209,24 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ListBoxStudents_SelectionChanged | {ex.Message}");
+            }
         }
-        private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListBoxStudentsRefresh();
-        }
+        private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e) => ListBoxStudentsRefresh();
         private async void DeleteStudent()
         {
-            if (ListBoxStudents.Items.Count == 0)
+            try
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
-            }
-            else if (ListBoxStudents.SelectedItem != null)
-            {
-                using (zhirovContext db = new zhirovContext())
+                if (ListBoxStudents.Items.Count == 0)
                 {
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+                }
+                else if (ListBoxStudents.SelectedItem != null)
+                {
+                    using zhirovContext db = new();
+
                     Student? student = await db.Students.FirstOrDefaultAsync(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]);
 
                     if (student != null)
@@ -245,31 +246,45 @@ namespace ElectroJournal.Pages
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"DeleteStudent | {ex.Message}");
+            }            
         }
         private async void FillComboBoxStudents()
         {
-            ComboBoxGroups.Items.Clear();
-
-            using (zhirovContext db = new zhirovContext())
+            try
             {
+                ComboBoxGroups.Items.Clear();
+
+                using zhirovContext db = new();
                 await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t =>
                 {
                     ComboBoxGroups.Items.Add(t.CourseName);
                 });
             }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillComboBoxStudents | {ex.Message}");
+            }
         }
         private async void FillListBox()
         {
-            ListBoxGroups.Items.Clear();
-            idGroups.Clear();
-
-            using (zhirovContext db = new zhirovContext())
+            try
             {
+                ListBoxGroups.Items.Clear();
+                idGroups.Clear();
+
+                using zhirovContext db = new();
                 await db.Groups.Where(p => p.CourseIdcourseNavigation.CourseName == ComboBoxGroups.SelectedItem.ToString()).ForEachAsync(p =>
                 {
                     ListBoxGroups.Items.Add(p.GroupsNameAbbreviated);
                     idGroups.Add((int)p.Idgroups);
                 });
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillListBox | {ex.Message}");
             }
         }
         private void ComboBoxGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)

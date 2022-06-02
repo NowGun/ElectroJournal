@@ -303,13 +303,13 @@
                                     x:Name="MenuItemOpen"
                                     Click="MenuItemOpen_Click"
                                     Header="Открыть"
-                                    Icon="{x:Static wpfuiCommon:SymbolRegular.Library16}"
+                                    Icon="{x:Static wpfuiCommon:SymbolRegular.Open24}"
                                     Tag="open" />
                                 <MenuItem
                                     x:Name="MenuItemExit"
                                     Click="MenuItemExit_Click"
                                     Header="Выйти"
-                                    Icon="{x:Static wpfuiCommon:SymbolRegular.Library28}"
+                                    Icon="{x:Static wpfuiCommon:SymbolRegular.Dismiss24}"
                                     Tag="exit" />
                             </ContextMenu>
                         </wpfui:NotifyIcon.Menu>

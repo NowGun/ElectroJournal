@@ -29,9 +29,6 @@ namespace ElectroJournal.Pages
             InitializeComponent();
 
             ComboBoxSortingTeacher.SelectedIndex = 0;
-            //FillListBoxTeachers();
-            //TextBoxTeachersPassword.Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString())).Remove(16);
-
         }
 
         List<int> idTeachers = new();
@@ -45,49 +42,53 @@ namespace ElectroJournal.Pages
         }
 
         #region Заполнение ListBox
-        private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e) // Сортировка листа
-        {
-            FillListBoxTeachers();
-        }
+        private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxTeachers(); // Сортировка листа
         private async void FillListBoxTeachers()
         {
-            ListViewTeachers.Items.Clear();
-            idTeachers.Clear();
-
-            using zhirovContext db = new();
-
-            if (String.IsNullOrWhiteSpace(SearchBox.Text))
+            try
             {
-                switch (ComboBoxSortingTeacher.SelectedIndex)
+                ListViewTeachers.Items.Clear();
+                idTeachers.Clear();
+
+                using zhirovContext db = new();
+
+                if (String.IsNullOrWhiteSpace(SearchBox.Text))
                 {
-                    case 0:
-                        await db.Teachers.OrderBy(t => t.TeachersSurname).Where(t => t.Idteachers != 83).ForEachAsync(t =>
+                    switch (ComboBoxSortingTeacher.SelectedIndex)
+                    {
+                        case 0:
+                            await db.Teachers.OrderBy(t => t.TeachersSurname).Where(t => t.TeachersName != "CardReaderService").ForEachAsync(t =>
+                            {
+                                ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                                idTeachers.Add((int)t.Idteachers);
+                            });
+                            break;
+                        case 1:
+                            await db.Teachers.OrderByDescending(t => t.TeachersSurname).Where(t => t.TeachersName != "CardReaderService").ForEachAsync(t =>
+                            {
+                                ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                                idTeachers.Add((int)t.Idteachers);
+                            });
+                            break;
+                    }
+                }
+                else
+                {
+                    await db.Teachers
+                        .OrderBy(t => t.TeachersSurname)
+                        .Where(t => (EF.Functions.Like(t.TeachersName, $"%{SearchBox.Text}%") ||
+                        EF.Functions.Like(t.TeachersSurname, $"%{SearchBox.Text}%") ||
+                        EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBox.Text}%")) && t.TeachersName != "CardReaderService")
+                        .ForEachAsync(t =>
                         {
                             ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
                             idTeachers.Add((int)t.Idteachers);
                         });
-                        break;
-                    case 1:
-                        await db.Teachers.OrderByDescending(t => t.TeachersSurname).Where(t => t.Idteachers != 83).ForEachAsync(t =>
-                        {
-                            ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
-                            idTeachers.Add((int)t.Idteachers);
-                        });
-                        break;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                await db.Teachers
-                    .OrderBy(t => t.TeachersSurname)
-                    .Where(t => (EF.Functions.Like(t.TeachersName, $"%{SearchBox.Text}%") ||
-                    EF.Functions.Like(t.TeachersSurname, $"%{SearchBox.Text}%") ||
-                    EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBox.Text}%")) && t.Idteachers != 83)
-                    .ForEachAsync(t =>
-                    {
-                        ListViewTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
-                        idTeachers.Add((int)t.Idteachers);
-                    });
+                SettingsControl.InputLog($"FillListBoxTeachers | {ex.Message}");
             }
         } // Заполнение листа с преподавателями
         private async void FillListBoxDiscipline() // Заполнение листа с предметами
@@ -95,9 +96,7 @@ namespace ElectroJournal.Pages
             try
             {
                 ObservableCollection<DisciplineList> co1 = new();
-
                 using zhirovContext db = new();
-
 
                 if (!String.IsNullOrWhiteSpace(SearchBoxDiscipline.Text))
                 {
@@ -154,7 +153,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-
+                SettingsControl.InputLog($"FillListBoxDiscipline | {ex.Message}");
             }
         }
         private async void FillListBoxGroups() // Заполнение листа с группами
@@ -162,9 +161,7 @@ namespace ElectroJournal.Pages
             try
             {
                 ObservableCollection<GroupsList> co1 = new();
-
                 using zhirovContext db = new();
-
 
                 if (!String.IsNullOrWhiteSpace(SearchBoxDiscipline.Text))
                 {
@@ -221,7 +218,7 @@ namespace ElectroJournal.Pages
             }
             catch (Exception ex)
             {
-
+                SettingsControl.InputLog($"FillListBoxGroups | {ex.Message}");
             }
         }
         #endregion
@@ -229,22 +226,29 @@ namespace ElectroJournal.Pages
         #region Взаимодействие с данными
         private async void ListViewTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e) // Подгрузка данных определенного преподавателя
         {
-            ButtonDelete.IsEnabled = true;
-
-            if (ListViewTeachers.SelectedItem != null)
+            try
             {
-                using zhirovContext db = new();
-                var t = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]).FirstOrDefaultAsync();
+                ButtonDelete.IsEnabled = true;
 
-                string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
+                if (ListViewTeachers.SelectedItem != null)
+                {
+                    using zhirovContext db = new();
+                    var t = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]).FirstOrDefaultAsync();
 
-                TextBoxTeachersFIO.Text = FIO;
-                CheckBoxAdminAccess.IsChecked = bool.Parse(t.TeachersAccesAdminPanel);
-                TextBoxTeachersMail.Text = t.TeachersMail;
-                TextBoxTeachersPhone.Text = t.TeachersPhone;
+                    string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
 
-                FillListBoxDiscipline();
-                FillListBoxGroups();
+                    TextBoxTeachersFIO.Text = FIO;
+                    CheckBoxAdminAccess.IsChecked = bool.Parse(t.TeachersAccesAdminPanel);
+                    TextBoxTeachersMail.Text = t.TeachersMail;
+                    TextBoxTeachersPhone.Text = t.TeachersPhone;
+
+                    FillListBoxDiscipline();
+                    FillListBoxGroups();
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ListViewTeachers_SelectionChanged | {ex.Message}");
             }
         }
         private void TextBoxTeachersFIO_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) // Генерация логина и пароля
@@ -261,86 +265,85 @@ namespace ElectroJournal.Pages
                 DeleteTeachers();
             }
         }
-        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) // Поиск преподавателя
-        {
-            FillListBoxTeachers();
-        }
+        private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => FillListBoxTeachers(); // Поиск преподавателя
         private async void ButtonSave_Click(object sender, RoutedEventArgs e) // Редактирование/добавление преподавателя
         {
-            ProgressBarTeachers.Visibility = Visibility.Visible;
-
-            if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail.Text))
+            try
             {
-                string cond = @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)";
+                ProgressBarTeachers.Visibility = Visibility.Visible;
 
-                if (Regex.IsMatch(TextBoxTeachersMail.Text, cond))
+                if (!string.IsNullOrWhiteSpace(TextBoxTeachersFIO.Text) && !string.IsNullOrWhiteSpace(TextBoxTeachersMail.Text))
                 {
-                    if (TextBoxTeachersFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
+                    string cond = @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)";
+
+                    if (Regex.IsMatch(TextBoxTeachersMail.Text, cond))
                     {
-                        using zhirovContext db = new();
-
-                        string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        var mail = await db.Teachers.Where(p => p.TeachersMail == TextBoxTeachersMail.Text).ToListAsync();
-                        var mail2 = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID && p.TeachersMail == TextBoxTeachersMail.Text).FirstOrDefaultAsync();
-
-                        if (ListViewTeachers.SelectedItem != null)
+                        if (TextBoxTeachersFIO.Text.Split(new String[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 3)
                         {
-                            Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
+                            using zhirovContext db = new();
 
-                            if (teacher != null)
+                            string[] FIO = TextBoxTeachersFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            var mail = await db.Teachers.Where(p => p.TeachersMail == TextBoxTeachersMail.Text).ToListAsync();
+                            var mail2 = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID && p.TeachersMail == TextBoxTeachersMail.Text).FirstOrDefaultAsync();
+
+                            if (ListViewTeachers.SelectedItem != null)
                             {
-                                if (mail.Count == 0 || mail2 != null)
+                                Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
+
+                                if (teacher != null)
                                 {
-                                    teacher.TeachersName = FIO[1];
-                                    teacher.TeachersSurname = FIO[0];
-                                    teacher.TeachersPatronymic = FIO[2];
-                                    teacher.TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString();
-                                    teacher.TeachersPhone = TextBoxTeachersPhone.Text;
-                                    teacher.TeachersMail = TextBoxTeachersMail.Text;
+                                    if (mail.Count == 0 || mail2 != null)
+                                    {
+                                        teacher.TeachersName = FIO[1];
+                                        teacher.TeachersSurname = FIO[0];
+                                        teacher.TeachersPatronymic = FIO[2];
+                                        teacher.TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString();
+                                        teacher.TeachersPhone = TextBoxTeachersPhone.Text;
+                                        teacher.TeachersMail = TextBoxTeachersMail.Text;
 
-                                    await db.SaveChangesAsync();
-                                    ClearValue();
-                                    FillListBoxTeachers();
-                                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Уведомление", "Сохранено");
+                                        await db.SaveChangesAsync();
+                                    }
+                                    else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта занята");
                                 }
-                                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта занята");
                             }
-                        }
-                        else
-                        {
-                            Teacher teacher = new()
+                            else
                             {
-                                TeachersName = FIO[1],
-                                TeachersSurname = FIO[0],
-                                TeachersPatronymic = FIO[2],
-                                TeachersPassword = SettingsControl.Hash(pass),
-                                TeachersMail = TextBoxTeachersMail.Text,
-                                TeachersPhone = TextBoxTeachersPhone.Text,
-                                TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
-                            };
+                                Teacher teacher = new()
+                                {
+                                    TeachersName = FIO[1],
+                                    TeachersSurname = FIO[0],
+                                    TeachersPatronymic = FIO[2],
+                                    TeachersPassword = SettingsControl.Hash(pass),
+                                    TeachersMail = TextBoxTeachersMail.Text,
+                                    TeachersPhone = TextBoxTeachersPhone.Text,
+                                    TeachersAccesAdminPanel = CheckBoxAdminAccess.IsChecked.ToString()
+                                };
 
-                            if (mail.Count == 0)
-                            {
-                                await db.Teachers.AddAsync(teacher);
-                                await db.SaveChangesAsync();
+                                if (mail.Count == 0)
+                                {
+                                    await db.Teachers.AddAsync(teacher);
+                                    await db.SaveChangesAsync();
 
-                                SendPasswordToUser();
-                                //SendSMSToUser();
-
-                                ClearValue();
-                                FillListBoxTeachers();
-                                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данные сохранены");
+                                    SendPasswordToUser();
+                                    //SendSMSToUser();
+                                }
+                                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данная почта занята");
                             }
-                            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Данная почта занята");
+                            ClearValue();
+                            FillListBoxTeachers();
                         }
+                        else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
                     }
-                    else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
+                    else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта в неверном формате");
                 }
-                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Почта в неверном формате");
-            }
-            else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
+                else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
 
-            ProgressBarTeachers.Visibility = Visibility.Hidden;
+                ProgressBarTeachers.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ButtonSave_Click(teachers) | {ex.Message}");
+            }
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e) => ClearValue(); // Добавление преподавателя
         private void ClearValue()
@@ -354,104 +357,118 @@ namespace ElectroJournal.Pages
             ObservableCollection<GroupsList> co2 = new();
             ListBoxDiscipline.ItemsSource = co1;
             ListBoxGroups.ItemsSource = co2;
-
         }
-        private void ButtonDelete_Click(object sender, RoutedEventArgs e) // Удаление преподавателя
-        {
-            DeleteTeachers();
-        }
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteTeachers(); // Удаление преподавателя
         private async void DeleteTeachers() // Удаление преподавателя
         {
-            if (ListViewTeachers.Items.Count == 0)
+            try
             {
-                ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
-            }
-            else if (ListViewTeachers.SelectedItem != null)
-            {
-                using zhirovContext db = new();
-                Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
-
-                if (teacher != null)
+                if (ListViewTeachers.Items.Count == 0)
                 {
-                    db.Teachers.Remove(teacher);
-                    await db.SaveChangesAsync();
+                    ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+                }
+                else if (ListViewTeachers.SelectedItem != null)
+                {
+                    using zhirovContext db = new();
+                    Teacher? teacher = await db.Teachers.FirstOrDefaultAsync(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]);
 
-                    ListViewTeachers.Items.Clear();
-                    FillListBoxTeachers();
-                    TextBoxTeachersFIO.Clear();
-                    TextBoxTeachersPhone.Clear();
-                    TextBoxTeachersMail.Clear();
-                    CheckBoxAdminAccess.IsChecked = false;
-                    ButtonDelete.IsEnabled = false;
+                    if (teacher != null)
+                    {
+                        db.Teachers.Remove(teacher);
+                        await db.SaveChangesAsync();
+
+                        ListViewTeachers.Items.Clear();
+                        FillListBoxTeachers();
+                        TextBoxTeachersFIO.Clear();
+                        TextBoxTeachersPhone.Clear();
+                        TextBoxTeachersMail.Clear();
+                        CheckBoxAdminAccess.IsChecked = false;
+                        ButtonDelete.IsEnabled = false;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"DeleteTeachers | {ex.Message}");
+            }            
         }
         private async void CheckBoxDiscipline_Click(object sender, RoutedEventArgs e)
         {
-            var cb = sender as System.Windows.Controls.CheckBox;
-            using zhirovContext db = new();
-
-            if ((bool)cb.IsChecked)
+            try
             {
-                var disp = await db.Disciplines.Where(d => d.DisciplinesNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
+                var cb = sender as System.Windows.Controls.CheckBox;
+                using zhirovContext db = new();
 
-                TeachersHasDiscipline teachersHasDiscipline = new()
+                if ((bool)cb.IsChecked)
                 {
-                    TeachersIdteachers = (uint)idTeachers[ListViewTeachers.SelectedIndex],
-                    DisciplinesIddisciplines = disp.Iddisciplines
-                };
+                    var disp = await db.Disciplines.Where(d => d.DisciplinesNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
 
-                if (teachersHasDiscipline != null)
+                    TeachersHasDiscipline teachersHasDiscipline = new()
+                    {
+                        TeachersIdteachers = (uint)idTeachers[ListViewTeachers.SelectedIndex],
+                        DisciplinesIddisciplines = disp.Iddisciplines
+                    };
+
+                    if (teachersHasDiscipline != null)
+                    {
+                        await db.TeachersHasDisciplines.AddAsync(teachersHasDiscipline);
+                        await db.SaveChangesAsync();
+                    }
+                }
+                else
                 {
-                    await db.TeachersHasDisciplines.AddAsync(teachersHasDiscipline);
-                    await db.SaveChangesAsync();
+                    TeachersHasDiscipline td = await db.TeachersHasDisciplines.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
+
+                    if (td != null)
+                    {
+                        db.TeachersHasDisciplines.Remove(td);
+                        await db.SaveChangesAsync();
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                TeachersHasDiscipline td = await db.TeachersHasDisciplines.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
-
-                if (td != null)
-                {
-                    db.TeachersHasDisciplines.Remove(td);
-                    await db.SaveChangesAsync();
-                }
-            }
+                SettingsControl.InputLog($"CheckBoxDiscipline_Click | {ex.Message}");
+            }            
         }
-        private void SearchBoxGroups_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            FillListBoxGroups();
-        }
+        private void SearchBoxGroups_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => FillListBoxGroups();
         private async void CheckBoxGroups_Click(object sender, RoutedEventArgs e)
         {
-            var cb = sender as System.Windows.Controls.CheckBox;
-            using zhirovContext db = new();
-
-            if ((bool)cb.IsChecked)
+            try
             {
-                var disp = await db.Groups.Where(d => d.GroupsNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
+                var cb = sender as System.Windows.Controls.CheckBox;
+                using zhirovContext db = new();
 
-                TeachersHasGroup teachersHasGroup = new()
+                if ((bool)cb.IsChecked)
                 {
-                    TeachersIdteachers = (uint)idTeachers[ListViewTeachers.SelectedIndex],
-                    GroupsIdgroups = disp.Idgroups
-                };
+                    var disp = await db.Groups.Where(d => d.GroupsNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
 
-                if (teachersHasGroup != null)
+                    TeachersHasGroup teachersHasGroup = new()
+                    {
+                        TeachersIdteachers = (uint)idTeachers[ListViewTeachers.SelectedIndex],
+                        GroupsIdgroups = disp.Idgroups
+                    };
+
+                    if (teachersHasGroup != null)
+                    {
+                        await db.TeachersHasGroups.AddAsync(teachersHasGroup);
+                        await db.SaveChangesAsync();
+                    }
+                }
+                else
                 {
-                    await db.TeachersHasGroups.AddAsync(teachersHasGroup);
-                    await db.SaveChangesAsync();
+                    TeachersHasGroup td = await db.TeachersHasGroups.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.GroupsIdgroupsNavigation.GroupsNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
+
+                    if (td != null)
+                    {
+                        db.TeachersHasGroups.Remove(td);
+                        await db.SaveChangesAsync();
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                TeachersHasGroup td = await db.TeachersHasGroups.Where(td => td.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && td.GroupsIdgroupsNavigation.GroupsNameAbbreviated == cb.Content.ToString()).FirstOrDefaultAsync();
-
-                if (td != null)
-                {
-                    db.TeachersHasGroups.Remove(td);
-                    await db.SaveChangesAsync();
-                }
+                SettingsControl.InputLog($"CheckBoxGroups_Click | {ex.Message}");
             }
         }
         #endregion
@@ -492,20 +509,15 @@ namespace ElectroJournal.Pages
                 if (a)
                 {
                     ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "письмо отправлено");
-                    //ButtonSend.IsEnabled = true;
-                    //anim.Begin();
-                    //RectangleLoad.Visibility = Visibility.Hidden;
                 }
                 else if (!a)
                 {
                     ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "письмо не отправилось");
-                    //ButtonSend.IsEnabled = true;
-                    //anim.Begin();
-                    //RectangleLoad.Visibility = Visibility.Hidden;
                 }
             }
-            catch (System.FormatException)
+            catch (Exception ex)
             {
+                SettingsControl.InputLog($"SendPasswordToUser | {ex.Message}");
                 ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Введен некорректный Email");
             }
         }
