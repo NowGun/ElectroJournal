@@ -194,10 +194,7 @@ namespace ElectroJournal
             }
         }
         private void MessageBox_RightButtonClick(object sender, RoutedEventArgs e) => (sender as WPFUI.Controls.MessageBox)?.Close();
-        private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e) => new HelpProgram().Show();
         private void MenuItemEJProgInfo_Click(object sender, RoutedEventArgs e) => new ProgramInformation().ShowDialog();
         private void MenuItemEJBug_Click(object sender, RoutedEventArgs e) => new Help().ShowDialog(); 
         private void NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

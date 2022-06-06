@@ -1,0 +1,24 @@
+﻿<Window
+    x:Class="ElectroJournal.Windows.HelpProgram"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ElectroJournal.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    Title="HelpProgram"
+    Width="800"
+    Height="500"
+    Style="{DynamicResource UiWindowRounded}"
+    mc:Ignorable="d">
+    <Grid>
+        <wpfui:TitleBar
+            x:Name="TitleBar"
+            Title="Справка"
+            Grid.Row="0"
+            Height="50"
+            ShowMaximize="False"
+            ShowMinimize="False" />
+        <WebBrowser Margin="0,40,0,0" Source="http://193.33.230.80/public_html/pages/help.html"/>
+    </Grid>
+</Window>
