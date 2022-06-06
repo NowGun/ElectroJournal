@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using unvell.ReoGrid;
 
 namespace ElectroJournal.Pages
@@ -18,6 +19,7 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             SettingSheet();
+            ReoGridSchedule.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private int gp;
@@ -162,6 +164,8 @@ namespace ElectroJournal.Pages
                                                     $"\\\\{s.TypeclassesIdtypeclassesNavigation.TypeclassesName}";
                                                 }
                                                 ReoGridSchedule.CurrentWorksheet.Cells[i, j].Style.TextWrap = TextWrapMode.WordBreak;
+                                                Cell? cell = worksheet.Cells[i, j];
+                                                cell.IsReadOnly = true;
                                             });
 
                                         }
@@ -171,7 +175,6 @@ namespace ElectroJournal.Pages
                         }
                     }
                 });
-
             }
             catch
             {
@@ -186,7 +189,9 @@ namespace ElectroJournal.Pages
                 {
                     var worksheet = ReoGridSchedule.CurrentWorksheet;
                     using zhirovContext db = new();
-                    var g = await db.Groups.OrderBy(g => g.GroupsNameAbbreviated).Where(g => g.CourseIdcourseNavigation.CourseName == ComboBoxCourse.SelectedItem.ToString()).Select(g => g.GroupsNameAbbreviated).ToListAsync();
+                    var g = ComboBoxCourse.SelectedIndex == 0 
+                        ? await db.Groups.OrderBy(g => g.CourseIdcourseNavigation.CourseName).Select(g => g.GroupsNameAbbreviated).ToListAsync() 
+                        : await db.Groups.OrderBy(g => g.GroupsNameAbbreviated).Where(g => g.CourseIdcourseNavigation.CourseName == ComboBoxCourse.SelectedItem.ToString()).Select(g => g.GroupsNameAbbreviated).ToListAsync();
                     gp = g.Count + 1;
 
                     for (int i = 1; i < gp; i++)
@@ -241,21 +246,14 @@ namespace ElectroJournal.Pages
                 stuud = x;
                 worksheet.SetRows(stuud);
                 FillSchedule();
+
+                ((Storyboard)Resources["AnimCloseLoad"]).Begin();
             }
             catch (Exception ex)
             {
             }
         }
-        private void ComboBoxSchoolWeek_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ReoGridSchedule.CurrentWorksheet.Reset();
-            FillGroups();
-        }
-        private void ComboBoxCourse_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ReoGridSchedule.CurrentWorksheet.Reset();
-            FillGroups();
-        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => CheckComboBox();
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             FillComboBoxSchoolWeek();
@@ -266,6 +264,7 @@ namespace ElectroJournal.Pages
             try
             {
                 ComboBoxCourse.Items.Clear();
+                ComboBoxCourse.Items.Add("Все курсы");
                 using zhirovContext db = new();
                 await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t =>
                 {
@@ -292,6 +291,20 @@ namespace ElectroJournal.Pages
             catch
             {
 
+            }
+        }
+        private void CheckComboBox()
+        {
+            if (ComboBoxCourse.SelectedIndex != -1 && ComboBoxSchoolWeek.SelectedIndex != -1)
+            {
+                ((Storyboard)Resources["AnimLoad"]).Begin();
+                ReoGridSchedule.CurrentWorksheet.Reset();
+                FillGroups();
+            }
+            else
+            {
+                GridPreLoad.Visibility = System.Windows.Visibility.Visible;
+                ReoGridSchedule.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
     }

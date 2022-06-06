@@ -504,8 +504,7 @@
         <wpfui:Card
             x:Name="CardUser"
             Margin="320,15,15,30"
-            d:IsHidden="True"
-            RenderTransformOrigin="0.5,0.5">
+            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
             <wpfui:Card.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -698,7 +697,7 @@
                 <BlurEffect KernelType="Gaussian" Radius="0" />
             </Grid.Effect>
 
-            <wpfui:Card Margin="0,14,0,0" VerticalAlignment="Top">
+            <wpfui:Card Margin="0,15,0,0" VerticalAlignment="Top">
                 <Grid
                     Margin="-11,0,0,0"
                     HorizontalAlignment="Stretch"
@@ -824,17 +823,8 @@
                         TextWrapping="Wrap" />
                     <Label
                         Width="100"
-                        Height="35"
-                        Margin="457,66,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        VerticalContentAlignment="Center"
-                        Content="Кабинет:"
-                        FontSize="16" />
-                    <Label
-                        Width="100"
-                        Height="35"
-                        Margin="457,127,0,0"
+                        Height="36"
+                        Margin="456,66,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         VerticalContentAlignment="Center"
@@ -843,25 +833,16 @@
                     <TextBox
                         x:Name="TextBoxGroup"
                         Width="185"
-                        Height="35"
-                        Margin="557,127,0,0"
+                        Height="36"
+                        Margin="556,66,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         IsEnabled="False"
                         TextWrapping="Wrap" />
-                    <TextBox
-                        x:Name="TextBoxCabinet"
-                        Width="185"
-                        Height="35"
-                        Margin="557,66,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        IsReadOnly="True"
-                        TextWrapping="Wrap" />
                     <Label
                         Width="100"
-                        Height="35"
-                        Margin="457,187,0,0"
+                        Height="36"
+                        Margin="457,127,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         VerticalContentAlignment="Center"
@@ -870,8 +851,8 @@
                     <PasswordBox
                         x:Name="PasswordBoxPassword"
                         Width="185"
-                        Height="35"
-                        Margin="557,187,0,0"
+                        Height="36"
+                        Margin="557,127,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         VerticalContentAlignment="Center"
@@ -880,7 +861,7 @@
                         x:Name="ButtonResetPassword"
                         Width="185"
                         Height="25"
-                        Margin="557,227,0,0"
+                        Margin="557,170,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Click="ButtonResetPassword_Click"

@@ -8,18 +8,19 @@
     xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Students"
-    mc:Ignorable="d">
+    mc:Ignorable="d" PreviewKeyUp="Page_PreviewKeyUp">
     <Grid>
         <wpfui:Card Margin="360,60,20,60">
             <Grid>
-                <wpfui:DynamicScrollViewer Margin="600,52,25,52"
+                <wpfui:DynamicScrollViewer
+                    Margin="600,52,25,52"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top">
                     <StackPanel Margin="0,0,20,0">
                         <ComboBox
-                        x:Name="ComboBoxGroups"
-                        Margin="0,0,0,10"
-                        SelectionChanged="ComboBoxGroups_SelectionChanged" />
+                            x:Name="ComboBoxGroups"
+                            Margin="0,0,0,10"
+                            SelectionChanged="ComboBoxGroups_SelectionChanged" />
                         <ListBox x:Name="ListBoxGroups" Width="250" />
 
                     </StackPanel>
@@ -41,7 +42,6 @@
                     VerticalAlignment="Top"
                     MaxLength="12"
                     PreviewTextInput="TextBoxStudentsPhone_PreviewTextInput"
-                    Text="89996061994"
                     TextWrapping="Wrap"
                     UndoLimit="12" />
                 <TextBox
@@ -52,11 +52,32 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     TextWrapping="Wrap" />
+                <Label
+                    Margin="22,240,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Номер карточки" />
+                <Label
+                    Margin="197,240,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Отсутствует" />
+                <wpfui:Button
+                    x:Name="ButtonChangeNumber"
+                    Width="150"
+                    Height="35"
+                    Margin="272,232,0,0"
+                    Padding="15,6,15,6"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Appearance="Transparent"
+                    Click="ButtonChangeNumber_Click"
+                    Content="Редактировать" />
                 <TextBox
                     x:Name="TextBoxParentFIO"
                     Width="385"
                     Height="35"
-                    Margin="197,296,0,0"
+                    Margin="197,322,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     TextWrapping="Wrap" />
@@ -64,12 +85,11 @@
                     x:Name="TextBoxParentPhone"
                     Width="145"
                     Height="35"
-                    Margin="197,351,0,0"
+                    Margin="197,377,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     MaxLength="12"
                     PreviewTextInput="TextBoxStudentsPhone_PreviewTextInput"
-                    Text="89996061994"
                     TextWrapping="Wrap"
                     UndoLimit="12" />
                 <Label
@@ -138,9 +158,7 @@
                     IsDefault="True"
                     Style="{StaticResource WPFUIButtonStandard}" />
                 <Label
-                    Width="120"
-                    Height="35"
-                    Margin="327,112,0,0"
+                    Margin="340,118,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -167,7 +185,7 @@
                 <Label
                     Width="170"
                     Height="30"
-                    Margin="10,261,0,0"
+                    Margin="10,287,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -176,7 +194,7 @@
                 <Label
                     Width="170"
                     Height="35"
-                    Margin="22,296,0,0"
+                    Margin="22,322,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -185,7 +203,7 @@
                 <Label
                     Width="170"
                     Height="35"
-                    Margin="22,351,0,0"
+                    Margin="22,377,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
@@ -200,11 +218,6 @@
                     IsIndeterminate="True"
                     Style="{StaticResource MaterialDesignCircularProgressBar}"
                     Visibility="Hidden" />
-                <CheckBox
-                        x:Name="CheckBoxStudentsDormitory"
-                        Content="необходимо ли общежитие"
-                        FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,220,0,0" />
-
             </Grid>
         </wpfui:Card>
 
@@ -268,6 +281,24 @@
             FontSize="14"
             IsEnabled="False"
             Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
-
+        <wpfui:Dialog
+            x:Name="RootDialog"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            Margin="0,-109,0,0"
+            d:IsHidden="True"
+            ButtonLeftName="Сохранить"
+            ButtonRightClick="RootDialog_ButtonRightClick"
+            ButtonRightName="Закрыть"
+            DialogHeight="200"
+            DialogWidth="400"
+            IsShown="false" ButtonLeftClick="RootDialog_ButtonLeftClick">
+            <Grid>
+                <StackPanel>
+                    <Label Content="Приложите карточку для получения номера" />
+                    <wpfui:TextBox />
+                </StackPanel>
+            </Grid>
+        </wpfui:Dialog>
     </Grid>
 </Page>

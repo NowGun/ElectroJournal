@@ -7,8 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Journal"
-    Margin="20,20,20,20"
+    Margin="20,0,20,20"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <Storyboard x:Key="AnimOpenLoad">
@@ -74,12 +76,66 @@
         </Storyboard>
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="0,10,0,0">
+        <wpfui:Card
+            x:Name="CardMenu"
+            Height="50"
+            Margin="10,0,10,0"
+            Padding="12,0,12,0"
+            VerticalAlignment="Top">
+            <Grid>
+                <Label
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="Предмет"
+                    FontSize="14" />
+                <ComboBox
+                    x:Name="ComboBoxDisp"
+                    Width="250"
+                    Height="36"
+                    Margin="70,0,0,0"
+                    HorizontalAlignment="Left"
+                    SelectionChanged="ComboBox_SelectionChanged" />
+                <Label
+                    Margin="350,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="Месяц"
+                    FontSize="14" />
+                <ComboBox
+                    x:Name="ComboBoxMonth"
+                    Width="150"
+                    Height="36"
+                    Margin="400,0,0,0"
+                    HorizontalAlignment="Left"
+                    SelectionChanged="ComboBox_SelectionChanged" />
+                <Grid
+                    x:Name="GridYears"
+                    Margin="560,0,0,0"
+                    HorizontalAlignment="Right">
+                    <Label
+                        Margin="0,0,190,0"
+                        HorizontalAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        Content="Учебный год"
+                        FontSize="14" />
+                    <ComboBox
+                        x:Name="ComboBoxYears"
+                        Width="180"
+                        Height="36"
+                        HorizontalAlignment="Right"
+                        SelectionChanged="ComboBox_SelectionChanged" />
+                </Grid>
+            </Grid>
+        </wpfui:Card>
         <rg:ReoGridControl
             x:Name="ReoGrid"
-            Margin="10,45,10,10"
+            Margin="10,60,10,10"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
+            d:IsHidden="True"
             PreviewTextInput="ReoGrid_PreviewTextInput"
             WorkbookLoaded="ReoGrid_WorkbookLoaded">
             <rg:ReoGridControl.Effect>
@@ -96,69 +152,19 @@
             Style="{StaticResource MaterialDesignCircularProgressBar}"
             Visibility="Hidden" />
         <Label
-            Margin="260,6,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="Дисциплина"
-            FontSize="14" />
-        <ComboBox
-            x:Name="ComboBoxDisp"
-            Width="200"
-            Height="35"
-            Margin="345,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            SelectionChanged="ComboBoxDisp_SelectionChanged" />
-        <Label
-            Margin="565,7,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="Месяц"
-            FontSize="14" />
-        <ComboBox
-            x:Name="ComboBoxMonth"
-            Width="150"
-            Height="35"
-            Margin="612,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            SelectionChanged="ComboBoxMonth_SelectionChanged" />
-        <Button
-            x:Name="ButtonExcel"
-            Width="150"
-            Height="35"
-            Margin="940,6,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="ButtonExcel_Click"
-            Content="Сохранить"
-            Cursor="Hand"
-            Style="{DynamicResource WPFUIButtonStandard}"
+            x:Name="LabelData"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Заполните все поля"
+            FontSize="16"
             Visibility="Hidden" />
         <Label
-            x:Name="LabelTest"
-            Margin="767,8,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Label"
-            Visibility="Hidden" />
-        <Label
-            Margin="5,7,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="Учебный год"
-            FontSize="14" />
-        <ComboBox
-            x:Name="ComboBoxYears"
-            Width="150"
-            Height="35"
-            Margin="92,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+            x:Name="LabelGroup"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Выберите группу"
+            FontSize="16" />
     </Grid>
-
-
 </ui:Page>

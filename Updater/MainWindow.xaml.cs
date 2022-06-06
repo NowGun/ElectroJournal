@@ -45,7 +45,7 @@ namespace Updater
 
             try
             {
-                PingReply reply = ping.Send("193.33.230.80", 2000);
+                PingReply reply = ping.Send("193.33.230.80", 4000);
                 if (reply.Status == IPStatus.Success)
                 {
                     HttpClient hc = new();

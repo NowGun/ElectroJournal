@@ -14,7 +14,7 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
     Title="Groups"
-    mc:Ignorable="d">
+    mc:Ignorable="d" PreviewKeyUp="Page_PreviewKeyUp">
 
     <Grid>
         <wpfui:Card Margin="360,60,20,60">
@@ -28,11 +28,12 @@
                     VerticalAlignment="Top" />
                 <TextBox
                     x:Name="TextBoxGroupsName"
-                    Width="520"
+                    Width="600"
                     Height="35"
                     Margin="36,53,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
+                    LostFocus="TextBox_LostFocus"
                     TextWrapping="Wrap" />
                 <TextBox
                     x:Name="TextBoxGroupsNameAbbreviated"
@@ -60,8 +61,8 @@
                     FontSize="14" />
                 <ComboBox
                     x:Name="ComboBoxClassTeacher"
-                    Width="240"
-                    Height="35"
+                    Width="320"
+                    Height="37"
                     Margin="316,138,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top" />
@@ -141,7 +142,7 @@
                     FontSize="14" />
                 <ProgressBar
                     x:Name="ProgressBar"
-                    Margin="0,0,158,17"
+                    Margin="0,0,165,17"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Foreground="#FF3567BC"
@@ -180,7 +181,7 @@
             Click="ButtonGroupDelete_Click"
             Content="Удалить"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" />
+            Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
         <wpfui:SearchBox
             x:Name="SearchBox"
             Width="300"
@@ -198,12 +199,6 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             SelectedIndex="0"
-            SelectionChanged="ComboBoxGroupsSorting_SelectionChanged">
-            <ComboBoxItem Content="Все курсы" />
-            <ComboBoxItem Content="1 курс" />
-            <ComboBoxItem Content="2 курс" />
-            <ComboBoxItem Content="3 курс" />
-            <ComboBoxItem Content="4 курс" />
-        </ComboBox>
+            SelectionChanged="ComboBoxGroupsSorting_SelectionChanged" />
     </Grid>
 </Page>

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ElectroJournal.Pages
 {
@@ -45,11 +46,10 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                if (ListBoxCabinet.Items.Count == 0) ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+                if (ListBoxCabinet.Items.Count == 0) ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
                 else if (ListBoxCabinet.SelectedItem != null)
                 {
                     using zhirovContext db = new();
-
                     Classes.DataBaseEF.Cabinet? cab = await db.Cabinets.FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
 
                     if (cab != null)
@@ -57,12 +57,7 @@ namespace ElectroJournal.Pages
                         db.Cabinets.Remove(cab);
                         await db.SaveChangesAsync();
 
-                        FillListBoxCabinet();
-                        TextBoxCabinet.Clear();
-                        TextBoxFloor.Clear();
-                        TextBoxName.Clear();
-                        TextBoxNumSeats.Clear();
-                        ButtonCabinetDelete.IsEnabled = false;
+                        ClearValue();
                     }
                 }
             }
@@ -110,12 +105,8 @@ namespace ElectroJournal.Pages
             try
             {
                 ComboBoxSortingCabinet.Items.Clear();
-
                 using zhirovContext db = new();
-                await db.Housings.OrderBy(t => t.HousingName).ForEachAsync(t =>
-                {
-                    ComboBoxSortingCabinet.Items.Add(t.HousingName);
-                });
+                await db.Housings.OrderBy(t => t.HousingName).ForEachAsync(t => ComboBoxSortingCabinet.Items.Add(t.HousingName));
             }
             catch (Exception ex)
             {
@@ -126,14 +117,12 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                ButtonCabinetDelete.IsEnabled = true;
-
                 if (ListBoxCabinet.SelectedItem != null)
                 {
+                    ButtonCabinetDelete.IsEnabled = true;
                     FillListBoxHousing();
 
                     using zhirovContext db = new();
-
                     var cab = await db.Cabinets.Include(c => c.HousingIdhousingNavigation).FirstOrDefaultAsync(c => c.Idcabinet == idCab[ListBoxCabinet.SelectedIndex]);
 
                     TextBoxCabinet.Text = cab.CabinetNumber;
@@ -155,9 +144,7 @@ namespace ElectroJournal.Pages
                 if (!string.IsNullOrWhiteSpace(TextBoxCabinet.Text) && ListBoxHousing.SelectedItem != null)
                 {
                     using zhirovContext db = new();
-                    int a;
-                    if (String.IsNullOrWhiteSpace(TextBoxNumSeats.Text)) a = 0;
-                    else a = Int32.Parse(TextBoxNumSeats.Text);
+                    int a = String.IsNullOrWhiteSpace(TextBoxNumSeats.Text) ? 0 : Int32.Parse(TextBoxNumSeats.Text);
 
                     if (ListBoxCabinet.SelectedItem != null)
                     {
@@ -189,25 +176,16 @@ namespace ElectroJournal.Pages
                         await db.SaveChangesAsync();
                     }
 
-                    TextBoxCabinet.Clear();
-                    TextBoxFloor.Clear();
-                    TextBoxName.Clear();
-                    TextBoxNumSeats.Clear();
-                    ListBoxHousing.SelectedIndex = -1;
-
-                    FillListBoxCabinet();
+                    ClearValue();
                 }
-                else
-                {
-                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
-                }
+                else ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
             }
             catch (Exception ex)
             {
                 SettingsControl.InputLog($"ButtonSaveCabinet_Click | {ex.Message}");
             }
         }
-        private void SearchBoxCabinet_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => FillListBoxCabinet();
+        private void SearchBoxCabinet_PreviewKeyUp(object sender, KeyEventArgs e) => FillListBoxCabinet();
         private void ComboBoxSortingCabinet_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxCabinet();
         #endregion
 
@@ -326,5 +304,29 @@ namespace ElectroJournal.Pages
             }
         }
         #endregion
+
+        private void Page_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+            {
+                ClearValue();
+                TextBoxName.Focus();
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                SearchBoxCabinet.Clear();
+                SearchBoxCabinet.Focus();
+            }
+        }
+        private void ClearValue()
+        {
+            FillListBoxCabinet();
+            TextBoxCabinet.Clear();
+            TextBoxFloor.Clear();
+            TextBoxName.Clear();
+            TextBoxNumSeats.Clear();
+            ListBoxHousing.SelectedIndex = -1;
+            ButtonCabinetDelete.IsEnabled = false;
+        }
     }
 }

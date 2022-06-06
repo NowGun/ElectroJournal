@@ -178,7 +178,7 @@ namespace ElectroJournal
                 else e.Cancel = true;
             }
         }
-        private void MessageBox_LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        private void MessageBox_LeftButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -188,9 +188,12 @@ namespace ElectroJournal
             {
                 ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
             }
-            (sender as WPFUI.Controls.MessageBox)?.Close();
+            finally
+            {
+                (sender as WPFUI.Controls.MessageBox)?.Close();
+            }
         }
-        private void MessageBox_RightButtonClick(object sender, System.Windows.RoutedEventArgs e) => (sender as WPFUI.Controls.MessageBox)?.Close();
+        private void MessageBox_RightButtonClick(object sender, RoutedEventArgs e) => (sender as WPFUI.Controls.MessageBox)?.Close();
         private void MenuItemEJHelp_Click(object sender, RoutedEventArgs e)
         {
 
@@ -220,7 +223,7 @@ namespace ElectroJournal
             SettingMig.CheckStart();
             settingsControl.CreateDirLogs();
             settingsControl.LogFileCreate();
-            ThemeCheck();           
+            ThemeCheck();
         }
         private void ButtonShowLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -231,14 +234,8 @@ namespace ElectroJournal
         public async void FillComboBoxGroups()
         {
             ComboBoxGroup.Items.Clear();
-
             using zhirovContext db = new();
-            await db.TeachersHasGroups.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).Include(g => g.GroupsIdgroupsNavigation).ForEachAsync(g =>
-            {
-               ComboBoxGroup.Items.Add(g.GroupsIdgroupsNavigation.GroupsNameAbbreviated);
-            });
-
-            ComboBoxGroup.SelectedItem = "ПКС-4"; // удалить
+            await db.TeachersHasGroups.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).Include(g => g.GroupsIdgroupsNavigation).ForEachAsync(g => ComboBoxGroup.Items.Add(g.GroupsIdgroupsNavigation.GroupsNameAbbreviated));
         }
         private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e) => nav.NavigationPage("Journal");
         public void UpdateUserInfo(string path, string fio)

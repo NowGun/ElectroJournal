@@ -120,7 +120,7 @@ namespace ElectroJournal.Classes
         {
             string? currentPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             DateTime now = DateTime.Now;
-            await File.AppendAllTextAsync($@"{currentPath}/logs/{now:d}.txt", $"{text} | {now:T}\n");
+            await File.AppendAllTextAsync($@"{currentPath}/logs/{now:d}.txt", $"{now:T} | {text}\n\n");
         }
         public void ChangeTheme()
         {

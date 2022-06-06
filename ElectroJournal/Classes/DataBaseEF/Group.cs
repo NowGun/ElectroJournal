@@ -22,7 +22,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public string GroupsPrefix { get; set; }
         public uint TypelearningIdtypelearning { get; set; }
         public uint CourseIdcourse { get; set; }
-        public uint TeachersIdteachers { get; set; }
+        public uint? TeachersIdteachers { get; set; }
 
         public virtual Course CourseIdcourseNavigation { get; set; }
         public virtual Teacher TeachersIdteachersNavigation { get; set; }

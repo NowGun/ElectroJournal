@@ -24,7 +24,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public string StudentsParent { get; set; }
         public string StudentsPhone { get; set; }
         public string StudentsParentPhone { get; set; }
-        public uint GroupsIdgroups { get; set; }
+        public uint? GroupsIdgroups { get; set; }
 
         public virtual Group GroupsIdgroupsNavigation { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }

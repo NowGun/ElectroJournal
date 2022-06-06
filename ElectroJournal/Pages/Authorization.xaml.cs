@@ -158,6 +158,8 @@ namespace ElectroJournal.Pages
             TextBoxPassword.Password = complete.pass;
 
             RectangleLoadLogin.Visibility = Visibility.Hidden;
+            if (Console.CapsLock) StackPanelCaps.Visibility = Visibility.Visible;
+            else StackPanelCaps.Visibility = Visibility.Collapsed;
         }
         private void IconChangeDB_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => new DBUser().ShowDialog();
         private void IconForgotPassword_MouseMove(object sender, MouseEventArgs e) => IconForgotPassword.Filled = true;
@@ -171,6 +173,11 @@ namespace ElectroJournal.Pages
             TextBoxPassword.IsEnabled = true;
             ButtonLogin.IsEnabled = true;
             RectangleLoadLogin.Visibility = Visibility.Hidden;
+        }
+        private void Page_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.IsKeyToggled(Key.CapsLock)) StackPanelCaps.Visibility = Visibility.Visible;
+            else StackPanelCaps.Visibility = Visibility.Collapsed;
         }
     }
 }

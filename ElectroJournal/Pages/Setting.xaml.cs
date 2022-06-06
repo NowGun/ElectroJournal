@@ -31,7 +31,7 @@ namespace ElectroJournal.Pages
             CheckBoxAutoRun.IsChecked = Properties.Settings.Default.AutoRun;
             CheckBoxCollapseToTray.IsChecked = Properties.Settings.Default.Tray;
             CheckBoxUpdate.IsChecked = Properties.Settings.Default.CheckUpdate;
-            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 01.06.2022";
+            LabelVersion.Content = $"Версия {Properties.Settings.Default.Version} от 02.06.2022";
 
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Server)) LabelIpAddress.Content = Properties.Settings.Default.Server; 
             else LabelIpAddress.Content = "отсутствует";
@@ -139,14 +139,17 @@ namespace ElectroJournal.Pages
                     }
                     catch (System.ComponentModel.Win32Exception)
                     {
-                        ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, выполните проверку на целостность файлов");
+                        ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Файл Updater.exe не найден, переустановите приложение");
                     }
                 }
             }
             catch (Exception ex)
             {
+                var anim3 = (Storyboard)FindResource("AnimCloseCheckUpdate");
+                anim3.Begin();
+                ButtonOpenUpdater.IsEnabled = true;
                 SettingsControl.InputLog($"ButtonOpenUpdater_Click | {ex.Message}");
-                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Не удалось проверить");
+                ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Не удалось проверить обновление");
             }
         }
         private void ComboBoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)

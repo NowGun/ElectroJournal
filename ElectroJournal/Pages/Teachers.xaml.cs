@@ -42,7 +42,7 @@ namespace ElectroJournal.Pages
         }
 
         #region Заполнение ListBox
-        private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxTeachers(); // Сортировка листа
+        private void ComboBoxSortingTeacher_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxTeachers();// Сортировка листа
         private async void FillListBoxTeachers()
         {
             try
@@ -98,11 +98,22 @@ namespace ElectroJournal.Pages
                 ObservableCollection<DisciplineList> co1 = new();
                 using zhirovContext db = new();
 
-                if (!String.IsNullOrWhiteSpace(SearchBoxDiscipline.Text))
-                {
-                    var c2 = await db.Disciplines.Where(c => EF.Functions.Like(c.DisciplinesNameAbbreviated, $"%{SearchBoxDiscipline.Text}%") || EF.Functions.Like(c.DisciplinesName, $"%{SearchBoxDiscipline.Text}%")).ToListAsync();
+                var c2 = !String.IsNullOrWhiteSpace(SearchBoxDiscipline.Text) 
+                    ? await db.Disciplines
+                    .Where(c => EF.Functions.Like(c.DisciplinesNameAbbreviated, $"%{SearchBoxDiscipline.Text}%") || EF.Functions.Like(c.DisciplinesName, $"%{SearchBoxDiscipline.Text}%"))
+                    .ToListAsync() 
+                    : await db.Disciplines.ToListAsync();
 
-                    foreach (var c in c2)
+                foreach (var c in c2)
+                {
+                    if (ListViewTeachers.SelectedIndex == -1)
+                    {
+                        co1.Add(new DisciplineList
+                        {
+                            DisciplineName = c.DisciplinesNameAbbreviated
+                        });
+                    }
+                    else
                     {
                         var c3 = await db.TeachersHasDisciplines.Where(c3 => c3.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && c3.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == c.DisciplinesNameAbbreviated).FirstOrDefaultAsync();
 
@@ -121,34 +132,8 @@ namespace ElectroJournal.Pages
                                 DisciplineName = c.DisciplinesNameAbbreviated
                             });
                         }
-                    }
+                    }                    
                 }
-                else
-                {
-                    var c2 = await db.Disciplines.ToListAsync();
-
-                    foreach (var c in c2)
-                    {
-                        var c3 = await db.TeachersHasDisciplines.Where(c3 => c3.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && c3.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == c.DisciplinesNameAbbreviated).FirstOrDefaultAsync();
-
-                        if (c3 != null)
-                        {
-                            co1.Add(new DisciplineList
-                            {
-                                DisciplineName = c.DisciplinesNameAbbreviated,
-                                DisciplineIsChecked = "True"
-                            });
-                        }
-                        else
-                        {
-                            co1.Add(new DisciplineList
-                            {
-                                DisciplineName = c.DisciplinesNameAbbreviated
-                            });
-                        }
-                    }
-                }
-
                 ListBoxDiscipline.ItemsSource = co1;
             }
             catch (Exception ex)
@@ -163,11 +148,20 @@ namespace ElectroJournal.Pages
                 ObservableCollection<GroupsList> co1 = new();
                 using zhirovContext db = new();
 
-                if (!String.IsNullOrWhiteSpace(SearchBoxDiscipline.Text))
-                {
-                    var c2 = await db.Groups.Where(c => EF.Functions.Like(c.GroupsNameAbbreviated, $"%{SearchBoxGroups.Text}%") || EF.Functions.Like(c.GroupsName, $"%{SearchBoxGroups.Text}%")).ToListAsync();
+                var c2 = !String.IsNullOrWhiteSpace(SearchBoxGroups.Text) 
+                    ? await db.Groups.Where(c => EF.Functions.Like(c.GroupsNameAbbreviated, $"%{SearchBoxGroups.Text}%") || EF.Functions.Like(c.GroupsName, $"%{SearchBoxGroups.Text}%")).ToListAsync()
+                    : await db.Groups.OrderBy(c => c.CourseIdcourseNavigation.CourseName).ToListAsync();
 
-                    foreach (var c in c2)
+                foreach (var c in c2)
+                {
+                    if (ListViewTeachers.SelectedIndex == -1)
+                    {
+                        co1.Add(new GroupsList
+                        {
+                            GroupsName = c.GroupsNameAbbreviated
+                        });
+                    }
+                    else
                     {
                         var c3 = await db.TeachersHasGroups.Where(c3 => c3.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && c3.GroupsIdgroupsNavigation.GroupsNameAbbreviated == c.GroupsNameAbbreviated).FirstOrDefaultAsync();
 
@@ -188,32 +182,6 @@ namespace ElectroJournal.Pages
                         }
                     }
                 }
-                else
-                {
-                    var c2 = await db.Groups.ToListAsync();
-
-                    foreach (var c in c2)
-                    {
-                        var c3 = await db.TeachersHasGroups.Where(c3 => c3.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex] && c3.GroupsIdgroupsNavigation.GroupsNameAbbreviated == c.GroupsNameAbbreviated).FirstOrDefaultAsync();
-
-                        if (c3 != null)
-                        {
-                            co1.Add(new GroupsList
-                            {
-                                GroupsName = c.GroupsNameAbbreviated,
-                                GroupsIsChecked = "True"
-                            });
-                        }
-                        else
-                        {
-                            co1.Add(new GroupsList
-                            {
-                                GroupsName = c.GroupsNameAbbreviated
-                            });
-                        }
-                    }
-                }
-
                 ListBoxGroups.ItemsSource = co1;
             }
             catch (Exception ex)
@@ -234,13 +202,14 @@ namespace ElectroJournal.Pages
                 {
                     using zhirovContext db = new();
                     var t = await db.Teachers.Where(p => p.Idteachers == idTeachers[ListViewTeachers.SelectedIndex]).FirstOrDefaultAsync();
-
+                    var g = await db.Groups.FirstOrDefaultAsync(g => g.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex]);
                     string FIO = t.TeachersSurname + " " + t.TeachersName + " " + t.TeachersPatronymic;
 
                     TextBoxTeachersFIO.Text = FIO;
                     CheckBoxAdminAccess.IsChecked = bool.Parse(t.TeachersAccesAdminPanel);
                     TextBoxTeachersMail.Text = t.TeachersMail;
                     TextBoxTeachersPhone.Text = t.TeachersPhone;
+                    LabelGroup.Content = g != null ? $"Группа: {g.GroupsNameAbbreviated}" : "Группа: отсутствует";
 
                     FillListBoxDiscipline();
                     FillListBoxGroups();
@@ -324,6 +293,18 @@ namespace ElectroJournal.Pages
                                     await db.Teachers.AddAsync(teacher);
                                     await db.SaveChangesAsync();
 
+                                    var t = await db.Teachers.OrderByDescending(t => t.Idteachers).FirstOrDefaultAsync();
+
+                                    Classes.DataBaseEF.Setting s = new()
+                                    {
+                                        TeachersIdteachers = t.Idteachers,
+                                        SettingsPhone = 1,
+                                        SettingsEmail = 1
+                                    };
+
+                                    await db.Settings.AddAsync(s);
+                                    await db.SaveChangesAsync();
+
                                     SendPasswordToUser();
                                     //SendSMSToUser();
                                 }
@@ -353,10 +334,8 @@ namespace ElectroJournal.Pages
             TextBoxTeachersPhone.Clear();
             TextBoxTeachersMail.Clear();
             CheckBoxAdminAccess.IsChecked = false;
-            ObservableCollection<DisciplineList> co1 = new();
-            ObservableCollection<GroupsList> co2 = new();
-            ListBoxDiscipline.ItemsSource = co1;
-            ListBoxGroups.ItemsSource = co2;
+            FillListBoxDiscipline();
+            FillListBoxGroups();
         }
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteTeachers(); // Удаление преподавателя
         private async void DeleteTeachers() // Удаление преподавателя
@@ -528,6 +507,25 @@ namespace ElectroJournal.Pages
             sms.Send(TextBoxTeachersPhone.Text, "Добро пожаловать в Электронный журнал\n\nЛогин: " + TextBoxTeachersMail.Text + "\nПароль: " + pass);
         }
         #endregion
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            FillListBoxDiscipline();
+            FillListBoxGroups();
+        }
+        private void Page_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+            {
+                ClearValue();
+                TextBoxTeachersFIO.Focus();
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                SearchBox.Clear();
+                SearchBox.Focus();
+            }
+        }
     }
 
     public class DisciplineList

@@ -11,7 +11,7 @@
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
     Title="Cabinet"
-    mc:Ignorable="d">
+    mc:Ignorable="d" PreviewKeyUp="Page_PreviewKeyUp">
 
     <Grid>
         <wpfui:Card Margin="360,60,20,60" Padding="0,0,0,0">
@@ -152,7 +152,7 @@
             Click="ButtonCabinetDelete_Click"
             Content="Удалить"
             FontSize="14"
-            Style="{DynamicResource WPFUIButtonStandard}" />
+            Style="{DynamicResource WPFUIButtonStandard}" IsEnabled="False" />
         <ComboBox
             x:Name="ComboBoxSortingCabinet"
             Width="300"

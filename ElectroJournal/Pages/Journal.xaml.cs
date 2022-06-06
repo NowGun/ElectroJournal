@@ -27,13 +27,10 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
 
-            FillComoBoxMonth();
-            ComboBoxMonth.SelectedIndex = DateTime.Now.Month - 1;
-            FillComboBoxDisp();
-            FillComboBoxYears();
+            CheckComboBox();
             var ws = ReoGrid.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
-            ws.BeforeCellEdit += rgrid_BeforeCellEdit; 
+            ws.BeforeCellEdit += rgrid_BeforeCellEdit;
         }
 
         private int stuud;
@@ -41,24 +38,33 @@ namespace ElectroJournal.Pages
         List<int> idStud = new();
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
         private bool isChange = false;
-        SettingsControl sControl = new();
 
         private void FillTable()
         {
-            var anim = (Storyboard)FindResource("AnimOpenLoad");
-            anim.Begin();
+            if (ComboBoxDisp.SelectedIndex == -1 || ComboBoxMonth.SelectedIndex == -1 || ComboBoxYears.SelectedIndex == -1)
+            {
+                LabelData.Visibility = Visibility.Visible;
+                ReoGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                LabelData.Visibility = Visibility.Collapsed;
+                ReoGrid.Visibility = Visibility.Visible;
 
-            FillText();
-            FillStudents();
-            FillDates();
-            
-            SettingSheet();
+                var anim = (Storyboard)FindResource("AnimOpenLoad");
+                anim.Begin();
+
+                SettingSheet();
+                FillText();
+                FillStudents();
+                FillDates();
+            }
         }
         private async void FillScore()
         {
             try
             {
-                if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1 && ComboBoxDisp.SelectedIndex != -1)
+                if (((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1 && ComboBoxDisp.SelectedIndex != -1)
                 {
                     var worksheet = ReoGrid.CurrentWorksheet;
                     using zhirovContext db = new();
@@ -116,34 +122,24 @@ namespace ElectroJournal.Pages
             {
                 idStud.Clear();
 
-                if (((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
+                if (((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
                 {
                     var worksheet = ReoGrid.CurrentWorksheet;
-                    using (zhirovContext db = new zhirovContext())
+                    using zhirovContext db = new();
+
+                    var days = await db.Groups.Where(p => p.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()).Select(p => p.Idgroups).ToListAsync();
+                    var students = await db.Students.Where(p => p.GroupsIdgroups == days[0]).OrderBy(p => p.StudentsSurname).ToListAsync();
+                    stuud = students.Count;
+                    for (int i = 2; i - 2 < stuud; i++)
                     {
-                        var days = await db.Groups.Where(p => p.GroupsNameAbbreviated == ((MainWindow)System.Windows.Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()).Select(p => p.Idgroups).ToListAsync();
-                        var students = await db.Students.Where(p => p.GroupsIdgroups == days[0]).OrderBy(p => p.StudentsSurname).ToListAsync();
-                        stuud = students.Count;
-                        for (int i = 2; i - 2 < stuud; i++)
-                        {
-                            worksheet.SetRows(i);
-                            worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
-                            worksheet.AutoFitColumnWidth(0, false);
+                        worksheet.SetRows(i);
+                        worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
+                        worksheet.AutoFitColumnWidth(0, false);
 
-                            idStud.Add((int)students[i - 2].Idstudents);
+                        idStud.Add((int)students[i - 2].Idstudents);
 
-                            unvell.ReoGrid.Cell? cell = worksheet.Cells["A" + i];
-                            cell.IsReadOnly = true;
-
-                            /*worksheet.SetRangeStyles("A1:A" + i, new WorksheetRangeStyle
-                            {
-                                Flag = PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor | PlainStyleFlag.LineColor | PlainStyleFlag.Padding,
-                                FontName = "Segoe UI",
-                                FontSize = 13,
-                                TextColor = Colors.Black,
-                                Padding = new PaddingValue(10),
-                            });*/
-                        }
+                        Cell? cell = worksheet.Cells["A" + i];
+                        cell.IsReadOnly = true;
                     }
                 }
                 FillScore();
@@ -151,80 +147,73 @@ namespace ElectroJournal.Pages
             catch (Exception ex) 
             {
                 SettingsControl.InputLog($"FillStudents | {ex.Message}");
-            }            
+            }
         }
         private async void FillDates()
         {
             try
             {
-                var worksheet = ReoGrid.CurrentWorksheet;
-
-                using (zhirovContext db = new())
+                if (ComboBoxDisp.SelectedIndex != -1 && ComboBoxMonth.SelectedIndex != -1 && ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
                 {
-                    var days = await db.Dates.Where(p => p.Month == ComboBoxMonth.SelectedIndex + 1 && p.Year == 2022 && p.DayOfWeek != 7).Select(p => p.Day).ToListAsync();
-                    daysTable = days.Count + 1;
-                    for (int i = 1; i < daysTable; i++)
-                    {
-                        worksheet.SetCols(daysTable);
-                        worksheet[0, i] = days[i - 1];
-                        worksheet[1, i] = "";
-                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+                    var worksheet = ReoGrid.CurrentWorksheet;
 
-                        unvell.ReoGrid.Cell? cell = worksheet.Cells[0, i];
-                        cell.IsReadOnly = true;
+                    using zhirovContext db = new();
+                    var s = await db.Schedules
+                        .Where(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()
+                    && s.ScheduleDate.Month == ComboBoxMonth.SelectedIndex + 1
+                    && s.ScheduleDate.Year == int.Parse(CheckYear())
+                    && s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString())
+                        .Select(s => s.ScheduleDate.Day)
+                        .ToListAsync();
+
+                    daysTable = s.Count + 1;
+
+                    if (s.Count == 0)
+                    {
+                        ReoGrid.Visibility = Visibility.Collapsed;
+                        LabelData.Content = "Занятия отсутствуют";
+                        LabelData.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        if (s != null)
+                        {
+                            for (int i = 1; i < daysTable; i++)
+                            {
+                                worksheet.SetCols(daysTable);
+                                worksheet[0, i] = s[i - 1];
+                                worksheet[1, i] = "";
+                                ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+
+                                Cell? cell = worksheet.Cells[0, i];
+                                cell.IsReadOnly = true;
+                            }
+
+                            worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+                            {
+                                Flag = PlainStyleFlag.HorizontalAlign,
+                                HAlign = ReoGridHorAlign.Center,
+                            });
+                        }
                     }
                 }
-                worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
-                {
-                    //Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
-                    Flag = PlainStyleFlag.HorizontalAlign,
-                    HAlign = ReoGridHorAlign.Center,
-                    //FontName = "Segoe UI",
-                    // FontSize = 13,
-                    // TextColor = Colors.Black
-                });
             }
             catch (Exception ex)
             {
                 SettingsControl.InputLog($"FillDates | {ex.Message}");
             }
-            
         }
         private void FillText()
         {
             var worksheet = ReoGrid.CurrentWorksheet;
-
             worksheet["A1"] = "ФИО\\День месяца";
-            /*worksheet.SetRangeStyles("A1:A1", new WorksheetRangeStyle
-            {
-                Flag = PlainStyleFlag.HorizontalAlign | PlainStyleFlag.FontSize | PlainStyleFlag.FontName | PlainStyleFlag.TextColor,
-                HAlign = ReoGridHorAlign.Center,
-                FontName = "Segoe UI",
-                FontSize = 13,
-                TextColor = Colors.Black
-            });*/
         }
         private void SettingSheet()
         {
-
             var worksheet = ReoGrid.Worksheets[0];
             ReoGrid.SetSettings(WorkbookSettings.View_ShowSheetTabControl, false);
             worksheet.SetSettings(WorksheetSettings.View_ShowHeaders, false);
-            if (Properties.Settings.Default.Theme == 1)
-            {
-                ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false);
-            }
-            else
-            {
-                ReoGrid.ControlStyle = new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
-            }
-        }
-        private void ButtonExcel_Click(object sender, RoutedEventArgs e)
-        {
-            //   var workbook = ReoGrid;
-            //  workbook.Save(@"table.xls", unvell.ReoGrid.IO.FileFormat.Excel2007);
-
-            //SaveJournal();
+            ReoGrid.ControlStyle = Properties.Settings.Default.Theme == 1 ? new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false) : new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
         }
         private void ReoGrid_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -236,27 +225,14 @@ namespace ElectroJournal.Pages
         private async void FillComboBoxDisp()
         {
             ComboBoxDisp.Items.Clear();
-
-            using (zhirovContext db = new zhirovContext())
-            {
-                await db.TeachersHasDisciplines.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).Include(g => g.DisciplinesIddisciplinesNavigation).ForEachAsync(g =>
-                {
-                    ComboBoxDisp.Items.Add(g.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated);
-                });
-            }
-            //ComboBoxDisp.SelectedIndex = 1;
+            using zhirovContext db = new();
+            await db.TeachersHasDisciplines.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).Include(g => g.DisciplinesIddisciplinesNavigation).ForEachAsync(g => ComboBoxDisp.Items.Add(g.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated));
         }
         private async void FillComboBoxYears()
         {
             ComboBoxYears.Items.Clear();
-
-            using (zhirovContext db = new zhirovContext())
-            {
-                await db.Studyperiods.OrderBy(t => t.StudyperiodStart).ForEachAsync(t =>
-                {
-                    ComboBoxYears.Items.Add(t.StudyperiodStart);
-                });
-            }
+            using zhirovContext db = new();
+            await db.Studyperiods.OrderByDescending(t => t.StudyperiodStart).ForEachAsync(t => ComboBoxYears.Items.Add(t.StudyperiodStart));
             ComboBoxYears.SelectedIndex = 0;
         }
         private void FillComoBoxMonth()
@@ -265,10 +241,6 @@ namespace ElectroJournal.Pages
             {
                 ComboBoxMonth.Items.Add(month);
             }
-        }
-        private void ComboBoxMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FillTable();
         }
         private async void SaveJournal(string students, string disciplines, int teachers, string studyPeriod, string score, string time)
         {
@@ -316,59 +288,78 @@ namespace ElectroJournal.Pages
                 }
             }
         }
-        private void ReoGrid_WorkbookLoaded(object sender, EventArgs e)
-        {
-            FillTable();
-        }
+        private void ReoGrid_WorkbookLoaded(object sender, EventArgs e) => FillTable();
         private void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
             string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
             string score = poz[0];
-
-            char poz3 = score[1];
-
-            string poz4 = score.Last().ToString();
-
             int stud = int.Parse(Regex.Match(score, @"\d+").Value);
-
             string poz6 = Regex.Replace(score, @"[^A-Z]+", string.Empty);
 
             if (ComboBoxDisp.SelectedItem != null && !String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText))
-            {
                 SaveJournal(ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText, ComboBoxDisp.SelectedItem.ToString(), Properties.Settings.Default.UserID, ComboBoxYears.SelectedItem.ToString(), ReoGrid.CurrentWorksheet.Cells[score].DisplayText, $"{CheckYear()}.{ComboBoxMonth.SelectedIndex + 1}.{ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText}");
-            }
-
-            LabelTest.Content = $"оценка {ReoGrid.CurrentWorksheet.Cells[score].DisplayText} фио {ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText} дата {ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText} позиция {score}";
         }
         private void rgrid_BeforeCellEdit(object sender, CellEventArgs e)
         {            
             string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
             string score = poz[0];
-
-            if (String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[score].DisplayText)) isChange = false;
-            else isChange = true;
+            isChange = String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[score].DisplayText) ? false : true;
         }
         private string CheckYear()
         {
             string[] year = ComboBoxYears.SelectedItem.ToString().Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (ComboBoxMonth.SelectedIndex <= 6)
-            {
                 return year[1];
-            }
             else if (ComboBoxMonth.SelectedIndex >= 8)
-            {
                 return year[0];
-            }
 
             return null;
         }
-        private void ComboBoxDisp_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CheckGroup()
         {
-            if (ComboBoxDisp.SelectedItem != null)
+            try
             {
-                //FillScore();
-                FillTable();
+                if (((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
+                {
+                    using zhirovContext db = new();
+                    var g = await db.Groups.FirstOrDefaultAsync(g => g.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString() && g.TeachersIdteachers == Properties.Settings.Default.UserID);
+
+                    if (g != null)
+                    {
+                        GridYears.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        GridYears.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e) => CheckGroup();
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillTable();
+        private void CheckComboBox()
+        {
+            if (((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
+            {
+                LabelGroup.Visibility = Visibility.Collapsed;
+                ReoGrid.Visibility = Visibility.Visible;
+                CardMenu.Visibility = Visibility.Visible;
+
+                FillComoBoxMonth();
+                ComboBoxMonth.SelectedIndex = DateTime.Now.Month - 1;
+                FillComboBoxDisp();
+                FillComboBoxYears();
+            }
+            else
+            {
+                LabelGroup.Visibility = Visibility.Visible;
+                ReoGrid.Visibility = Visibility.Collapsed;
+                CardMenu.Visibility = Visibility.Collapsed;
             }
         }
     }

@@ -13,8 +13,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using unvell.ReoGrid;
-using unvell.ReoGrid.Actions;
 using unvell.ReoGrid.Events;
 
 namespace ElectroJournal.Pages
@@ -28,7 +28,7 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             SettingSheet();
-
+            ReoGridSchedule.Visibility = System.Windows.Visibility.Collapsed;
             var ws = ReoGridSchedule.Worksheets[0];
             ws.CellDataChanged += rgrid_AfterCellEdit;
             ws.BeforeCellEdit += rgrid_BeforeCellEdit;
@@ -252,20 +252,21 @@ namespace ElectroJournal.Pages
 
             }
         }
-        void rgrid_AfterCellEdit(object sender, CellEventArgs e)
+        async void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
             string[] poz = ReoGridSchedule.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
             string score = poz[0];
             int stud = int.Parse(Regex.Match(score, @"\d+").Value);
             string poz6 = Regex.Replace(score, @"[^A-Z]+", string.Empty);
 
-            if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText))
+            using zhirovContext db = new();
+
+            if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText))
             {
                 string call = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText;
                 string group = ReoGridSchedule.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText;
                 string date = ReoGridSchedule.CurrentWorksheet.Cells[stud - Int32.Parse(call) - 1, 0].DisplayText;
                 string?[] info = ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText.Split(new char[] { '\\' });
-
                 switch (info.Length)
                 {
                     case 4:
@@ -278,7 +279,19 @@ namespace ElectroJournal.Pages
                         sc.SaveSchedule(group, call, info[1], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
                         break;
                     case 1:
-                        sc.SaveSchedule(group, call, date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
+                        if (info[0] == "")
+                        {
+                            var s = await db.Schedules.FirstOrDefaultAsync(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
+                        && s.ScheduleDate == DateOnly.Parse(date)
+                        && s.PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber == int.Parse(call));
+
+                            if (s != null)
+                            {
+                                db.Schedules.Remove(s);
+                                await db.SaveChangesAsync();
+                            }
+                        }
+                        else sc.SaveSchedule(group, call, date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
                         break;
                 }
             }
@@ -291,7 +304,9 @@ namespace ElectroJournal.Pages
                 {
                     var worksheet = ReoGridSchedule.CurrentWorksheet;
                     using zhirovContext db = new();
-                    var g = await db.Groups.OrderBy(g => g.GroupsNameAbbreviated).Where(g => g.CourseIdcourseNavigation.CourseName == ComboBoxCourse.SelectedItem.ToString()).Select(g => g.GroupsNameAbbreviated).ToListAsync();
+                    var g = ComboBoxCourse.SelectedIndex == 0
+                        ? await db.Groups.OrderBy(g => g.CourseIdcourseNavigation.CourseName).Select(g => g.GroupsNameAbbreviated).ToListAsync()
+                        : await db.Groups.OrderBy(g => g.GroupsNameAbbreviated).Where(g => g.CourseIdcourseNavigation.CourseName == ComboBoxCourse.SelectedItem.ToString()).Select(g => g.GroupsNameAbbreviated).ToListAsync();
                     gp = g.Count + 1;
 
                     for (int i = 1; i < gp; i++)
@@ -346,6 +361,7 @@ namespace ElectroJournal.Pages
                 stuud = x;
                 worksheet.SetRows(stuud);
                 FillSchedule();
+                ((Storyboard)Resources["AnimCloseLoad"]).Begin();
             }
             catch (Exception ex)
             {
@@ -483,7 +499,7 @@ namespace ElectroJournal.Pages
             RootDialogNewSchedule.Show();
         }
         private void RootDialogScheduleCall_ButtonRightClick(object sender, System.Windows.RoutedEventArgs e) => RootDialogScheduleCall.Hide();
-        private async void RootDialogScheduleCall_ButtonLeftClick(object sender, System.Windows.RoutedEventArgs e)
+        private async void RootDialogScheduleCall_ButtonLeftClick(object sender, RoutedEventArgs e)
         {
             using zhirovContext db = new();
 
@@ -515,7 +531,7 @@ namespace ElectroJournal.Pages
             FillListBoxScheduleCall();
             RootDialogScheduleCall.Hide();
         }
-        private void MenuItemSaveSchedule_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void MenuItemSaveSchedule_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sv = new();
             sv.Filter = "Excel 2007/2010 (*.xlsx)|*.xlsx";
@@ -524,7 +540,7 @@ namespace ElectroJournal.Pages
                 ReoGridSchedule.Save(sv.FileName, unvell.ReoGrid.IO.FileFormat.Excel2007, Encoding.UTF8);
             }
         }
-        private void MenuItemSaveAsRGF_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void MenuItemSaveAsRGF_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sv = new();
             sv.Filter = "ReoGrid Format (*.rgf)|*.rgf";
@@ -533,7 +549,7 @@ namespace ElectroJournal.Pages
                 ReoGridSchedule.Save(sv.FileName, unvell.ReoGrid.IO.FileFormat.ReoGridFormat, Encoding.UTF8);
             }
         }
-        private void MenuItemSaveAsHTML_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void MenuItemSaveAsHTML_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sv = new();
             sv.Filter = "HTML (*.html)|*.html";
@@ -545,12 +561,7 @@ namespace ElectroJournal.Pages
                 }
             }
         }
-        private void MenuItemPrintSchedule_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            /*var session = ReoGridSchedule.CurrentWorksheet.CreatePrintSession();
-            session.Print();*/
-        }
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             FillComboBoxSchoolWeek();
             FillComboBoxCourse();
@@ -572,11 +583,74 @@ namespace ElectroJournal.Pages
         private async void FillComboBoxCourse()
         {
             ComboBoxCourse.Items.Clear();
+            ComboBoxCourse.Items.Add("Все курсы");
             using zhirovContext db = new();
             await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t =>
             {
                 ComboBoxCourse.Items.Add(t.CourseName);
             });
         }
+        private void ButtonDeleteSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var mb = new WPFUI.Controls.MessageBox();
+
+                mb.ButtonLeftName = "Да";
+                mb.ButtonRightName = "Нет";
+
+                mb.ButtonLeftClick += MessageBox_LeftButtonClick;
+                mb.ButtonRightClick += MessageBox_RightButtonClick;
+
+                mb.Show("Оповещение", "Вы точно хотите удалить расписание?\nДанные будут удалены без возможности восстановления.");
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ButtonDeleteSchedule_Click (ScheduleAdmin) | {ex.Message}");
+            }
+        }
+        private async void MessageBox_LeftButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ComboBoxSchoolWeek.SelectedIndex != -1)
+                {
+                    using zhirovContext db = new();
+                    string[] d = ComboBoxSchoolWeek.SelectedItem.ToString().Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    Schoolweek? s = await db.Schoolweeks.FirstOrDefaultAsync(s => s.SchoolweekStart == DateOnly.Parse(d[0]) && s.SchoolweekEnd == DateOnly.Parse(d[1]));
+                    if (s != null)
+                    {
+                        db.Schoolweeks.Remove(s);
+                        await db.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"MessageBox_LeftButtonClick (ScheduleAdmin) | {ex.Message}");
+            }
+        }
+        private void MessageBox_RightButtonClick(object sender, RoutedEventArgs e) => (sender as WPFUI.Controls.MessageBox)?.Close();
+        private void CheckComboBox()
+        {
+            if (ComboBoxCourse.SelectedIndex != -1 && ComboBoxSchoolWeek.SelectedIndex != -1)
+            {
+                ((Storyboard)Resources["AnimLoad"]).Begin();
+                ReoGridSchedule.CurrentWorksheet.Reset();
+                ButtonDeleteSchedule.IsEnabled = true;
+                FillGroups();
+            }
+            else if (ComboBoxCourse.SelectedIndex == -1 && ComboBoxSchoolWeek.SelectedIndex != -1)
+            {
+                ButtonDeleteSchedule.IsEnabled = true;
+            }
+            else
+            {
+                GridPreLoad.Visibility = Visibility.Visible;
+                ReoGridSchedule.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => CheckComboBox();
     }
 }

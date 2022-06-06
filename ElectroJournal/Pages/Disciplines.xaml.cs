@@ -27,7 +27,7 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(TextBoxName.Text))
+                if (!string.IsNullOrWhiteSpace(TextBoxFullName.Text))
                 {
                     using zhirovContext db = new();
 
@@ -40,6 +40,8 @@ namespace ElectroJournal.Pages
                             disp.DisciplinesName = TextBoxFullName.Text;
                             disp.DisciplinesNameAbbreviated = TextBoxName.Text;
                             disp.DisciplinesIndex = TextBoxIndex.Text;
+
+                            await db.SaveChangesAsync();
                         }
                     }
                     else
@@ -81,16 +83,16 @@ namespace ElectroJournal.Pages
                     switch (ComboBoxSorting.SelectedIndex)
                     {
                         case 0:
-                            await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
+                            await db.Disciplines.OrderBy(t => t.DisciplinesName).ForEachAsync(t =>
                             {
-                                ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                                ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
                                 idDisp.Add((int)t.Iddisciplines);
                             });
                             break;
                         case 1:
-                            await db.Disciplines.OrderByDescending(t => t.DisciplinesNameAbbreviated).ForEachAsync(t =>
+                            await db.Disciplines.OrderByDescending(t => t.DisciplinesName).ForEachAsync(t =>
                             {
-                                ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                                ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
                                 idDisp.Add((int)t.Iddisciplines);
                             });
                             break;
@@ -98,9 +100,13 @@ namespace ElectroJournal.Pages
                 }
                 else
                 {
-                    await db.Disciplines.OrderBy(t => t.DisciplinesNameAbbreviated).Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")).ForEachAsync(t =>
+                    await db.Disciplines.OrderBy(t => t.DisciplinesName)
+                        .Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%") 
+                        || EF.Functions.Like(t.DisciplinesIndex, $"%{SearchBox.Text}%") 
+                        || EF.Functions.Like(t.DisciplinesName, $"%{SearchBox.Text}%"))
+                        .ForEachAsync(t =>
                     {
-                        ListBoxDiscipline.Items.Add($"{t.DisciplinesNameAbbreviated}");
+                        ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
                         idDisp.Add((int)t.Iddisciplines);
                     });
                 }
@@ -134,13 +140,7 @@ namespace ElectroJournal.Pages
                 SettingsControl.InputLog($"ListBoxDiscipline_SelectionChanged | {ex.Message}");
             }
         }
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
-        {
-            ListBoxDiscipline.SelectedItem = null;
-            TextBoxFullName.Clear();
-            TextBoxName.Clear();
-            TextBoxIndex.Clear();
-        }
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e) => ClearValue();
         private async void DeleteDisp()
         {
             try
@@ -183,5 +183,25 @@ namespace ElectroJournal.Pages
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteDisp();
         private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxDisciplines();
         private void SearchBox_PreviewKeyUp(object sender, KeyEventArgs e) => FillListBoxDisciplines();
+        private void Page_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+            {
+                ClearValue();
+                TextBoxFullName.Focus();
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                SearchBox.Clear();
+                SearchBox.Focus();
+            }
+        }
+        private void ClearValue()
+        {
+            ListBoxDiscipline.SelectedItem = null;
+            TextBoxFullName.Clear();
+            TextBoxName.Clear();
+            TextBoxIndex.Clear();
+        }
     }
 }

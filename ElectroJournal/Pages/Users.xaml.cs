@@ -61,7 +61,7 @@ namespace ElectroJournal.Pages
                 using (zhirovContext db = new())
                 {
                     var teachers = await db.Teachers.Where(p => p.Idteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
-
+                    var g = await db.Groups.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).FirstOrDefaultAsync();
                     string FIO = teachers.TeachersSurname + " " + teachers.TeachersName + " " + teachers.TeachersPatronymic;
 
                     if (!String.IsNullOrWhiteSpace(teachers.TeachersImage))
@@ -96,7 +96,7 @@ namespace ElectroJournal.Pages
                     LabelIDUser.Content = "Id: " + teachers.Idteachers;
                     TextBoxPhone.Text = teachers.TeachersPhone;
                     TextBoxMail.Text = teachers.TeachersMail;
-
+                    TextBoxGroup.Text = g != null ? g.GroupsNameAbbreviated : "Отсутствует";
                     ButtonSave.IsEnabled = false;
                 }
                 anim2.Begin();
@@ -104,6 +104,10 @@ namespace ElectroJournal.Pages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "LoadData");
+            }
+            finally
+            {
+                ProgressBarTeachers.Visibility = Visibility.Collapsed;
             }
         }
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
@@ -496,7 +500,7 @@ namespace ElectroJournal.Pages
                                 else
                                 {
                                     PersonPictureUser.ProfilePicture = null;
-                                    PersonPictureUser.DisplayName = $"{t.TeachersName} {t.TeachersSurname}";
+                                    PersonPictureUser.DisplayName = $"{t.TeachersSurname} {t.TeachersName}";
                                 }
 
                                 timer2.Tick += new EventHandler(ListBoxMessageRefresh);
@@ -654,9 +658,9 @@ namespace ElectroJournal.Pages
             try
             {
                 using zhirovContext db = new();
-                var setting = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).ToListAsync();
+                var s = await db.Settings.Where(s => s.TeachersIdteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
 
-                foreach (var s in setting)
+                if (s != null)
                 {
                     Teacher? teacher = await db.Teachers.Where(t => t.Idteachers == idTeachers[ListViewTeachers.SelectedIndex - 1]).FirstOrDefaultAsync();
 

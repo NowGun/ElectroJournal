@@ -4,6 +4,7 @@ using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,9 +27,7 @@ namespace ElectroJournal.Pages
             FillComboBoxTypeLearning();
         }
 
-        List<int> idGroups = new List<int>();
         List<int> idTeachers = new List<int>();
-        List<int> idTypeLearning = new List<int>();
 
         private async void ButtonGroupSave_Click(object sender, RoutedEventArgs e)
         {
@@ -36,7 +35,7 @@ namespace ElectroJournal.Pages
             {
                 ProgressBar.Visibility = Visibility.Visible;
 
-                if (!string.IsNullOrWhiteSpace(TextBoxGroupsName.Text) && ComboBoxClassTeacher.SelectedItem != null)
+                if (!string.IsNullOrWhiteSpace(TextBoxGroupsName.Text) && ComboBoxClassTeacher.SelectedIndex != -1)
                 {
                     using zhirovContext db = new();
 
@@ -46,42 +45,39 @@ namespace ElectroJournal.Pages
                                 .Include(p => p.TypelearningIdtypelearningNavigation)
                                 .Include(p => p.CourseIdcourseNavigation)
                                 .Include(p => p.TeachersIdteachersNavigation)
-                                .FirstOrDefaultAsync(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex]);
+                                .FirstOrDefaultAsync(p => p.GroupsNameAbbreviated == ListBoxGroups.SelectedItem.ToString());
 
                         if (groups != null)
                         {
                             groups.GroupsName = TextBoxGroupsName.Text;
                             groups.GroupsNameAbbreviated = TextBoxGroupsNameAbbreviated.Text;
                             groups.GroupsPrefix = TextBoxGroupsPrefix.Text;
-                            groups.CourseIdcourse = (uint)ComboBoxCourse.SelectedIndex + 1;
-                            groups.TypelearningIdtypelearning = (uint)idTypeLearning[ComboBoxTypeLearning.SelectedIndex];
-                            groups.TeachersIdteachers = (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex];
+                            groups.CourseIdcourseNavigation.CourseName = ComboBoxCourse.SelectedItem.ToString();
+                            groups.TypelearningIdtypelearningNavigation.TypelearningName = ComboBoxTypeLearning.SelectedItem.ToString();
+                            groups.TeachersIdteachers = ComboBoxClassTeacher.SelectedIndex == 0 ? null : (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex-1];
 
                             await db.SaveChangesAsync();
                         }
                     }
                     else
                     {
+                        var t = await db.Typelearnings.FirstOrDefaultAsync(t => t.TypelearningName == ComboBoxTypeLearning.SelectedItem.ToString());
+                        var c = await db.Courses.FirstOrDefaultAsync(c => c.CourseName == ComboBoxCourse.SelectedItem.ToString());
+
                         Group gr = new Group
                         {
                             GroupsName = TextBoxGroupsName.Text,
                             GroupsNameAbbreviated = TextBoxGroupsNameAbbreviated.Text,
                             GroupsPrefix = TextBoxGroupsPrefix.Text,
-                            CourseIdcourse = (uint)ComboBoxCourse.SelectedIndex + 1,
-                            TypelearningIdtypelearning = (uint)idTypeLearning[ComboBoxTypeLearning.SelectedIndex],
-                            TeachersIdteachers = (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex],
+                            CourseIdcourse = c.Idcourse,
+                            TypelearningIdtypelearning = t.Idtypelearning,
+                            TeachersIdteachers = ComboBoxClassTeacher.SelectedIndex == 0 ? null : (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex-1],
                         };
 
                         await db.Groups.AddAsync(gr);
                         await db.SaveChangesAsync();
                     }
-                    FillListBoxGroups();
-                    TextBoxGroupsName.Clear();
-                    TextBoxGroupsNameAbbreviated.Clear();
-                    TextBoxGroupsPrefix.Clear();
-                    ComboBoxTypeLearning.SelectedIndex = 0;
-                    ComboBoxClassTeacher.SelectedItem = null;
-                    ComboBoxCourse.SelectedIndex = 0;
+                    ClearValue();
                 }
                 else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Заполните поля помеченные *");
 
@@ -96,50 +92,27 @@ namespace ElectroJournal.Pages
         private void ButonGroupAdd_Click(object sender, RoutedEventArgs e)
         {
             ListBoxGroups.SelectedItem = null;
-
-            FillComboBoxClassTeacher();
-            FillComboBoxTypeLearning();
-
             TextBoxGroupsName.Clear();
             TextBoxGroupsNameAbbreviated.Clear();
             TextBoxGroupsPrefix.Clear();
+            FillComboBoxClassTeacher();
+            ButtonGroupDelete.IsEnabled = false;
             ComboBoxTypeLearning.SelectedIndex = 0;
-            ComboBoxClassTeacher.SelectedItem = null;
-            ComboBoxCourse.SelectedIndex = 0;
+            ComboBoxClassTeacher.SelectedIndex = -1;
         }
         private async void FillListBoxGroups()
         {
             try
             {
                 ListBoxGroups.Items.Clear();
-                idGroups.Clear();
-
                 using zhirovContext db = new();
 
                 if (String.IsNullOrWhiteSpace(SearchBox.Text))
                 {
-                    switch (ComboBoxGroupsSorting.SelectedIndex)
-                    {
-                        case 0:
-                            await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).ForEachAsync(t =>
-                            {
-                                ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}");
-                                idGroups.Add((int)t.Idgroups);
-                            });
-                            break;
-                        case 1:
-
-                            break;
-                    }
+                    if (ComboBoxGroupsSorting.SelectedIndex == 0) await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).ForEachAsync(t => ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}"));
+                    else await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).Where(t => t.CourseIdcourseNavigation.CourseName == ComboBoxGroupsSorting.SelectedItem.ToString()).ForEachAsync(t => ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}"));
                 }
-                else
-                {
-                    await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).Where(t => EF.Functions.Like(t.GroupsNameAbbreviated, $"%{SearchBox.Text}%") || EF.Functions.Like(t.GroupsName, $"%{SearchBox.Text}%")).ForEachAsync(t =>
-                    {
-                        ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}");
-                        idGroups.Add((int)t.Idgroups);
-                    });
-                }
+                else await db.Groups.OrderBy(t => t.GroupsNameAbbreviated).Where(t => EF.Functions.Like(t.GroupsNameAbbreviated, $"%{SearchBox.Text}%") || EF.Functions.Like(t.GroupsName, $"%{SearchBox.Text}%")).ForEachAsync(t => ListBoxGroups.Items.Add($"{t.GroupsNameAbbreviated}"));
             }
             catch (Exception ex)
             {
@@ -152,13 +125,57 @@ namespace ElectroJournal.Pages
             {
                 ComboBoxClassTeacher.Items.Clear();
                 idTeachers.Clear();
-
                 using zhirovContext db = new();
-                await db.Teachers.Where(t => t.TeachersName != "CardReaderService").OrderBy(t => t.TeachersSurname).ForEachAsync(t =>
+                ComboBoxClassTeacher.Items.Add("Отсутствует");
+                var t2 = await db.Teachers.OrderBy(t => t.TeachersSurname).Where(t => t.TeachersName != "CardReaderService").ToListAsync();
+
+                foreach (var t in t2)
                 {
-                    ComboBoxClassTeacher.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
-                    idTeachers.Add((int)t.Idteachers);
-                });
+                    var g = await db.Groups.Where(g => g.TeachersIdteachers == t.Idteachers).FirstOrDefaultAsync();
+
+                    if (g == null)
+                    {
+                        ComboBoxClassTeacher.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                        idTeachers.Add((int)t.Idteachers);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillComboBoxClassTeacher | {ex.Message}");
+            }
+        }
+        private async void FillComboBoxClassTeacher(string fio)
+        {
+            try
+            {
+                ComboBoxClassTeacher.Items.Clear();
+                idTeachers.Clear();
+                using zhirovContext db = new();
+                ComboBoxClassTeacher.Items.Add("Отсутствует");
+                string[] fio2 = fio.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var t3 = await db.Teachers.Where(t => t.TeachersSurname == fio2[0]
+                    && t.TeachersName == fio2[1]
+                    && t.TeachersPatronymic == fio2[2]).FirstOrDefaultAsync();
+
+                if (t3 != null)
+                {
+                    ComboBoxClassTeacher.Items.Add($"{t3.TeachersSurname} {t3.TeachersName} {t3.TeachersPatronymic}");
+                    idTeachers.Add((int)t3.Idteachers);
+                }
+
+                var t2 = await db.Teachers.OrderBy(t => t.TeachersSurname).Where(t => t.TeachersName != "CardReaderService").ToListAsync();
+
+                foreach (var t in t2)
+                {
+                    var g = await db.Groups.Where(g => g.TeachersIdteachers == t.Idteachers).FirstOrDefaultAsync();
+
+                    if (g == null)
+                    {
+                        ComboBoxClassTeacher.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}");
+                        idTeachers.Add((int)t.Idteachers);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -169,16 +186,10 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                idTypeLearning.Clear();
                 ComboBoxTypeLearning.Items.Clear();
 
                 using zhirovContext db = new();
-                await db.Typelearnings.OrderByDescending(t => t.TypelearningName).ForEachAsync(t =>
-                {
-                    ComboBoxTypeLearning.Items.Add(t.TypelearningName);
-                    idTypeLearning.Add((int)t.Idtypelearning);
-                });
-
+                await db.Typelearnings.OrderByDescending(t => t.TypelearningName).ForEachAsync(t => ComboBoxTypeLearning.Items.Add(t.TypelearningName));
                 ComboBoxTypeLearning.SelectedIndex = 0;
             }
             catch (Exception ex)
@@ -194,9 +205,10 @@ namespace ElectroJournal.Pages
 
                 if (ListBoxGroups.SelectedItem != null)
                 {
-                    using zhirovContext db = new();
+                    ButtonGroupDelete.IsEnabled = true;
 
-                    var t = await db.Groups.Where(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex])
+                    using zhirovContext db = new();
+                    var t = await db.Groups.Where(p => p.GroupsNameAbbreviated == ListBoxGroups.SelectedItem.ToString())
                             .Include(p => p.TypelearningIdtypelearningNavigation)
                             .Include(p => p.CourseIdcourseNavigation)
                             .Include(p => p.TeachersIdteachersNavigation)
@@ -204,14 +216,14 @@ namespace ElectroJournal.Pages
 
                     if (t != null)
                     {
-                        string fio = $"{t.TeachersIdteachersNavigation.TeachersSurname} {t.TeachersIdteachersNavigation.TeachersName} {t.TeachersIdteachersNavigation.TeachersPatronymic}";
-
                         TextBoxGroupsName.Text = t.GroupsName;
                         TextBoxGroupsNameAbbreviated.Text = t.GroupsNameAbbreviated;
                         TextBoxGroupsPrefix.Text = t.GroupsPrefix;
                         ComboBoxTypeLearning.SelectedItem = t.TypelearningIdtypelearningNavigation.TypelearningName;
                         ComboBoxCourse.SelectedItem = t.CourseIdcourseNavigation.CourseName;
-                        ComboBoxClassTeacher.SelectedItem = fio;
+                        if (t.TeachersIdteachers != null) FillComboBoxClassTeacher($"{t.TeachersIdteachersNavigation.TeachersSurname} {t.TeachersIdteachersNavigation.TeachersName} {t.TeachersIdteachersNavigation.TeachersPatronymic}");
+                        else FillComboBoxClassTeacher();
+                        ComboBoxClassTeacher.SelectedItem = t.TeachersIdteachers == null ? ComboBoxClassTeacher.SelectedIndex = 0 : $"{t.TeachersIdteachersNavigation.TeachersSurname} {t.TeachersIdteachersNavigation.TeachersName} {t.TeachersIdteachersNavigation.TeachersPatronymic}";
                     }
                 }
             }
@@ -238,21 +250,13 @@ namespace ElectroJournal.Pages
                 else if (ListBoxGroups.SelectedItem != null)
                 {
                     using zhirovContext db = new();
-                    Group? groups = await db.Groups.FirstOrDefaultAsync(p => p.Idgroups == idGroups[ListBoxGroups.SelectedIndex]);
+                    Group? groups = await db.Groups.FirstOrDefaultAsync(p => p.GroupsNameAbbreviated == ListBoxGroups.SelectedItem.ToString());
 
                     if (groups != null)
                     {
                         db.Groups.Remove(groups);
                         await db.SaveChangesAsync();
-
-                        ListBoxGroups.Items.Clear();
-                        TextBoxGroupsName.Clear();
-                        TextBoxGroupsNameAbbreviated.Clear();
-                        TextBoxGroupsPrefix.Clear();
-                        ComboBoxTypeLearning.SelectedIndex = 0;
-                        ComboBoxClassTeacher.SelectedItem = null;
-                        ComboBoxCourse.SelectedItem = null;
-                        FillListBoxGroups();
+                        ClearValue();
                     }
                 }
             }
@@ -267,9 +271,15 @@ namespace ElectroJournal.Pages
             try
             {
                 ComboBoxCourse.Items.Clear();
-
+                ComboBoxGroupsSorting.Items.Clear();
+                ComboBoxGroupsSorting.Items.Add("Все курсы");
                 using zhirovContext db = new();
-                await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t => ComboBoxCourse.Items.Add(t.CourseName));
+                await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t =>
+                {
+                    ComboBoxCourse.Items.Add(t.CourseName);
+                    ComboBoxGroupsSorting.Items.Add(t.CourseName);
+                });
+                ComboBoxGroupsSorting.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -277,5 +287,67 @@ namespace ElectroJournal.Pages
             }
         }
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => FillListBoxGroups();
+        private async void SaveData()
+        {
+            try
+            {
+                if (ListBoxGroups.SelectedItem != null)
+                {
+                    ProgressBar.Visibility = Visibility.Visible;
+                    if (!string.IsNullOrWhiteSpace(TextBoxGroupsName.Text) && ComboBoxClassTeacher.SelectedIndex != -1)
+                    {
+                        using zhirovContext db = new();
+                        Group? groups = await db.Groups
+                                .Include(p => p.TypelearningIdtypelearningNavigation)
+                                .Include(p => p.CourseIdcourseNavigation)
+                                .Include(p => p.TeachersIdteachersNavigation)
+                                .FirstOrDefaultAsync(p => p.GroupsNameAbbreviated == ListBoxGroups.SelectedItem.ToString());
+
+                        if (groups != null)
+                        {
+                            groups.GroupsName = TextBoxGroupsName.Text;
+                            groups.GroupsNameAbbreviated = TextBoxGroupsNameAbbreviated.Text;
+                            groups.GroupsPrefix = TextBoxGroupsPrefix.Text;
+                            groups.CourseIdcourseNavigation.CourseName = ComboBoxCourse.SelectedItem.ToString();
+                            groups.TypelearningIdtypelearningNavigation.TypelearningName = ComboBoxTypeLearning.SelectedItem.ToString();
+                            groups.TeachersIdteachers = ComboBoxClassTeacher.SelectedIndex == 0 ? null : (uint)idTeachers[ComboBoxClassTeacher.SelectedIndex];
+
+                            await db.SaveChangesAsync();
+                            ClearValue();
+                        }
+                    }
+                }
+                ProgressBar.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"ButtonGroupSave_Click | {ex.Message}");
+            }
+        }
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e) => SaveData();
+        private void Page_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+            {
+                ClearValue();
+                TextBoxGroupsName.Focus();
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                SearchBox.Clear();
+                SearchBox.Focus();
+            }
+        }
+        private void ClearValue()
+        {
+            FillComboBoxClassTeacher();
+            FillListBoxGroups();
+            TextBoxGroupsName.Clear();
+            TextBoxGroupsNameAbbreviated.Clear();
+            TextBoxGroupsPrefix.Clear();
+            ComboBoxTypeLearning.SelectedIndex = 0;
+            ComboBoxClassTeacher.SelectedIndex = -1;
+            ButtonGroupDelete.IsEnabled = false;
+        }
     }
 }

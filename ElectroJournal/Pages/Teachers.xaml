@@ -11,7 +11,7 @@
     xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Teachers"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Loaded="Page_Loaded" PreviewKeyUp="Page_PreviewKeyUp">
     <Page.Resources />
 
     <Grid>
@@ -24,8 +24,8 @@
                 <wpfui:DynamicScrollViewer
                     Grid.RowSpan="2"
                     Width="300"
-                    Margin="560,10,0,60"
-                    HorizontalAlignment="Left">
+                    Margin="0,10,19,60"
+                    HorizontalAlignment="Right">
                     <StackPanel>
                         <Expander
                             Margin="0,0,13,0"
@@ -198,12 +198,11 @@
                 <Label
                     x:Name="LabelGroup"
                     Height="35"
-                    Margin="10,240,0,0"
+                    Margin="10,228,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Content="Группа: отсутствует"
                     FontSize="16" />
 
             </Grid>

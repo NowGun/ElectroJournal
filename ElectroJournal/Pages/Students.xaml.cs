@@ -40,8 +40,7 @@ namespace ElectroJournal.Pages
                     {
                         using zhirovContext db = new();
                         string[] FIO = TextBoxStudentsFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        DateTime? date = DatePickerDateBirthday.Text != null ? DateTime.Parse(DatePickerDateBirthday.Text) : null;
-                        DateTime dt = new(2012, 01, 01);
+                        DateTime? date = !String.IsNullOrEmpty(DatePickerDateBirthday.Text) ? DateTime.Parse(DatePickerDateBirthday.Text) : null;
 
                         if (ListBoxStudents.SelectedItem != null)
                         {
@@ -55,7 +54,6 @@ namespace ElectroJournal.Pages
                                 student.StudentsParentPhone = TextBoxParentPhone.Text;
                                 student.StudentsPhone = TextBoxStudentsPhone.Text;
                                 student.StudentsParent = TextBoxParentFIO.Text;
-                                student.StudentsDormitory = CheckBoxStudentsDormitory.IsChecked.ToString();
                                 student.StudentsResidence = TextBoxStudentsResidence.Text;
                                 student.StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null;
                                 student.GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex];
@@ -73,7 +71,6 @@ namespace ElectroJournal.Pages
                                 StudentsParentPhone = TextBoxParentPhone.Text,
                                 StudentsPhone = TextBoxStudentsPhone.Text,
                                 StudentsParent = TextBoxParentFIO.Text,
-                                StudentsDormitory = CheckBoxStudentsDormitory.IsChecked.ToString(),
                                 StudentsResidence = TextBoxStudentsResidence.Text,
                                 StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null,
                                 GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex]
@@ -82,14 +79,7 @@ namespace ElectroJournal.Pages
                             await db.Students.AddAsync(students);
                             await db.SaveChangesAsync();
                         }
-                        ListBoxStudentsRefresh();
-                        TextBoxParentFIO.Clear();
-                        TextBoxParentPhone.Clear();
-                        TextBoxStudentsFIO.Clear();
-                        TextBoxStudentsPhone.Clear();
-                        TextBoxStudentsResidence.Clear();
-                        DatePickerDateBirthday.Text = null;
-                        CheckBoxStudentsDormitory.IsChecked = false;
+                        ClearValue();
                     }
                     else ((MainWindow)System.Windows.Application.Current.MainWindow).Notifications("Сообщение", "Поле ФИО должно быть в формате: Фамилия - Имя - Отчество");
                 }
@@ -102,16 +92,16 @@ namespace ElectroJournal.Pages
                 SettingsControl.InputLog($"ButtonSave_Click(students) | {ex.Message}");
             }
         }
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e) 
         {
-            ListBoxStudents.SelectedItem = null;
+            ListBoxStudents.Items.Clear();
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
             TextBoxStudentsPhone.Clear();
             TextBoxStudentsResidence.Clear();
             DatePickerDateBirthday.Text = null;
-            CheckBoxStudentsDormitory.IsChecked = false;
+            ListBoxStudents.SelectedIndex = -1;
         }
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteStudent();
         private async void ListBoxStudentsRefresh()
@@ -151,7 +141,7 @@ namespace ElectroJournal.Pages
                         .Where(t => EF.Functions.Like(t.StudentsSurname, $"%{SearchBox.Text}%") ||
                     EF.Functions.Like(t.StudentsName, $"%{SearchBox.Text}%") ||
                     EF.Functions.Like(t.StudentsPatronymic, $"%{SearchBox.Text}%") ||
-                    EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsName, $"%{SearchBox.Template}%") ||
+                    EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsName, $"%{SearchBox.Text}%") ||
                     EF.Functions.Like(t.GroupsIdgroupsNavigation.GroupsNameAbbreviated, $"%{SearchBox.Text}%"))
                         .ForEachAsync(t =>
                         {
@@ -191,21 +181,18 @@ namespace ElectroJournal.Pages
                 {
                     using zhirovContext db = new();
 
-                    var students = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).ToListAsync();
+                    var t = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).Include(p => p.GroupsIdgroupsNavigation.CourseIdcourseNavigation).FirstOrDefaultAsync();
 
-                    foreach (var t in students)
+                    if (t != null)
                     {
-                        string FIO = t.StudentsSurname + " " + t.StudentsName + " " + t.StudentsPatronymic;
-                        int indexGroup = idGroups.IndexOf((int)t.GroupsIdgroups);
-
-                        TextBoxStudentsFIO.Text = FIO;
+                        TextBoxStudentsFIO.Text = t.StudentsSurname + " " + t.StudentsName + " " + t.StudentsPatronymic;
                         DatePickerDateBirthday.SelectedDate = t.StudentsBirthday;
                         TextBoxStudentsResidence.Text = t.StudentsResidence;
-                        CheckBoxStudentsDormitory.IsChecked = bool.Parse(t.StudentsDormitory);
                         TextBoxParentFIO.Text = t.StudentsParent;
                         TextBoxStudentsPhone.Text = t.StudentsPhone;
                         TextBoxParentPhone.Text = t.StudentsParentPhone;
-                        ListBoxGroups.SelectedIndex = indexGroup;
+                        ComboBoxGroups.SelectedItem = t.GroupsIdgroups == null ? null : t.GroupsIdgroupsNavigation.CourseIdcourseNavigation.CourseName;
+                        ListBoxGroups.SelectedItem = t.GroupsIdgroups == null ? null : t.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
                     }
                 }
             }
@@ -233,23 +220,14 @@ namespace ElectroJournal.Pages
                     {
                         db.Students.Remove(student);
                         await db.SaveChangesAsync();
-
-                        ListBoxStudents.Items.Clear();
-                        ListBoxStudentsRefresh();
-                        TextBoxParentFIO.Clear();
-                        TextBoxParentPhone.Clear();
-                        TextBoxStudentsFIO.Clear();
-                        TextBoxStudentsPhone.Clear();
-                        TextBoxStudentsResidence.Clear();
-                        DatePickerDateBirthday.Text = null;
-                        CheckBoxStudentsDormitory.IsChecked = false;
+                        ClearValue();
                     }
                 }
             }
             catch (Exception ex)
             {
                 SettingsControl.InputLog($"DeleteStudent | {ex.Message}");
-            }            
+            }
         }
         private async void FillComboBoxStudents()
         {
@@ -293,5 +271,36 @@ namespace ElectroJournal.Pages
             ListBoxGroups.Visibility = Visibility.Visible;
         }
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => ListBoxStudentsRefresh();
+        private void ButtonChangeNumber_Click(object sender, RoutedEventArgs e) => RootDialog.Show();
+        private void RootDialog_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialog.Hide();
+        private void Page_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+            {
+                ClearValue();
+                TextBoxStudentsFIO.Focus();
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                SearchBox.Clear();
+                SearchBox.Focus();
+            }
+        }
+        private void ClearValue()
+        {
+            ListBoxStudents.Items.Clear();
+            ListBoxStudentsRefresh();
+            TextBoxParentFIO.Clear();
+            TextBoxParentPhone.Clear();
+            TextBoxStudentsFIO.Clear();
+            TextBoxStudentsPhone.Clear();
+            TextBoxStudentsResidence.Clear();
+            DatePickerDateBirthday.Text = null;
+            ListBoxStudents.SelectedIndex = -1;
+        }
+        private void RootDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

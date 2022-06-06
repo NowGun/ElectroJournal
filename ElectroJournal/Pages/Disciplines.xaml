@@ -8,7 +8,7 @@
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Disciplines"
-    mc:Ignorable="d">
+    mc:Ignorable="d" PreviewKeyUp="Page_PreviewKeyUp">
 
     <Grid>
         <wpfui:Card Margin="360,60,20,60">
@@ -44,15 +44,14 @@
                     FontSize="16" />
                 <TextBox
                     x:Name="TextBoxFullName"
-                    Height="35"
-                    Margin="280,24,0,0"
+                    Margin="230,24,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     TextWrapping="Wrap" MinWidth="270" />
                 <TextBox
                     x:Name="TextBoxName"
                     Height="35"
-                    Margin="280,88,0,0"
+                    Margin="230,88,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     TextWrapping="Wrap" MinHeight="35" MinWidth="270" />
@@ -60,7 +59,7 @@
                     x:Name="TextBoxIndex"
                     Width="160"
                     Height="35"
-                    Margin="280,150,0,0"
+                    Margin="230,150,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontSize="14"
@@ -72,7 +71,7 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Content="Полное название"
+                    Content="Полное название*"
                     FontSize="16" />
                 <Label
                     Height="35"
@@ -115,7 +114,7 @@
             Click="ButtonAdd_Click"
             Content="Добавить"
             FontSize="14"
-            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
+            Style="{StaticResource ResourceKey=WPFUIButtonStandard}" Cursor="Hand" />
         <Button
             x:Name="ButtonDelete"
             Width="140"
@@ -128,15 +127,6 @@
             FontSize="14"
             IsEnabled="False"
             Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
-        <ListBox
-            x:Name="ListBoxDiscipline"
-            Width="300"
-            Margin="20,100,0,56"
-            HorizontalAlignment="Left"
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            FontSize="14"
-            PreviewKeyUp="ListBoxDiscipline_PreviewKeyUp"
-            SelectionChanged="ListBoxDiscipline_SelectionChanged" />
         <wpfui:SearchBox
             x:Name="SearchBox"
             Width="300"
@@ -146,6 +136,15 @@
             VerticalAlignment="Top"
             Placeholder="Поиск"
             PreviewKeyUp="SearchBox_PreviewKeyUp" />
+        <ListBox
+            x:Name="ListBoxDiscipline"
+            Width="300"
+            Margin="20,100,0,56"
+            HorizontalAlignment="Left"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            FontSize="14"
+            PreviewKeyUp="ListBoxDiscipline_PreviewKeyUp"
+            SelectionChanged="ListBoxDiscipline_SelectionChanged" />
         <ComboBox
             x:Name="ComboBoxSorting"
             Width="300"

@@ -99,9 +99,6 @@ namespace ElectroJournal.UControl
             timer2.Interval = new TimeSpan(0, 0, 1);
             timer2.Start();
         }
-        public void StopTimer()
-        {
-            timer2.Stop();
-        }
+        public void StopTimer() => timer2.Stop();
     }
 }

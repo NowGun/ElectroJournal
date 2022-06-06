@@ -13,14 +13,85 @@
     MinHeight="555"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d" Loaded="Page_Loaded">
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+    <ui:Page.Resources>
+        <Storyboard x:Key="AnimLoad">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridPreLoad" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GridPreLoad" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Collapsed}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.6000000" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimCloseLoad">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ReoGridSchedule" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Collapsed}" />
+                <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReoGridSchedule" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </ui:Page.Resources>
 
     <Grid>
         <wpfui:Card
+            x:Name="card"
             Grid.Row="0"
             Grid.Column="0"
             Height="50"
-            Margin="10,10,10,0"
+            Margin="10,0,10,0"
             Padding="10,2,10,2"
             VerticalAlignment="Top">
             <Grid>
@@ -31,7 +102,7 @@
                         Width="200"
                         Height="35"
                         Margin="10,0,0,0"
-                        SelectionChanged="ComboBoxSchoolWeek_SelectionChanged" />
+                        SelectionChanged="ComboBox_SelectionChanged" />
                     <Label
                         Margin="20,0,0,0"
                         VerticalAlignment="Center"
@@ -41,14 +112,42 @@
                         Width="200"
                         Height="35"
                         Margin="10,0,0,0"
-                        SelectionChanged="ComboBoxCourse_SelectionChanged" />
+                        SelectionChanged="ComboBox_SelectionChanged" />
                 </StackPanel>
             </Grid>
         </wpfui:Card>
         <rg:ReoGridControl
             x:Name="ReoGridSchedule"
-            Margin="10,70,10,10"
+            Margin="10,60,10,10"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch" />
+        <Grid x:Name="GridPreLoad" d:IsHidden="True">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="Заполните все поля для отображения расписания"
+                FontSize="16" />
+        </Grid>
+        <Grid x:Name="grid" Visibility="Collapsed">
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <ProgressBar
+                    x:Name="ProgressBarJournal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="#FF3567BC"
+                    IsIndeterminate="True"
+                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                    Visibility="Visible" />
+                <Label
+                    Margin="10,0,0,0"
+                    Content="Загрузка"
+                    FontSize="16" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:Page>
