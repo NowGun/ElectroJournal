@@ -31,7 +31,22 @@ namespace ElectroJournal.Pages
         public async new Task Show()
         {
             base.Show();
-            _cardContext = ContextFactory.Instance.Establish(SCardScope.System);
+            try
+            {
+                _cardContext = ContextFactory.Instance.Establish(SCardScope.System);
+            } catch (NoServiceException)
+            {
+                ((TextBlock)StatusLabel.Content).Text = "Не установлен драйвер PS/CS";
+                Console.WriteLine("CardReader.xaml.cs : не установлен драйвер PS/CS");
+
+                await Task.Factory.StartNew(() =>
+                {
+                    Task.Delay(TimeSpan.FromSeconds(3)).Wait();
+
+                    Dispatcher.Invoke(() => this.Close());
+                });
+                return;
+            }
 
             _readerName = _cardContext.GetReaders().FirstOrDefault();
             if (string.IsNullOrEmpty(_readerName))
