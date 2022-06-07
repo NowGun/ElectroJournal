@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -271,7 +272,18 @@ namespace ElectroJournal.Pages
             ListBoxGroups.Visibility = Visibility.Visible;
         }
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => ListBoxStudentsRefresh();
-        private void ButtonChangeNumber_Click(object sender, RoutedEventArgs e) => RootDialog.Show();
+        private async void ButtonChangeNumber_Click(object sender, RoutedEventArgs e) {
+            var window = new CardReader();
+            window.CardRead += CardReader_CardRead;
+            await window.Show();
+
+        }
+
+        private void CardReader_CardRead(string id)
+        {
+            CardId.Content = id;
+        }
+
         private void RootDialog_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialog.Hide();
         private void Page_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {

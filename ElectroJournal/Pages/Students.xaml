@@ -58,6 +58,7 @@
                     VerticalAlignment="Top"
                     Content="Номер карточки" />
                 <Label
+                    x:Name="CardId"
                     Margin="197,240,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -72,7 +73,7 @@
                     VerticalAlignment="Top"
                     Appearance="Transparent"
                     Click="ButtonChangeNumber_Click"
-                    Content="Редактировать" />
+                    Content="Считать" />
                 <TextBox
                     x:Name="TextBoxParentFIO"
                     Width="385"
