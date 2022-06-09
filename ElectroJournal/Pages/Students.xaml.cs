@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace ElectroJournal.Pages
 {
@@ -128,6 +129,7 @@ namespace ElectroJournal.Pages
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
+            ((Storyboard)Resources["AnimChangeTextNumber"]).Begin();
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
@@ -334,7 +336,11 @@ namespace ElectroJournal.Pages
             ListBoxGroups.Visibility = Visibility.Visible;
         }
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => ListBoxStudentsRefresh();
-        private void ButtonChangeNumber_Click(object sender, RoutedEventArgs e) => StartScan();
+        private void ButtonChangeNumber_Click(object sender, RoutedEventArgs e)
+        {
+            ((Storyboard)Resources["AnimChangeTextNumber"]).Begin();
+            StartScan();
+        }
         private void CardReader_CardRead(string id)
         {
             LabelCardId.Content = id;
@@ -424,7 +430,9 @@ namespace ElectroJournal.Pages
         private void ClearValue()
         {
             ListBoxStudentsRefresh();
-            LabelCardId.Content = "";
+            LabelCardId.Content = "Отсутствует";
+            ButtonChangeNumber.Visibility = Visibility.Collapsed;
+            ButtonDeleteNumber.Visibility = Visibility.Collapsed;
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
@@ -471,6 +479,7 @@ namespace ElectroJournal.Pages
                     {
                         db.Smartcards.Remove(smart);
                         await db.SaveChangesAsync();
+                        ((Storyboard)Resources["AnimChangeTextNumber"]).Begin();
                         LabelCardId.Content = "Отсутствует";
                     }
                 }

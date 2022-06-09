@@ -11,6 +11,44 @@
     PreviewKeyUp="Page_PreviewKeyUp"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Storyboard x:Key="AnimChangeTextNumber">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelCardId" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LabelCardId" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.125">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="-1.5">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
     <Grid>
         <wpfui:Card Margin="360,60,20,60">
             <Grid>
@@ -23,7 +61,11 @@
                             x:Name="ComboBoxGroups"
                             Margin="0,0,0,10"
                             SelectionChanged="ComboBoxGroups_SelectionChanged" />
-                        <ListBox x:Name="ListBoxGroups" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="5,0,5,0" MinWidth="250"/>
+                        <ListBox
+                            x:Name="ListBoxGroups"
+                            MinWidth="250"
+                            Margin="5,0,5,0"
+                            d:ItemsSource="{d:SampleData ItemCount=5}" />
                     </StackPanel>
                 </wpfui:DynamicScrollViewer>
                 <TextBox
@@ -67,20 +109,35 @@
                         x:Name="LabelCardId"
                         Margin="0,0,15,0"
                         VerticalAlignment="Center"
-                        Content="Отсутствует" VerticalContentAlignment="Center" />
+                        VerticalContentAlignment="Center"
+                        Content="Отсутствует"
+                        RenderTransformOrigin="0.5,0.5">
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
                     <wpfui:Button
                         x:Name="ButtonChangeNumber"
                         Width="35"
                         Height="35"
+                        Padding="10,6,0,6"
                         Appearance="Transparent"
                         Click="ButtonChangeNumber_Click"
-                        Icon="Edit24" Padding="10,6,0,6" />
+                        Icon="Edit24" />
                     <wpfui:Button
                         x:Name="ButtonDeleteNumber"
                         Width="35"
                         Height="35"
+                        Margin="10,0,0,0"
+                        Padding="10,6,0,6"
                         Appearance="Transparent"
-                        Icon="Delete24" Padding="10,6,0,6" Margin="10,0,0,0" Click="ButtonDeleteNumber_Click" />
+                        Click="ButtonDeleteNumber_Click"
+                        Icon="Delete24" />
                 </StackPanel>
                 <TextBox
                     x:Name="TextBoxParentFIO"
