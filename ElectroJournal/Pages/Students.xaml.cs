@@ -34,8 +34,8 @@ namespace ElectroJournal.Pages
             ButtonDeleteNumber.Visibility = Visibility.Collapsed;
         }
 
-        List<int> idStudents = new List<int>();
-        List<int> idGroups = new List<int>();
+        List<int> idStudents = new();
+        List<int> idGroups = new();
 
         public delegate void CardReadHandler(string id);
         public event CardReadHandler CardRead = delegate { };
