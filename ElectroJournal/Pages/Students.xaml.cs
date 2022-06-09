@@ -35,7 +35,7 @@ namespace ElectroJournal.Pages
 
         List<int> idStudents = new List<int>();
         List<int> idGroups = new List<int>();
-        
+
         public delegate void CardReadHandler(string id);
         public event CardReadHandler CardRead = delegate { };
 
@@ -126,7 +126,7 @@ namespace ElectroJournal.Pages
                 SettingsControl.InputLog($"ButtonSave_Click(students) | {ex.Message}");
             }
         }
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e) 
+        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
@@ -156,7 +156,7 @@ namespace ElectroJournal.Pages
                     {
                         case 0:
 
-                            if (ComboBoxSortingGroups.SelectedIndex == 0) 
+                            if (ComboBoxSortingGroups.SelectedIndex == 0)
                             {
                                 await db.Students.OrderBy(t => t.StudentsSurname).ForEachAsync(t =>
                                 {
@@ -172,7 +172,7 @@ namespace ElectroJournal.Pages
                                     idStudents.Add((int)t.Idstudents);
                                 });
                             }
-                            
+
                             break;
                         case 1:
 
@@ -442,8 +442,8 @@ namespace ElectroJournal.Pages
             CardRead += CardReader_CardRead;
             await Show();
         }
-        private async void FillComboBoxGroups() 
-        { 
+        private async void FillComboBoxGroups()
+        {
             try
             {
                 ComboBoxSortingGroups.Items.Clear();

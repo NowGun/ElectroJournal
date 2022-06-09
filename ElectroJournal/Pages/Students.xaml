@@ -23,11 +23,7 @@
                             x:Name="ComboBoxGroups"
                             Margin="0,0,0,10"
                             SelectionChanged="ComboBoxGroups_SelectionChanged" />
-                        <ListBox
-                            x:Name="ListBoxGroups"
-                            MinWidth="250"
-                            Margin="5,0,5,0"
-                            d:ItemsSource="{d:SampleData ItemCount=5}" />
+                        <ListBox x:Name="ListBoxGroups" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="5,0,5,0" MinWidth="250"/>
                     </StackPanel>
                 </wpfui:DynamicScrollViewer>
                 <TextBox
@@ -62,23 +58,30 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Номер карточки" />
-                <Label
-                    x:Name="CardId"
-                    Margin="197,240,0,0"
+                <StackPanel
+                    Margin="197,232,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Content="Отсутствует" />
-                <wpfui:Button
-                    x:Name="ButtonChangeNumber"
-                    Width="150"
-                    Height="35"
-                    Margin="272,232,0,0"
-                    Padding="15,6,15,6"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Appearance="Transparent"
-                    Click="ButtonChangeNumber_Click"
-                    Content="Редактировать" />
+                    Orientation="Horizontal">
+                    <Label
+                        x:Name="LabelCardId"
+                        Margin="0,0,15,0"
+                        VerticalAlignment="Center"
+                        Content="Отсутствует" VerticalContentAlignment="Center" />
+                    <wpfui:Button
+                        x:Name="ButtonChangeNumber"
+                        Width="35"
+                        Height="35"
+                        Appearance="Transparent"
+                        Click="ButtonChangeNumber_Click"
+                        Icon="Edit24" Padding="10,6,0,6" />
+                    <wpfui:Button
+                        x:Name="ButtonDeleteNumber"
+                        Width="35"
+                        Height="35"
+                        Appearance="Transparent"
+                        Icon="Delete24" Padding="10,6,0,6" Margin="10,0,0,0" Click="ButtonDeleteNumber_Click" />
+                </StackPanel>
                 <TextBox
                     x:Name="TextBoxParentFIO"
                     Width="385"
