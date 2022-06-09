@@ -64,6 +64,8 @@ namespace ElectroJournal.Pages
                             idStud.Add((int)s.Idstudents);
                         });
                 }
+
+                ((Storyboard)Resources["AnimCloseLoad"]).Begin();
             }
             catch (Exception ex)
             {
@@ -89,6 +91,11 @@ namespace ElectroJournal.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             GridStudentInfo.Visibility = Visibility.Collapsed;
+            stackPanel.Visibility = Visibility.Visible;
+
+            grid.Opacity = 0;
+            grid1.Opacity = 0;
+
             FillLabelName();
             FillListBoxStud();
         }
@@ -101,7 +108,7 @@ namespace ElectroJournal.Pages
                 {
                     ((Storyboard)Resources["AnimOpenInfo"]).Begin();
                     LabelNameStud.Content = LabelFIOStudent.Content;
-                    FrameStud.Navigate(new StudentInfo());
+                    FrameStud.Navigate(new StudentInfo(idStud[ListBoxStudent.SelectedIndex]));
                 }
             }
             catch (Exception ex)
