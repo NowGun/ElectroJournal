@@ -97,7 +97,7 @@ namespace ElectroJournal.Pages
 
                             await db.Students.AddAsync(students);
                             await db.SaveChangesAsync();
-                            LabelCardId.Content = "B1C163D8";
+
                             if (LabelCardId.Content.ToString().Length == 8)
                             {
                                 var s = await db.Students.OrderByDescending(s => s.Idstudents).FirstOrDefaultAsync();
@@ -130,6 +130,7 @@ namespace ElectroJournal.Pages
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             ((Storyboard)Resources["AnimChangeTextNumber"]).Begin();
+            StartScan();
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
@@ -139,7 +140,6 @@ namespace ElectroJournal.Pages
             ButtonDeleteNumber.Visibility = Visibility.Collapsed;
             ButtonChangeNumber.Visibility = Visibility.Collapsed;
             ListBoxStudents.SelectedIndex = -1;
-            StartScan();
         }
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteStudent();
         private async void ListBoxStudentsRefresh()

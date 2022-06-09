@@ -501,6 +501,10 @@
                             Content="Текстовый редактор"
                             Tag="Word" />
                         <ui:NavigationViewItem
+                            x:Name="NavigationViewItemGroup"
+                            Content="Группа"
+                            Tag="GroupAdmin"/>
+                        <ui:NavigationViewItem
                             x:Name="NavigationViewItemAdminPanel"
                             Content="Панель администратора"
                             PreviewMouseLeftButtonUp="NavigationViewItemAdminPanel_PreviewMouseLeftButtonUp"

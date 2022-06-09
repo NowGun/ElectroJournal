@@ -74,6 +74,8 @@ namespace ElectroJournal.Pages
 
                             if (l != null)
                             {
+                                var gr = await db.Groups.FirstOrDefaultAsync(g => g.TeachersIdteachers == l.Idteachers);
+
                                 (Application.Current.MainWindow as MainWindow).UpdateUserInfo(l.TeachersImage, $"{l.TeachersName} {l.TeachersSurname}");
 
                                 switch (l.TeachersAccesAdminPanel)
@@ -108,6 +110,7 @@ namespace ElectroJournal.Pages
                                 (Application.Current.MainWindow as MainWindow).GridNLogin.Visibility = Visibility.Hidden;
                                 (Application.Current.MainWindow as MainWindow).GridMenu.Visibility = Visibility.Visible;
                                 (Application.Current.MainWindow as MainWindow).NavigationViewItemJournal.IsSelected = true;
+                                (Application.Current.MainWindow as MainWindow).NavigationViewItemGroup.Visibility = gr != null ? Visibility.Visible : Visibility.Collapsed;
 
                                 anim.Stop();
                                 RectangleLoadLogin.Visibility = Visibility.Hidden;
@@ -124,7 +127,6 @@ namespace ElectroJournal.Pages
                             }
                         }
                         else (Application.Current.MainWindow as MainWindow)?.Notifications("Ошибка", "Почта в неверном формате");
-
                     }
                     else
                     {
