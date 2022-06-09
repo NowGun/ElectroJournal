@@ -573,7 +573,7 @@ namespace ElectroJournal.Pages
         }
         private void ListBoxDisciplines_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Clipboard.SetText(ListBoxDisciplines.SelectedItem.ToString());
+
         }
         private void ComboBoxCourse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -623,6 +623,8 @@ namespace ElectroJournal.Pages
                     {
                         db.Schoolweeks.Remove(s);
                         await db.SaveChangesAsync();
+                        FillComboBoxSchoolWeek();
+                        (sender as WPFUI.Controls.MessageBox)?.Close();
                     }
                 }
             }

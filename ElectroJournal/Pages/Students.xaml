@@ -8,21 +8,22 @@
     xmlns:ui="clr-namespace:ModernWpf.Controls;assembly=ModernWpf.Controls"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="Students"
-    mc:Ignorable="d" PreviewKeyUp="Page_PreviewKeyUp">
+    PreviewKeyUp="Page_PreviewKeyUp"
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d">
     <Grid>
         <wpfui:Card Margin="360,60,20,60">
             <Grid>
                 <wpfui:DynamicScrollViewer
-                    Margin="600,52,25,52"
+                    Margin="0,52,25,52"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top">
-                    <StackPanel Margin="0,0,20,0">
+                    <StackPanel Margin="0,0,15,0">
                         <ComboBox
                             x:Name="ComboBoxGroups"
                             Margin="0,0,0,10"
                             SelectionChanged="ComboBoxGroups_SelectionChanged" />
-                        <ListBox x:Name="ListBoxGroups" Width="250" />
-
+                        <ListBox x:Name="ListBoxGroups" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="5,0,5,0" MinWidth="250"/>
                     </StackPanel>
                 </wpfui:DynamicScrollViewer>
                 <TextBox
@@ -57,22 +58,30 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="Номер карточки" />
-                <Label
-                    Margin="197,240,0,0"
+                <StackPanel
+                    Margin="197,232,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Content="Отсутствует" />
-                <wpfui:Button
-                    x:Name="ButtonChangeNumber"
-                    Width="150"
-                    Height="35"
-                    Margin="272,232,0,0"
-                    Padding="15,6,15,6"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Appearance="Transparent"
-                    Click="ButtonChangeNumber_Click"
-                    Content="Редактировать" />
+                    Orientation="Horizontal">
+                    <Label
+                        x:Name="LabelCardId"
+                        Margin="0,0,15,0"
+                        VerticalAlignment="Center"
+                        Content="Отсутствует" VerticalContentAlignment="Center" />
+                    <wpfui:Button
+                        x:Name="ButtonChangeNumber"
+                        Width="35"
+                        Height="35"
+                        Appearance="Transparent"
+                        Click="ButtonChangeNumber_Click"
+                        Icon="Edit24" Padding="10,6,0,6" />
+                    <wpfui:Button
+                        x:Name="ButtonDeleteNumber"
+                        Width="35"
+                        Height="35"
+                        Appearance="Transparent"
+                        Icon="Delete24" Padding="10,6,0,6" Margin="10,0,0,0" Click="ButtonDeleteNumber_Click" />
+                </StackPanel>
                 <TextBox
                     x:Name="TextBoxParentFIO"
                     Width="385"
@@ -224,7 +233,8 @@
         <ListBox
             x:Name="ListBoxStudents"
             Width="300"
-            Margin="20,97,0,60"
+            Margin="20,110,0,60"
+            Padding="2,50,2,0"
             HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             PreviewKeyUp="ListBoxStudents_PreviewKeyUp"
@@ -239,25 +249,21 @@
             Visibility="Hidden" />
         <wpfui:SearchBox
             x:Name="SearchBox"
-            Width="300"
-            Margin="20,60,0,0"
+            Width="280"
+            Margin="30,120,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Placeholder="Поиск по имени или группе"
             PreviewKeyUp="SearchBox_PreviewKeyUp" />
 
         <ComboBox
-            x:Name="ComboBoxSorting"
+            x:Name="ComboBoxSortingGroups"
             Width="300"
             Height="35"
             Margin="20,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            SelectedIndex="0"
-            SelectionChanged="ComboBoxSorting_SelectionChanged">
-            <ComboBoxItem Content="А-Я" />
-            <ComboBoxItem Content="Я-А" />
-        </ComboBox>
+            SelectionChanged="ComboBoxSorting_SelectionChanged" />
         <Button
             x:Name="ButtonAdd"
             Width="140"
@@ -281,24 +287,17 @@
             FontSize="14"
             IsEnabled="False"
             Style="{StaticResource ResourceKey=WPFUIButtonStandard}" />
-        <wpfui:Dialog
-            x:Name="RootDialog"
-            Grid.RowSpan="3"
-            Grid.ColumnSpan="2"
-            Margin="0,-109,0,0"
-            d:IsHidden="True"
-            ButtonLeftName="Сохранить"
-            ButtonRightClick="RootDialog_ButtonRightClick"
-            ButtonRightName="Закрыть"
-            DialogHeight="200"
-            DialogWidth="400"
-            IsShown="false" ButtonLeftClick="RootDialog_ButtonLeftClick">
-            <Grid>
-                <StackPanel>
-                    <Label Content="Приложите карточку для получения номера" />
-                    <wpfui:TextBox />
-                </StackPanel>
-            </Grid>
-        </wpfui:Dialog>
+        <ComboBox
+            x:Name="ComboBoxSorting"
+            Width="300"
+            Height="35"
+            Margin="20,65,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            SelectedIndex="0"
+            SelectionChanged="ComboBoxSorting_SelectionChanged">
+            <ComboBoxItem Content="А-Я" />
+            <ComboBoxItem Content="Я-А" />
+        </ComboBox>
     </Grid>
 </Page>

@@ -250,48 +250,55 @@ namespace ElectroJournal.Classes
         }
         public async void SaveSchedule(string group, string call, string? cab, string date, string? disp, string week, bool isChange)
         {
-            using zhirovContext db = new();
-
-            string[] dates = week.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var g = await db.Groups.FirstOrDefaultAsync(g => g.GroupsNameAbbreviated == group);
-            var c = await db.Periodclasses.FirstOrDefaultAsync(c => c.PeriodclassesNumber == Int32.Parse(call));
-            var ca = await db.Cabinets.FirstOrDefaultAsync(c => c.CabinetNumber == cab);
-            var d = await db.Disciplines.FirstOrDefaultAsync(d => d.DisciplinesNameAbbreviated == disp || d.DisciplinesName == disp);
-            var w = await db.Schoolweeks.FirstOrDefaultAsync(w => w.SchoolweekStart == DateOnly.Parse(dates[0]) && w.SchoolweekEnd == DateOnly.Parse(dates[1]));
-
-            if (g != null && c != null && ca != null && d != null && w != null)
+            try
             {
-                if (isChange)
-                {
-                    DataBaseEF.Schedule? s = await db.Schedules
-                        .FirstOrDefaultAsync(s => s.GroupsIdgroups == g.Idgroups
-                       && s.ScheduleDate == DateOnly.Parse(date)
-                       && s.SchoolweekIdschoolweek == w.Idschoolweek
-                       && s.PeriodclassesIdperiodclasses == c.Idperiodclasses);
+                using zhirovContext db = new();
 
-                    if (s != null)
+                string[] dates = week.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var g = await db.Groups.FirstOrDefaultAsync(g => g.GroupsNameAbbreviated == group);
+                var c = await db.Periodclasses.FirstOrDefaultAsync(c => c.PeriodclassesNumber == Int32.Parse(call));
+                var ca = await db.Cabinets.FirstOrDefaultAsync(c => c.CabinetNumber == cab);
+                var d = await db.Disciplines.FirstOrDefaultAsync(d => d.DisciplinesNameAbbreviated == disp || d.DisciplinesName == disp);
+                var w = await db.Schoolweeks.FirstOrDefaultAsync(w => w.SchoolweekStart == DateOnly.Parse(dates[0]) && w.SchoolweekEnd == DateOnly.Parse(dates[1]));
+
+                if (g != null && c != null && ca != null && d != null && w != null)
+                {
+                    if (isChange)
                     {
-                        s.DisciplinesIddisciplines = d.Iddisciplines;
-                        s.CabinetIdcabinet = ca.Idcabinet;
+                        DataBaseEF.Schedule? s = await db.Schedules
+                            .FirstOrDefaultAsync(s => s.GroupsIdgroups == g.Idgroups
+                           && s.ScheduleDate == DateOnly.Parse(date)
+                           && s.SchoolweekIdschoolweek == w.Idschoolweek
+                           && s.PeriodclassesIdperiodclasses == c.Idperiodclasses);
+
+                        if (s != null)
+                        {
+                            s.DisciplinesIddisciplines = d.Iddisciplines;
+                            s.CabinetIdcabinet = ca.Idcabinet;
+                            await db.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        DataBaseEF.Schedule s = new DataBaseEF.Schedule
+                        {
+                            GroupsIdgroups = g.Idgroups,
+                            PeriodclassesIdperiodclasses = c.Idperiodclasses,
+                            CabinetIdcabinet = ca.Idcabinet,
+                            ScheduleDate = DateOnly.Parse(date),
+                            DisciplinesIddisciplines = d.Iddisciplines,
+                            SchoolweekIdschoolweek = w.Idschoolweek
+                        };
+
+                        await db.Schedules.AddAsync(s);
                         await db.SaveChangesAsync();
                     }
                 }
-                else
-                {
-                    DataBaseEF.Schedule s = new DataBaseEF.Schedule
-                    {
-                        GroupsIdgroups = g.Idgroups,
-                        PeriodclassesIdperiodclasses = c.Idperiodclasses,
-                        CabinetIdcabinet = ca.Idcabinet,
-                        ScheduleDate = DateOnly.Parse(date),
-                        DisciplinesIddisciplines = d.Iddisciplines,
-                        SchoolweekIdschoolweek = w.Idschoolweek
-                    };
+            }
+            catch (Exception ex)
+            {
 
-                    await db.Schedules.AddAsync(s);
-                    await db.SaveChangesAsync();
-                }
             }
         }
         public async void SaveSchedule(string group, string call, string date, string? disp, string week, bool isChange)

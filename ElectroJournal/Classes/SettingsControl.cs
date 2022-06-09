@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -155,6 +156,53 @@ namespace ElectroJournal.Classes
             var data = md5hasher.ComputeHash(Encoding.Default.GetBytes(password));
 
             return Convert.ToBase64String(data);
+        }
+        public bool ValidatePassword(string password, out string ErrorMessage)
+        {
+            var input = password;
+            ErrorMessage = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                throw new Exception("Пароль не может быть пустым");
+            }
+
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasMiniMaxChars = new Regex(@".{8,25}");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+
+            if (!hasLowerChar.IsMatch(input))
+            {
+                ErrorMessage = "Пароль должен содержать по крайней мере одну строчную букву";
+                return false;
+            }
+            else if (!hasUpperChar.IsMatch(input))
+            {
+                ErrorMessage = "Пароль должен содержать хотя бы одну заглавную букву";
+                return false;
+            }
+            else if (!hasMiniMaxChars.IsMatch(input))
+            {
+                ErrorMessage = "Пароль не должен быть меньше 8 или больше 25 символов";
+                return false;
+            }
+            else if (!hasNumber.IsMatch(input))
+            {
+                ErrorMessage = "Пароль должен содержать хотя бы одно числовое значение";
+                return false;
+            }
+
+            else if (!hasSymbols.IsMatch(input))
+            {
+                ErrorMessage = "Password should contain At least one special case characters";
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

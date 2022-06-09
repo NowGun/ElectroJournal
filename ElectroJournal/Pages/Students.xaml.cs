@@ -1,10 +1,16 @@
 ﻿using ElectroJournal.Classes;
 using ElectroJournal.Classes.DataBaseEF;
 using ElectroJournal.DataBase;
+using ElectroJournal.Windows;
 using Microsoft.EntityFrameworkCore;
+using PCSC;
+using PCSC.Exceptions;
+using PCSC.Iso7816;
+using PCSC.Monitoring;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -21,12 +27,21 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
 
-            FillComboBoxStudents();
+            FillComboBoxGroups();
+            FillComboBoxCourse();
             ComboBoxGroups.SelectedIndex = 0;
+            ButtonDeleteNumber.Visibility = Visibility.Collapsed;
         }
 
         List<int> idStudents = new List<int>();
         List<int> idGroups = new List<int>();
+        
+        public delegate void CardReadHandler(string id);
+        public event CardReadHandler CardRead = delegate { };
+
+        private ISCardContext _cardContext { get; set; }
+        private ISCardMonitor _monitor { get; set; }
+        private string _readerName { get; set; }
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
@@ -45,6 +60,7 @@ namespace ElectroJournal.Pages
                         if (ListBoxStudents.SelectedItem != null)
                         {
                             Student? student = await db.Students.FirstOrDefaultAsync(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]);
+                            Smartcard? smart = await db.Smartcards.FirstOrDefaultAsync(s => s.StudentId == idStudents[ListBoxStudents.SelectedIndex]);
 
                             if (student != null)
                             {
@@ -57,6 +73,8 @@ namespace ElectroJournal.Pages
                                 student.StudentsResidence = TextBoxStudentsResidence.Text;
                                 student.StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null;
                                 student.GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex];
+
+                                if (smart != null) smart.SmartcardIdentifier = LabelCardId.Content.ToString().Length == 8 ? (string)LabelCardId.Content : smart.SmartcardIdentifier;
 
                                 await db.SaveChangesAsync();
                             }
@@ -73,11 +91,27 @@ namespace ElectroJournal.Pages
                                 StudentsParent = TextBoxParentFIO.Text,
                                 StudentsResidence = TextBoxStudentsResidence.Text,
                                 StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null,
-                                GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex]
+                                GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex],
                             };
 
                             await db.Students.AddAsync(students);
                             await db.SaveChangesAsync();
+                            LabelCardId.Content = "B1C163D8";
+                            if (LabelCardId.Content.ToString().Length == 8)
+                            {
+                                var s = await db.Students.OrderByDescending(s => s.Idstudents).FirstOrDefaultAsync();
+                                if (s != null)
+                                {
+                                    Smartcard smart = new Smartcard
+                                    {
+                                        StudentId = s.Idstudents,
+                                        SmartcardIdentifier = (string)LabelCardId.Content,
+                                    };
+
+                                    await db.Smartcards.AddAsync(smart);
+                                    await db.SaveChangesAsync();
+                                }
+                            }
                         }
                         ClearValue();
                     }
@@ -94,14 +128,16 @@ namespace ElectroJournal.Pages
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e) 
         {
-            ListBoxStudents.Items.Clear();
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
             TextBoxStudentsPhone.Clear();
             TextBoxStudentsResidence.Clear();
             DatePickerDateBirthday.Text = null;
+            ButtonDeleteNumber.Visibility = Visibility.Collapsed;
+            ButtonChangeNumber.Visibility = Visibility.Collapsed;
             ListBoxStudents.SelectedIndex = -1;
+            StartScan();
         }
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteStudent();
         private async void ListBoxStudentsRefresh()
@@ -119,18 +155,43 @@ namespace ElectroJournal.Pages
                     switch (ComboBoxSorting.SelectedIndex)
                     {
                         case 0:
-                            await db.Students.OrderBy(t => t.StudentsSurname).ForEachAsync(t =>
+
+                            if (ComboBoxSortingGroups.SelectedIndex == 0) 
                             {
-                                ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
-                                idStudents.Add((int)t.Idstudents);
-                            });
+                                await db.Students.OrderBy(t => t.StudentsSurname).ForEachAsync(t =>
+                                {
+                                    ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                                    idStudents.Add((int)t.Idstudents);
+                                });
+                            }
+                            else if (ComboBoxSortingGroups.SelectedIndex != -1 && ComboBoxSortingGroups.SelectedIndex != 0)
+                            {
+                                await db.Students.OrderBy(t => t.StudentsSurname).Where(t => t.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ComboBoxSortingGroups.SelectedItem.ToString()).ForEachAsync(t =>
+                                {
+                                    ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                                    idStudents.Add((int)t.Idstudents);
+                                });
+                            }
+                            
                             break;
                         case 1:
-                            await db.Students.OrderByDescending(t => t.StudentsSurname).ForEachAsync(t =>
+
+                            if (ComboBoxSortingGroups.SelectedIndex == 0)
                             {
-                                ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
-                                idStudents.Add((int)t.Idstudents);
-                            });
+                                await db.Students.OrderByDescending(t => t.StudentsSurname).ForEachAsync(t =>
+                                {
+                                    ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                                    idStudents.Add((int)t.Idstudents);
+                                });
+                            }
+                            else if (ComboBoxSortingGroups.SelectedIndex != -1 && ComboBoxSortingGroups.SelectedIndex != 0)
+                            {
+                                await db.Students.OrderByDescending(t => t.StudentsSurname).Where(t => t.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ComboBoxSortingGroups.SelectedItem.ToString()).ForEachAsync(t =>
+                                {
+                                    ListBoxStudents.Items.Add($"{t.StudentsSurname} {t.StudentsName} {t.StudentsPatronymic}");
+                                    idStudents.Add((int)t.Idstudents);
+                                });
+                            }
                             break;
                     }
                 }
@@ -182,6 +243,7 @@ namespace ElectroJournal.Pages
                     using zhirovContext db = new();
 
                     var t = await db.Students.Where(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]).Include(p => p.GroupsIdgroupsNavigation.CourseIdcourseNavigation).FirstOrDefaultAsync();
+                    var s = await db.Smartcards.FirstOrDefaultAsync(s => s.StudentId == idStudents[ListBoxStudents.SelectedIndex]);
 
                     if (t != null)
                     {
@@ -193,6 +255,9 @@ namespace ElectroJournal.Pages
                         TextBoxParentPhone.Text = t.StudentsParentPhone;
                         ComboBoxGroups.SelectedItem = t.GroupsIdgroups == null ? null : t.GroupsIdgroupsNavigation.CourseIdcourseNavigation.CourseName;
                         ListBoxGroups.SelectedItem = t.GroupsIdgroups == null ? null : t.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
+                        LabelCardId.Content = s == null ? "Отсутствует" : s.SmartcardIdentifier;
+                        ButtonDeleteNumber.Visibility = s == null ? Visibility.Collapsed : Visibility.Visible;
+                        ButtonChangeNumber.Visibility = Visibility.Visible;
                     }
                 }
             }
@@ -215,9 +280,11 @@ namespace ElectroJournal.Pages
                     using zhirovContext db = new();
 
                     Student? student = await db.Students.FirstOrDefaultAsync(p => p.Idstudents == idStudents[ListBoxStudents.SelectedIndex]);
+                    Smartcard? smart = await db.Smartcards.FirstOrDefaultAsync(s => s.StudentId == idStudents[ListBoxStudents.SelectedIndex]);
 
                     if (student != null)
                     {
+                        if (smart != null) db.Smartcards.Remove(smart);
                         db.Students.Remove(student);
                         await db.SaveChangesAsync();
                         ClearValue();
@@ -229,21 +296,17 @@ namespace ElectroJournal.Pages
                 SettingsControl.InputLog($"DeleteStudent | {ex.Message}");
             }
         }
-        private async void FillComboBoxStudents()
+        private async void FillComboBoxCourse()
         {
             try
             {
                 ComboBoxGroups.Items.Clear();
-
                 using zhirovContext db = new();
-                await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t =>
-                {
-                    ComboBoxGroups.Items.Add(t.CourseName);
-                });
+                await db.Courses.OrderBy(t => t.CourseName).ForEachAsync(t => ComboBoxGroups.Items.Add(t.CourseName));
             }
             catch (Exception ex)
             {
-                SettingsControl.InputLog($"FillComboBoxStudents | {ex.Message}");
+                SettingsControl.InputLog($"FillComboBoxCourse | {ex.Message}");
             }
         }
         private async void FillListBox()
@@ -271,8 +334,80 @@ namespace ElectroJournal.Pages
             ListBoxGroups.Visibility = Visibility.Visible;
         }
         private void SearchBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e) => ListBoxStudentsRefresh();
-        private void ButtonChangeNumber_Click(object sender, RoutedEventArgs e) => RootDialog.Show();
-        private void RootDialog_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialog.Hide();
+        private void ButtonChangeNumber_Click(object sender, RoutedEventArgs e) => StartScan();
+        private void CardReader_CardRead(string id)
+        {
+            LabelCardId.Content = id;
+            ButtonChangeNumber.Visibility = Visibility.Visible;
+        }
+        public async new Task Show()
+        {
+            try
+            {
+                _cardContext = ContextFactory.Instance.Establish(SCardScope.System);
+            }
+            catch (NoServiceException)
+            {
+                LabelCardId.Content = "Не установлен драйвер PS/CS";
+                Console.WriteLine("CardReader.xaml.cs : не установлен драйвер PS/CS");
+                return;
+            }
+
+            _readerName = _cardContext.GetReaders().FirstOrDefault();
+            if (string.IsNullOrEmpty(_readerName))
+            {
+                LabelCardId.Content = "Не найден считыватель карт";
+                Console.WriteLine("CardReader.xaml.cs : не найден считыватель карт");
+                return;
+            }
+
+            var factory = MonitorFactory.Instance;
+            _monitor = factory.Create(SCardScope.System);
+
+            _monitor.CardInserted += CardInserted;
+            _monitor.MonitorException += MonitorException;
+
+            _monitor.Start(_readerName);
+        }
+        private void MonitorException(object sender, PCSCException exception) => Console.WriteLine($"CardReader.xaml.cs : monitor exception: {exception.Message}");
+        private void CardInserted(object sender, CardStatusEventArgs e)
+        {
+            IsoReader cardReader;
+            try
+            {
+                cardReader = new IsoReader(_cardContext, _readerName, SCardShareMode.Shared, SCardProtocol.Any, false);
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"CardReader.xaml.cs : card inserted exception: {ex.Message}");
+                return;
+            }
+
+            var apdu = new CommandApdu(IsoCase.Case2Short, cardReader.ActiveProtocol)
+            {
+                CLA = 0xFF, // System class
+                Instruction = InstructionCode.GetData, // CA
+                P1 = 0x00, // Parameter 1
+                P2 = 0x00, // Parameter 2
+                Le = 0x00 // Expected length of the returned data
+            };
+
+            Response response = cardReader.Transmit(apdu);
+
+            cardReader.Dispose();
+            if (response is null) return;
+
+            Console.WriteLine($"CardReader.xaml.cs : SW1 SW2 = {response?.SW1} {response?.SW2}");
+            Console.WriteLine($"CardReader.xaml.cs : DATA = {Convert.ToHexString(response?.GetData() ?? Array.Empty<byte>())}");
+
+            var monitor = sender as ISCardMonitor;
+            monitor?.Cancel();
+
+            Dispatcher.Invoke(() =>
+            {
+                CardRead(Convert.ToHexString(response.GetData()));
+            });
+        }
         private void Page_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.D)
@@ -288,19 +423,62 @@ namespace ElectroJournal.Pages
         }
         private void ClearValue()
         {
-            ListBoxStudents.Items.Clear();
             ListBoxStudentsRefresh();
+            LabelCardId.Content = "";
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
             TextBoxStudentsPhone.Clear();
             TextBoxStudentsResidence.Clear();
             DatePickerDateBirthday.Text = null;
-            ListBoxStudents.SelectedIndex = -1;
         }
-        private void RootDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            _cardContext?.Dispose();
+            _monitor?.Dispose();
+        }
+        private async void StartScan()
+        {
+            CardRead += CardReader_CardRead;
+            await Show();
+        }
+        private async void FillComboBoxGroups() 
+        { 
+            try
+            {
+                ComboBoxSortingGroups.Items.Clear();
+                ComboBoxSortingGroups.Items.Add("Все группы");
+                using zhirovContext db = new();
+                await db.Groups.OrderBy(g => g.CourseIdcourseNavigation.CourseName).ForEachAsync(g => ComboBoxSortingGroups.Items.Add(g.GroupsNameAbbreviated));
+                ComboBoxSortingGroups.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
 
+            }
+        }
+        private async void ButtonDeleteNumber_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ListBoxStudents.SelectedIndex != -1)
+                {
+                    using zhirovContext db = new();
+
+                    Smartcard? smart = await db.Smartcards.FirstOrDefaultAsync(s => s.StudentId == idStudents[ListBoxStudents.SelectedIndex]);
+
+                    if (smart != null)
+                    {
+                        db.Smartcards.Remove(smart);
+                        await db.SaveChangesAsync();
+                        LabelCardId.Content = "Отсутствует";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

@@ -66,7 +66,7 @@ namespace ElectroJournal.Pages
 
                 if (isAvalaible)
                 {
-                    if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && TextBoxPassword.Password != string.Empty)
+                    if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && !string.IsNullOrWhiteSpace(TextBoxPassword.Password))
                     {
                         if (Regex.IsMatch(TextBoxLogin.Text, cond) && TextBoxLogin.Text.Contains("@"))
                         {

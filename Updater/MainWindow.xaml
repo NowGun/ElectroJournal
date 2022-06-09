@@ -108,7 +108,7 @@
         </Storyboard>
     </Window.Resources>
     <Grid>
-        <Grid>
+        <Grid Visibility="Visible">
             <Grid.Effect>
                 <BlurEffect Radius="68" />
             </Grid.Effect>

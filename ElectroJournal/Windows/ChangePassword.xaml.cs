@@ -30,8 +30,7 @@ namespace ElectroJournal.Windows
         private void Notifications(string message, string title)
         {
             RootSnackbar.Title = title;
-            RootSnackbar.Content = message;
-            RootSnackbar.Icon = WPFUI.Common.SymbolRegular.MailError16;
+            RootSnackbar.Message = message;
             RootSnackbar.Show();
         }
         private void CloseActionOverride(WPFUI.Controls.TitleBar titleBar, Window window)
@@ -41,13 +40,17 @@ namespace ElectroJournal.Windows
         }
         private async void ButtonSaveGridReset_Click(object sender, RoutedEventArgs e)
         {
+            SettingsControl sc = new();
+            string error;
+
             ProgressBar.Visibility = Visibility.Visible;
             if (TextBoxLogin.Text != string.Empty && PasswordBoxNewAcceptPass.Password != string.Empty && PasswordBoxOldPass.Password != string.Empty && PasswordBoxNewPass.Password != string.Empty)
             {
-                if (PasswordBoxNewPass.Password == PasswordBoxNewAcceptPass.Password)
+                if (sc.ValidatePassword(PasswordBoxNewPass.Password, out error))
                 {
-                    using (zhirovContext db = new zhirovContext())
+                    if (PasswordBoxNewPass.Password == PasswordBoxNewAcceptPass.Password)
                     {
+                        using zhirovContext db = new();
                         var teacher = await db.Teachers.FirstOrDefaultAsync(p => p.TeachersMail == TextBoxLogin.Text && p.TeachersPassword == SettingsControl.Hash(PasswordBoxOldPass.Password));
 
                         if (teacher != null)
@@ -60,21 +63,13 @@ namespace ElectroJournal.Windows
                             ProgressBar.Visibility = Visibility.Hidden;
                             this.Close();
                         }
-                        else
-                        {
-                            Notifications("Логин или пароль введены неверно", "Уведомление");
-                        }
+                        else Notifications("Логин или пароль введены неверно", "Уведомление");
                     }
+                    else Notifications("Пароли не совпадают", "Ошибка");
                 }
-                else
-                {
-                    Notifications("Пароли не совпадают", "Ошибка");
-                }
+                else Notifications(error, "Ошибка");
             }
-            else
-            {
-                Notifications("Заполните все поля", "Ошибка");
-            }
+            else Notifications("Заполните все поля", "Ошибка");
 
             ProgressBar.Visibility = Visibility.Hidden;
         }

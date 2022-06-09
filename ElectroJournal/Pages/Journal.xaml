@@ -81,7 +81,7 @@
             x:Name="CardMenu"
             Height="50"
             Margin="10,0,10,0"
-            Padding="12,0,12,0"
+            Padding="12,2,12,2"
             VerticalAlignment="Top">
             <Grid>
                 <Label
@@ -94,7 +94,7 @@
                     x:Name="ComboBoxDisp"
                     Width="250"
                     Height="36"
-                    Margin="70,0,0,0"
+                    Margin="65,0,0,0"
                     HorizontalAlignment="Left"
                     SelectionChanged="ComboBox_SelectionChanged" />
                 <Label
@@ -116,11 +116,11 @@
                     Margin="560,0,0,0"
                     HorizontalAlignment="Right">
                     <Label
-                        Margin="0,0,190,0"
+                        Margin="0,0,187,0"
                         HorizontalAlignment="Right"
                         VerticalContentAlignment="Center"
                         Content="Учебный год"
-                        FontSize="14" />
+                        FontSize="14" VerticalAlignment="Center" />
                     <ComboBox
                         x:Name="ComboBoxYears"
                         Width="180"
