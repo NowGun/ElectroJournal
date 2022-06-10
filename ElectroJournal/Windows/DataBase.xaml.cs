@@ -24,6 +24,14 @@ namespace ElectroJournal.Windows
 
         private async void LoadData()
         {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
             using ejContext db = new();
 
             switch (Properties.Settings.Default.TypeServer)
@@ -35,12 +43,15 @@ namespace ElectroJournal.Windows
                     TextBoxPassword.IsEnabled = false;
                     TextBoxUser.IsEnabled = false;
                     
-                    Educational? d = await db.Educationals.FirstOrDefaultAsync(d => d.NameDb == Properties.Settings.Default.DataBase);
-                    if (d != null)
+                    if (await db.Database.CanConnectAsync())
                     {
-                        ComboBoxServer.SelectedItem = d.Name;
+                        Educational? d = await db.Educationals.FirstOrDefaultAsync(d => d.NameDb == Properties.Settings.Default.DataBase);
+                        if (d != null)
+                        {
+                            ComboBoxServer.SelectedItem = d.Name;
+                        }
                     }
-
+                    else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Выбор аренды недоступен");
                     break;
                 case true:
                     RadioButtonMine.IsChecked= true;
@@ -54,9 +65,16 @@ namespace ElectroJournal.Windows
         }
         private async void FillComboBoxUniver()
         {
-            ComboBoxServer.Items.Clear();
-            using ejContext db = new();
-            await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
+            try
+            {
+                ComboBoxServer.Items.Clear();
+                using ejContext db = new();
+                if (await db.Database.CanConnectAsync()) await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         private async void SaveData()
         {
