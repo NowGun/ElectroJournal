@@ -1,4 +1,6 @@
 ﻿using ElectroJournal.DataBase;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,11 +25,12 @@ namespace ElectroJournal.Pages
     /// </summary>
     public partial class GroupAdmin : Page
     {
+        private double _lastLecture;
+        private double _trend;
+
         public GroupAdmin()
         {
             InitializeComponent();
-
-
         }
 
         List<int> idStud = new();
@@ -87,7 +90,6 @@ namespace ElectroJournal.Pages
             }
         }
         private void SearchBoxStudents_PreviewKeyUp(object sender, KeyEventArgs e) => FillListBoxStud();
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             GridStudentInfo.Visibility = Visibility.Collapsed;
@@ -99,7 +101,6 @@ namespace ElectroJournal.Pages
             FillLabelName();
             FillListBoxStud();
         }
-
         private void CardActionOpenStatsStud_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -134,7 +135,6 @@ namespace ElectroJournal.Pages
 
             }
         }
-
         private void SymbolIconBack_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ((Storyboard)Resources["AnimCloseInfo"]).Begin();

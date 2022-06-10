@@ -203,7 +203,8 @@
     <Grid x:Name="GridDefault" x:FieldModifier="public">
         <Grid
             x:Name="GridBlackTheme"
-            Visibility="Hidden" d:IsHidden="True">
+            d:IsHidden="True"
+            Visibility="Hidden">
             <Grid.Background>
                 <LinearGradientBrush MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
                     <GradientStop Color="#FF1D2029" />
@@ -250,7 +251,8 @@
                     x:Name="NavViewMenuNLogin"
                     Height="40"
                     MinWidth="100"
-                    Margin="10,0,365,0"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
@@ -288,9 +290,9 @@
                 MinimizeToTray="False">
                 <wpfui:TitleBar.Header>
                     <ucontrol:Calls
-                            x:Name="Calls"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
+                        x:Name="Calls"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
                 </wpfui:TitleBar.Header>
                 <wpfui:TitleBar.Tray>
                     <wpfui:NotifyIcon
@@ -299,6 +301,18 @@
                         TooltipText="ElectroJournal">
                         <wpfui:NotifyIcon.Menu>
                             <ContextMenu>
+                                <MenuItem
+                                    x:Name="MenuItemOpenSchedule"
+                                    Click="MenuItemOpenSchedule_Click"
+                                    Header="Открыть расписание"
+                                    Icon="{x:Static wpfuiCommon:SymbolRegular.ContentView20}"
+                                    Tag="openSchedule" />
+                                <MenuItem
+                                    x:Name="MenuItemOpenJournal"
+                                    Click="MenuItemOpenJournal_Click"
+                                    Header="Открыть журнал"
+                                    Icon="{x:Static wpfuiCommon:SymbolRegular.Album24}"
+                                    Tag="openJournal" />
                                 <MenuItem
                                     x:Name="MenuItemOpen"
                                     Click="MenuItemOpen_Click"
@@ -325,11 +339,12 @@
                 Background="Transparent"
                 BorderBrush="Transparent">
                 <MenuItem
+                    Height="44"
                     Padding="6,0,6,0"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     FontSize="14"
-                    Header="ElectroJournal" Height="44">
+                    Header="ElectroJournal">
                     <MenuItem
                         x:Name="MenuItemEJHelp"
                         Click="MenuItemEJHelp_Click"
@@ -370,7 +385,6 @@
                 Position="TopRight" />
             <Grid
                 x:Name="GridMenu"
-                MinWidth="1272"
                 Margin="0,6,0,0"
                 VerticalAlignment="Top"
                 x:FieldModifier="public"
@@ -472,7 +486,8 @@
                     x:Name="NavViewMenu"
                     Height="40"
                     MinWidth="100"
-                    Margin="20,42,28,0"
+                    Margin="20,42,150,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
@@ -503,7 +518,7 @@
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemGroup"
                             Content="Группа"
-                            Tag="GroupAdmin"/>
+                            Tag="GroupAdmin" />
                         <ui:NavigationViewItem
                             x:Name="NavigationViewItemAdminPanel"
                             Content="Панель администратора"
@@ -513,19 +528,22 @@
                 </ui:NavigationView>
                 <ucontrol:UserInfo
                     x:Name="UserInfo"
-                    Margin="0,42,17,0"
+                    Margin="0,42,20,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top" />
             </Grid>
-            <StackPanel x:Name="GridComboGroups"
+            <StackPanel
+                x:Name="GridComboGroups"
+                Margin="0,6,135,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Orientation="Horizontal" Margin="0,6,135,0">
+                Orientation="Horizontal">
                 <Label
                     x:Name="LabelGroup"
+                    Margin="0,0,10,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Content="Группа:" Margin="0,0,10,0" />
+                    Content="Группа:" />
                 <ComboBox
                     x:Name="ComboBoxGroup"
                     Width="200"
@@ -540,10 +558,6 @@
                 </ComboBox>
             </StackPanel>
         </Grid>
-        <ucontrol:StartProgram
-            x:Name="StartProgram"
-            d:IsHidden="True"
-            Visibility="Collapsed" />
         <StackPanel
             x:Name="stackPanel"
             HorizontalAlignment="Center"

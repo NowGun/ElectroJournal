@@ -207,11 +207,19 @@ namespace ElectroJournal
             RectangleBackToMenu.Visibility = Visibility.Visible;
         }
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e) => Show();
-        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
+        private async void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+            SettingsControl sc = new();
+            var anim = (Storyboard)FindResource("AnimExitProgram");
+            Show();
+            anim.Begin();
+            bool b = await sc.ExitUser();
+            if (b || !b)
             {
-                process.Kill();
+                foreach (var process in Process.GetProcessesByName("ElectroJournal"))
+                {
+                    process.Kill();
+                }
             }
         }
         private void TitleBar_NotifyIconDoubleClick(object sender, RoutedEventArgs e) => Show();
@@ -290,9 +298,7 @@ namespace ElectroJournal
         }
         private void InvokeSplashScreen()
         {
-            StartProgram.Visibility = Visibility.Collapsed;
             GridMain.Visibility = Visibility.Visible;
-
             GridMenu.Visibility = Visibility.Hidden;
             NavViewMenuAdmin.Visibility = Visibility.Hidden;
             RectangleBackToMenu.Visibility = Visibility.Hidden;
@@ -319,6 +325,19 @@ namespace ElectroJournal
             NavigationViewItemTeachers.IsSelected = false;
             NavigationViewItemWord.IsSelected = false;
             NavigationViewItemWord1.IsSelected = false;
+        }
+        private void MenuItemOpenJournal_Click(object sender, RoutedEventArgs e)
+        {
+            Show();
+            if (isEntry)
+                nav.NavigationPage("Journal");
+            else
+                nav.NavigationPage("Authorization");
+        }
+        private void MenuItemOpenSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            Show();
+            nav.NavigationPage("Schedule");
         }
     }
 }
