@@ -292,7 +292,7 @@
                     <ucontrol:Calls
                         x:Name="Calls"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center" Margin="175,0,275,0" />
                 </wpfui:TitleBar.Header>
                 <wpfui:TitleBar.Tray>
                     <wpfui:NotifyIcon
@@ -434,14 +434,14 @@
                     x:Name="NavViewMenuAdmin"
                     Height="40"
                     MinWidth="100"
-                    Margin="48,42,0,0"
+                    Margin="48,42,150,0"
                     VerticalAlignment="Top"
                     d:IsHidden="True"
                     IsBackButtonVisible="Collapsed"
                     IsSettingsVisible="False"
                     PaneDisplayMode="Top"
                     RenderTransformOrigin="0.5,0.5"
-                    SelectionChanged="NavViewMenu_SelectionChanged">
+                    SelectionChanged="NavViewMenu_SelectionChanged" HorizontalAlignment="Left">
                     <ui:NavigationView.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -534,7 +534,7 @@
             </Grid>
             <StackPanel
                 x:Name="GridComboGroups"
-                Margin="0,6,135,0"
+                Margin="175,6,135,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Orientation="Horizontal">
