@@ -133,11 +133,10 @@ namespace ElectroJournal.Windows
             ButtonSend.IsEnabled = true;
             ProgressBarSend.Visibility = Visibility.Hidden;
         }
-        private void Notifications(string message, string title)
+        private void Notifications(string title, string message)
         {
             RootSnackbar.Title = message;
-            RootSnackbar.Content = title;
-            RootSnackbar.Icon = WPFUI.Common.SymbolRegular.MailError16;
+            RootSnackbar.Message = title;
             RootSnackbar.Show();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -155,17 +154,6 @@ namespace ElectroJournal.Windows
             {
                 TextBoxPath.Text = myDialog.FileName;
                 path = myDialog.FileName;
-
-
-                /*var stringPath = $@"{teachers.TeachersImage}";
-
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bitmapImage.UriSource = new Uri(stringPath, UriKind.Absolute);
-                bitmapImage.EndInit();
-                Image.fback*/
             }
         }
         private async void ListBoxBugsRefresh()
@@ -194,7 +182,6 @@ namespace ElectroJournal.Windows
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "ListBoxBugsRefresh");
             }
         }
         private async void ListBoxBugs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -217,13 +204,15 @@ namespace ElectroJournal.Windows
         private async void ComboBoxRefresh()
         {
             ComboBoxChapter.Items.Clear();
-
-            using (ejContext db = new())
+            using ejContext db = new();
+            if (await db.Database.CanConnectAsync()) 
+                await db.Chapters.OrderBy(c => c.Idchapter).ForEachAsync(c => ComboBoxChapter.Items.Add(c.ChapterName));
+            else
             {
-                await db.Chapters.OrderBy(c => c.Idchapter).ForEachAsync(c =>
-                {
-                    ComboBoxChapter.Items.Add(c.ChapterName);
-                });
+                Notifications("Ошибка", "Баг-трекер недоступен");
+                GridBug.IsEnabled = false;
+                ListBoxBugs.IsEnabled = false;
+                ButtonAdd.IsEnabled = false;
             }
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)

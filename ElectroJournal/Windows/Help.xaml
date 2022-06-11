@@ -22,7 +22,7 @@
 
         <Storyboard x:Key="AnimShowLoading" />
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="GridMain">
         <wpfui:TitleBar
             x:Name="TitleBar"
             Title="Отчет о баге"
@@ -31,7 +31,7 @@
             ShowMaximize="False"
             ShowMinimize="False" />
 
-        <Grid Margin="305,48,40,19">
+        <Grid x:Name="GridBug" Margin="305,48,40,19">
             <RichTextBox
                 x:Name="RRTBname"
                 Width="600"
@@ -181,7 +181,7 @@
             x:Name="RootSnackbar"
             Margin="339,0,235,19"
             FontSize="16"
+            Icon="MailError24"
             Timeout="3000" />
-
     </Grid>
 </Window>
