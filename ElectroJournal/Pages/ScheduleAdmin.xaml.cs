@@ -254,51 +254,71 @@ namespace ElectroJournal.Pages
         }
         private async void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
-            string[] poz = ReoGridSchedule.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
-            string score = poz[0];
-            int stud = int.Parse(Regex.Match(score, @"\d+").Value);
-            string poz6 = Regex.Replace(score, @"[^A-Z]+", string.Empty);
-
-            using zhirovContext db = new();
-
-            for (int i = 1; i < gp; i++)
+            try
             {
+                string[] poz = ReoGridSchedule.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
+                string score = poz[0];
+                int stud = int.Parse(Regex.Match(score, @"\d+").Value);
+                string poz6 = Regex.Replace(score, @"[^A-Z]+", string.Empty);
+                var sheet = ReoGridSchedule.CurrentWorksheet;
+                using zhirovContext db = new();
 
-            }
-
-            if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText))
-            {
-                string call = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText;
-                string group = ReoGridSchedule.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText;
-                string date = ReoGridSchedule.CurrentWorksheet.Cells[stud - Int32.Parse(call) - 1, 0].DisplayText;
-                string?[] info = ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText.Split(new char[] { '\\' });
-                switch (info.Length)
+                if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText))
                 {
-                    case 4:
-                        sc.SaveSchedule(group, call, info[3], info[1], info[2], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
-                        break;
-                    case 3:
-                        sc.SaveSchedule(group, call, info[1], info[2], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
-                        break;
-                    case 2:
-                        sc.SaveSchedule(group, call, info[1], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
-                        break;
-                    case 1:
-                        if (info[0] == "")
+                    for (int i = 1; i < gp; i++)
+                    {
+                        string? a = ReoGridSchedule.CurrentWorksheet.Cells[stud-1, i].DisplayText;
+                        if (a != null)
                         {
-                            var s = await db.Schedules.FirstOrDefaultAsync(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
-                        && s.ScheduleDate == DateOnly.Parse(date)
-                        && s.PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber == int.Parse(call));
-
-                            if (s != null)
+                            string?[] info2 = ReoGridSchedule.CurrentWorksheet.Cells[stud-1, i].DisplayText.Split(new char[] { '\\' });
+                            var cell2 = sheet.Cells[stud - 1, i];
+                            var cell = sheet.Cells[score];
+                            if (ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText == info2[0])
                             {
-                                db.Schedules.Remove(s);
-                                await db.SaveChangesAsync();
+                                cell.Style.BackColor = Colors.Red;
+                                cell2.Style.BackColor = Colors.Red;
                             }
+                            else cell.Style.BackColor= Colors.White;
                         }
-                        else sc.SaveSchedule(group, call, date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
-                        break;
+                    }
+
+
+                    string call = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText;
+                    string group = ReoGridSchedule.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText;
+                    string date = ReoGridSchedule.CurrentWorksheet.Cells[stud - Int32.Parse(call) - 1, 0].DisplayText;
+                    string?[] info = ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText.Split(new char[] { '\\' });
+                    switch (info.Length)
+                    {
+                        case 4:
+                            sc.SaveSchedule(group, call, info[3], info[1], info[2], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
+                            break;
+                        case 3:
+                            sc.SaveSchedule(group, call, info[1], info[2], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
+                            break;
+                        case 2:
+                            sc.SaveSchedule(group, call, info[1], date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
+                            break;
+                        case 1:
+                            if (info[0] == "")
+                            {
+                                var s = await db.Schedules.FirstOrDefaultAsync(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
+                            && s.ScheduleDate == DateOnly.Parse(date)
+                            && s.PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber == int.Parse(call));
+
+                                if (s != null)
+                                {
+                                    db.Schedules.Remove(s);
+                                    await db.SaveChangesAsync();
+                                }
+                            }
+                            else sc.SaveSchedule(group, call, date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                (Application.Current.MainWindow as MainWindow)?.Notifications("Ошибка", ex.Message);
             }
         }
         private async void FillGroups()

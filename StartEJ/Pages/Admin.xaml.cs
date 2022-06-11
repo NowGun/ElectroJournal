@@ -115,30 +115,35 @@ namespace StartEJ.Pages
                         string[] FIO = TextBoxFIO.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                         using zhirovContext db = new();
+                        var t = await db.Teachers.Where(t => t.TeachersAccesAdminPanel == "True").ToListAsync();
                         var teac = await db.Teachers.Where(p => p.TeachersMail == TextBoxMail.Text).ToListAsync();
 
-                        if (teac.Count == 0)
+                        if (t.Count == 0)
                         {
-                            Teacher teacher = new()
+                            if (teac.Count == 0)
                             {
-                                TeachersName = FIO[1],
-                                TeachersSurname = FIO[0],
-                                TeachersPatronymic = FIO[2],
-                                TeachersPassword = Hash(TextBoxPass.Text),
-                                TeachersMail = TextBoxMail.Text,
-                                TeachersAccesAdminPanel = "True"
-                            };
+                                Teacher teacher = new()
+                                {
+                                    TeachersName = FIO[1],
+                                    TeachersSurname = FIO[0],
+                                    TeachersPatronymic = FIO[2],
+                                    TeachersPassword = Hash(TextBoxPass.Text),
+                                    TeachersMail = TextBoxMail.Text,
+                                    TeachersAccesAdminPanel = "True"
+                                };
 
-                            await db.Teachers.AddAsync(teacher);
-                            await db.SaveChangesAsync();
+                                await db.Teachers.AddAsync(teacher);
+                                await db.SaveChangesAsync();
 
-                            SendPasswordToUser();
+                                SendPasswordToUser();
 
-                            ((MainWindow)Application.Current.MainWindow).FrameEJ.Navigate(new Theme());
+                                ((MainWindow)Application.Current.MainWindow).FrameEJ.Navigate(new Theme());
+                            }
+                            else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Данная почта занята");
                         }
-                        else ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Данная почта занята");
+                        else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Администратор в системе уже зарегистрирован");
                     }
-                    else ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Почта в неверном формате");
+                    else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Почта в неверном формате");
                 }
                 else ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Заполните все поля");
 
@@ -231,7 +236,13 @@ namespace StartEJ.Pages
         {
             ComboBoxServer.Items.Clear();
             using ejContext db = new();
-            await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
+            if (await db.Database.CanConnectAsync())
+                await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
+            else
+            {
+                ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Аренда сервера в данный момент недоступна");
+                RadioButtonMine.IsChecked = true;
+            }
         }
     }
 }

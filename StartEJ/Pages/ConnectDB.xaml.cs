@@ -98,7 +98,13 @@ namespace StartEJ.Pages
         {
             ComboBoxServer.Items.Clear();
             using ejContext db = new();
-            await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
+            if (await db.Database.CanConnectAsync()) 
+                await db.Educationals.OrderBy(d => d.Name).ForEachAsync(d => ComboBoxServer.Items.Add(d.Name));
+            else
+            {
+                ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Аренда сервера в данный момент недоступна");
+                RadioButtonMine.IsChecked = true;
+            }
         }
         private void RadioButton_Click(object sender, RoutedEventArgs e)
         {
