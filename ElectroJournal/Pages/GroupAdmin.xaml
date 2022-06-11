@@ -465,8 +465,7 @@
         <Grid
             x:Name="GridStudentInfo"
             Grid.ColumnSpan="2"
-            d:IsHidden="True"
-            RenderTransformOrigin="0.5,0.5">
+            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -479,6 +478,7 @@
                 <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Frame x:Name="FrameStud" Grid.RowSpan="2" />
             <StackPanel Orientation="Horizontal">
                 <wpfui:SymbolIcon
                     x:Name="SymbolIconBack"
@@ -489,14 +489,7 @@
                     FontSize="20"
                     PreviewMouseLeftButtonUp="SymbolIconBack_PreviewMouseLeftButtonUp"
                     Symbol="ArrowLeft24" />
-                <Label
-                    x:Name="LabelNameStud"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="Фамилия Имя Отчество"
-                    FontSize="18" />
             </StackPanel>
-            <Frame x:Name="FrameStud" Grid.Row="1" />
         </Grid>
     </Grid>
 </Page>

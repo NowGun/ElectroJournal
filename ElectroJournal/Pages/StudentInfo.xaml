@@ -49,10 +49,16 @@
     </Page.Resources>
 
     <Grid>
+        <Label
+                    x:Name="LabelNameStud"
+                    Margin="50,15,0,0"
+                    VerticalAlignment="Top"
+                    Content="Фамилия Имя Отчество"
+                    FontSize="18" />
         <StackPanel
             x:Name="stackPanel1"
             Grid.Row="1"
-            Margin="50,15,0,0"
+            Margin="50,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top">
             <Label

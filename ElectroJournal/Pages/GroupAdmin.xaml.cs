@@ -108,7 +108,6 @@ namespace ElectroJournal.Pages
                 if (ListBoxStudent.SelectedIndex != -1)
                 {
                     ((Storyboard)Resources["AnimOpenInfo"]).Begin();
-                    LabelNameStud.Content = LabelFIOStudent.Content;
                     FrameStud.Navigate(new StudentInfo(idStud[ListBoxStudent.SelectedIndex]));
                 }
             }
@@ -149,10 +148,10 @@ namespace ElectroJournal.Pages
                 {
                     RootDialogDiapDate.Hide();
                     StackPanelGenerateSheet.Visibility = Visibility.Visible;
-                    ((Storyboard)Resources["AnimOpenInfo"]).Begin();
-                    FrameStud.Navigate(new SheetReport());
                 }
                 else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Заполните все поля");
+                    ((Storyboard)Resources["AnimOpenInfo"]).Begin();
+                    FrameStud.Navigate(new SheetReport(LabelGroupName.Content.ToString(), DateOnly.Parse(DatePickerStart.Text), DateOnly.Parse(DatePickerEnd.Text)));
             }
             catch (Exception ex)
             {

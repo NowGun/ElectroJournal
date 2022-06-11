@@ -57,6 +57,7 @@ namespace ElectroJournal.Pages
 
                     if (s != null)
                     {
+                        LabelNameStud.Content = $"{s.StudentsSurname} {s.StudentsName} {s.StudentsPatronymic}";
                         LabelGroup.Content = $"Студент группы {s.GroupsIdgroupsNavigation.GroupsNameAbbreviated}";
                         LabelDateBirth.Content = string.IsNullOrWhiteSpace(s.StudentsBirthday.ToString()) ? "Дата рождения: информация отсутствует" : $"Дата рождения: {s.StudentsBirthday}";
                         LabelPhone.Content = string.IsNullOrWhiteSpace(s.StudentsPhone) ? "Номер телефона: информация отсутствует" : $"Номер телефона: {s.StudentsPhone}";
