@@ -94,6 +94,15 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Placeholder="Пароль" />
+        <wpfui:TextBox
+            x:Name="TextBoxSchema"
+            Width="270"
+            Height="35"
+            Margin="50,264,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Placeholder="База данных"
+            TextWrapping="Wrap" />
         <Button
             x:Name="ButtonSave"
             Width="130"
@@ -106,14 +115,5 @@
             FontSize="14"
             IsDefault="True"
             Style="{StaticResource WPFUIButtonStandard}" />
-        <wpfui:TextBox
-            x:Name="TextBoxSchema"
-            Width="270"
-            Height="35"
-            Margin="50,264,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Placeholder="База данных"
-            TextWrapping="Wrap" />
     </Grid>
 </Window>

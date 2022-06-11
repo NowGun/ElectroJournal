@@ -1,4 +1,6 @@
 ﻿using ElectroJournal.DataBase;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,11 @@ namespace ElectroJournal.Pages
             InitializeComponent();
 
             LoadInfo(idStud);
+
+            PointLabel = chartPoint =>
+               string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
+            DataContext = this;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -66,6 +73,33 @@ namespace ElectroJournal.Pages
             finally
             {
                 ((Storyboard)Resources["AnimCloseLoading"]).Begin();
+            }
+        }
+
+        private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
+        {
+            var chart = (LiveCharts.Wpf.PieChart)chartpoint.ChartView;
+
+            //clear selected slice.
+            foreach (PieSeries series in chart.Series)
+                series.PushOut = 0;
+
+            var selectedSeries = (PieSeries)chartpoint.SeriesView;
+            selectedSeries.PushOut = 8;
+        }
+
+        public Func<ChartPoint, string> PointLabel { get; set; }
+
+
+        private void FillPresencesChart()
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }

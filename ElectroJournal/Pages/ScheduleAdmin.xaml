@@ -206,6 +206,23 @@
                             FontSize="14" />
                     </Grid>
                 </Expander>
+                <Expander
+                    x:Name="ExpanderTypeLearning"
+                    MaxHeight="400"
+                    Margin="0,10,20,0"
+                    
+                    Header="Типы урока" Expanded="ExpanderTypeLearning_Expanded">
+                    <Grid MaxHeight="250">                        
+                        <ListBox
+                            x:Name="ListBoxTypeLearning"
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            FontSize="14" />
+                    </Grid>
+                </Expander>
             </StackPanel>
         </ScrollViewer>
         <rg:ReoGridControl

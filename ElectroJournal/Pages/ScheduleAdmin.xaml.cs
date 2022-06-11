@@ -252,7 +252,7 @@ namespace ElectroJournal.Pages
 
             }
         }
-        async void rgrid_AfterCellEdit(object sender, CellEventArgs e)
+        private async void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
             string[] poz = ReoGridSchedule.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
             string score = poz[0];
@@ -260,6 +260,11 @@ namespace ElectroJournal.Pages
             string poz6 = Regex.Replace(score, @"[^A-Z]+", string.Empty);
 
             using zhirovContext db = new();
+
+            for (int i = 1; i < gp; i++)
+            {
+
+            }
 
             if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText))
             {
@@ -384,7 +389,7 @@ namespace ElectroJournal.Pages
             ComboBoxSchoolWeek.Items.Clear();
 
             using zhirovContext db = new();
-            await db.Schoolweeks.OrderByDescending(g => g.Idschoolweek).ForEachAsync(g =>
+            await db.Schoolweeks.OrderByDescending(g =>g.SchoolweekStart).ForEachAsync(g =>
             {
                 ComboBoxSchoolWeek.Items.Add($"{g.SchoolweekStart} - {g.SchoolweekEnd}");
             });
@@ -468,6 +473,19 @@ namespace ElectroJournal.Pages
                     EF.Functions.Like(t.TeachersPatronymic, $"%{SearchBoxTeachers.Text}%"))
                     .ForEachAsync(t => ListBoxTeachers.Items.Add($"{t.TeachersSurname} {t.TeachersName} {t.TeachersPatronymic}"));
             }            
+        }
+        private async void FillListBoxTypeLearning()
+        {
+            try
+            {
+                ListBoxTypeLearning.Items.Clear();
+                using zhirovContext db = new();
+                await db.Typeclasses.ForEachAsync(t => ListBoxTypeLearning.Items.Add(t.TypeclassesName));
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         private void ExpanderCabinets_Expanded(object sender, System.Windows.RoutedEventArgs e) => FillComboBoxHousing();
         private void ExpanderDisciplines_Expanded(object sender, System.Windows.RoutedEventArgs e) => FillListBoxDisciplines();
@@ -654,5 +672,6 @@ namespace ElectroJournal.Pages
             }
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => CheckComboBox();
+        private void ExpanderTypeLearning_Expanded(object sender, RoutedEventArgs e) => FillListBoxTypeLearning();
     }
 }
