@@ -30,7 +30,7 @@ namespace StartEJ.Pages
             FillComboBoxUniver();
         }
 
-        XmlDocument xmlDocument = new XmlDocument();
+      
         private void TextBoxIP_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!(Char.IsDigit(e.Text, 0) || (e.Text == ".")))
@@ -42,6 +42,8 @@ namespace StartEJ.Pages
         {
             try
             {
+                XmlDocument xmlDocument = new XmlDocument();
+
                 xmlDocument.Load("setting.xml");
 
                 XmlNode server = xmlDocument.GetElementsByTagName("server")[0];
