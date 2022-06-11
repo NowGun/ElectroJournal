@@ -139,5 +139,25 @@ namespace ElectroJournal.Pages
         {
             ((Storyboard)Resources["AnimCloseInfo"]).Begin();
         }
+        private void MenuItemReportScores_Click(object sender, RoutedEventArgs e) => RootDialogDiapDate.Show();
+        private void RootDialogNewSchedule_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialogDiapDate.Hide();
+        private void RootDialogNewSchedule_ButtonLeftClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(DatePickerStart.Text) && !string.IsNullOrWhiteSpace(DatePickerEnd.Text))
+                {
+                    RootDialogDiapDate.Hide();
+                    StackPanelGenerateSheet.Visibility = Visibility.Visible;
+                    ((Storyboard)Resources["AnimOpenInfo"]).Begin();
+                    FrameStud.Navigate(new SheetReport());
+                }
+                else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Заполните все поля");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

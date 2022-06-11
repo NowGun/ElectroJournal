@@ -294,7 +294,7 @@
                     </TransformGroup>
                 </wpfui:Card.RenderTransform>
                 <Grid>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,140,0">
                         <Label
                             x:Name="LabelGroupName"
                             Margin="10,5,0,0"
@@ -303,18 +303,33 @@
                             Content="Группа"
                             FontSize="22" />
                         <Menu
-                            Margin="20,0,0,0"
+                            Margin="20,-4.5,0,0"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Stretch"
+                            VerticalAlignment="Top"
                             Background="Transparent"
-                            BorderBrush="Transparent">
+                            BorderBrush="Transparent" Height="55">
                             <MenuItem
-                                Padding="6,0,6,0"
                                 FontSize="16"
                                 Header="Отчеты">
-                                <MenuItem Header="Составить ведомость оценок" />
+                                <MenuItem x:Name="MenuItemReportScores" Header="Ведомость оценок" Click="MenuItemReportScores_Click"/>
+                            </MenuItem>
+                            <MenuItem
+                                    Padding="6,0,6,0"
+                                    FontSize="16"
+                                    Header="Документы">
+                                <MenuItem Header="Часовая нагрузка"/>
+                                <MenuItem Header="Ведомость о зачислении"/>
                             </MenuItem>
                         </Menu>
+                    </StackPanel>
+                    <StackPanel x:Name="StackPanelGenerateSheet" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" Visibility="Hidden">
+                        <Label Content="Генерация списка"/>
+                        <ProgressBar
+                x:Name="ProgressBarReport"
+                Foreground="#FF3567BC"
+                IsIndeterminate="True"
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Visibility="Visible" Margin="10,0,0,0" />
                     </StackPanel>
                 </Grid>
             </wpfui:Card>
@@ -377,7 +392,7 @@
             </wpfui:DynamicScrollViewer>
             <wpfui:CardAction
                 x:Name="CardActionOpenStatsStud"
-                Height="65"
+                Height="70"
                 VerticalAlignment="Bottom"
                 Click="CardActionOpenStatsStud_Click"
                 Icon="PersonNote24"
@@ -403,6 +418,33 @@
                 </StackPanel>
             </wpfui:CardAction>
         </Grid>
+        <wpfui:Dialog
+            x:Name="RootDialogDiapDate"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            Margin="-10,-99,-10,-10"
+            d:IsHidden="True"
+            ButtonLeftClick="RootDialogNewSchedule_ButtonLeftClick"
+            ButtonLeftName="Сгенерировать"
+            ButtonRightClick="RootDialogNewSchedule_ButtonRightClick"
+            ButtonRightName="Закрыть"
+            DialogHeight="200"
+            DialogWidth="400"
+            IsShown="False">
+            <Grid>
+                <StackPanel>
+                    <Label Margin="0,0,0,10" Content="Выберите диапазон дат" />
+                    <StackPanel Orientation="Horizontal">
+                        <DatePicker x:Name="DatePickerStart" Width="165" />
+                        <Label
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Center"
+                            Content=" - " />
+                        <DatePicker x:Name="DatePickerEnd" Width="165" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </wpfui:Dialog>
         <StackPanel
             x:Name="stackPanel"
             Grid.ColumnSpan="2"
