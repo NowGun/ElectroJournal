@@ -35,6 +35,7 @@ namespace ElectroJournal.Pages
             TextBoxLogin.Focus();
         }
 
+        Navigation nav = new();
         SettingsControl settingsControl = new();
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -57,14 +58,12 @@ namespace ElectroJournal.Pages
                 TextBoxLogin.IsEnabled = false;
                 TextBoxPassword.IsEnabled = false;
                 string pass = SettingsControl.Hash(TextBoxPassword.Password);
-                Navigation nav = new();
                 var anim = (Storyboard)FindResource("AnimLoadLogin");
 
                 using zhirovContext db = new();
-                bool isAvalaible = await db.Database.CanConnectAsync();
                 string cond = @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)";
 
-                if (isAvalaible)
+                if (await db.Database.CanConnectAsync())
                 {
                     if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text) && !string.IsNullOrWhiteSpace(TextBoxPassword.Password))
                     {
@@ -109,7 +108,6 @@ namespace ElectroJournal.Pages
                                 (Application.Current.MainWindow as MainWindow).Calls.Visibility = Visibility.Visible;
                                 (Application.Current.MainWindow as MainWindow).GridNLogin.Visibility = Visibility.Hidden;
                                 (Application.Current.MainWindow as MainWindow).GridMenu.Visibility = Visibility.Visible;
-                                (Application.Current.MainWindow as MainWindow).NavigationViewItemJournal.IsSelected = true;
                                 (Application.Current.MainWindow as MainWindow).NavigationViewItemGroup.Visibility = gr != null ? Visibility.Visible : Visibility.Collapsed;
 
                                 anim.Stop();
@@ -119,8 +117,7 @@ namespace ElectroJournal.Pages
                                 ButtonLogin.IsEnabled = true;
 
                                 await JournalClass.CheckSchedule();
-
-                                nav.NavigationPage("Journal");
+                                (Application.Current.MainWindow as MainWindow).NavigationViewItemJournal.IsSelected = true;
                             }
                             else
                             {

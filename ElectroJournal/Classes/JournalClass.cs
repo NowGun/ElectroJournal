@@ -41,14 +41,12 @@ namespace ElectroJournal.Classes
                     {
                         foreach (var sche in s)
                         {
-                            if ((sche.PeriodclassesIdperiodclassesNavigation.PeriodclassesStart < nowTime && sche.PeriodclassesIdperiodclassesNavigation.PeriodclassesEnd > nowTime))
+                            if (sche.GroupsIdgroupsNavigation.GroupsNameAbbreviated == t.GroupsIdgroupsNavigation.GroupsNameAbbreviated
+                                && sche.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == p.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated
+                                && (sche.PeriodclassesIdperiodclassesNavigation.PeriodclassesStart < nowTime && sche.PeriodclassesIdperiodclassesNavigation.PeriodclassesEnd > nowTime))
                             {
-                                if (sche.GroupsIdgroupsNavigation.GroupsNameAbbreviated == t.GroupsIdgroupsNavigation.GroupsNameAbbreviated
-                                && sche.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == p.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated)
-                                {
-                                    ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem = sche.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
-                                    return sche.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated;
-                                }
+                                ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem = sche.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
+                                return sche.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated;
                             }
                         }
                     }

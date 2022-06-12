@@ -325,6 +325,7 @@ namespace ElectroJournal
             NavigationViewItemTeachers.IsSelected = false;
             NavigationViewItemWord.IsSelected = false;
             NavigationViewItemWord1.IsSelected = false;
+            NavigationViewItemGroup.IsSelected = false; 
         }
         private void MenuItemOpenJournal_Click(object sender, RoutedEventArgs e)
         {
