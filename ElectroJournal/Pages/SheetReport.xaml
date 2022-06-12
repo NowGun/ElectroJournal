@@ -1,54 +1,64 @@
-﻿<Page x:Class="ElectroJournal.Pages.SheetReport"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ElectroJournal.Pages" xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid" xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SheetReport">
+﻿<Page
+    x:Class="ElectroJournal.Pages.SheetReport"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ElectroJournal.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
+    xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+    Title="SheetReport"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <Grid>
         <wpfui:Card
-            x:Name="CardMenu"
-            Height="50"
+            Grid.Row="0"
+            Grid.Column="0"
             Margin="50,0,10,0"
-            VerticalAlignment="Top" Padding="12,0,12,0">
+            Padding="10,2,10,2"
+            VerticalAlignment="Top">
             <Grid>
-                <Menu
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                    <MenuItem
+                <StackPanel Orientation="Horizontal">
+                    <Menu
+                        x:Name="MenuEJ"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Stretch"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+                        <MenuItem
                             Padding="6,0,6,0"
                             FontSize="14"
                             Header="Файл">
-                        <MenuItem
+                            <MenuItem
                                 x:Name="MenuItemSave"
                                 Click="MenuItemSave_Click"
                                 Header="Сохранить" />
-                        <MenuItem x:Name="MenuItemSaveAs" Header="Сохранить как">
-                            <MenuItem
+                            <MenuItem x:Name="MenuItemSaveAs" Header="Сохранить как">
+                                <MenuItem
                                     x:Name="MenuItemSaveAsRGF"
                                     Click="MenuItemSaveAsRGF_Click"
                                     Header=".rgf" />
-                            <MenuItem
+                                <MenuItem
                                     x:Name="MenuItemSaveAsXLSX"
                                     Click="MenuItemSave_Click"
                                     Header=".xlsx" />
-                            <MenuItem
+                                <MenuItem
                                     x:Name="MenuItemSaveAsHTML"
                                     Click="MenuItemSaveAsHTML_Click"
                                     Header=".html" />
+                            </MenuItem>
                         </MenuItem>
-                    </MenuItem>
-                </Menu>
+                    </Menu>
+                </StackPanel>
             </Grid>
         </wpfui:Card>
         <rg:ReoGridControl
             x:Name="ReoGrid"
             Margin="10,60,10,10"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
-        </rg:ReoGridControl>
+            VerticalAlignment="Stretch" />
     </Grid>
 </Page>

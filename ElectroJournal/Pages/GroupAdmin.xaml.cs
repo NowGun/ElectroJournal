@@ -1,6 +1,4 @@
 ﻿using ElectroJournal.DataBase;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,9 +23,6 @@ namespace ElectroJournal.Pages
     /// </summary>
     public partial class GroupAdmin : Page
     {
-        private double _lastLecture;
-        private double _trend;
-
         public GroupAdmin()
         {
             InitializeComponent();

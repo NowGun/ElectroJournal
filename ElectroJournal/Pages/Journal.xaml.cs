@@ -36,11 +36,15 @@ namespace ElectroJournal.Pages
         private int stuud;
         private int daysTable;
         List<int> idStud = new();
+        List<int> numberCall = new();
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
         private bool isChange = false;
+        private bool isEdit = false;
 
         private void FillTable()
         {
+            isEdit = false;
+
             if (ComboBoxDisp.SelectedIndex == -1 || ComboBoxMonth.SelectedIndex == -1 || ComboBoxYears.SelectedIndex == -1)
             {
                 LabelData.Visibility = Visibility.Visible;
@@ -58,6 +62,8 @@ namespace ElectroJournal.Pages
                 FillText();
                 FillStudents();
                 FillDates();
+
+                
             }
         }
         private async void FillScore()
@@ -70,12 +76,14 @@ namespace ElectroJournal.Pages
                     using zhirovContext db = new();
                     if (ComboBoxYears.SelectedItem != null)
                     {
-                        var scoreList =  await db.Journals
+                        var scoreList = await db.Journals
                             .Where(s => s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString() &&
-                            s.TeachersIdteachersNavigation.Idteachers == Properties.Settings.Default.UserID &&
-                            s.StudyperiodIdstudyperiodNavigation.StudyperiodStart == ComboBoxYears.SelectedItem.ToString() &&
-                            s.JournalMonth == Convert.ToString(ComboBoxMonth.SelectedIndex + 1))
+                            s.StudentsIdstudentsNavigation.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup .SelectedItem.ToString() 
+                            && s.StudyperiodIdstudyperiodNavigation.StudyperiodStart == ComboBoxYears.SelectedItem.ToString() 
+                            && s.JournalMonth == Convert.ToString(ComboBoxMonth.SelectedIndex + 1))
+                            .Include(s => s.ScheduleIdscheduleNavigation.PeriodclassesIdperiodclassesNavigation)
                             .ToListAsync();
+
                         await Task.Run(() =>
                         {
                             foreach (var score in scoreList)
@@ -86,11 +94,9 @@ namespace ElectroJournal.Pages
                                     {
                                         if (!String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText))
                                         {
-                                            string[] student2 = ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
                                             if (score != null)
                                             {
-                                                if (score.JournalDay == ReoGrid.CurrentWorksheet.Cells[0, j].DisplayText && score.StudentsIdstudents == idStud[i - 1])
+                                                if (score.JournalDay == ReoGrid.CurrentWorksheet.Cells[0, j].DisplayText && score.StudentsIdstudents == idStud[i-1] && score.ScheduleIdscheduleNavigation.PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber == numberCall[j-1])
                                                 {
                                                     Dispatcher.Invoke(() =>
                                                     {
@@ -103,6 +109,7 @@ namespace ElectroJournal.Pages
                                 }
                             }
                         });
+                        isEdit = true;
                     }
                 }
             }
@@ -163,7 +170,7 @@ namespace ElectroJournal.Pages
                     && s.ScheduleDate.Month == ComboBoxMonth.SelectedIndex + 1
                     && s.ScheduleDate.Year == int.Parse(CheckYear())
                     && s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString())
-                        .Select(s => s.ScheduleDate.Day)
+                        .Include(s => s.PeriodclassesIdperiodclassesNavigation)
                         .ToListAsync();
 
                     daysTable = s.Count + 1;
@@ -181,12 +188,14 @@ namespace ElectroJournal.Pages
                             for (int i = 1; i < daysTable; i++)
                             {
                                 worksheet.SetCols(daysTable);
-                                worksheet[0, i] = s[i - 1];
+                                worksheet[0, i] = s[i - 1].ScheduleDate.Day;
                                 worksheet[1, i] = "";
                                 ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
                                 Cell? cell = worksheet.Cells[0, i];
                                 cell.IsReadOnly = true;
+
+                                numberCall.Add(s[i - 1].PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber);
                             }
 
                             worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
@@ -242,31 +251,34 @@ namespace ElectroJournal.Pages
                 ComboBoxMonth.Items.Add(month);
             }
         }
-        private async void SaveJournal(string students, string disciplines, int teachers, string studyPeriod, string score, string time)
+        private async void SaveJournal(int students, string disciplines, int teachers, string studyPeriod, string score, string time, int call)
         {
             using zhirovContext db = new();
+            string[] time2 = time.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 
-            string[] FIO = students.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            string[] time2 = time.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var student = await db.Students.Where(t => t.StudentsName == FIO[1] && t.StudentsSurname == FIO[0]).FirstOrDefaultAsync();
             var disp = await db.Disciplines.Where(t => t.DisciplinesNameAbbreviated == disciplines).FirstOrDefaultAsync();
             var period = await db.Studyperiods.Where(t => t.StudyperiodStart == studyPeriod).FirstOrDefaultAsync();
+            var periodCall = await db.Schedules
+                .Where(p => p.ScheduleDate == DateOnly.Parse($"{CheckYear()}-{ComboBoxMonth.SelectedIndex + 1}-{time2[2]}") 
+                && p.PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber == numberCall[call-1]
+                && p.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString())
+                .FirstOrDefaultAsync();
 
             if (!isChange)
             {
-                if (student != null && disp != null & period != null && !String.IsNullOrWhiteSpace(score))
+                if (disp != null & period != null && periodCall != null && !String.IsNullOrWhiteSpace(score))
                 {
                     Classes.DataBaseEF.Journal journal = new Classes.DataBaseEF.Journal
                     {
-                        StudentsIdstudents = student.Idstudents,
+                        StudentsIdstudents = (uint)students,
                         DisciplinesIddisciplines = disp.Iddisciplines,
                         TeachersIdteachers = (uint)teachers,
                         StudyperiodIdstudyperiod = period.Idstudyperiod,
                         JournalYear = time2[0],
                         JournalMonth = time2[1],
                         JournalDay = time2[2],
-                        JournalScore = score
+                        JournalScore = score,
+                        ScheduleIdschedule = periodCall.Idschedule
                     };
 
                     await db.Journals.AddAsync(journal);
@@ -275,9 +287,9 @@ namespace ElectroJournal.Pages
             }
             else
             {
-                if (student != null && disp != null & period != null)
+                if (disp != null & period != null)
                 {
-                    Classes.DataBaseEF.Journal? j = await db.Journals.FirstOrDefaultAsync(t => t.StudentsIdstudents == student.Idstudents && t.DisciplinesIddisciplines == disp.Iddisciplines && t.StudyperiodIdstudyperiod == period.Idstudyperiod && t.JournalDay == time2[2]);
+                    Classes.DataBaseEF.Journal? j = await db.Journals.FirstOrDefaultAsync(t => t.StudentsIdstudents == students && t.DisciplinesIddisciplines == disp.Iddisciplines && t.StudyperiodIdstudyperiod == period.Idstudyperiod && t.JournalDay == time2[2]);
 
                     if (j != null)
                     {
@@ -292,12 +304,13 @@ namespace ElectroJournal.Pages
         private void rgrid_AfterCellEdit(object sender, CellEventArgs e)
         {
             string[] poz = ReoGrid.CurrentWorksheet.SelectionRange.ToString().Split(new char[] { ':' });
+            int pozDate = ReoGrid.CurrentWorksheet.SelectionRange.Col;
             string score = poz[0];
             int stud = int.Parse(Regex.Match(score, @"\d+").Value);
             string poz6 = Regex.Replace(score, @"[^A-Z]+", string.Empty);
 
-            if (ComboBoxDisp.SelectedItem != null && !String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText))
-                SaveJournal(ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText, ComboBoxDisp.SelectedItem.ToString(), Properties.Settings.Default.UserID, ComboBoxYears.SelectedItem.ToString(), ReoGrid.CurrentWorksheet.Cells[score].DisplayText, $"{CheckYear()}.{ComboBoxMonth.SelectedIndex + 1}.{ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText}");
+            if (isEdit && ComboBoxDisp.SelectedItem != null && !String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[stud - 1, 0].DisplayText))
+                SaveJournal(idStud[stud-2], ComboBoxDisp.SelectedItem.ToString(), Properties.Settings.Default.UserID, ComboBoxYears.SelectedItem.ToString(), ReoGrid.CurrentWorksheet.Cells[score].DisplayText, $"{CheckYear()}-{ComboBoxMonth.SelectedIndex + 1}-{ReoGrid.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText}", pozDate);
         }
         private void rgrid_BeforeCellEdit(object sender, CellEventArgs e)
         {            

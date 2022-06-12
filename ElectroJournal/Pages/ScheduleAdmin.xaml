@@ -80,7 +80,6 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
-
     <Grid AllowDrop="True" Margin="0,10,0,0">
         <ScrollViewer
             Grid.RowSpan="3"

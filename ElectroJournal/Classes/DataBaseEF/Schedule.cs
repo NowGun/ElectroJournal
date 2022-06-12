@@ -7,6 +7,11 @@ namespace ElectroJournal.Classes.DataBaseEF
 {
     public partial class Schedule
     {
+        public Schedule()
+        {
+            Journals = new HashSet<Journal>();
+        }
+
         public uint Idschedule { get; set; }
         public uint GroupsIdgroups { get; set; }
         public uint? PeriodclassesIdperiodclasses { get; set; }
@@ -24,5 +29,6 @@ namespace ElectroJournal.Classes.DataBaseEF
         public virtual Schoolweek SchoolweekIdschoolweekNavigation { get; set; }
         public virtual Teacher TeachersIdteachersNavigation { get; set; }
         public virtual Typeclass TypeclassesIdtypeclassesNavigation { get; set; }
+        public virtual ICollection<Journal> Journals { get; set; }
     }
 }

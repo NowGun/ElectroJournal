@@ -39,6 +39,7 @@ namespace ElectroJournal.Pages
         }
 
         List<int> idStud = new();
+        List<string> disp = new();
         private int stuud;
         private string group;
         private DateOnly dateStart;
@@ -127,19 +128,37 @@ namespace ElectroJournal.Pages
                 using zhirovContext db = new();
                 var worksheet = ReoGrid.CurrentWorksheet;
 
-                var disp = await db.Schedules.Where(d => d.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
+                /*var disp = await db.Schedules.Where(d => d.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
                 && (dateStart < d.ScheduleDate && d.ScheduleDate < dateEnd)
                 && d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated != "Обед")
                     .Include(d => d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated)
-                    .ToListAsync();
+                    .ToListAsync();*/
 
-                if (disp != null) 
+
+                var d = db.Schedules
+                    .Where(d => d.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
+                && (dateStart < d.ScheduleDate && d.ScheduleDate < dateEnd)
+                && d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated != "Обед")
+                    .GroupBy(d => d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated)
+                    .Select(d => new
+                    {
+                        d.Key,
+                        Count = d.Count()
+                    });
+
+                foreach (var g in d)
+                {
+                    var a = $"{g.Key} {g.Count}";
+                    disp.Add(g.Key);
+                }
+
+                if (disp != null)
                 {
                     for (int i = 1; i < disp.Count + 1; i++)
                     {
                         //worksheet.SetCols(disp.Count);
-                        worksheet[0, i] = disp[i - 1].DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated;
-                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
+                        worksheet[0, i] = disp[i-1];
+                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 80));
 
                         Cell? cell = worksheet.Cells[0, i];
                         cell.IsReadOnly = true;

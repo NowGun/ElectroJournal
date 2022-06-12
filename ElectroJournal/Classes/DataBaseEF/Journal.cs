@@ -16,8 +16,10 @@ namespace ElectroJournal.Classes.DataBaseEF
         public string JournalYear { get; set; }
         public string JournalMonth { get; set; }
         public string JournalDay { get; set; }
+        public uint ScheduleIdschedule { get; set; }
 
         public virtual Discipline DisciplinesIddisciplinesNavigation { get; set; }
+        public virtual Schedule ScheduleIdscheduleNavigation { get; set; }
         public virtual Student StudentsIdstudentsNavigation { get; set; }
         public virtual Studyperiod StudyperiodIdstudyperiodNavigation { get; set; }
         public virtual Teacher TeachersIdteachersNavigation { get; set; }

@@ -386,6 +386,8 @@ namespace ElectroJournal.DataBase
 
                 entity.HasIndex(e => e.DisciplinesIddisciplines, "fk_journal_disciplines1_idx");
 
+                entity.HasIndex(e => e.ScheduleIdschedule, "fk_journal_schedule1_idx");
+
                 entity.HasIndex(e => e.StudentsIdstudents, "fk_journal_students1_idx");
 
                 entity.HasIndex(e => e.StudyperiodIdstudyperiod, "fk_journal_studyperiod1_idx");
@@ -419,6 +421,8 @@ namespace ElectroJournal.DataBase
                     .HasColumnType("text")
                     .HasColumnName("journal_year");
 
+                entity.Property(e => e.ScheduleIdschedule).HasColumnName("schedule_idschedule");
+
                 entity.Property(e => e.StudentsIdstudents).HasColumnName("students_idstudents");
 
                 entity.Property(e => e.StudyperiodIdstudyperiod).HasColumnName("studyperiod_idstudyperiod");
@@ -430,6 +434,12 @@ namespace ElectroJournal.DataBase
                     .HasForeignKey(d => d.DisciplinesIddisciplines)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_journal_disciplines1");
+
+                entity.HasOne(d => d.ScheduleIdscheduleNavigation)
+                    .WithMany(p => p.Journals)
+                    .HasForeignKey(d => d.ScheduleIdschedule)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_journal_schedule1");
 
                 entity.HasOne(d => d.StudentsIdstudentsNavigation)
                     .WithMany(p => p.Journals)
@@ -619,17 +629,19 @@ namespace ElectroJournal.DataBase
                 entity.HasOne(d => d.CabinetIdcabinetNavigation)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.CabinetIdcabinet)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("fk_schedule_cabinet1");
 
                 entity.HasOne(d => d.DisciplinesIddisciplinesNavigation)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.DisciplinesIddisciplines)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("fk_schedule_disciplines1");
 
                 entity.HasOne(d => d.GroupsIdgroupsNavigation)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.GroupsIdgroups)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("fk_schedule_groups1");
 
                 entity.HasOne(d => d.PeriodclassesIdperiodclassesNavigation)
@@ -641,7 +653,6 @@ namespace ElectroJournal.DataBase
                 entity.HasOne(d => d.SchoolweekIdschoolweekNavigation)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.SchoolweekIdschoolweek)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_schedule_schoolweek1");
 
                 entity.HasOne(d => d.TeachersIdteachersNavigation)
