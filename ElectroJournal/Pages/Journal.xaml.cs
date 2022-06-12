@@ -37,6 +37,7 @@ namespace ElectroJournal.Pages
         private int daysTable;
         List<int> idStud = new();
         List<int> numberCall = new();
+        List<int> idPresences = new();
         string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
         private bool isChange = false;
         private bool isEdit = false;
@@ -62,8 +63,6 @@ namespace ElectroJournal.Pages
                 FillText();
                 FillStudents();
                 FillDates();
-
-                
             }
         }
         private async void FillScore()
@@ -128,19 +127,52 @@ namespace ElectroJournal.Pages
             try
             {
                 idStud.Clear();
+                idPresences.Clear();
 
                 if (((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
                 {
                     var worksheet = ReoGrid.CurrentWorksheet;
                     using zhirovContext db = new();
 
-                    var days = await db.Groups.Where(p => p.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()).Select(p => p.Idgroups).ToListAsync();
-                    var students = await db.Students.Where(p => p.GroupsIdgroups == days[0]).OrderBy(p => p.StudentsSurname).ToListAsync();
+                    DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
+
+                    var s = await db.Schedules
+                        .Where(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()
+                        && s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString()
+                        && s.ScheduleDate == nowDate)
+                        .Include(s => s.PeriodclassesIdperiodclassesNavigation)
+                        .FirstOrDefaultAsync();
+                        
+                    if (s != null)
+                    {
+                        var presences = await db.Presences
+                            .Where(p => DateOnly.FromDateTime(p.PresenceDatetime) == nowDate)
+                            .ToListAsync();
+
+                        if (presences.Count != 0)
+                        {
+                            foreach (var p in presences)
+                            {
+                                if (s.PeriodclassesIdperiodclassesNavigation.PeriodclassesStart < TimeOnly.FromDateTime(p.PresenceDatetime)
+                                   && s.PeriodclassesIdperiodclassesNavigation.PeriodclassesEnd > TimeOnly.FromDateTime(p.PresenceDatetime))
+                                {
+                                    idPresences.Add((int)p.StudentId);
+                                }
+                            }
+                        }
+                    }
+
+                    var students = await db.Students
+                        .Where(p => p.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString())
+                        .OrderBy(p => p.StudentsSurname)
+                        .ToListAsync();
+
                     stuud = students.Count;
                     for (int i = 2; i - 2 < stuud; i++)
                     {
                         worksheet.SetRows(i);
-                        worksheet["A" + i] = students[i - 2].StudentsSurname + " " + students[i - 2].StudentsName;
+                        if (idPresences.Count == 0) worksheet["A" + i] = $"{students[i - 2].StudentsSurname} {students[i - 2].StudentsName}";
+                        else worksheet["A" + i] = idPresences.Contains((int)students[i-2].Idstudents) ? $"{students[i - 2].StudentsSurname} {students[i - 2].StudentsName}" : $"{students[i - 2].StudentsSurname} {students[i - 2].StudentsName} (н)";
                         worksheet.AutoFitColumnWidth(0, false);
 
                         idStud.Add((int)students[i - 2].Idstudents);
