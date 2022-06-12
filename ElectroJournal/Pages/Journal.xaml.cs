@@ -355,7 +355,7 @@ namespace ElectroJournal.Pages
         }
         private void Page_Loaded(object sender, RoutedEventArgs e) => CheckGroup();
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillTable();
-        private void CheckComboBox()
+        private async void CheckComboBox()
         {
             if (((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedIndex != -1)
             {
@@ -367,6 +367,8 @@ namespace ElectroJournal.Pages
                 ComboBoxMonth.SelectedIndex = DateTime.Now.Month - 1;
                 FillComboBoxDisp();
                 FillComboBoxYears();
+
+                ComboBoxDisp.SelectedItem = await JournalClass.CheckSchedule();
             }
             else
             {

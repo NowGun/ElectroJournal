@@ -118,6 +118,8 @@ namespace ElectroJournal.Pages
                                 TextBoxPassword.IsEnabled = true;
                                 ButtonLogin.IsEnabled = true;
 
+                                await JournalClass.CheckSchedule();
+
                                 nav.NavigationPage("Journal");
                             }
                             else

@@ -281,9 +281,9 @@ namespace ElectroJournal.Pages
             try
             {
                 ComboBoxSchoolWeek.Items.Clear();
-
                 using zhirovContext db = new();
-                await db.Schoolweeks.OrderByDescending(g => g.Idschoolweek).ForEachAsync(g =>
+
+                await db.Schoolweeks.OrderByDescending(g => g.SchoolweekStart).ForEachAsync(g =>
                 {
                     ComboBoxSchoolWeek.Items.Add($"{g.SchoolweekStart} - {g.SchoolweekEnd}");
                 });
