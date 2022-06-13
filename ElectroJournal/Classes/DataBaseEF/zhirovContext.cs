@@ -332,6 +332,7 @@ namespace ElectroJournal.DataBase
                 entity.HasOne(d => d.TeachersIdteachersNavigation)
                     .WithMany(p => p.Groups)
                     .HasForeignKey(d => d.TeachersIdteachers)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_groups_teachers1");
 
                 entity.HasOne(d => d.TypelearningIdtypelearningNavigation)
@@ -557,6 +558,7 @@ namespace ElectroJournal.DataBase
                 entity.Property(e => e.SmartcardId).HasColumnName("smartcard_id");
 
                 entity.Property(e => e.StudentId).HasColumnName("student_id");
+
 
                 entity.HasOne(d => d.IdentificatedAtNavigation)
                     .WithMany(p => p.Presences)

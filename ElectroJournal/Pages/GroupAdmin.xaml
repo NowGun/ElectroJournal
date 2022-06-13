@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ElectroJournal.Pages"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ucontrol="clr-namespace:ElectroJournal.UControl"
     xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
     Title="GroupAdmin"
     d:DesignHeight="450"
@@ -245,7 +247,6 @@
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
-
     <Grid Margin="10,10,10,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
@@ -294,7 +295,7 @@
                     </TransformGroup>
                 </wpfui:Card.RenderTransform>
                 <Grid>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,140,0">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                         <Label
                             x:Name="LabelGroupName"
                             Margin="10,5,0,0"
@@ -303,33 +304,48 @@
                             Content="Группа"
                             FontSize="22" />
                         <Menu
+                            Height="55"
                             Margin="20,-4.5,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Background="Transparent"
-                            BorderBrush="Transparent" Height="55">
-                            <MenuItem
-                                FontSize="16"
-                                Header="Отчеты">
-                                <MenuItem x:Name="MenuItemReportScores" Header="Ведомость оценок" Click="MenuItemReportScores_Click"/>
+                            BorderBrush="Transparent">
+                            <MenuItem FontSize="16" Header="Отчеты">
+                                <MenuItem
+                                    x:Name="MenuItemReportScores"
+                                    Click="MenuItemReportScores_Click"
+                                    Header="Ведомость оценок" />
                             </MenuItem>
                             <MenuItem
-                                    Padding="6,0,6,0"
-                                    FontSize="16"
-                                    Header="Документы">
-                                <MenuItem Header="Часовая нагрузка"/>
-                                <MenuItem Header="Ведомость о зачислении"/>
+                                Padding="6,0,6,0"
+                                FontSize="16"
+                                Header="Документы">
+                                <MenuItem Header="Часовая нагрузка" />
+                                <MenuItem Header="Ведомость о зачислении" />
                             </MenuItem>
                         </Menu>
                     </StackPanel>
-                    <StackPanel x:Name="StackPanelGenerateSheet" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" Visibility="Hidden">
-                        <Label Content="Генерация списка"/>
-                        <ProgressBar
-                x:Name="ProgressBarReport"
-                Foreground="#FF3567BC"
-                IsIndeterminate="True"
-                Style="{StaticResource MaterialDesignCircularProgressBar}"
-                Visibility="Visible" Margin="10,0,0,0" />
+                    <StackPanel
+                        x:Name="StackPanelGenerateSheet"
+                        Margin="320,0,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Visibility="Visible">
+                        <Label
+                            x:Name="LabelScheduleGroup"
+                            Margin="0,0,20,0"
+                            Content="Физика\45 - Ларионова Ольга" />
+                        <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                            <Label Content="Генерация списка" />
+                            <ProgressBar
+                                x:Name="ProgressBarReport"
+                                Margin="10,0,0,0"
+                                Foreground="#FF3567BC"
+                                IsIndeterminate="True"
+                                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                Visibility="Visible" />
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </wpfui:Card>
@@ -345,6 +361,25 @@
                         <TranslateTransform />
                     </TransformGroup>
                 </wpfui:DynamicScrollViewer.RenderTransform>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="29*" />
+                        <RowDefinition Height="28*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="49*" />
+                        <ColumnDefinition Width="47*" />
+                    </Grid.ColumnDefinitions>
+                    <ucontrol:LinesChartUC
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,10,0,0" />
+                    <ucontrol:PieChartsUC Grid.Row="0" Grid.Column="1" />
+                    <ucontrol:BarsChartUC
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="0,0,10,0" />
+                </Grid>
             </wpfui:DynamicScrollViewer>
             <wpfui:CardAction
                 x:Name="CardActionOpenStatsStud"
@@ -421,7 +456,8 @@
         <Grid
             x:Name="GridStudentInfo"
             Grid.ColumnSpan="2"
-            RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
+            d:IsHidden="True"
+            RenderTransformOrigin="0.5,0.5">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

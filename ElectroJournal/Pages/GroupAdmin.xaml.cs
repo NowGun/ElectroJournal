@@ -1,5 +1,9 @@
 ﻿using ElectroJournal.DataBase;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.EntityFrameworkCore;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,8 +149,8 @@ namespace ElectroJournal.Pages
                     StackPanelGenerateSheet.Visibility = Visibility.Visible;
                 }
                 else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Заполните все поля");
-                    ((Storyboard)Resources["AnimOpenInfo"]).Begin();
-                    FrameStud.Navigate(new SheetReport(LabelGroupName.Content.ToString(), DateOnly.Parse(DatePickerStart.Text), DateOnly.Parse(DatePickerEnd.Text)));
+                ((Storyboard)Resources["AnimOpenInfo"]).Begin();
+                FrameStud.Navigate(new SheetReport(LabelGroupName.Content.ToString(), DateOnly.Parse(DatePickerStart.Text), DateOnly.Parse(DatePickerEnd.Text)));
             }
             catch (Exception ex)
             {
