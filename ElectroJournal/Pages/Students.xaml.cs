@@ -75,9 +75,24 @@ namespace ElectroJournal.Pages
                                 student.StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null;
                                 student.GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex];
 
-                                if (smart != null) smart.SmartcardIdentifier = LabelCardId.Content.ToString().Length == 8 ? (string)LabelCardId.Content : smart.SmartcardIdentifier;
-
                                 await db.SaveChangesAsync();
+
+                                if (smart != null)
+                                {
+                                    smart.SmartcardIdentifier = LabelCardId.Content.ToString() != "Отсутствует" ? (string)LabelCardId.Content : smart.SmartcardIdentifier;
+                                    await db.SaveChangesAsync();
+                                }
+                                else if (smart == null)
+                                {
+                                    Smartcard smart2 = new Smartcard
+                                    {
+                                        StudentId = student.Idstudents,
+                                        SmartcardIdentifier = (string)LabelCardId.Content,
+                                    };
+
+                                    await db.Smartcards.AddAsync(smart2);
+                                    await db.SaveChangesAsync();
+                                }
                             }
                         }
                         else
@@ -98,20 +113,17 @@ namespace ElectroJournal.Pages
                             await db.Students.AddAsync(students);
                             await db.SaveChangesAsync();
 
-                            if (LabelCardId.Content.ToString().Length == 8)
+                            var s = await db.Students.OrderByDescending(s => s.Idstudents).FirstOrDefaultAsync();
+                            if (s != null)
                             {
-                                var s = await db.Students.OrderByDescending(s => s.Idstudents).FirstOrDefaultAsync();
-                                if (s != null)
+                                Smartcard smart = new Smartcard
                                 {
-                                    Smartcard smart = new Smartcard
-                                    {
-                                        StudentId = s.Idstudents,
-                                        SmartcardIdentifier = (string)LabelCardId.Content,
-                                    };
+                                    StudentId = s.Idstudents,
+                                    SmartcardIdentifier = (string)LabelCardId.Content,
+                                };
 
-                                    await db.Smartcards.AddAsync(smart);
-                                    await db.SaveChangesAsync();
-                                }
+                                await db.Smartcards.AddAsync(smart);
+                                await db.SaveChangesAsync();
                             }
                         }
                         ClearValue();
@@ -447,6 +459,7 @@ namespace ElectroJournal.Pages
         }
         private async void StartScan()
         {
+            LabelCardId.Content = "Приложите карточку для считывания";
             CardRead += CardReader_CardRead;
             await Show();
         }

@@ -20,9 +20,13 @@ namespace ElectroJournal.Pages
         {
             InitializeComponent();
             FillComboBoxGroups();
+            FillComboBoxCourse();
+            FillListBoxCycle();
         }
 
         List<int> idDisp = new List<int>();
+        List<int> idCycle = new List<int>();
+        private bool changeCycle = false;
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
@@ -215,12 +219,145 @@ namespace ElectroJournal.Pages
 
             }
         }
+        private async void FillComboBoxCourse()
+        {
+            try
+            {
+                ComboBoxCours.Items.Clear();
+                ComboBoxCourse.Items.Clear();
+                using zhirovContext db = new();
+                await db.Courses.OrderBy(g => g.CourseName).ForEachAsync(g =>
+                {
+                    ComboBoxCours.Items.Add(g.CourseName);
+                    ComboBoxCourse.Items.Add(g.CourseName);
+                });
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        private async void FillListBoxCycle()
+        {
+            try
+            {
+                idCycle.Clear();
+                ListBoxCycle.Items.Clear();
+                using zhirovContext db = new();
+                await db.Cycles.OrderBy(c => c.CyclуName).ForEachAsync(c => 
+                {
+                    ListBoxCycle.Items.Add(string.IsNullOrWhiteSpace(c.CycleIndex) ? $"{c.CyclуName}" : $"{c.CycleIndex} - {c.CyclуName}");
+                    idCycle.Add((int)c.Idcycle);
+                });
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         private void ClearValue()
         {
             ListBoxDiscipline.SelectedItem = null;
             TextBoxFullName.Clear();
             TextBoxName.Clear();
             TextBoxIndex.Clear();
+        }
+        private void RootDialog_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialog.Hide();
+        private async void RootDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using zhirovContext db = new();
+
+                if (!changeCycle)
+                {
+                    Cycle c = new()
+                    {
+                        CyclуName = TextBoxCycleName.Text,
+                        CycleIndex = TextBoxCycleindex.Text,
+                    };
+
+                    await db.Cycles.AddAsync(c);
+                    await db.SaveChangesAsync();
+                }
+                else
+                {
+                    Cycle? c = await db.Cycles.FirstOrDefaultAsync(c => c.Idcycle == idCycle[ListBoxCycle.SelectedIndex]);
+
+                    if (c != null)
+                    {
+                        c.CyclуName = TextBoxCycleName.Text;
+                        c.CycleIndex = TextBoxIndex.Text;
+
+                        await db.SaveChangesAsync();
+                    }
+                }
+                FillListBoxCycle();
+                RootDialog.Hide();
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"RootDialog_ButtonLeftClick | {ex.Message}");
+            }
+        }
+        private async void IconChangeCycle_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (ListBoxCycle.SelectedIndex != -1)
+                {
+                    changeCycle = true;
+
+                    using zhirovContext db = new();
+                    var c = await db.Cycles.FirstOrDefaultAsync(c => c.Idcycle == idCycle[ListBoxCycle.SelectedIndex]);
+
+                    if (c != null)
+                    {
+                        TextBoxCycleindex.Text = c.CycleIndex;
+                        TextBoxCycleName.Text = c.CyclуName;
+                    }
+
+                    RootDialog.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"IconChangeHousing_PreviewMouseLeftButtonUp | {ex.Message}");
+            }
+        }
+        private async void IconDeleteCycle_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (ListBoxCycle.Items.Count == 0)
+                {
+                    ((MainWindow)Application.Current.MainWindow).Notifications("Сообщение", "Произошла ошибка");
+                }
+                else if (ListBoxCycle.SelectedItem != null)
+                {
+                    using zhirovContext db = new();
+                    Cycle? c = await db.Cycles.FirstOrDefaultAsync(c => c.Idcycle == idCycle[ListBoxCycle.SelectedIndex]);
+
+                    if (c != null)
+                    {
+                        db.Cycles.Remove(c);
+                        await db.SaveChangesAsync();
+
+                        FillListBoxCycle();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"IconDeleteHousing_PreviewMouseLeftButtonUp | {ex.Message}");
+            }
+        }
+        private void IconAddCycle_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            changeCycle = false;
+            TextBoxCycleindex.Clear();
+            TextBoxCycleName.Clear();
+            RootDialog.Show();
         }
     }
 }
