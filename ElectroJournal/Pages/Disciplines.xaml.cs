@@ -19,6 +19,7 @@ namespace ElectroJournal.Pages
         public Disciplines()
         {
             InitializeComponent();
+            FillComboBoxGroups();
         }
 
         List<int> idDisp = new List<int>();
@@ -194,6 +195,24 @@ namespace ElectroJournal.Pages
             {
                 SearchBox.Clear();
                 SearchBox.Focus();
+            }
+        }
+        private async void FillComboBoxGroups()
+        {
+            try
+            {
+                ComboBoxGroups.Items.Clear();
+                ComboBoxGroup.Items.Clear();
+                using zhirovContext db = new();
+                await db.Groups.OrderBy(g => g.CourseIdcourseNavigation.CourseName).ForEachAsync(g =>
+                {
+                    ComboBoxGroups.Items.Add(g.GroupsNameAbbreviated);
+                    ComboBoxGroup.Items.Add(g.GroupsNameAbbreviated);
+                });
+            }
+            catch (Exception ex)
+            {
+
             }
         }
         private void ClearValue()

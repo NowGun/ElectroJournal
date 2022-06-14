@@ -10,6 +10,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public Group()
         {
             Disciplinehours = new HashSet<Disciplinehour>();
+            Disciplines = new HashSet<Discipline>();
             Journalthemes = new HashSet<Journaltheme>();
             Schedules = new HashSet<Schedule>();
             Students = new HashSet<Student>();
@@ -28,6 +29,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public virtual Teacher TeachersIdteachersNavigation { get; set; }
         public virtual Typelearning TypelearningIdtypelearningNavigation { get; set; }
         public virtual ICollection<Disciplinehour> Disciplinehours { get; set; }
+        public virtual ICollection<Discipline> Disciplines { get; set; }
         public virtual ICollection<Journaltheme> Journalthemes { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<Student> Students { get; set; }

@@ -20,6 +20,7 @@ namespace ElectroJournal.DataBase
         public virtual DbSet<Cabinet> Cabinets { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<Cycle> Cycles { get; set; }
         public virtual DbSet<Date> Dates { get; set; }
         public virtual DbSet<Discipline> Disciplines { get; set; }
         public virtual DbSet<Disciplinehour> Disciplinehours { get; set; }
@@ -173,6 +174,29 @@ namespace ElectroJournal.DataBase
                     .HasColumnName("course_name");
             });
 
+            modelBuilder.Entity<Cycle>(entity =>
+            {
+                entity.HasKey(e => e.Idcycle)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("cycle");
+
+                entity.HasIndex(e => e.Idcycle, "idcycle_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Idcycle).HasColumnName("idcycle");
+
+                entity.Property(e => e.CycleIndex)
+                    .IsRequired()
+                    .HasMaxLength(45)
+                    .HasColumnName("cycle_index");
+
+                entity.Property(e => e.CyclуName)
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("cyclу_name");
+            });
+
             modelBuilder.Entity<Date>(entity =>
             {
                 entity.HasKey(e => e.IdDate)
@@ -216,16 +240,29 @@ namespace ElectroJournal.DataBase
 
                 entity.ToTable("disciplines");
 
+                entity.HasIndex(e => e.CourseIdcourse, "fk_disciplines_course1_idx");
+
+                entity.HasIndex(e => e.CycleIdcycle, "fk_disciplines_cycle1_idx");
+
+                entity.HasIndex(e => e.GroupsIdgroups, "fk_disciplines_groups1_idx");
+
                 entity.HasIndex(e => e.Iddisciplines, "iddisciplines_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Iddisciplines).HasColumnName("iddisciplines");
 
+                entity.Property(e => e.CourseIdcourse).HasColumnName("course_idcourse");
+
+                entity.Property(e => e.CycleIdcycle).HasColumnName("cycle_idcycle");
+
+                entity.Property(e => e.DisciplinesHours).HasColumnName("disciplines_hours");
+
                 entity.Property(e => e.DisciplinesIndex)
-                    .HasColumnType("text")
+                    .HasMaxLength(45)
                     .HasColumnName("disciplines_index");
 
                 entity.Property(e => e.DisciplinesName)
+                    .IsRequired()
                     .HasColumnType("text")
                     .HasColumnName("disciplines_name");
 
@@ -233,6 +270,26 @@ namespace ElectroJournal.DataBase
                     .IsRequired()
                     .HasColumnType("text")
                     .HasColumnName("disciplines_name_abbreviated");
+
+                entity.Property(e => e.GroupsIdgroups).HasColumnName("groups_idgroups");
+
+                entity.HasOne(d => d.CourseIdcourseNavigation)
+                    .WithMany(p => p.Disciplines)
+                    .HasForeignKey(d => d.CourseIdcourse)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_disciplines_course1");
+
+                entity.HasOne(d => d.CycleIdcycleNavigation)
+                    .WithMany(p => p.Disciplines)
+                    .HasForeignKey(d => d.CycleIdcycle)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_disciplines_cycle1");
+
+                entity.HasOne(d => d.GroupsIdgroupsNavigation)
+                    .WithMany(p => p.Disciplines)
+                    .HasForeignKey(d => d.GroupsIdgroups)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_disciplines_groups1");
             });
 
             modelBuilder.Entity<Disciplinehour>(entity =>

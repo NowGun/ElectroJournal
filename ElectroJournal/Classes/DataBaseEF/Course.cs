@@ -10,6 +10,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public Course()
         {
             Disciplinehours = new HashSet<Disciplinehour>();
+            Disciplines = new HashSet<Discipline>();
             Groups = new HashSet<Group>();
         }
 
@@ -17,6 +18,7 @@ namespace ElectroJournal.Classes.DataBaseEF
         public string CourseName { get; set; }
 
         public virtual ICollection<Disciplinehour> Disciplinehours { get; set; }
+        public virtual ICollection<Discipline> Disciplines { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
     }
 }

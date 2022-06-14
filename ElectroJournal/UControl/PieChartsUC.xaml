@@ -16,6 +16,7 @@
     <Grid>
         <lvc:PieChart
             x:Name="PieChartScore"
+            LegendBackground="Transparent"
             LegendPosition="Right"
             Series="{Binding Series}" />
     </Grid>

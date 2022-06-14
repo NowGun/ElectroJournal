@@ -17,10 +17,17 @@ namespace ElectroJournal.Classes.DataBaseEF
         }
 
         public uint Iddisciplines { get; set; }
-        public string DisciplinesIndex { get; set; }
+        public int? DisciplinesHours { get; set; }
+        public uint CycleIdcycle { get; set; }
+        public uint GroupsIdgroups { get; set; }
+        public uint CourseIdcourse { get; set; }
         public string DisciplinesName { get; set; }
         public string DisciplinesNameAbbreviated { get; set; }
+        public string DisciplinesIndex { get; set; }
 
+        public virtual Course CourseIdcourseNavigation { get; set; }
+        public virtual Cycle CycleIdcycleNavigation { get; set; }
+        public virtual Group GroupsIdgroupsNavigation { get; set; }
         public virtual ICollection<Disciplinehour> Disciplinehours { get; set; }
         public virtual ICollection<Journal> Journals { get; set; }
         public virtual ICollection<Journaltheme> Journalthemes { get; set; }
