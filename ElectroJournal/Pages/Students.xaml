@@ -51,77 +51,92 @@
     </Page.Resources>
     <Grid>
         <wpfui:Card Margin="360,60,20,60">
-            <Grid>
-                <wpfui:DynamicScrollViewer
-                    Margin="0,52,25,52"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top">
-                    <StackPanel Margin="0,0,15,0">
-                        <ComboBox
-                            x:Name="ComboBoxGroups"
-                            Margin="0,0,0,10"
-                            SelectionChanged="ComboBoxGroups_SelectionChanged" />
-                        <ListBox
-                            x:Name="ListBoxGroups"
-                            MinWidth="250"
-                            Margin="5,0,5,0"
-                            d:ItemsSource="{d:SampleData ItemCount=5}" />
-                    </StackPanel>
-                </wpfui:DynamicScrollViewer>
-                <TextBox
-                    x:Name="TextBoxStudentsFIO"
-                    Width="385"
+            <wpfui:DynamicScrollViewer Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="281*"/>
+                        <ColumnDefinition Width="266*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <StackPanel>
+                            <Label Content="Студент"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                    Width="170"
                     Height="35"
-                    Margin="197,52,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    VerticalContentAlignment="Center"
+                    Content="ФИО*"
+                    FontSize="14" />
+                                <wpfui:TextBox
+                    x:Name="TextBoxStudentsFIO"
+                            Placeholder="Прим. Иванов Иван Иванович"
+                    Width="386"
+                    Height="35"
                     TextWrapping="Wrap" />
-                <TextBox
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                    Width="170"
+                    Height="35"
+                    VerticalContentAlignment="Center"
+                    Content="Телефон"
+                    FontSize="14" />
+                                <TextBox
                     x:Name="TextBoxStudentsPhone"
                     Width="125"
                     Height="35"
-                    Margin="197,112,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     MaxLength="12"
                     PreviewTextInput="TextBoxStudentsPhone_PreviewTextInput"
                     TextWrapping="Wrap"
                     UndoLimit="12" />
-                <TextBox
+                                <Label
+                    VerticalContentAlignment="Center"
+                    Content="Дата рождения"
+                    FontSize="14" />
+                                <DatePicker
+                    x:Name="DatePickerDateBirthday"
+                    Width="135"
+                    Height="35"
+                    DisplayDate="2022-01-19" />
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                    Width="170"
+                    Height="35"
+                    VerticalContentAlignment="Center"
+                    Content="Место жительства"
+                    FontSize="14" />
+                                <TextBox
                     x:Name="TextBoxStudentsResidence"
                     Width="385"
                     Height="35"
-                    Margin="197,172,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     TextWrapping="Wrap" />
-                <Label
-                    Margin="22,240,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label
                     Content="Номер карточки" />
-                <StackPanel
-                    Margin="197,232,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                                <StackPanel
                     Orientation="Horizontal">
-                    <Label
+                                    <Label
                         x:Name="LabelCardId"
                         Margin="0,0,15,0"
                         VerticalAlignment="Stretch"
                         VerticalContentAlignment="Center"
                         Content="Отсутствует"
                         RenderTransformOrigin="0.5,0.5">
-                        <Label.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Label.RenderTransform>
-                    </Label>
-                    <wpfui:Button
+                                        <Label.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform />
+                                                <SkewTransform />
+                                                <RotateTransform />
+                                                <TranslateTransform />
+                                            </TransformGroup>
+                                        </Label.RenderTransform>
+                                    </Label>
+                                    <wpfui:Button
                         x:Name="ButtonChangeNumber"
                         Width="35"
                         Height="35"
@@ -129,7 +144,7 @@
                         Appearance="Transparent"
                         Click="ButtonChangeNumber_Click"
                         Icon="Edit24" />
-                    <wpfui:Button
+                                    <wpfui:Button
                         x:Name="ButtonDeleteNumber"
                         Width="35"
                         Height="35"
@@ -138,84 +153,61 @@
                         Appearance="Transparent"
                         Click="ButtonDeleteNumber_Click"
                         Icon="Delete24" />
-                </StackPanel>
-                <TextBox
+                                </StackPanel>
+
+                            </StackPanel>
+                            <Label
+                    Width="170"
+                    Height="30"
+                    VerticalContentAlignment="Center"
+                    Content="Родитель"
+                    FontSize="16" />
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                    Width="170"
+                    Height="35"
+                    VerticalContentAlignment="Center"
+                    Content="ФИО родителя"
+                    FontSize="14" />
+                                <TextBox
                     x:Name="TextBoxParentFIO"
                     Width="385"
                     Height="35"
-                    Margin="197,322,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     TextWrapping="Wrap" />
-                <TextBox
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                    Width="170"
+                    Height="35"
+                    VerticalContentAlignment="Center"
+                    Content="Телефон"
+                    FontSize="14" />
+                                <TextBox
                     x:Name="TextBoxParentPhone"
                     Width="145"
                     Height="35"
-                    Margin="197,377,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     MaxLength="12"
                     PreviewTextInput="TextBoxStudentsPhone_PreviewTextInput"
                     TextWrapping="Wrap"
                     UndoLimit="12" />
-                <Label
-                    Width="170"
-                    Height="35"
-                    Margin="22,52,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="ФИО*"
-                    FontSize="14" />
-                <DatePicker
-                    x:Name="DatePickerDateBirthday"
-                    Width="135"
-                    Height="35"
-                    Margin="447,112,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    DisplayDate="2022-01-19" />
-                <Label
-                    Width="300"
-                    Height="20"
-                    Margin="197,32,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Bottom"
-                    Content="Пример: Иванов Иван Иванович"
-                    FontStyle="Italic" />
-                <Label
-                    Width="170"
-                    Height="35"
-                    Margin="22,112,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Телефон"
-                    FontSize="14" />
-                <Label
+
+                            </StackPanel>
+                        </StackPanel>
+                        <Label
                     Width="160"
                     Height="36"
-                    Margin="0,0,195,9"
+                    Margin="0,0,-337,9"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     VerticalContentAlignment="Center"
                     Content="* - обязательные поля"
                     FontSize="14" />
-                <Label
-                    Width="170"
-                    Height="30"
-                    Margin="0,22,100,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Группа*"
-                    FontSize="14" />
-                <Button
+                        <Button
                     x:Name="ButtonSave"
                     Width="150"
                     Height="35"
-                    Margin="0,0,10,10"
+                    Margin="0,0,-522,10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Click="ButtonSave_Click"
@@ -223,23 +215,7 @@
                     FontSize="14"
                     IsDefault="True"
                     Style="{StaticResource WPFUIButtonStandard}" />
-                <Label
-                    Margin="340,118,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Дата рождения"
-                    FontSize="14" />
-                <Label
-                    Width="170"
-                    Height="35"
-                    Margin="22,172,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Место жительства"
-                    FontSize="14" />
-                <Label
+                        <Label
                     Width="170"
                     Height="30"
                     Margin="10,10,0,0"
@@ -248,34 +224,32 @@
                     VerticalContentAlignment="Center"
                     Content="Студент"
                     FontSize="16" />
-                <Label
+
+                    </Grid>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="15,0,0,60">
+                        <Label
                     Width="170"
                     Height="30"
-                    Margin="10,287,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
-                    Content="Родитель"
-                    FontSize="16" />
-                <Label
-                    Width="170"
-                    Height="35"
-                    Margin="22,322,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="ФИО родителя"
-                    FontSize="14" />
-                <Label
-                    Width="170"
-                    Height="35"
-                    Margin="22,377,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    VerticalContentAlignment="Center"
-                    Content="Телефон"
-                    FontSize="14" />
-                <ProgressBar
+                    Content="Группа*"
+                    FontSize="14" HorizontalAlignment="Left" />
+                        <wpfui:DynamicScrollViewer
+                    VerticalAlignment="Top" Grid.Column="1">
+                            <StackPanel Margin="0,0,15,0">
+                                <ComboBox
+                            x:Name="ComboBoxGroups"
+                            Margin="0,0,0,10"
+                            SelectionChanged="ComboBoxGroups_SelectionChanged" />
+                                <ListBox
+                            x:Name="ListBoxGroups"
+                            MinWidth="250"
+                            Margin="5,0,5,0"
+                            d:ItemsSource="{d:SampleData ItemCount=5}" />
+                            </StackPanel>
+                        </wpfui:DynamicScrollViewer>
+
+                    </StackPanel>
+                    <ProgressBar
                     x:Name="ProgressBar"
                     Margin="0,0,165,17"
                     HorizontalAlignment="Right"
@@ -283,8 +257,9 @@
                     Foreground="#FF3567BC"
                     IsIndeterminate="True"
                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                    Visibility="Hidden" />
-            </Grid>
+                    Visibility="Hidden" Grid.Column="1" />
+                </Grid>
+            </wpfui:DynamicScrollViewer>
         </wpfui:Card>
 
         <ListBox

@@ -370,15 +370,12 @@
                         <ColumnDefinition Width="49*" />
                         <ColumnDefinition Width="47*" />
                     </Grid.ColumnDefinitions>
+                    <ListBox Grid.Row="0" Grid.Column="0"/>
                     <ucontrol:LinesChartUC
                         Grid.Row="1"
                         Grid.ColumnSpan="2"
                         Margin="0,10,0,0" />
                     <ucontrol:PieChartsUC Grid.Row="0" Grid.Column="1" />
-                    <ucontrol:BarsChartUC
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Margin="0,0,10,0" />
                 </Grid>
             </wpfui:DynamicScrollViewer>
             <wpfui:CardAction
