@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -76,8 +77,7 @@ namespace StartEJ
 
         private void ButtonOpenBD_Click(object sender, RoutedEventArgs e)
         {
-            StackPanelStart.Visibility = Visibility.Collapsed;
-            FrameEJ.Visibility = Visibility.Visible;
+            ((Storyboard)Resources["AnimOpenDB"]).Begin();
             FrameEJ.Navigate(new Pages.ConnectDB());
         }
     }
