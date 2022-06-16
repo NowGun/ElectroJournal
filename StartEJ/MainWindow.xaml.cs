@@ -27,7 +27,6 @@ namespace StartEJ
         public MainWindow()
         {
             InitializeComponent();
-            FrameEJ.Navigate(new Pages.License());
             CreateFile();
         }
 
@@ -73,6 +72,13 @@ namespace StartEJ
             _notificationManager.Show(
                 new NotificationContent { Title = title, Message = text, Type = NotificationType.Information },
                 areaName: "WindowArea");
+        }
+
+        private void ButtonOpenBD_Click(object sender, RoutedEventArgs e)
+        {
+            StackPanelStart.Visibility = Visibility.Collapsed;
+            FrameEJ.Visibility = Visibility.Visible;
+            FrameEJ.Navigate(new Pages.ConnectDB());
         }
     }
 }

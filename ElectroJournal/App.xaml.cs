@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -45,7 +47,6 @@ namespace ElectroJournal
                 Exit += CloseMutexHandler;
             }*/
         }
-
         protected virtual void CloseMutexHandler(object sender, EventArgs e)
         {
             _mutex?.Close();

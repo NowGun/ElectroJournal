@@ -36,40 +36,10 @@ namespace ElectroJournal.Classes.View
 
             FillDates();
         }
-
         public ObservableCollection<ISeries> Series { get; set; }
         private async void FillDates()
         {
             using zhirovContext db = new();
-
-            /* await Task.Run(() =>
-             {
-                 for (int i = 1; i <= 7; i++)
-                 {
-                     DateOnly date = DateOnly.FromDateTime(DateTime.Now.Subtract(TimeSpan.FromDays(i)));
-                     var g = db.Groups.Where(g => g.TeachersIdteachers == Properties.Settings.Default.UserID).FirstOrDefault();
-
-                     var ss = db.Presences
-                 .Where(x => DateOnly.FromDateTime(x.PresenceDatetime) == date
-                  && x.Student.GroupsIdgroupsNavigation.GroupsNameAbbreviated == g.GroupsNameAbbreviated)
-                 .Select(x => x.StudentId)
-                 .Distinct()
-                 .Count();
-
-                     data.Add(new Data { Count = ss, Date = date });
-                 }
-             });
-
-             
-
-             db.Presences.Where(x => DateOnly.FromDateTime(x.PresenceDatetime) >= date).DistinctBy(x => x.StudentId)
-                 //.Select(x => x.StudentId) // DateOnly.FromDateTime(x.PresenceDatetime)
-                 .GroupBy(x => new Data { Date = DateOnly.FromDateTime(x.PresenceDatetime), Count = });
-
-             var hui = (from presences in db.Presences 
-                        where DateOnly.FromDateTime(presences.PresenceDatetime) >= date
-                         select db.Presences.First(x => x.StudentId)
-                        );*/
 
             var date = DateOnly.FromDateTime(DateTime.Now.Subtract(TimeSpan.FromDays(7)));
 
@@ -90,6 +60,7 @@ namespace ElectroJournal.Classes.View
             foreach (var p in filteredData)
             {
                 _observableValues.Add(new(p.Count));
+               
             }
         }
 
@@ -99,13 +70,11 @@ namespace ElectroJournal.Classes.View
             public int Count { get; set; }
         };
 
-        
-
             public Axis[] XAxes { get; set; } =
         {
             new Axis
             {
-                Labeler = (value) => "День " + value,
+                Labels = new string[] {""},
                 MinStep = 1,
             }
         };

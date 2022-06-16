@@ -20,11 +20,60 @@
             Title="Первоначальная настройка ElectroJournal"
             Grid.Row="0"
             Height="48" />
-        <Frame x:Name="FrameEJ"
-            Margin="20,60,20,20"/>
+        <Frame
+            x:Name="FrameEJ"
+            Margin="20,60,20,20"
+            d:IsHidden="True"
+            Visibility="Hidden" />
+        <StackPanel x:Name="StackPanelStart"
+            Margin="0,100,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <StackPanel
+                Margin="0,0,0,50"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Image
+                    Width="100"
+                    Height="100"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/logoEJ.png" />
+                <Label
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="ElectroJournal"
+                    FontSize="50"
+                    FontWeight="Bold"
+                    Foreground="#FF00005B" />
+            </StackPanel>
+            <StackPanel>
+                <Label
+                    Width="620"
+                    Height="40"
+                    Content="Добро пожаловать в первоначальную настройку ElectroJournal"
+                    FontSize="21" />
+                <Label
+                    Margin="0,20,0,0"
+                    Content="Чтобы начать полноценно пользоваться приложением Вам &#xD;&#xA;необходимо произвести небольшую настройку."
+                    FontSize="18" />
+                <Grid Margin="0,20,0,0">
+                    <Label
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Content="© 2022 все права защищены."
+                        FontSize="16" />
+                    <wpfui:Button x:Name="ButtonOpenBD"
+                        HorizontalAlignment="Right"
+                        Appearance="Light"
+                        Content="Начать" Width="200" Click="ButtonOpenBD_Click" />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
         <controls1:NotificationArea
             x:Name="WindowArea"
             Margin="0,53,10,0"
+            d:IsHidden="True"
             MaxItems="1"
             Position="TopRight" />
 

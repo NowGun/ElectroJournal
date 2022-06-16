@@ -367,10 +367,10 @@
                         <RowDefinition Height="28*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="49*" />
-                        <ColumnDefinition Width="47*" />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ListBox Grid.Row="0" Grid.Column="0"/>
+                    <ListBox Grid.Row="0" Grid.Column="0" />
                     <ucontrol:LinesChartUC
                         Grid.Row="1"
                         Grid.ColumnSpan="2"

@@ -34,24 +34,18 @@ public partial class PieChartViewModel
 
             if (g != null)
             {
-                /*            var j5 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "5").ToList();
-                            var j4 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "4").ToList();
-                            var j3 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "3").ToList();
-                            var j2 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "2").ToList();
-                            var jn = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "н").ToList();*/
-                var j5 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == "16" && j.JournalScore == "5").ToList();
-                var j4 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == "16" && j.JournalScore == "4").ToList();
-                var j3 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == "16" && j.JournalScore == "3").ToList();
-                var j2 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == "16" && j.JournalScore == "2").ToList();
-                var jn = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == "16" && j.JournalScore == "н").ToList();
+                var j5 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "5").ToList();
+                var j4 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "4").ToList();
+                var j3 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "3").ToList();
+                var j2 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "2").ToList();
+                var jn = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "н").ToList();
 
-                
-                    Series.Add(
-                        new PieSeries<ObservableValue>
-                        {
-                            Values = new[] { new ObservableValue(double.Parse(j5.Count.ToString())) },
-                            Name = "Отлично",
-                        });
+                Series.Add(
+                    new PieSeries<ObservableValue>
+                    {
+                        Values = new[] { new ObservableValue(double.Parse(j5.Count.ToString())) },
+                        Name = "Отлично",
+                    });
                 Series.Add(
                         new PieSeries<ObservableValue>
                         {
@@ -78,7 +72,6 @@ public partial class PieChartViewModel
                         });
             }
         });
-
         
     }
 }
