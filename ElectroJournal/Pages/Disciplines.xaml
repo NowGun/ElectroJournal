@@ -17,37 +17,27 @@
                 <wpfui:DynamicScrollViewer Margin="0,0,0,50">
                     <Grid Margin="10,10,10,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="26*" />
-                            <ColumnDefinition Width="45*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <StackPanel HorizontalAlignment="Stretch">
-                                <Label Content="Группа" FontSize="16" />
-                                <ComboBox
-                                    x:Name="ComboBoxGroups"
-                                    Height="35"
-                                    HorizontalAlignment="Stretch" />
-                            </StackPanel>
-                            <StackPanel Margin="0,8,0,0">
-                                <Label Content="Курс" FontSize="16" />
-                                <ComboBox x:Name="ComboBoxCourse" Height="35" />
-                            </StackPanel>
-                            <StackPanel Margin="0,15,0,0">
+                            <StackPanel Margin="0,0,0,0">
                                 <Label Content="Название дисциплины" FontSize="16" />
                                 <TextBox x:Name="TextBoxFullName" MinHeight="35" />
                             </StackPanel>
-                            <StackPanel Margin="0,8,0,0">
+                            <StackPanel Margin="0,15,0,0">
                                 <Label Content="Сокращенное название" FontSize="16" />
                                 <TextBox x:Name="TextBoxName" MinHeight="35" />
                             </StackPanel>
-                            <StackPanel Margin="0,8,0,0">
+                            <StackPanel Margin="0,15,0,0">
                                 <Label Content="Индекс" FontSize="16" />
                                 <TextBox
                                     x:Name="TextBoxIndex"
                                     Height="35"
                                     MinHeight="3" />
                             </StackPanel>
-                            <StackPanel Margin="0,8,0,0">
+                            <StackPanel Margin="0,15,0,0">
                                 <Label Content="Кол-во часов" FontSize="16" />
                                 <wpfui:NumberBox
                                     x:Name="NumberBoxHours"
@@ -55,39 +45,41 @@
                                     Placeholder="1" />
                             </StackPanel>
                         </StackPanel>
-                        <ListBox
-                            x:Name="ListBoxCycle"
-                            Grid.Column="1"
-                            Width="250"
-                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                            HorizontalAlignment="Right" Padding="2,30,2,0" />
-                        <StackPanel
-                            Grid.Column="1"
-                            Margin="10,10,180,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Orientation="Horizontal">
-                            <wpfui:SymbolIcon
-                                x:Name="IconAddCycle"
-                                Width="15"
-                                Height="15"
-                                Margin="0,0,5,0"
-                                PreviewMouseLeftButtonUp="IconAddCycle_PreviewMouseLeftButtonUp"
-                                Symbol="Add20" />
-                            <wpfui:SymbolIcon
-                                x:Name="IconDeleteCycle"
-                                Width="15"
-                                Height="15"
-                                Margin="0,0,5,0"
-                                PreviewMouseLeftButtonUp="IconDeleteCycle_PreviewMouseLeftButtonUp"
-                                Symbol="Delete20" />
-                            <wpfui:SymbolIcon
-                                x:Name="IconChangeCycle"
-                                Width="15"
-                                Height="15"
-                                PreviewMouseLeftButtonUp="IconChangeCycle_PreviewMouseLeftButtonUp"
-                                Symbol="Edit20" />
-                        </StackPanel>
+                        <GridSplitter Grid.Column="1" ShowsPreview="True" HorizontalAlignment="Center" Width="3" Margin="10,0,10,0"/>
+                        <Grid Grid.Column="2">
+                            <ListBox
+                                x:Name="ListBoxCycle"
+                                Grid.Column="2"
+                                Padding="2,30,2,0"
+                                HorizontalAlignment="Stretch"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" />
+                            <StackPanel
+                                Grid.Column="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal" Margin="10,10,0,0">
+                                <wpfui:SymbolIcon
+                                    x:Name="IconAddCycle"
+                                    Width="15"
+                                    Height="15"
+                                    Margin="0,0,5,0"
+                                    PreviewMouseLeftButtonUp="IconAddCycle_PreviewMouseLeftButtonUp"
+                                    Symbol="Add20" />
+                                <wpfui:SymbolIcon
+                                    x:Name="IconDeleteCycle"
+                                    Width="15"
+                                    Height="15"
+                                    Margin="0,0,5,0"
+                                    PreviewMouseLeftButtonUp="IconDeleteCycle_PreviewMouseLeftButtonUp"
+                                    Symbol="Delete20" />
+                                <wpfui:SymbolIcon
+                                    x:Name="IconChangeCycle"
+                                    Width="15"
+                                    Height="15"
+                                    PreviewMouseLeftButtonUp="IconChangeCycle_PreviewMouseLeftButtonUp"
+                                    Symbol="Edit20" />
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </wpfui:DynamicScrollViewer>
                 <ProgressBar
@@ -149,7 +141,7 @@
         <ListBox
             x:Name="ListBoxDiscipline"
             Width="300"
-            Margin="20,140,0,56"
+            Margin="20,105,0,56"
             Padding="2,50,2,0"
             HorizontalAlignment="Left"
             d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -160,23 +152,11 @@
             x:Name="SearchBox"
             Width="280"
             Height="35"
-            Margin="30,150,0,0"
+            Margin="30,115,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Placeholder="Поиск"
             PreviewKeyUp="SearchBox_PreviewKeyUp" />
-        <ComboBox
-            x:Name="ComboBoxSorting"
-            Width="300"
-            Height="35"
-            Margin="20,100,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            SelectedIndex="0"
-            SelectionChanged="ComboBoxSorting_SelectionChanged">
-            <ComboBoxItem Content="А-Я" />
-            <ComboBoxItem Content="Я-А" />
-        </ComboBox>
         <ComboBox
             x:Name="ComboBoxGroup"
             Width="300"
@@ -184,7 +164,7 @@
             Margin="20,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            SelectedIndex="0" />
+            SelectedIndex="0" SelectionChanged="ComboBoxGroup_SelectionChanged" />
         <ComboBox
             x:Name="ComboBoxCours"
             Width="300"
@@ -192,16 +172,17 @@
             Margin="20,60,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            SelectedIndex="0" />
+            SelectedIndex="0" SelectionChanged="ComboBoxCours_SelectionChanged" />
         <wpfui:Dialog
             x:Name="RootDialog"
             Margin="0,-99,0,0"
+            d:IsHidden="True"
             ButtonLeftClick="RootDialog_ButtonLeftClick"
             ButtonLeftName="Сохранить"
             ButtonRightClick="RootDialog_ButtonRightClick"
             ButtonRightName="Закрыть"
             DialogHeight="275"
-            IsShown="False" d:IsHidden="True">
+            IsShown="False">
             <Grid>
                 <StackPanel>
                     <Label Margin="0,0,0,3" Content="Название цикла" />

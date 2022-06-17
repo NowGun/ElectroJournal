@@ -32,30 +32,42 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(TextBoxFullName.Text))
+                if (!string.IsNullOrWhiteSpace(TextBoxFullName.Text) && ComboBoxCours.SelectedIndex != -1 && ComboBoxGroup.SelectedIndex != -1 && ListBoxCycle.SelectedIndex != -1)
                 {
                     using zhirovContext db = new();
-
+                    
                     if (ListBoxDiscipline.SelectedItem != null)
                     {
-                        Discipline? disp = await db.Disciplines.FirstOrDefaultAsync(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]);
-
+                        string[] name = ListBoxCycle.SelectedItem.ToString().Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                        Discipline? disp = await db.Disciplines
+                            .Include(d => d.CycleIdcycleNavigation)
+                            .FirstOrDefaultAsync(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]);
+                        var c = await db.Cycles.FirstOrDefaultAsync(c => c.CyclуName == name[1].Trim() && c.CycleIndex == name[0].Trim());
                         if (disp != null)
                         {
                             disp.DisciplinesName = TextBoxFullName.Text;
                             disp.DisciplinesNameAbbreviated = TextBoxName.Text;
                             disp.DisciplinesIndex = TextBoxIndex.Text;
+                            disp.DisciplinesHours = int.Parse(NumberBoxHours.Text);
+                            disp.CycleIdcycle = c.Idcycle;
 
                             await db.SaveChangesAsync();
                         }
                     }
                     else
                     {
+                        var g = await db.Groups.FirstOrDefaultAsync(g => g.GroupsNameAbbreviated == ComboBoxGroup.SelectedItem.ToString());
+                        var c = await db.Courses.FirstOrDefaultAsync(c => c.CourseName == ComboBoxCours.SelectedItem.ToString());
+
                         Discipline disp = new Discipline
                         {
                             DisciplinesName = TextBoxFullName.Text,
                             DisciplinesNameAbbreviated = TextBoxName.Text,
-                            DisciplinesIndex = TextBoxIndex.Text
+                            DisciplinesIndex = TextBoxIndex.Text,
+                            DisciplinesHours = int.Parse(NumberBoxHours.Text),
+                            GroupsIdgroups = g.Idgroups,
+                            CourseIdcourse = c.Idcourse,
+                            CycleIdcycle = (uint)idCycle[ListBoxCycle.SelectedIndex]
                         };
 
                         await db.Disciplines.AddAsync(disp);
@@ -83,37 +95,34 @@ namespace ElectroJournal.Pages
 
                 using zhirovContext db = new();
 
-                if (String.IsNullOrWhiteSpace(SearchBox.Text))
+                if (ComboBoxCours.SelectedIndex != -1 && ComboBoxGroup.SelectedIndex != -1)
                 {
-                    switch (ComboBoxSorting.SelectedIndex)
+                    if (String.IsNullOrWhiteSpace(SearchBox.Text))
                     {
-                        case 0:
-                            await db.Disciplines.OrderBy(t => t.DisciplinesName).ForEachAsync(t =>
-                            {
-                                ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
-                                idDisp.Add((int)t.Iddisciplines);
-                            });
-                            break;
-                        case 1:
-                            await db.Disciplines.OrderByDescending(t => t.DisciplinesName).ForEachAsync(t =>
-                            {
-                                ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
-                                idDisp.Add((int)t.Iddisciplines);
-                            });
-                            break;
+                        await db.Disciplines
+                            .Where(t => t.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ComboBoxGroup.SelectedItem.ToString()
+                            && t.CourseIdcourseNavigation.CourseName == ComboBoxCours.SelectedItem.ToString())
+                            .OrderBy(t => t.DisciplinesName)
+                            .ForEachAsync(t =>
+                        {
+                            ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
+                            idDisp.Add((int)t.Iddisciplines);
+                        });
                     }
-                }
-                else
-                {
-                    await db.Disciplines.OrderBy(t => t.DisciplinesName)
-                        .Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%") 
-                        || EF.Functions.Like(t.DisciplinesIndex, $"%{SearchBox.Text}%") 
-                        || EF.Functions.Like(t.DisciplinesName, $"%{SearchBox.Text}%"))
-                        .ForEachAsync(t =>
+                    else
                     {
-                        ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
-                        idDisp.Add((int)t.Iddisciplines);
-                    });
+                        await db.Disciplines.OrderBy(t => t.DisciplinesName)
+                            .Where(t => t.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ComboBoxGroup.SelectedItem.ToString()
+                            && t.CourseIdcourseNavigation.CourseName == ComboBoxCours.SelectedItem.ToString()
+                            && (EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")
+                            || EF.Functions.Like(t.DisciplinesIndex, $"%{SearchBox.Text}%")
+                            || EF.Functions.Like(t.DisciplinesName, $"%{SearchBox.Text}%")))
+                            .ForEachAsync(t =>
+                            {
+                                ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
+                                idDisp.Add((int)t.Iddisciplines);
+                            });
+                    }
                 }
             }
             catch (Exception ex)
@@ -130,13 +139,18 @@ namespace ElectroJournal.Pages
                 if (ListBoxDiscipline.SelectedItem != null)
                 {
                     using zhirovContext db = new();
-                    var disp = await db.Disciplines.Where(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]).FirstOrDefaultAsync();
+                    var disp = await db.Disciplines
+                        .Include(p =>  p.CycleIdcycleNavigation)
+                        .Where(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex])
+                        .FirstOrDefaultAsync();
 
                     if (disp != null)
                     {
                         TextBoxFullName.Text = disp.DisciplinesName;
                         TextBoxName.Text = disp.DisciplinesNameAbbreviated;
                         TextBoxIndex.Text = disp.DisciplinesIndex;
+                        NumberBoxHours.Text = disp.DisciplinesHours.ToString();
+                        ListBoxCycle.SelectedItem = $"{disp.CycleIdcycleNavigation.CycleIndex} - {disp.CycleIdcycleNavigation.CyclуName}";
                     }
                 }
             }
@@ -157,18 +171,16 @@ namespace ElectroJournal.Pages
                 else if (ListBoxDiscipline.SelectedItem != null)
                 {
                     using zhirovContext db = new();
-                    Discipline? disp = await db.Disciplines.FirstOrDefaultAsync(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]);
+                    Discipline? disp = await db.Disciplines
+                        .FirstOrDefaultAsync(p => p.Iddisciplines == idDisp[ListBoxDiscipline.SelectedIndex]);
 
                     if (disp != null)
                     {
                         db.Disciplines.Remove(disp);
                         await db.SaveChangesAsync();
 
-                        ListBoxDiscipline.Items.Clear();
                         FillListBoxDisciplines();
-                        TextBoxFullName.Clear();
-                        TextBoxName.Clear();
-                        TextBoxIndex.Clear();
+                        ClearValue();
                         ButtonDelete.IsEnabled = false;
                     }
                 }
@@ -186,7 +198,6 @@ namespace ElectroJournal.Pages
             }
         }
         private void ButtonDelete_Click(object sender, RoutedEventArgs e) => DeleteDisp();
-        private void ComboBoxSorting_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxDisciplines();
         private void SearchBox_PreviewKeyUp(object sender, KeyEventArgs e) => FillListBoxDisciplines();
         private void Page_PreviewKeyUp(object sender, KeyEventArgs e)
         {
@@ -205,12 +216,10 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                ComboBoxGroups.Items.Clear();
                 ComboBoxGroup.Items.Clear();
                 using zhirovContext db = new();
                 await db.Groups.OrderBy(g => g.CourseIdcourseNavigation.CourseName).ForEachAsync(g =>
                 {
-                    ComboBoxGroups.Items.Add(g.GroupsNameAbbreviated);
                     ComboBoxGroup.Items.Add(g.GroupsNameAbbreviated);
                 });
             }
@@ -224,12 +233,10 @@ namespace ElectroJournal.Pages
             try
             {
                 ComboBoxCours.Items.Clear();
-                ComboBoxCourse.Items.Clear();
                 using zhirovContext db = new();
                 await db.Courses.OrderBy(g => g.CourseName).ForEachAsync(g =>
                 {
                     ComboBoxCours.Items.Add(g.CourseName);
-                    ComboBoxCourse.Items.Add(g.CourseName);
                 });
             }
             catch (Exception ex)
@@ -359,5 +366,7 @@ namespace ElectroJournal.Pages
             TextBoxCycleName.Clear();
             RootDialog.Show();
         }
+        private void ComboBoxGroup_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxDisciplines();
+        private void ComboBoxCours_SelectionChanged(object sender, SelectionChangedEventArgs e) => FillListBoxDisciplines();
     }
 }

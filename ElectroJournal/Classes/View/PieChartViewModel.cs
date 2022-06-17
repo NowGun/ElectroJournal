@@ -34,11 +34,11 @@ public partial class PieChartViewModel
 
             if (g != null)
             {
-                var j5 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "5").ToList();
-                var j4 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "4").ToList();
-                var j3 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "3").ToList();
-                var j2 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "2").ToList();
-                var jn = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalDay == dt.Day.ToString() && j.JournalScore == "н").ToList();
+                var j5 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalYear == dt.Year.ToString() && j.JournalDay == dt.Day.ToString() && j.JournalMonth == dt.Month.ToString() && j.JournalScore == "5").ToList();
+                var j4 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalYear == dt.Year.ToString() && j.JournalDay == dt.Day.ToString() && j.JournalMonth == dt.Month.ToString() && j.JournalScore == "4").ToList();
+                var j3 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalYear == dt.Year.ToString() && j.JournalDay == dt.Day.ToString() && j.JournalMonth == dt.Month.ToString() && j.JournalScore == "3").ToList();
+                var j2 = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalYear == dt.Year.ToString() && j.JournalDay == dt.Day.ToString() && j.JournalMonth == dt.Month.ToString() && j.JournalScore == "2").ToList();
+                var jn = db.Journals.Where(j => j.StudentsIdstudentsNavigation.GroupsIdgroups == g.Idgroups && j.JournalYear == dt.Year.ToString() && j.JournalDay == dt.Day.ToString() && j.JournalMonth == dt.Month.ToString() && j.JournalScore == "н").ToList();
 
                 Series.Add(
                     new PieSeries<ObservableValue>
