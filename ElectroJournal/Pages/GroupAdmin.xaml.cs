@@ -30,9 +30,11 @@ namespace ElectroJournal.Pages
         public GroupAdmin()
         {
             InitializeComponent();
+            StartTimer();
         }
 
         List<int> idStud = new();
+        public System.Windows.Threading.DispatcherTimer timer2 = new();
 
         private async void FillListBoxStud()
         {
@@ -156,6 +158,37 @@ namespace ElectroJournal.Pages
             {
 
             }
+        }
+        private async void FillListBoxPresences(object sender, EventArgs e)
+        {
+            try
+            {
+                ListBoxPresences.Items.Clear();
+                DateOnly dt = DateOnly.FromDateTime(DateTime.Now);
+                using zhirovContext db = new();
+
+                var p = await db.Presences
+                    .Where(p => p.Student.GroupsIdgroupsNavigation.GroupsNameAbbreviated == LabelGroupName.Content
+                    && DateOnly.FromDateTime(p.PresenceDatetime) == dt)
+                    .Include(p => p.Student)
+                    .OrderByDescending(p => p.PresenceDatetime)
+                    .ToListAsync();
+
+                foreach (var a in p)
+                {
+                    ListBoxPresences.Items.Add($"{a.Student.StudentsSurname} {a.Student.StudentsName} пришел в {a.PresenceDatetime.ToShortTimeString()}");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void StartTimer()
+        {
+            timer2.Tick += new EventHandler(FillListBoxPresences);
+            timer2.Interval = new TimeSpan(0, 0, 5);
+            timer2.Start();
         }
     }
 }

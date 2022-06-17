@@ -316,13 +316,6 @@
                                     Click="MenuItemReportScores_Click"
                                     Header="Ведомость оценок" />
                             </MenuItem>
-                            <MenuItem
-                                Padding="6,0,6,0"
-                                FontSize="16"
-                                Header="Документы">
-                                <MenuItem Header="Часовая нагрузка" />
-                                <MenuItem Header="Ведомость о зачислении" />
-                            </MenuItem>
                         </Menu>
                     </StackPanel>
                     <StackPanel
@@ -370,7 +363,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ListBox Grid.Row="0" Grid.Column="0" />
+                    <ListBox Grid.Row="0" Grid.Column="0" x:Name="ListBoxPresences"/>
                     <ucontrol:LinesChartUC
                         Grid.Row="1"
                         Grid.ColumnSpan="2"

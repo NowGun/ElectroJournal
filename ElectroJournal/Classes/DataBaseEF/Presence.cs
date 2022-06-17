@@ -13,6 +13,9 @@ namespace ElectroJournal.Classes.DataBaseEF
         public uint IdentificationTypeId { get; set; }
         public uint? SmartcardId { get; set; }
         public uint IdentificatedAt { get; set; }
+        public uint ScheduleId { get; set; }
+        public uint DisciplineId { get; set; }
+        public uint ClassesPeriodId { get; set; }
 
         public virtual Cabinet IdentificatedAtNavigation { get; set; }
         public virtual IdentificationType IdentificationType { get; set; }

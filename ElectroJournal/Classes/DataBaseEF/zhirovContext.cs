@@ -594,15 +594,19 @@ namespace ElectroJournal.DataBase
             {
                 entity.ToTable("presences");
 
-                entity.HasIndex(e => e.IdentificatedAt, "identificated_at");
+                entity.HasIndex(e => e.IdentificatedAt, "fk_presences_identificated_at");
 
-                entity.HasIndex(e => e.IdentificationTypeId, "identification_type_id");
+                entity.HasIndex(e => e.IdentificationTypeId, "fk_presences_identification_type");
 
-                entity.HasIndex(e => e.SmartcardId, "smartcard_id");
+                entity.HasIndex(e => e.SmartcardId, "fk_presences_smartcard_id");
 
-                entity.HasIndex(e => e.StudentId, "student_id");
+                entity.HasIndex(e => e.StudentId, "fk_presences_student_id");
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ClassesPeriodId).HasColumnName("classes_period_id");
+
+                entity.Property(e => e.DisciplineId).HasColumnName("discipline_id");
 
                 entity.Property(e => e.IdentificatedAt).HasColumnName("identificated_at");
 
@@ -612,33 +616,33 @@ namespace ElectroJournal.DataBase
                     .HasColumnType("datetime")
                     .HasColumnName("presence_datetime");
 
+                entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
+
                 entity.Property(e => e.SmartcardId).HasColumnName("smartcard_id");
 
                 entity.Property(e => e.StudentId).HasColumnName("student_id");
-
 
                 entity.HasOne(d => d.IdentificatedAtNavigation)
                     .WithMany(p => p.Presences)
                     .HasForeignKey(d => d.IdentificatedAt)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("presences_ibfk_4");
+                    .HasConstraintName("fk_presences_identificated_at");
 
                 entity.HasOne(d => d.IdentificationType)
                     .WithMany(p => p.Presences)
                     .HasForeignKey(d => d.IdentificationTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("presences_ibfk_2");
+                    .HasConstraintName("fk_presences_identification_type");
 
                 entity.HasOne(d => d.Smartcard)
                     .WithMany(p => p.Presences)
                     .HasForeignKey(d => d.SmartcardId)
-                    .HasConstraintName("presences_ibfk_3");
+                    .HasConstraintName("fk_presences_smartcard_id");
 
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.Presences)
                     .HasForeignKey(d => d.StudentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("presences_ibfk_1");
+                    .HasConstraintName("fk_presences_student_id");
             });
 
             modelBuilder.Entity<Schedule>(entity =>
