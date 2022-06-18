@@ -11,7 +11,7 @@ namespace ElectroJournal.Classes
 {
     public class JournalClass
     {
-        public static async Task<string> CheckSchedule()
+        public static async Task<string> CheckSchedule(bool a)
         {
             using zhirovContext db = new();
 
@@ -45,7 +45,7 @@ namespace ElectroJournal.Classes
                                 && sche.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == p.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated
                                 && (sche.PeriodclassesIdperiodclassesNavigation.PeriodclassesStart < nowTime && sche.PeriodclassesIdperiodclassesNavigation.PeriodclassesEnd > nowTime))
                             {
-                                ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem = sche.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
+                                if (a) ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem = sche.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
                                 return sche.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated;
                             }
                         }

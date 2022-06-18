@@ -400,7 +400,7 @@ namespace ElectroJournal.Pages
                 FillComboBoxDisp();
                 FillComboBoxYears();
 
-                ComboBoxDisp.SelectedItem = await JournalClass.CheckSchedule();
+                ComboBoxDisp.SelectedItem = await JournalClass.CheckSchedule(false);
             }
             else
             {

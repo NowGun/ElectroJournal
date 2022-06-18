@@ -116,7 +116,7 @@ namespace ElectroJournal.Pages
                                 TextBoxPassword.IsEnabled = true;
                                 ButtonLogin.IsEnabled = true;
 
-                                await JournalClass.CheckSchedule();
+                                await JournalClass.CheckSchedule(true);
                                 (Application.Current.MainWindow as MainWindow).NavigationViewItemJournal.IsSelected = true;
                             }
                             else
