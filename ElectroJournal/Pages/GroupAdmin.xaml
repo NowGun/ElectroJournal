@@ -363,7 +363,16 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ListBox Grid.Row="0" Grid.Column="0" x:Name="ListBoxPresences"/>
+                    <ListBox Grid.Row="0" Grid.Column="0" x:Name="ListBoxPresences">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label 
+                                        VerticalAlignment="Top"
+                                        Content="{Binding message}"
+                                        FontSize="14" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <ucontrol:LinesChartUC
                         Grid.Row="1"
                         Grid.ColumnSpan="2"

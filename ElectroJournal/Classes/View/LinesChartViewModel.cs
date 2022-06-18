@@ -60,7 +60,6 @@ namespace ElectroJournal.Classes.View
             foreach (var p in filteredData)
             {
                 _observableValues.Add(new(p.Count));
-               
             }
         }
 

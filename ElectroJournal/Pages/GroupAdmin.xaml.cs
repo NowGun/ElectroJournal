@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -163,7 +164,8 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                ListBoxPresences.Items.Clear();
+                ObservableCollection<LBPresences> co1 = new();
+
                 DateOnly dt = DateOnly.FromDateTime(DateTime.Now);
                 using zhirovContext db = new();
 
@@ -176,8 +178,13 @@ namespace ElectroJournal.Pages
 
                 foreach (var a in p)
                 {
-                    ListBoxPresences.Items.Add($"{a.Student.StudentsSurname} {a.Student.StudentsName} пришел в {a.PresenceDatetime.ToShortTimeString()}");
+                    co1.Add(new LBPresences
+                    {
+                        message = $"{a.Student.StudentsSurname} {a.Student.StudentsName} пришел в {a.PresenceDatetime.ToShortTimeString()}"
+                    });
+
                 }
+                    ListBoxPresences.ItemsSource = co1;
             }
             catch (Exception ex)
             {
@@ -187,8 +194,12 @@ namespace ElectroJournal.Pages
         public void StartTimer()
         {
             timer2.Tick += new EventHandler(FillListBoxPresences);
-            timer2.Interval = new TimeSpan(0, 0, 5);
+            timer2.Interval = new TimeSpan(0, 0, 1);
             timer2.Start();
         }
+    }
+    public class LBPresences
+    {
+        public string? message { get; set; }
     }
 }

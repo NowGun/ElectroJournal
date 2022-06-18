@@ -125,6 +125,10 @@
                                     TextWrapping="Wrap" />
 
                                 </Grid>
+                                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                                    <Label Content="Студенческий билет" FontSize="14" VerticalAlignment="Center" Width="150"/>
+                                    <TextBox x:Name="TextBoxTicket" Width="180" Height="35"/>
+                                </StackPanel>
                                 <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
                                     <Label
                                     Width="150"

@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using unvell.ReoGrid;
+using unvell.ReoGrid.Actions;
 using unvell.ReoGrid.Events;
 
 namespace ElectroJournal.Pages
@@ -40,6 +41,7 @@ namespace ElectroJournal.Pages
         private int stuud;
         private int daysTable;
         private bool isChange = false;
+        private bool isEdit = false;
         ScheduleClass sc = new();
 
         private void rgrid_BeforeCellEdit(object sender, CellEventArgs e)
@@ -245,7 +247,7 @@ namespace ElectroJournal.Pages
                         }
                     }
                 });
-
+                isEdit = true;
             }
             catch
             {
@@ -263,7 +265,7 @@ namespace ElectroJournal.Pages
                 var sheet = ReoGridSchedule.CurrentWorksheet;
                 using zhirovContext db = new();
 
-                if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText))
+                if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText) && isEdit)
                 {
                     for (int i = 1; i < gp; i++)
                     {
@@ -321,10 +323,17 @@ namespace ElectroJournal.Pages
                 (Application.Current.MainWindow as MainWindow)?.Notifications("Ошибка", ex.Message);
             }
         }
+        private void FillText()
+        {
+            Worksheet ws = ReoGridSchedule.CurrentWorksheet;
+            ws.MergeRange($"A1:A{gp}");
+        }
         private async void FillGroups()
         {
             try
             {
+                isEdit = false;
+
                 if (ComboBoxCourse.SelectedIndex != -1 && ComboBoxSchoolWeek.SelectedIndex != -1)
                 {
                     var worksheet = ReoGridSchedule.CurrentWorksheet;

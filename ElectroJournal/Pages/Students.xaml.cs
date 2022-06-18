@@ -74,6 +74,7 @@ namespace ElectroJournal.Pages
                                 student.StudentsResidence = TextBoxStudentsResidence.Text;
                                 student.StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null;
                                 student.GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex];
+                                student.IdTicket = int.Parse(TextBoxTicket.Text);
 
                                 await db.SaveChangesAsync();
 
@@ -108,6 +109,7 @@ namespace ElectroJournal.Pages
                                 StudentsResidence = TextBoxStudentsResidence.Text,
                                 StudentsBirthday = DatePickerDateBirthday.Text != null ? date : null,
                                 GroupsIdgroups = (uint)idGroups[ListBoxGroups.SelectedIndex],
+                                IdTicket = int.Parse(TextBoxTicket.Text)
                             };
 
                             await db.Students.AddAsync(students);
@@ -267,6 +269,7 @@ namespace ElectroJournal.Pages
                         TextBoxParentFIO.Text = t.StudentsParent;
                         TextBoxStudentsPhone.Text = t.StudentsPhone;
                         TextBoxParentPhone.Text = t.StudentsParentPhone;
+                        TextBoxTicket.Text = t.IdTicket.ToString();
                         ComboBoxGroups.SelectedItem = t.GroupsIdgroups == null ? null : t.GroupsIdgroupsNavigation.CourseIdcourseNavigation.CourseName;
                         ListBoxGroups.SelectedItem = t.GroupsIdgroups == null ? null : t.GroupsIdgroupsNavigation.GroupsNameAbbreviated;
                         LabelCardId.Content = s == null ? "Отсутствует" : s.SmartcardIdentifier;
@@ -448,6 +451,7 @@ namespace ElectroJournal.Pages
             TextBoxParentFIO.Clear();
             TextBoxParentPhone.Clear();
             TextBoxStudentsFIO.Clear();
+            TextBoxTicket.Clear();
             TextBoxStudentsPhone.Clear();
             TextBoxStudentsResidence.Clear();
             DatePickerDateBirthday.Text = null;

@@ -62,7 +62,7 @@
                 Margin="-180.8,-154.7,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Логин"
+                Content="Почта"
                 FontSize="14" />
             <Button
                 x:Name="ButtonLogin"

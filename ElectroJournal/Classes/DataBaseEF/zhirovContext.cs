@@ -824,6 +824,8 @@ namespace ElectroJournal.DataBase
 
                 entity.Property(e => e.GroupsIdgroups).HasColumnName("groups_idgroups");
 
+                entity.Property(e => e.IdTicket).HasColumnName("idTicket");
+
                 entity.Property(e => e.StudentsBirthday)
                     .HasColumnType("date")
                     .HasColumnName("students_birthday");
@@ -868,7 +870,7 @@ namespace ElectroJournal.DataBase
                 entity.HasOne(d => d.GroupsIdgroupsNavigation)
                     .WithMany(p => p.Students)
                     .HasForeignKey(d => d.GroupsIdgroups)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("fk_students_groups1");
             });
 
