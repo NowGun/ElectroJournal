@@ -37,6 +37,31 @@ namespace ElectroJournal.Pages
         List<int> idStud = new();
         public System.Windows.Threading.DispatcherTimer timer2 = new();
 
+        private async void CheckSchedule()
+        {
+            try
+            {
+                TimeOnly to = TimeOnly.FromDateTime(DateTime.Now);
+                DateOnly do1 = DateOnly.FromDateTime(DateTime.Now);
+                using zhirovContext db = new();
+
+                var s = await db.Schedules
+                    .Include(s => s.DisciplinesIddisciplinesNavigation)
+                    .Include(s => s.CabinetIdcabinetNavigation)
+                    .FirstOrDefaultAsync(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == LabelGroupName.Content &&
+                (s.PeriodclassesIdperiodclassesNavigation.PeriodclassesStart <= to && to <= s.PeriodclassesIdperiodclassesNavigation.PeriodclassesEnd)
+                && s.ScheduleDate == do1);
+                if (s != null)
+                {
+                    LabelScheduleGroup.Content = $"{s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated} - {s.CabinetIdcabinetNavigation.CabinetNumber}";
+                }
+                else LabelScheduleGroup.Content = "";
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }        
         private async void FillListBoxStud()
         {
             try
@@ -85,6 +110,7 @@ namespace ElectroJournal.Pages
 
                 var gr = await db.Groups.FirstOrDefaultAsync(g => g.TeachersIdteachers == Properties.Settings.Default.UserID);
                 LabelGroupName.Content = gr != null ? gr.GroupsNameAbbreviated : "Произошла ошибка";
+                CheckSchedule();
             }
             catch (Exception ex)
             {

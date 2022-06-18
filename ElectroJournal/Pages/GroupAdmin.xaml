@@ -325,10 +325,7 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal"
                         Visibility="Visible">
-                        <Label
-                            x:Name="LabelScheduleGroup"
-                            Margin="0,0,20,0"
-                            Content="Физика\45 - Ларионова Ольга" />
+                        <Label x:Name="LabelScheduleGroup" Margin="0,0,20,0" />
                         <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                             <Label Content="Генерация списка" />
                             <ProgressBar
@@ -363,13 +360,16 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ListBox Grid.Row="0" Grid.Column="0" x:Name="ListBoxPresences">
+                    <ListBox
+                        x:Name="ListBoxPresences"
+                        Grid.Row="0"
+                        Grid.Column="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Label 
-                                        VerticalAlignment="Top"
-                                        Content="{Binding message}"
-                                        FontSize="14" />
+                                <Label
+                                    VerticalAlignment="Top"
+                                    Content="{Binding message}"
+                                    FontSize="14" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
