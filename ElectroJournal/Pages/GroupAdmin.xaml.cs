@@ -166,7 +166,19 @@ namespace ElectroJournal.Pages
         {
             ((Storyboard)Resources["AnimCloseInfo"]).Begin();
         }
-        private void MenuItemReportScores_Click(object sender, RoutedEventArgs e) => RootDialogDiapDate.Show();
+        private async void MenuItemReportScores_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using zhirovContext db = new();
+                await db.Disciplines.OrderBy(d => d.DisciplinesNameAbbreviated).ForEachAsync(d => ComboBoxDiscipline.Items.Add(d.DisciplinesNameAbbreviated));
+                RootDialogDiapDate.Show();
+            }
+            catch (Exception ex)
+            {
+                RootDialogDiapDate.Hide();
+            }
+        }
         private void RootDialogNewSchedule_ButtonRightClick(object sender, RoutedEventArgs e) => RootDialogDiapDate.Hide();
         private void RootDialogNewSchedule_ButtonLeftClick(object sender, RoutedEventArgs e)
         {
@@ -179,7 +191,7 @@ namespace ElectroJournal.Pages
                 }
                 else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Заполните все поля");
                 ((Storyboard)Resources["AnimOpenInfo"]).Begin();
-                FrameStud.Navigate(new SheetReport(LabelGroupName.Content.ToString(), DateOnly.Parse(DatePickerStart.Text), DateOnly.Parse(DatePickerEnd.Text)));
+                FrameStud.Navigate(new SheetReport(LabelGroupName.Content.ToString(), DateOnly.Parse(DatePickerStart.Text), DateOnly.Parse(DatePickerEnd.Text), ComboBoxDiscipline.SelectedItem.ToString()));
             }
             catch (Exception ex)
             {

@@ -27,21 +27,25 @@ namespace ElectroJournal.Pages
     /// </summary>
     public partial class SheetReport : Page
     {
-        public SheetReport(string group2, DateOnly dateS, DateOnly dateE)
+        public SheetReport(string group2, DateOnly dateS, DateOnly dateE, string d)
         {
             InitializeComponent();
             SettingSheet();
             group = group2;
             dateStart = dateS;
             dateEnd = dateE;
+            discipline = d;
             FillStudents(group2);
             FillDispADates();
         }
 
         List<int> idStud = new();
         List<string> disp = new();
+        List<int> numberCall = new();
         private int stuud;
         private string group;
+        private string discipline;
+        private int daysTable;
         private DateOnly dateStart;
         private DateOnly dateEnd;
 
@@ -83,12 +87,9 @@ namespace ElectroJournal.Pages
             ReoGrid.ControlStyle = Properties.Settings.Default.Theme == 1 ? new ControlAppearanceStyle(Colors.Black, Colors.WhiteSmoke, false) : new ControlAppearanceStyle(Colors.Gray, Colors.Black, false);
 
             worksheet["A1"] = "Предметы";
-            worksheet["A2"] = "Студенты\\Даты";
 
             var cell = worksheet.Cells["A1"]; 
-            var cell2 = worksheet.Cells["A2"];
             cell.Style.HAlign = ReoGridHorAlign.Center;
-            cell2.Style.HAlign = ReoGridHorAlign.Center;
         }
         private async void FillStudents(string group)
         {
@@ -103,13 +104,13 @@ namespace ElectroJournal.Pages
 
                     var students = await db.Students.Where(p => p.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group).OrderBy(p => p.StudentsSurname).ToListAsync();
                     stuud = students.Count;
-                    for (int i = 3; i <= stuud + 3; i++)
+                    for (int i = 2; i <= stuud + 2; i++)
                     {
                         worksheet.SetRows(i);
-                        worksheet["A" + i] = $"{students[i-3].StudentsSurname} {students[i-3].StudentsName}";
+                        worksheet["A" + i] = $"{students[i-2].StudentsSurname} {students[i-2].StudentsName}";
                         worksheet.AutoFitColumnWidth(0, false);
 
-                        idStud.Add((int)students[i - 3].Idstudents);
+                        idStud.Add((int)students[i - 2].Idstudents);
 
                         Cell? cell = worksheet.Cells["A" + i];
                         cell.IsReadOnly = true;
@@ -121,6 +122,51 @@ namespace ElectroJournal.Pages
                 SettingsControl.InputLog($"FillStudents (SheetReport) | {ex.Message}");
             }
         }
+        private async void FillScore()
+        {
+            try
+            {
+                var worksheet = ReoGrid.CurrentWorksheet;
+                using zhirovContext db = new();
+
+                var scoreList = await db.Journals
+                    .Where(s => s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == discipline &&
+                    s.StudentsIdstudentsNavigation.GroupsIdgroupsNavigation.GroupsNameAbbreviated == discipline
+                   )
+                    .Include(s => s.ScheduleIdscheduleNavigation.PeriodclassesIdperiodclassesNavigation)
+                    .ToListAsync();
+
+                await Task.Run(() =>
+                {
+                    foreach (var score in scoreList)
+                    {
+                        for (int i = 1; i <= stuud; i++)
+                        {
+                            for (int j = 1; j < daysTable; j++)
+                            {
+                                if (!String.IsNullOrWhiteSpace(ReoGrid.CurrentWorksheet.Cells[i, 0].DisplayText))
+                                {
+                                    if (score != null)
+                                    {
+                                        if (score.JournalDay == ReoGrid.CurrentWorksheet.Cells[0, j].DisplayText && score.StudentsIdstudents == idStud[i - 1] && score.ScheduleIdscheduleNavigation.PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber == numberCall[j - 1])
+                                        {
+                                            Dispatcher.Invoke(() =>
+                                            {
+                                                ReoGrid.CurrentWorksheet[i, j] = score.JournalScore;
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                SettingsControl.InputLog($"FillScore | {ex.Message}");
+            }
+        }
         private async void FillDispADates()
         {
             try
@@ -128,43 +174,45 @@ namespace ElectroJournal.Pages
                 using zhirovContext db = new();
                 var worksheet = ReoGrid.CurrentWorksheet;
 
-                /*var disp = await db.Schedules.Where(d => d.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
-                && (dateStart < d.ScheduleDate && d.ScheduleDate < dateEnd)
-                && d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated != "Обед")
-                    .Include(d => d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated)
-                    .ToListAsync();*/
 
+                var s = await db.Schedules
+                        .Where(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()
+                    && s.ScheduleDate.Year == dateEnd.Year
+                    && s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == discipline)
+                        .Include(s => s.PeriodclassesIdperiodclassesNavigation)
+                        .ToListAsync();
 
-                var d = db.Schedules
-                    .Where(d => d.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
-                && (dateStart < d.ScheduleDate && d.ScheduleDate < dateEnd)
-                && d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated != "Обед")
-                    .GroupBy(d => d.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated)
-                    .Select(d => new
-                    {
-                        d.Key,
-                        Count = d.Count()
-                    });
+                daysTable = s.Count + 1;
 
-                foreach (var g in d)
+                if (s.Count == 0)
                 {
-                    var a = $"{g.Key} {g.Count}";
-                    disp.Add(g.Key);
+                    
                 }
-
-                if (disp != null)
+                else
                 {
-                    for (int i = 1; i < disp.Count + 1; i++)
+                    if (s != null)
                     {
-                        //worksheet.SetCols(disp.Count);
-                        worksheet[0, i] = disp[i-1];
-                        ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 80));
+                        for (int i = 1; i < daysTable; i++)
+                        {
+                            worksheet.SetCols(daysTable);
+                            worksheet[0, i] = s[i - 1].ScheduleDate.Day;
+                            worksheet[1, i] = "";
+                            ReoGrid.DoAction(new SetColumnsWidthAction(1, i, 30));
 
-                        Cell? cell = worksheet.Cells[0, i];
-                        cell.IsReadOnly = true;
+                            Cell? cell = worksheet.Cells[0, i];
+                            cell.IsReadOnly = true;
+
+                            numberCall.Add(s[i - 1].PeriodclassesIdperiodclassesNavigation.PeriodclassesNumber);
+                        }
+
+                        worksheet.SetRangeStyles("B1:BP150", new WorksheetRangeStyle
+                        {
+                            Flag = PlainStyleFlag.HorizontalAlign,
+                            HAlign = ReoGridHorAlign.Center,
+                        });
                     }
+                    FillScore();
                 }
-
             }
             catch (Exception ex)
             {

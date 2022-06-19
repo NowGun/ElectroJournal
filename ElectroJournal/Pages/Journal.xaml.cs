@@ -135,10 +135,13 @@ namespace ElectroJournal.Pages
                     using zhirovContext db = new();
 
                     DateOnly nowDate = DateOnly.FromDateTime(DateTime.Now);
+                    TimeOnly to = TimeOnly.FromDateTime(DateTime.Now);
 
                     var s = await db.Schedules
                         .Where(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()
                         && s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == ComboBoxDisp.SelectedItem.ToString()
+                        && (s.PeriodclassesIdperiodclassesNavigation.PeriodclassesStart < to
+                        && s.PeriodclassesIdperiodclassesNavigation.PeriodclassesEnd > to)
                         && s.ScheduleDate == nowDate)
                         .Include(s => s.PeriodclassesIdperiodclassesNavigation)
                         .FirstOrDefaultAsync();

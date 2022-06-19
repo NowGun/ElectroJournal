@@ -418,11 +418,15 @@
             ButtonLeftName="Сгенерировать"
             ButtonRightClick="RootDialogNewSchedule_ButtonRightClick"
             ButtonRightName="Закрыть"
-            DialogHeight="200"
+            DialogHeight="280"
             DialogWidth="400"
             IsShown="False">
             <Grid>
                 <StackPanel>
+                    <StackPanel Margin="0, 0, 0, 10">
+                        <Label Content="Выберите предмет" Margin="0, 0, 0, 5"/>
+                        <ComboBox x:Name="ComboBoxDiscipline"/>
+                    </StackPanel>
                     <Label Margin="0,0,0,10" Content="Выберите диапазон дат" />
                     <StackPanel Orientation="Horizontal">
                         <DatePicker x:Name="DatePickerStart" Width="165" />
