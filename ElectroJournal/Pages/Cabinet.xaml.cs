@@ -107,6 +107,7 @@ namespace ElectroJournal.Pages
                 ComboBoxSortingCabinet.Items.Clear();
                 using zhirovContext db = new();
                 await db.Housings.OrderBy(t => t.HousingName).ForEachAsync(t => ComboBoxSortingCabinet.Items.Add(t.HousingName));
+                ComboBoxSortingCabinet.SelectedIndex = 1;
             }
             catch (Exception ex)
             {

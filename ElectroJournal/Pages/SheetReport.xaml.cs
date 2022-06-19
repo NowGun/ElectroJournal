@@ -131,8 +131,7 @@ namespace ElectroJournal.Pages
 
                 var scoreList = await db.Journals
                     .Where(s => s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == discipline &&
-                    s.StudentsIdstudentsNavigation.GroupsIdgroupsNavigation.GroupsNameAbbreviated == discipline
-                   )
+                    s.StudentsIdstudentsNavigation.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group)
                     .Include(s => s.ScheduleIdscheduleNavigation.PeriodclassesIdperiodclassesNavigation)
                     .ToListAsync();
 
@@ -176,8 +175,9 @@ namespace ElectroJournal.Pages
 
 
                 var s = await db.Schedules
-                        .Where(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ((MainWindow)Application.Current.MainWindow).ComboBoxGroup.SelectedItem.ToString()
+                        .Where(s => s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
                     && s.ScheduleDate.Year == dateEnd.Year
+                    
                     && s.DisciplinesIddisciplinesNavigation.DisciplinesNameAbbreviated == discipline)
                         .Include(s => s.PeriodclassesIdperiodclassesNavigation)
                         .ToListAsync();

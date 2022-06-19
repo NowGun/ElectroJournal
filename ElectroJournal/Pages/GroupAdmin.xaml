@@ -326,7 +326,10 @@
                         Orientation="Horizontal"
                         Visibility="Visible">
                         <Label x:Name="LabelScheduleGroup" Margin="0,0,20,0" />
-                        <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                        <StackPanel
+                            x:Name="StackPanelGen"
+                            Orientation="Horizontal"
+                            Visibility="Collapsed">
                             <Label Content="Генерация списка" />
                             <ProgressBar
                                 x:Name="ProgressBarReport"
@@ -423,9 +426,9 @@
             IsShown="False">
             <Grid>
                 <StackPanel>
-                    <StackPanel Margin="0, 0, 0, 10">
-                        <Label Content="Выберите предмет" Margin="0, 0, 0, 5"/>
-                        <ComboBox x:Name="ComboBoxDiscipline"/>
+                    <StackPanel Margin="0,0,0,10">
+                        <Label Margin="0,0,0,5" Content="Выберите предмет" />
+                        <ComboBox x:Name="ComboBoxDiscipline" />
                     </StackPanel>
                     <Label Margin="0,0,0,10" Content="Выберите диапазон дат" />
                     <StackPanel Orientation="Horizontal">

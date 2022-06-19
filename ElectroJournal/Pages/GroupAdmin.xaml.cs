@@ -190,8 +190,10 @@ namespace ElectroJournal.Pages
                     StackPanelGenerateSheet.Visibility = Visibility.Visible;
                 }
                 else ((MainWindow)Application.Current.MainWindow).Notifications("Ошибка", "Заполните все поля");
+                StackPanelGen.Visibility = Visibility.Visible;
                 ((Storyboard)Resources["AnimOpenInfo"]).Begin();
                 FrameStud.Navigate(new SheetReport(LabelGroupName.Content.ToString(), DateOnly.Parse(DatePickerStart.Text), DateOnly.Parse(DatePickerEnd.Text), ComboBoxDiscipline.SelectedItem.ToString()));
+                StackPanelGen.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {

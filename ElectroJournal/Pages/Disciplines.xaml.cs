@@ -97,7 +97,7 @@ namespace ElectroJournal.Pages
 
                 if (ComboBoxCours.SelectedIndex != -1 && ComboBoxGroup.SelectedIndex != -1)
                 {
-                    if (String.IsNullOrWhiteSpace(SearchBox.Text))
+                    /*if (String.IsNullOrWhiteSpace(SearchBox.Text))
                     {
                         await db.Disciplines
                             .Where(t => t.GroupsIdgroupsNavigation.GroupsNameAbbreviated == ComboBoxGroup.SelectedItem.ToString()
@@ -117,6 +117,28 @@ namespace ElectroJournal.Pages
                             && (EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")
                             || EF.Functions.Like(t.DisciplinesIndex, $"%{SearchBox.Text}%")
                             || EF.Functions.Like(t.DisciplinesName, $"%{SearchBox.Text}%")))
+                            .ForEachAsync(t =>
+                            {
+                                ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
+                                idDisp.Add((int)t.Iddisciplines);
+                            });
+                    }*/
+                    if (String.IsNullOrWhiteSpace(SearchBox.Text))
+                    {
+                        await db.Disciplines
+                            .OrderBy(t => t.DisciplinesName)
+                            .ForEachAsync(t =>
+                        {
+                            ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");
+                            idDisp.Add((int)t.Iddisciplines);
+                        });
+                    }
+                    else
+                    {
+                        await db.Disciplines.OrderBy(t => t.DisciplinesName)
+                            .Where(t => EF.Functions.Like(t.DisciplinesNameAbbreviated, $"%{SearchBox.Text}%")
+                            || EF.Functions.Like(t.DisciplinesIndex, $"%{SearchBox.Text}%")
+                            || EF.Functions.Like(t.DisciplinesName, $"%{SearchBox.Text}%"))
                             .ForEachAsync(t =>
                             {
                                 ListBoxDiscipline.Items.Add($"{t.DisciplinesName}");

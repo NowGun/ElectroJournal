@@ -42,13 +42,13 @@ namespace ElectroJournal.Pages
                     var j = await db.Journals.Where(j => j.StudyperiodIdstudyperiodNavigation.StudyperiodStart == ComboBoxSchoolYears.SelectedItem.ToString()).ToListAsync();
                     var g = await db.Groups.ToListAsync();
                     var m = await db.Chats.ToListAsync();
+                    var p = await db.Presences.Where(p => DateOnly.FromDateTime(p.PresenceDatetime).Year == 2022).ToListAsync();
 
                     LabelStud.Content = $"Количество студентов: {s.Count}";
                     LabelScore.Content = $"Количество выставленных оценок: {j.Count}";
                     LabelGroups.Content = $"Количество групп: {g.Count}";
                     LabelMessage.Content = $"Количество отправленных сообщений: {m.Count}";
-
-                    LabelStudPos.Visibility = Visibility.Collapsed; // Сделать потом если возможно
+                    LabelStudPos.Content = $"Количество посещений: {p.Count}";
                 }
             }
             catch (Exception ex)

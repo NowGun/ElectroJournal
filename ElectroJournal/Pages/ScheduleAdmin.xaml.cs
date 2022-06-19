@@ -268,22 +268,25 @@ namespace ElectroJournal.Pages
 
                 if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText) && isEdit)
                 {
-                    for (int i = 1; i < gp; i++)
+                   /* for (int i = 1; i < gp; i++)
                     {
-                        string? a = ReoGridSchedule.CurrentWorksheet.Cells[stud-1, i].DisplayText;
-                        if (a != null)
+                        if (i != 2)
                         {
-                            string?[] info2 = ReoGridSchedule.CurrentWorksheet.Cells[stud-1, i].DisplayText.Split(new char[] { '\\' });
-                            var cell2 = sheet.Cells[stud - 1, i];
-                            var cell = sheet.Cells[score];
-                            if (ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText == info2[0])
+                            string? a = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, i].DisplayText;
+                            if (a != null)
                             {
-                                cell.Style.BackColor = Colors.Red;
-                                cell2.Style.BackColor = Colors.Red;
+                                string?[] info2 = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, i].DisplayText.Split(new char[] { '\\' });
+                                var cell2 = sheet.Cells[stud - 1, i];
+                                var cell = sheet.Cells[score];
+                                if (ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText == info2[0])
+                                {
+                                    cell.Style.BackColor = Colors.Red;
+                                    cell2.Style.BackColor = Colors.Red;
+                                }
+                                else cell.Style.BackColor = Colors.White;
                             }
-                            else cell.Style.BackColor= Colors.White;
                         }
-                    }
+                    }*/
 
 
                     string call = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText;
@@ -316,6 +319,30 @@ namespace ElectroJournal.Pages
                             }
                             else sc.SaveSchedule(group, call, date, info[0], ComboBoxSchoolWeek.SelectedItem.ToString(), isChange);
                             break;
+                    }
+                }
+                else if (String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText) && isEdit)
+                {
+
+                    string[] dates = ComboBoxSchoolWeek.SelectedItem.ToString().Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    string call = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText;
+                    string group = ReoGridSchedule.CurrentWorksheet.Cells[$"{poz6}5"].DisplayText;
+                    string date = ReoGridSchedule.CurrentWorksheet.Cells[stud - Int32.Parse(call) - 1, 0].DisplayText;
+                    string?[] info = ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText.Split(new char[] { '\\' });
+
+                    var w = await db.Schoolweeks.FirstOrDefaultAsync(w => w.SchoolweekStart == DateOnly.Parse(dates[0]) && w.SchoolweekEnd == DateOnly.Parse(dates[1]));
+                    var c = await db.Periodclasses.FirstOrDefaultAsync(c => c.PeriodclassesNumber == Int32.Parse(call));
+
+                    var s = await db.Schedules.FirstOrDefaultAsync(s => s.ScheduleDate == DateOnly.Parse(date)
+                    && s.GroupsIdgroupsNavigation.GroupsNameAbbreviated == group
+                    && s.SchoolweekIdschoolweek == w.Idschoolweek
+                    && s.PeriodclassesIdperiodclasses == c.Idperiodclasses);
+
+                    if (s != null)
+                    {
+                        db.Schedules.Remove(s);
+                        await db.SaveChangesAsync();
                     }
                 }
             }
