@@ -4,6 +4,7 @@ using ElectroJournal.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -136,13 +137,13 @@ namespace ElectroJournal.Pages
                 {
                     foreach (var s  in scheduleList)
                     {
-                        for (int i = 1; i <= stuud-1; i++)
+                        for (int i = 2; i <= stuud-1; i++)
                         {
                             for (int j = 1; j < gp; j++)
                             {
                                 if (!String.IsNullOrWhiteSpace(ReoGridSchedule.CurrentWorksheet.Cells[i, 0].DisplayText))
                                 {
-                                    string gr = ReoGridSchedule.CurrentWorksheet.Cells[0, j].DisplayText;
+                                    string gr = ReoGridSchedule.CurrentWorksheet.Cells[4, j].DisplayText;
                                     string call = ReoGridSchedule.CurrentWorksheet.Cells[i, 0].DisplayText;
                                     DateTime datt;
                                     if (!DateTime.TryParse(call, out datt))
@@ -286,7 +287,7 @@ namespace ElectroJournal.Pages
 
 
                     string call = ReoGridSchedule.CurrentWorksheet.Cells[stud - 1, 0].DisplayText;
-                    string group = ReoGridSchedule.CurrentWorksheet.Cells[$"{poz6}1"].DisplayText;
+                    string group = ReoGridSchedule.CurrentWorksheet.Cells[$"{poz6}5"].DisplayText;
                     string date = ReoGridSchedule.CurrentWorksheet.Cells[stud - Int32.Parse(call) - 1, 0].DisplayText;
                     string?[] info = ReoGridSchedule.CurrentWorksheet.Cells[score].DisplayText.Split(new char[] { '\\' });
                     switch (info.Length)
@@ -325,8 +326,14 @@ namespace ElectroJournal.Pages
         }
         private void FillText()
         {
-            Worksheet ws = ReoGridSchedule.CurrentWorksheet;
-            ws.MergeRange($"A1:A{gp}");
+            var worksheet = ReoGridSchedule.CurrentWorksheet;
+            ReoGridSchedule.CurrentWorksheet.MergeRange(new RangePosition(0, 0, 4, gp));
+            ReoGridSchedule.CurrentWorksheet.RowHeaders[0].Height = 50;
+            worksheet[0, 0] = $"\"Утверждаю\"\nДиректор ОБПОУ \"КТС\" \nРемпель П.П.\n\n{ComboBoxCourse.SelectedItem}";
+            var cell = ReoGridSchedule.CurrentWorksheet.Cells["A1"];
+            cell.Style.HAlign = ReoGridHorAlign.Left;
+            cell.Style.VAlign = ReoGridVerAlign.Middle;
+            cell.Style.Padding = new PaddingValue(10);
         }
         private async void FillGroups()
         {
@@ -346,12 +353,13 @@ namespace ElectroJournal.Pages
                     for (int i = 1; i < gp; i++)
                     {
                         worksheet.SetCols(gp);
-                        worksheet[0, i] = g[i - 1];
+                        worksheet[4, i] = g[i-1];
                         Cell? cell = worksheet.Cells[0, i];
                         cell.IsReadOnly = true;
                         ReoGridSchedule.CurrentWorksheet.ColumnHeaders[i].Width = 125;
+                        ReoGridSchedule.CurrentWorksheet.RowHeaders[4].Height = 50;
                     }
-
+                    FillText();
                     FillCalls();
                 }
             }
@@ -363,7 +371,7 @@ namespace ElectroJournal.Pages
         {
             try
             {
-                int x = 2;
+                int x = 6;
 
                 string[] d = ComboBoxSchoolWeek.SelectedItem.ToString().Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
                 int countDays = (int)(DateTime.Parse(d[1]) - DateTime.Parse(d[0])).TotalDays + 1;
@@ -379,7 +387,7 @@ namespace ElectroJournal.Pages
 
                 for (int j = 2; j - 2 < dateDiap.Length; j++)
                 {
-                    worksheet["A" + x] = dateDiap[j - 2].ToString("d");
+                    worksheet["A" + x] = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(dateDiap[j - 2].DayOfWeek)} {dateDiap[j - 2].ToString("d")}";
                     ReoGridSchedule.CurrentWorksheet.MergeRange(new RangePosition(x - 1, 0, 1, gp));
                     ReoGridSchedule.CurrentWorksheet.Cells[x - 1, 0].Style.HAlign = ReoGridHorAlign.Center;
                     x++;
